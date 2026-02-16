@@ -1,0 +1,145 @@
+"use client";
+
+import { useState } from "react";
+
+const ACCENT_GREEN = "#2aa348";
+const BUTTON_ORANGE = "#E67A4C";
+
+type ContactFormProps = {
+  idPrefix?: string;
+  showTitle?: boolean;
+  className?: string;
+};
+
+export default function ContactForm({ idPrefix = "contact", showTitle = true, className = "" }: ContactFormProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError((data as { error?: string }).error || "Something went wrong. Please try again.");
+        return;
+      }
+      setSent(true);
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const nameId = `${idPrefix}-name`;
+  const emailId = `${idPrefix}-email`;
+  const subjectId = `${idPrefix}-subject`;
+  const messageId = `${idPrefix}-message`;
+
+  return (
+    <section className={className}>
+      <div className="max-w-xl mx-auto w-full px-4">
+        {showTitle && (
+          <h2 className="text-xl font-bold mb-6 text-center dark:text-[#2aa348]" style={{ color: ACCENT_GREEN }}>
+            Contact
+          </h2>
+        )}
+        {sent ? (
+          <div className="text-center py-8 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
+            <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
+              Thanks for contacting us!
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 text-sm">
+              Your message has been sent to info@savedsouls-foundation.org. We&apos;ll get back to you as soon as we can.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor={nameId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                Name
+              </label>
+              <input
+                id={nameId}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
+                placeholder="Your name"
+              />
+            </div>
+            <div>
+              <label htmlFor={emailId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                Email
+              </label>
+              <input
+                id={emailId}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
+                placeholder="your@email.com"
+              />
+            </div>
+            <div>
+              <label htmlFor={subjectId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                Subject
+              </label>
+              <input
+                id={subjectId}
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
+                placeholder="What is your message about?"
+              />
+            </div>
+            <div>
+              <label htmlFor={messageId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                Message
+              </label>
+              <textarea
+                id={messageId}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+                rows={4}
+                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348] resize-y"
+                placeholder="Write your message..."
+              />
+            </div>
+            {error && (
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={sending}
+              className="w-full py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+              style={{ backgroundColor: BUTTON_ORANGE }}
+            >
+              {sending ? "Sending…" : "Send message"}
+            </button>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
