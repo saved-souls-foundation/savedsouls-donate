@@ -15,6 +15,10 @@ const SECTIONS = [
   { key: "heartworm", emoji: "❤️‍🩹", color: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
   { key: "deworming", emoji: "🪱", color: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30" },
   { key: "eyes", emoji: "👀", color: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30" },
+  { key: "ears", emoji: "👂", color: "from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30" },
+  { key: "earMites", emoji: "🦠", color: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
+  { key: "sneezing", emoji: "🤧", color: "from-cyan-50 to-sky-50 dark:from-cyan-950/30 dark:to-sky-950/30" },
+  { key: "sneezingDisease", emoji: "😿", color: "from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30" },
   { key: "skinCoat", emoji: "✨", color: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30" },
   { key: "skinProblems", emoji: "🩹", color: "from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30" },
   { key: "infections", emoji: "🦠", color: "from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30" },
@@ -90,6 +94,77 @@ export default function HealthPage() {
             </section>
           ))}
         </div>
+
+        {/* Ziektengids */}
+        <section className="mb-16 rounded-2xl p-6 md:p-10 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
+          <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: ACCENT_GREEN }}>
+            📚 {t("diseasesTitle")}
+          </h2>
+          <p className="text-stone-600 dark:text-stone-400 mb-8">{t("diseasesIntro")}</p>
+
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2">
+                <span className="text-2xl">🐕🐈</span> {t("diseasesCommonTitle")}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  <div key={i} className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseCommon${i}Name`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCommon${i}Info`)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2">
+                <span className="text-2xl">🐕</span> {t("diseasesDogTitle")}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <div key={i} className="p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseDog${i}Name`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseDog${i}Info`)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2">
+                <span className="text-2xl">🐈</span> {t("diseasesCatTitle")}
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <div key={i} className="p-4 rounded-xl bg-violet-50/50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800">
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseCat${i}Name`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCat${i}Info`)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
+              <h3 className="font-bold text-green-800 dark:text-green-200 mb-3">{t("diseasesPreventionTitle")}</h3>
+              <ul className="space-y-2 text-stone-600 dark:text-stone-400 text-sm">
+                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <li key={i}>✓ {t(`diseasesPrevention${i}`)}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="p-6 rounded-xl bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800">
+              <h3 className="font-bold text-red-800 dark:text-red-200 mb-3">🚨 {t("diseasesEmergencyTitle")}</h3>
+              <p className="text-stone-600 dark:text-stone-400 text-sm mb-3">{t("diseasesEmergencyIntro")}</p>
+              <ul className="space-y-1 text-stone-600 dark:text-stone-400 text-sm">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  <li key={i}>• {t(`diseasesEmergency${i}`)}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* Dierenarts disclaimer */}
         <div className="mb-16 p-6 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-800">
