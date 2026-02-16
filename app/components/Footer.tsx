@@ -98,6 +98,9 @@ export default function Footer() {
       <p className="text-white/70 mt-2 text-xs md:pb-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(6rem, env(safe-area-inset-bottom, 1.5rem))" }}>
         <Link href="/gallery" className="hover:underline">{t("gallery")}</Link>
         <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
+        <Link href="/school-project" className="hover:underline">{t("schoolProject")}</Link>
+        <Link href="/nutrition" className="hover:underline">{t("nutrition")}</Link>
+        <Link href="/health" className="hover:underline">{t("health")}</Link>
         <Link href="/street-dogs-thailand" className="hover:underline">{t("streetDogsThailand")}</Link>
         <Link href="/partners" className="hover:underline">{t("partners")}</Link>
         <Link href="/thank-you" className="hover:underline">{t("thankYou")}</Link>

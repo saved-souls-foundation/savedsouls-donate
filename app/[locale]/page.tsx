@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
 import DonateButton from "../components/DonateButton";
 import Footer from "../components/Footer";
@@ -736,20 +737,20 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Stats – geanimeerde tellers */}
       <section className="py-12 bg-white dark:bg-stone-900 border-y border-stone-200 dark:border-stone-700">
         <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
           <div>
-            <p className="text-3xl md:text-4xl font-bold" style={{ color: ACCENT_GREEN }}>More than 600</p>
+            <AnimatedStat prefix="More than " target={2500} duration={2200} />
             <p className="text-stone-600 dark:text-stone-400">Rescued dogs & cats helped</p>
           </div>
           <div>
-            <p className="text-3xl md:text-4xl font-bold" style={{ color: ACCENT_GREEN }}>12</p>
+            <AnimatedStat prefix="More than " target={39} duration={1800} />
             <p className="text-stone-600 dark:text-stone-400">Wheelchairs in use</p>
           </div>
           <div>
-            <p className="text-3xl md:text-4xl font-bold" style={{ color: ACCENT_GREEN }}>Since 2010</p>
-            <p className="text-stone-600 dark:text-stone-400">From 2 rescued dogs in Khon Kaen → 600+ souls today</p>
+            <AnimatedStat prefix="Sinds " target={2010} from={1999} duration={2500} />
+            <p className="text-stone-600 dark:text-stone-400">From 2 rescued dogs in Khon Kaen → 2500+ souls today</p>
           </div>
         </div>
       </section>
@@ -771,7 +772,7 @@ export default function DonatePage() {
                 Your Next Best Friend is Waiting—Wheelchair and All
               </h2>
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-                Every rescued dog is leash-trained, socialized, and prepared. Every adopter is carefully matched, supported, and welcomed into our family. Adopt a dog from Thailand&apos;s only shelter for disabled and special needs animals. Because this isn&apos;t just adoption. This is redemption.
+                Every rescued dog is <strong>leash-trained, socialized, and prepared</strong>. Every adopter is carefully matched, supported, and welcomed into our family. Adopt a dog from Thailand&apos;s only shelter for disabled and special needs animals. Because this isn&apos;t just adoption. This is redemption.
               </p>
               <button
                 type="button"

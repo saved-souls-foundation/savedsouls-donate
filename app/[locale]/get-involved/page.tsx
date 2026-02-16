@@ -25,6 +25,9 @@ export default async function GetInvolvedPage() {
   const supportLinks = [
     { href: "/#donate", label: t("donateNow") },
     { href: "/feed-a-year", label: t("feedAYear") },
+    { href: "/school-project", label: tCommon("schoolProject") },
+    { href: "/nutrition", label: tCommon("nutrition") },
+    { href: "/health", label: tCommon("health") },
     { href: "/sponsor", label: t("sponsorAnimal") },
     { href: "/donate/thai", label: t("donateBankTransfer") },
     { href: "/donate", label: t("donateSupplies") },

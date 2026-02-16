@@ -64,34 +64,40 @@ export default function IdealDonate() {
 
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
-      {showScreenshot && (
-        <div className="mb-3 min-h-[80px] flex items-center justify-center bg-stone-100 dark:bg-stone-800 rounded-lg">
+      <Link
+        href="/donate"
+        className="block mb-3 rounded-lg transition-opacity hover:opacity-90 focus:opacity-90 cursor-pointer"
+        title={t("idealCta")}
+      >
+        {showScreenshot && (
+          <div className="mb-2 min-h-[80px] flex items-center justify-center bg-stone-100 dark:bg-stone-800 rounded-lg">
+            <img
+              src="/ideal-wero-screenshot.png"
+              alt="iDEAL en Wero"
+              className="w-full max-w-[160px] mx-auto rounded-lg object-contain"
+            />
+          </div>
+        )}
+        <div className="flex items-center gap-3 mb-2 min-h-[52px] py-2 bg-stone-50 dark:bg-stone-800/50 rounded-lg px-3">
           <img
-            src="/ideal-wero-screenshot.png"
-            alt="iDEAL en Wero"
-            className="w-full max-w-[160px] mx-auto rounded-lg object-contain"
+            src="/wero-logo.svg"
+            alt="iDEAL Wero"
+            className="h-10 w-auto object-contain dark:hidden"
+            width={322}
+            height={100}
+          />
+          <img
+            src="/wero-logo-dark.svg"
+            alt="iDEAL Wero"
+            className="h-10 w-auto object-contain hidden dark:block"
+            width={322}
+            height={100}
           />
         </div>
-      )}
-      <div className="flex items-center gap-3 mb-2 min-h-[52px] py-2 bg-stone-50 dark:bg-stone-800/50 rounded-lg px-3">
-        <img
-          src="/wero-logo.svg"
-          alt="iDEAL Wero"
-          className="h-10 w-auto object-contain dark:hidden"
-          width={322}
-          height={100}
-        />
-        <img
-          src="/wero-logo-dark.svg"
-          alt="iDEAL Wero"
-          className="h-10 w-auto object-contain hidden dark:block"
-          width={322}
-          height={100}
-        />
-      </div>
-      <p className="text-sm text-stone-600 dark:text-stone-400 mb-3">
-        {t("idealSubtitle")}
-      </p>
+        <p className="text-sm text-stone-600 dark:text-stone-400">
+          {t("idealSubtitle")}
+        </p>
+      </Link>
       <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
       <button
         type="submit"
