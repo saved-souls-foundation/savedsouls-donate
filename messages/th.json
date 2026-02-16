@@ -38,6 +38,13 @@
     "footerInfo": "ข้อมูล",
     "footerAbout": "เกี่ยวกับเรา"
   },
+  "go": {
+    "title": "เปิด Wikipedia แล้ว",
+    "description": "Wikipedia เปิดในแท็บใหม่ คุณสามารถปิดหน้าต่างนี้หรือคลิกปุ่มด้านล่างเพื่อกลับไปหน้าก่อนหน้า",
+    "backButton": "กลับไปหน้าก่อนหน้า",
+    "openAgain": "เปิด Wikipedia อีกครั้ง",
+    "invalidLink": "ลิงก์ไม่ถูกต้อง"
+  },
   "share": {
     "shareVia": "แชร์ผ่าน",
     "nativeShare": "ตัวเลือกเพิ่มเติม (Instagram ฯลฯ)",

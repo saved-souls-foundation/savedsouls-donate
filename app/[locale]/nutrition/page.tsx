@@ -9,19 +9,20 @@ import Footer from "@/app/components/Footer";
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
 
-const BARF_LINK = "https://en.wikipedia.org/wiki/Raw_feeding";
+const BARF_WIKI_URL = "https://en.wikipedia.org/wiki/Raw_feeding";
 
 export default function NutritionPage() {
   const t = useTranslations("nutrition");
   const tCommon = useTranslations("common");
   const locale = useLocale();
   const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+  const barfGoUrl = `/go?url=${encodeURIComponent(BARF_WIKI_URL)}&return=${encodeURIComponent("/nutrition")}`;
   const barfRawRich = {
     barf: (chunks: React.ReactNode) => (
-      <a href={BARF_LINK} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold" style={{ color: ACCENT_GREEN }}>{chunks}</a>
+      <Link href={barfGoUrl} className="underline hover:no-underline font-semibold" style={{ color: ACCENT_GREEN }}>{chunks}</Link>
     ),
     raw: (chunks: React.ReactNode) => (
-      <a href={BARF_LINK} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold" style={{ color: ACCENT_GREEN }}>{chunks}</a>
+      <Link href={barfGoUrl} className="underline hover:no-underline font-semibold" style={{ color: ACCENT_GREEN }}>{chunks}</Link>
     ),
   };
 
@@ -89,23 +90,23 @@ export default function NutritionPage() {
             <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
               ⚠️ {t.rich("bacteriaWarning", {
                 salmonella: (chunks) => (
-                  <a href={`https://${wikiLang}.wikipedia.org/wiki/Salmonella`} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold">{chunks}</a>
+                  <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Salmonella`)}&return=${encodeURIComponent("/nutrition")}`} className="underline hover:no-underline font-semibold">{chunks}</Link>
                 ),
                 listeria: (chunks) => (
-                  <a href={`https://${wikiLang}.wikipedia.org/wiki/Listeria`} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold">{chunks}</a>
+                  <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Listeria`)}&return=${encodeURIComponent("/nutrition")}`} className="underline hover:no-underline font-semibold">{chunks}</Link>
                 ),
                 ecoli: (chunks) => (
-                  <a href={`https://${wikiLang}.wikipedia.org/wiki/Escherichia_coli`} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold">{chunks}</a>
+                  <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Escherichia_coli`)}&return=${encodeURIComponent("/nutrition")}`} className="underline hover:no-underline font-semibold">{chunks}</Link>
                 ),
               })}
             </p>
             <p className="text-amber-700/80 dark:text-amber-300/80 text-xs mt-2">
-              <a href={`https://${wikiLang}.wikipedia.org`} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+              <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org`)}&return=${encodeURIComponent("/nutrition")}`} className="underline hover:no-underline">
                 {t("bacteriaWarningSource")}
-              </a>
+              </Link>
             </p>
             <div className="mt-4 flex gap-4 justify-center overflow-x-auto pb-2 snap-x snap-mandatory md:flex-wrap md:overflow-visible">
-              <a href={`https://${wikiLang}.wikipedia.org/wiki/Salmonella`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group shrink-0 snap-center">
+              <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Salmonella`)}&return=${encodeURIComponent("/nutrition")}`} className="flex flex-col items-center group shrink-0 snap-center">
                 <Image
                   src="/bacteria-salmonella.png"
                   alt={t("bacteriaImgSalmonella")}
@@ -114,8 +115,8 @@ export default function NutritionPage() {
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
                 <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">Salmonella</span>
-              </a>
-              <a href={`https://${wikiLang}.wikipedia.org/wiki/Listeria`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group shrink-0 snap-center">
+              </Link>
+              <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Listeria`)}&return=${encodeURIComponent("/nutrition")}`} className="flex flex-col items-center group shrink-0 snap-center">
                 <Image
                   src="/bacteria-listeria.png"
                   alt={t("bacteriaImgListeria")}
@@ -124,8 +125,8 @@ export default function NutritionPage() {
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
                 <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">Listeria</span>
-              </a>
-              <a href={`https://${wikiLang}.wikipedia.org/wiki/Escherichia_coli`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group shrink-0 snap-center">
+              </Link>
+              <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Escherichia_coli`)}&return=${encodeURIComponent("/nutrition")}`} className="flex flex-col items-center group shrink-0 snap-center">
                 <Image
                   src="/bacteria-ecoli.png"
                   alt={t("bacteriaImgEcoli")}
@@ -134,7 +135,7 @@ export default function NutritionPage() {
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
                 <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">E. coli</span>
-              </a>
+              </Link>
             </div>
           </div>
         </section>

@@ -80,20 +80,22 @@ export default function FleaTickParasiteGuidePage() {
           <h2 className="text-2xl font-bold mb-6" style={{ color: ACCENT_GREEN }}>🌿 {t("safeRemediesTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">{t("safeRemediesIntro")}</p>
           <div className="space-y-4">
-            {([1, 2, 3, 4, 5] as const).map((i) => (
-              <a
-                key={i}
-                href={`https://${wikiLang}.wikipedia.org/wiki/${REMEDY_WIKI[`remedy${i}`]}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block p-4 rounded-xl bg-white/80 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-stone-300 dark:hover:border-stone-500"
-              >
-                <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2 underline decoration-dotted hover:decoration-solid" style={{ color: ACCENT_GREEN }}>
-                  {t(`remedy${i}Title`)} →
-                </h3>
-                <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`remedy${i}Text`)}</p>
-              </a>
-            ))}
+            {([1, 2, 3, 4, 5] as const).map((i) => {
+              const wikiUrl = `https://${wikiLang}.wikipedia.org/wiki/${REMEDY_WIKI[`remedy${i}`]}`;
+              const goUrl = `/go?url=${encodeURIComponent(wikiUrl)}&return=${encodeURIComponent("/flea-tick-parasite-guide")}`;
+              return (
+                <Link
+                  key={i}
+                  href={goUrl}
+                  className="block p-4 rounded-xl bg-white/80 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-stone-300 dark:hover:border-stone-500"
+                >
+                  <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2 underline decoration-dotted hover:decoration-solid" style={{ color: ACCENT_GREEN }}>
+                    {t(`remedy${i}Title`)} →
+                  </h3>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`remedy${i}Text`)}</p>
+                </Link>
+              );
+            })}
           </div>
         </section>
 

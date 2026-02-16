@@ -38,6 +38,13 @@
     "footerInfo": "Information",
     "footerAbout": "Über uns"
   },
+  "go": {
+    "title": "Wikipedia geöffnet",
+    "description": "Wikipedia öffnet in einem neuen Tab. Sie können dieses Fenster schließen oder auf die Schaltfläche unten klicken, um zur vorherigen Seite zurückzukehren.",
+    "backButton": "Zurück zur vorherigen Seite",
+    "openAgain": "Wikipedia erneut öffnen",
+    "invalidLink": "Ungültiger Link."
+  },
   "share": {
     "shareVia": "Teilen über",
     "nativeShare": "Weitere Optionen (Instagram, etc.)",

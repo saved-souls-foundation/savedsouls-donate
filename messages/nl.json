@@ -38,6 +38,13 @@
     "footerInfo": "Informatie",
     "footerAbout": "Over ons"
   },
+  "go": {
+    "title": "Wikipedia is geopend",
+    "description": "Wikipedia opent in een nieuw tabblad. Je kunt dit venster sluiten of op de knop hieronder klikken om terug te gaan naar de vorige pagina.",
+    "backButton": "Terug naar vorige pagina",
+    "openAgain": "Wikipedia opnieuw openen",
+    "invalidLink": "Ongeldige link."
+  },
   "share": {
     "shareVia": "Deel via",
     "nativeShare": "Meer opties (Instagram, etc.)",

@@ -64,16 +64,16 @@ export default function HealthPage() {
   const WikiLink = ({ diseaseKey, children }: { diseaseKey: string; children: React.ReactNode }) => {
     const slug = DISEASE_WIKI[diseaseKey];
     if (!slug) return <>{children}</>;
+    const wikiUrl = `https://${wikiLang}.wikipedia.org/wiki/${slug}`;
+    const goUrl = `/go?url=${encodeURIComponent(wikiUrl)}&return=${encodeURIComponent("/health")}`;
     return (
-      <a
-        href={`https://${wikiLang}.wikipedia.org/wiki/${slug}`}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        href={goUrl}
         className="underline hover:no-underline font-semibold"
         style={{ color: ACCENT_GREEN }}
       >
         {children}
-      </a>
+      </Link>
     );
   };
 
