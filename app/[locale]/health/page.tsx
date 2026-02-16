@@ -2,12 +2,40 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
+
+/** Wikipedia slugs - veterinary/pet-specific pages (dogs & cats) */
+const DISEASE_WIKI: Record<string, string> = {
+  diseaseCommon1: "Veterinary_dentistry",
+  diseaseCommon2: "Flea_allergy_dermatitis",
+  diseaseCommon3: "Otitis_externa_in_animals",
+  diseaseCommon4: "Obesity_in_pets",
+  diseaseCommon5: "Diabetes_in_dogs",
+  diseaseCommon6: "List_of_dog_diseases",
+  diseaseCommon7: "Toxocara_canis",
+  diseaseCommon8: "Rabies_in_animals",
+  diseaseCommon9: "Microsporum_canis",
+  diseaseCommon10: "Cat_flu",
+  diseaseDog1: "Canine_parvovirus",
+  diseaseDog2: "Kennel_cough",
+  diseaseDog3: "Heartworm",
+  diseaseDog4: "Hip_dysplasia_(canine)",
+  diseaseDog5: "Canine_distemper",
+  diseaseDog6: "Cushing%27s_syndrome_(veterinary)",
+  diseaseDog7: "Gastric_dilatation_volvulus",
+  diseaseCat1: "Chronic_kidney_disease_in_cats",
+  diseaseCat2: "Feline_lower_urinary_tract_disease",
+  diseaseCat3: "Feline_hyperthyroidism",
+  diseaseCat4: "Feline_panleukopenia",
+  diseaseCat5: "Feline_leukemia_virus",
+  diseaseCat6: "Feline_immunodeficiency_virus",
+  diseaseCat7: "Feline_asthma",
+};
 
 const SECTIONS = [
   { key: "vaccinations", emoji: "💉", color: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30" },
@@ -30,6 +58,24 @@ const SECTIONS = [
 export default function HealthPage() {
   const t = useTranslations("health");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+
+  const WikiLink = ({ diseaseKey, children }: { diseaseKey: string; children: React.ReactNode }) => {
+    const slug = DISEASE_WIKI[diseaseKey];
+    if (!slug) return <>{children}</>;
+    return (
+      <a
+        href={`https://${wikiLang}.wikipedia.org/wiki/${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline hover:no-underline font-semibold"
+        style={{ color: ACCENT_GREEN }}
+      >
+        {children}
+      </a>
+    );
+  };
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
@@ -63,18 +109,28 @@ export default function HealthPage() {
               {t("intro")}
             </p>
           </div>
-          <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600">
+          <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
             <Image src="/dog-care.webp" alt={t("imgCareAlt")} width={400} height={300} className="w-full h-64 object-cover" />
           </div>
         </section>
 
         {/* Secties */}
         <div className="space-y-6 mb-16">
-          {SECTIONS.map(({ key, emoji, color }) => (
-            <section
-              key={key}
-              className={`rounded-2xl p-6 md:p-8 bg-gradient-to-br ${color} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-shadow`}
-            >
+          {SECTIONS.map(({ key, emoji, color }) => {
+            const isFleasTicks = key === "fleasTicks";
+            const isVaccinations = key === "vaccinations";
+            const isHeartworm = key === "heartworm";
+            const isDeworming = key === "deworming";
+            const isEyeEarCare = key === "eyes" || key === "ears";
+            const isEarMitesSneezing = key === "earMites" || key === "sneezing";
+            const isCatFlu = key === "sneezingDisease";
+            const isSkinCoat = key === "skinCoat";
+            const isSkinProblems = key === "skinProblems";
+            const isInfections = key === "infections";
+            const isTropics = key === "tropics";
+            const isDangers = key === "dangers";
+            const isGeneral = key === "general";
+            const content = (
               <div className="flex items-start gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-white/80 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600 shadow-sm">
                   {emoji}
@@ -89,10 +145,147 @@ export default function HealthPage() {
                   <p className="mt-3 text-sm font-medium text-stone-700 dark:text-stone-300">
                     💡 {t(`${key}Tip`)}
                   </p>
+                  {isFleasTicks && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("fleasTicksReadMore")}
+                    </p>
+                  )}
+                  {isVaccinations && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("vaccinationsReadMore")}
+                    </p>
+                  )}
+                  {isHeartworm && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("heartwormReadMore")}
+                    </p>
+                  )}
+                  {isDeworming && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("dewormingReadMore")}
+                    </p>
+                  )}
+                  {isEyeEarCare && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("eyeEarCareReadMore")}
+                    </p>
+                  )}
+                  {isEarMitesSneezing && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("earMitesSneezingReadMore")}
+                    </p>
+                  )}
+                  {isCatFlu && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("catFluReadMore")}
+                    </p>
+                  )}
+                  {isSkinCoat && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("skinCoatReadMore")}
+                    </p>
+                  )}
+                  {isSkinProblems && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("skinProblemsReadMore")}
+                    </p>
+                  )}
+                  {isInfections && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("infectionsReadMore")}
+                    </p>
+                  )}
+                  {isTropics && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("tropicsReadMore")}
+                    </p>
+                  )}
+                  {isDangers && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("dangersReadMore")}
+                    </p>
+                  )}
+                  {isGeneral && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("generalReadMore")}
+                    </p>
+                  )}
                 </div>
               </div>
-            </section>
-          ))}
+            );
+            return (
+              <section
+                key={key}
+                className={`rounded-2xl p-6 md:p-8 bg-gradient-to-br ${color} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-shadow ${(isFleasTicks || isVaccinations || isHeartworm || isDeworming || isEyeEarCare || isEarMitesSneezing || isCatFlu || isSkinCoat || isSkinProblems || isInfections || isTropics || isDangers || isGeneral) ? "cursor-pointer" : ""}`}
+              >
+                {isFleasTicks ? (
+                  <Link href="/flea-tick-parasite-guide" className="block">
+                    {content}
+                  </Link>
+                ) : isVaccinations ? (
+                  <Link href="/vaccinations" className="block">
+                    {content}
+                  </Link>
+                ) : isHeartworm ? (
+                  <Link href="/heartworm" className="block">
+                    {content}
+                  </Link>
+                ) : isDeworming ? (
+                  <Link href="/deworming" className="block">
+                    {content}
+                  </Link>
+                ) : isEyeEarCare ? (
+                  <Link href="/eye-ear-care" className="block">
+                    {content}
+                  </Link>
+                ) : isEarMitesSneezing ? (
+                  <Link href="/ear-mites-sneezing" className="block">
+                    {content}
+                  </Link>
+                ) : isCatFlu ? (
+                  <Link href="/cat-flu" className="block">
+                    {content}
+                  </Link>
+                ) : isSkinCoat ? (
+                  <Link href="/skin-coat" className="block">
+                    {content}
+                  </Link>
+                ) : isSkinProblems ? (
+                  <Link href="/skin-problems" className="block">
+                    {content}
+                  </Link>
+                ) : isInfections ? (
+                  <Link href="/infections" className="block">
+                    {content}
+                  </Link>
+                ) : isTropics ? (
+                  <Link href="/tropics" className="block">
+                    {content}
+                  </Link>
+                ) : isDangers ? (
+                  <Link href="/dangers" className="block">
+                    {content}
+                  </Link>
+                ) : isGeneral ? (
+                  <Link href="/general-health" className="block">
+                    {content}
+                  </Link>
+                ) : (
+                  content
+                )}
+              </section>
+            );
+          })}
+        </div>
+
+        {/* Afbeelding break */}
+        <div className="mb-16 grid md:grid-cols-2 gap-6">
+          <div className="rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+            <Image src="/hero-hug.png" alt={t("imgCareAlt")} width={500} height={350} className="w-full h-56 object-cover" />
+          </div>
+          <div className="rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+            <Image src="/volunteer-hero.png" alt={t("imgCareAlt")} width={500} height={350} className="w-full h-56 object-cover" />
+          </div>
         </div>
 
         {/* Ziektengids */}
@@ -110,7 +303,9 @@ export default function HealthPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                   <div key={i} className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
-                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseCommon${i}Name`)}</p>
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
+                      <WikiLink diseaseKey={`diseaseCommon${i}`}>{t(`diseaseCommon${i}Name`)}</WikiLink>
+                    </p>
                     <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCommon${i}Info`)}</p>
                   </div>
                 ))}
@@ -124,7 +319,9 @@ export default function HealthPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                   <div key={i} className="p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseDog${i}Name`)}</p>
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
+                      <WikiLink diseaseKey={`diseaseDog${i}`}>{t(`diseaseDog${i}Name`)}</WikiLink>
+                    </p>
                     <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseDog${i}Info`)}</p>
                   </div>
                 ))}
@@ -138,12 +335,18 @@ export default function HealthPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                   <div key={i} className="p-4 rounded-xl bg-violet-50/50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800">
-                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">{t(`diseaseCat${i}Name`)}</p>
+                    <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
+                      <WikiLink diseaseKey={`diseaseCat${i}`}>{t(`diseaseCat${i}Name`)}</WikiLink>
+                    </p>
                     <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCat${i}Info`)}</p>
                   </div>
                 ))}
               </div>
             </div>
+
+            <p className="text-stone-500 dark:text-stone-500 text-sm italic">
+              {t("diseasesSource")}
+            </p>
 
             <div className="p-6 rounded-xl bg-green-50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800">
               <h3 className="font-bold text-green-800 dark:text-green-200 mb-3">{t("diseasesPreventionTitle")}</h3>

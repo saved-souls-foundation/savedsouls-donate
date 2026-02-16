@@ -95,19 +95,36 @@ export default function Footer() {
       <p className="text-white/80 mt-6 text-xs">
         © {new Date().getFullYear()} Saved Souls Foundation
       </p>
-      <p className="text-white/70 mt-2 text-xs md:pb-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(6rem, env(safe-area-inset-bottom, 1.5rem))" }}>
-        <Link href="/gallery" className="hover:underline">{t("gallery")}</Link>
-        <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
-        <Link href="/school-project" className="hover:underline">{t("schoolProject")}</Link>
-        <Link href="/nutrition" className="hover:underline">{t("nutrition")}</Link>
-        <Link href="/health" className="hover:underline">{t("health")}</Link>
-        <Link href="/street-dogs-thailand" className="hover:underline">{t("streetDogsThailand")}</Link>
-        <Link href="/partners" className="hover:underline">{t("partners")}</Link>
-        <Link href="/thank-you" className="hover:underline">{t("thankYou")}</Link>
-        <Link href="/volunteer" className="hover:underline">{t("volunteer")}</Link>
-        <Link href="/press" className="hover:underline">{t("press")}</Link>
-        <Link href="/admin" className="inline-flex items-center px-3 py-1 rounded-lg bg-white/20 hover:bg-white/30 font-medium transition-colors">{t("cms")}</Link>
-        <Link href="/disclaimer" className="hover:underline">{t("disclaimer")}</Link>
+      <nav className="text-white/70 mt-4 text-xs md:pb-4 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto" style={{ paddingBottom: "max(6rem, env(safe-area-inset-bottom, 1.5rem))" }} aria-label="Footer navigation">
+        <div className="flex flex-col items-center sm:items-start gap-1">
+          <span className="font-semibold text-white/90">{t("footerSupport")}</span>
+          <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1">
+            <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
+            <Link href="/volunteer" className="hover:underline">{t("volunteer")}</Link>
+            <Link href="/partners" className="hover:underline">{t("partners")}</Link>
+          </div>
+        </div>
+        <div className="flex flex-col items-center sm:items-start gap-1">
+          <span className="font-semibold text-white/90">{t("footerInfo")}</span>
+          <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1">
+            <Link href="/health" className="hover:underline">{t("health")}</Link>
+            <Link href="/nutrition" className="hover:underline">{t("nutrition")}</Link>
+            <Link href="/street-dogs-thailand" className="hover:underline">{t("streetDogsThailand")}</Link>
+            <Link href="/school-project" className="hover:underline">{t("schoolProject")}</Link>
+          </div>
+        </div>
+        <div className="flex flex-col items-center sm:items-start gap-1">
+          <span className="font-semibold text-white/90">{t("footerAbout")}</span>
+          <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1">
+            <Link href="/gallery" className="hover:underline">{t("gallery")}</Link>
+            <Link href="/press" className="hover:underline">{t("press")}</Link>
+            <Link href="/thank-you" className="hover:underline">{t("thankYou")}</Link>
+            <Link href="/disclaimer" className="hover:underline">{t("disclaimer")}</Link>
+          </div>
+        </div>
+      </nav>
+      <p className="mt-4">
+        <Link href="/admin" className="inline-flex items-center px-3 py-1 rounded-lg bg-white/20 hover:bg-white/30 font-medium text-sm transition-colors">{t("cms")}</Link>
       </p>
     </footer>
   );

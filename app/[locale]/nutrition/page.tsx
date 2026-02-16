@@ -54,7 +54,7 @@ export default function NutritionPage() {
               {t("intro")}
             </p>
           </div>
-          <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 animate-banner-glow">
+          <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 animate-banner-glow transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
             <Image src="/shelter-food.webp" alt={t("imgFoodAlt")} width={400} height={300} className="w-full h-64 object-cover" />
           </div>
         </section>
@@ -77,6 +77,14 @@ export default function NutritionPage() {
             </div>
           </div>
           <p className="text-stone-600 dark:text-stone-400 italic">{t("rawVsCookedConclusion")}</p>
+          <div className="mt-6 grid sm:grid-cols-2 gap-4">
+            <div className="rounded-xl overflow-hidden shadow-lg border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+              <Image src="/dog-care.webp" alt={t("imgCareAlt")} width={400} height={280} className="w-full h-48 object-cover" />
+            </div>
+            <div className="rounded-xl overflow-hidden shadow-lg border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+              <Image src="/shelter-food.webp" alt={t("imgFoodAlt")} width={400} height={280} className="w-full h-48 object-cover" />
+            </div>
+          </div>
           <div className="mt-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
             <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
               ⚠️ {t.rich("bacteriaWarning", {
