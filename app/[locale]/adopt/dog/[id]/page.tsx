@@ -135,7 +135,7 @@ export default function DogDetailPage() {
                 Interested in adopting {dog.name}? Fill out our adoption inquiry form and we&apos;ll get back to you within 48 hours.
               </p>
               <Link
-                href="/adopt-inquiry"
+                href={`/adopt-inquiry?animal=${encodeURIComponent(dog.name)}&id=${encodeURIComponent(dog.id)}`}
                 className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 style={{ backgroundColor: ACCENT_GREEN }}
               >

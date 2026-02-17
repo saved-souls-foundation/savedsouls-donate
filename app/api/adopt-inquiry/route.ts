@@ -5,12 +5,12 @@ const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
 const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <onboarding@resend.dev>";
 const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
 
-const AUTO_REPLY_SUBJECT = "We received your message – Saved Souls Foundation";
+const AUTO_REPLY_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
 const AUTO_REPLY_TEXT = `Dear friend,
 
-Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you as soon as possible, usually within 48 hours.
+Thank you for your interest in adopting from Saved Souls Foundation. We have received your adoption inquiry and our team will get back to you within 48 hours.
 
-If your inquiry is urgent, you can also reach us directly at info@savedsouls-foundation.org.
+We look forward to helping you find your new companion!
 
 With gratitude,
 The Saved Souls Team
@@ -22,17 +22,45 @@ export async function POST(req: NextRequest) {
     const b = await req.json();
     const name = b.name;
     const email = b.email;
-    const subject = b.subject || "";
-    const message = b.message;
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
+    const city = b.city;
+    const country = b.country;
+    const experience = b.experience;
+    const about = b.about;
+    const animalName = b.animalName || "";
+    const animalId = b.animalId || "";
+
+    if (!name || !email || !city || !country || !experience || !about) {
+      return NextResponse.json(
+        { error: "Name, email, city, country, experience and about are required." },
+        { status: 400 }
+      );
     }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: "Email service is not configured." }, { status: 500 });
     }
-    const text = "Name: " + name + "\nEmail: " + email + (subject ? "\nSubject: " + subject : "") + "\n\n" + message;
-    const subjectLine = subject ? "[Website] " + subject : "Contact via website";
+
+    const text = [
+      "Adoption Inquiry",
+      "================",
+      "",
+      "Name: " + name,
+      "Email: " + email,
+      "City: " + city,
+      "Country: " + country,
+      "",
+      animalName ? "Interested in: " + animalName + (animalId ? " (ID: " + animalId + ")" : "") + "\n" : "",
+      "Experience with dogs:",
+      experience,
+      "",
+      "About and motivation:",
+      about,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const subjectLine = "[Adoption Inquiry] " + name + (animalName ? " – " + animalName : "");
 
     // 1. Send notification to BOTH addresses
     const res = await fetch("https://api.resend.com/emails", {
@@ -49,7 +77,7 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const err = await res.text();
       console.error("Resend error:", err);
-      return NextResponse.json({ error: "Failed to send email." }, { status: 502 });
+      return NextResponse.json({ error: "Failed to send inquiry." }, { status: 502 });
     }
 
     // 2. Send auto-reply to the person who submitted
@@ -66,12 +94,11 @@ export async function POST(req: NextRequest) {
     });
     if (!autoRes.ok) {
       console.error("Auto-reply failed:", await autoRes.text());
-      // Don't fail the request - the main email was sent
     }
 
     return NextResponse.json({ success: true });
   } catch (e) {
-    console.error("Contact API error:", e);
+    console.error("Adopt-inquiry API error:", e);
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
   }
 }

@@ -107,6 +107,8 @@ export default function Footer() {
         <div className="flex flex-col items-center sm:items-start gap-1">
           <span className="font-semibold text-white/90">{t("footerInfo")}</span>
           <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1">
+            <Link href="/faq" className="hover:underline">{t("faq")}</Link>
+            <Link href="/raw-hide" className="hover:underline">{t("rawHide")}</Link>
             <Link href="/health" className="hover:underline">{t("health")}</Link>
             <Link href="/nutrition" className="hover:underline">{t("nutrition")}</Link>
             <Link href="/street-dogs-thailand" className="hover:underline">{t("streetDogsThailand")}</Link>

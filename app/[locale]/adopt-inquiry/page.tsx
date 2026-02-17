@@ -1,7 +1,8 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Footer from "../../components/Footer";
 import { COUNTRIES } from "@/lib/countries";
 
@@ -10,8 +11,13 @@ const ACCENT_ORANGE = "#E67A4C";
 const ACCENT_TEAL = "#0d9488";
 const ACCENT_AMBER = "#f59e0b";
 
-export default function AdoptInquiryLandingPage() {
+function AdoptInquiryForm() {
+  const searchParams = useSearchParams();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const animalName = searchParams.get("animal") || "";
+  const animalId = searchParams.get("id") || "";
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -153,9 +159,51 @@ export default function AdoptInquiryLandingPage() {
             </div>
           ) : (
             <form
-              onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setError("");
+                setSending(true);
+                const form = e.currentTarget;
+                const name = (form.querySelector("#name") as HTMLInputElement)?.value;
+                const email = (form.querySelector("#email") as HTMLInputElement)?.value;
+                const city = (form.querySelector("#city") as HTMLInputElement)?.value;
+                const country = (form.querySelector("#country") as HTMLSelectElement)?.value;
+                const experience = (form.querySelector("#experience") as HTMLTextAreaElement)?.value;
+                const about = (form.querySelector("#about") as HTMLTextAreaElement)?.value;
+                try {
+                  const res = await fetch("/api/adopt-inquiry", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      name,
+                      email,
+                      city,
+                      country,
+                      experience,
+                      about,
+                      animalName: animalName || undefined,
+                      animalId: animalId || undefined,
+                    }),
+                  });
+                  const data = await res.json().catch(() => ({}));
+                  if (!res.ok) {
+                    setError((data as { error?: string }).error || "Something went wrong. Please try again.");
+                    return;
+                  }
+                  setSent(true);
+                } catch {
+                  setError("Something went wrong. Please try again.");
+                } finally {
+                  setSending(false);
+                }
+              }}
               className="space-y-6"
             >
+              {animalName && (
+                <p className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
+                  Interested in: {animalName}
+                </p>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="group">
                   <label htmlFor="name" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
@@ -163,6 +211,7 @@ export default function AdoptInquiryLandingPage() {
                   </label>
                   <input
                     id="name"
+                    name="name"
                     type="text"
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30"
@@ -175,6 +224,7 @@ export default function AdoptInquiryLandingPage() {
                   </label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30"
@@ -190,6 +240,7 @@ export default function AdoptInquiryLandingPage() {
                   </label>
                   <input
                     id="city"
+                    name="city"
                     type="text"
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30"
@@ -202,6 +253,7 @@ export default function AdoptInquiryLandingPage() {
                   </label>
                   <select
                     id="country"
+                    name="country"
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30"
                   >
@@ -219,6 +271,7 @@ export default function AdoptInquiryLandingPage() {
                 </label>
                 <textarea
                   id="experience"
+                  name="experience"
                   required
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30 resize-y"
@@ -232,6 +285,7 @@ export default function AdoptInquiryLandingPage() {
                 </label>
                 <textarea
                   id="about"
+                  name="about"
                   required
                   rows={5}
                   className="w-full px-4 py-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:border-[#2aa348] hover:border-stone-300 dark:hover:border-stone-500 focus:ring-[#2aa348]/30 resize-y"
@@ -239,15 +293,18 @@ export default function AdoptInquiryLandingPage() {
                 />
               </div>
 
+              {error && <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>}
+
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2"
+                disabled={sending}
+                className="w-full py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70"
                 style={{
                   background: `linear-gradient(135deg, ${ACCENT_GREEN}, #1e7a38)`,
                   boxShadow: `0 4px 14px 0 ${ACCENT_GREEN}50`,
                 }}
               >
-                Submit Adoption Inquiry
+                {sending ? "Sending…" : "Submit Adoption Inquiry"}
                 <span className="text-white/90">♥</span>
               </button>
             </form>
@@ -287,5 +344,17 @@ export default function AdoptInquiryLandingPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function AdoptInquiryLandingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-stone-500">Loading...</p>
+      </div>
+    }>
+      <AdoptInquiryForm />
+    </Suspense>
   );
 }
