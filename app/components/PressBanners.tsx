@@ -29,6 +29,10 @@ function getScale(w: number, h: number): number {
   return Math.min(maxW / w, maxH / h, 1);
 }
 
+function getBaseName(src: string): string {
+  return src.replace("/banners/", "").replace(".html", "");
+}
+
 export default function PressBanners({ locale = "en", subtitle }: { locale?: string; subtitle?: string }) {
   const lang = locale === "nl" ? "nl" : "en";
 
@@ -45,6 +49,7 @@ export default function PressBanners({ locale = "en", subtitle }: { locale?: str
           const scale = getScale(b.w, b.h);
           const displayW = Math.round(b.w * scale);
           const displayH = Math.round(b.h * scale);
+          const baseName = getBaseName(src);
           return (
             <div
               key={b.name}
@@ -76,15 +81,58 @@ export default function PressBanners({ locale = "en", subtitle }: { locale?: str
                   />
                 </div>
               </a>
-              <a
-                href={src}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-3 text-sm font-medium hover:underline"
-                style={{ color: "#2aa348" }}
-              >
-                Open full size ↗
-              </a>
+              <div className="mt-3 flex flex-wrap gap-2 items-center text-sm">
+                <a
+                  href={src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  Open ↗
+                </a>
+                <span className="text-stone-400">|</span>
+                <a
+                  href={src}
+                  download={`${baseName}.html`}
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  HTML
+                </a>
+                <a
+                  href={`/banners/${baseName}.png`}
+                  download
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  PNG
+                </a>
+                <a
+                  href={`/banners/${baseName}.webp`}
+                  download
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  WebP
+                </a>
+                <a
+                  href={`/banners/${baseName}.jpg`}
+                  download
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  JPG
+                </a>
+                <a
+                  href={`/banners/${baseName}.svg`}
+                  download
+                  className="font-medium hover:underline"
+                  style={{ color: "#2aa348" }}
+                >
+                  SVG
+                </a>
+              </div>
             </div>
           );
         })}
