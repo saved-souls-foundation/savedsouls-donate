@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Souls - Full Banner EN</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; overflow: hidden; }
+    .banner {
+      width: 468px; height: 60px;
+      background: linear-gradient(90deg, #2aa348 0%, #1e7d38 100%);
+      display: flex; align-items: center; gap: 15px; padding: 0 20px;
+      overflow: hidden; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .banner img {
+      height: 45px; width: 60px; object-fit: cover; border-radius: 6px;
+      animation: walk 3s ease-in-out infinite;
+    }
+    @keyframes walk {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(15px); }
+    }
+    .text { color: white; flex: 1; }
+    .text h2 { font-size: 18px; font-weight: 800; }
+    .cta {
+      background: #E67A4C; color: white; padding: 8px 18px;
+      border-radius: 8px; font-weight: 700; font-size: 13px;
+      text-decoration: none; flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .cta:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <a href="https://savedsouls-foundation.org" target="_blank" class="banner">
+    <img src="/dog-wheelchair-small.webp" alt="Wheelchair dog">
+    <div class="text"><h2>Saved Souls • Wheelchair dogs • Thailand</h2></div>
+    <span class="cta">DONATE</span>
+  </a>
+</body>
+</html>

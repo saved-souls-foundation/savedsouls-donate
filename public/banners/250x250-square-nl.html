@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Souls - Square NL</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; overflow: hidden; }
+    .banner {
+      width: 250px; height: 250px;
+      background: linear-gradient(145deg, #2aa348 0%, #0d9488 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 25px; overflow: hidden; border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+    .banner img {
+      width: 100px; height: 80px; object-fit: cover; border-radius: 12px;
+      animation: walk 3s ease-in-out infinite;
+    }
+    @keyframes walk {
+      0%, 100% { transform: translateX(-15px); }
+      50% { transform: translateX(15px); }
+    }
+    .text { color: white; text-align: center; margin-top: 18px; }
+    .text h2 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+    .text p { font-size: 11px; opacity: 0.95; }
+    .cta {
+      background: #E67A4C; color: white; padding: 8px 20px;
+      border-radius: 10px; font-weight: 700; font-size: 12px;
+      text-decoration: none; display: inline-block; margin-top: 12px;
+      transition: transform 0.2s;
+    }
+    .cta:hover { transform: scale(1.08); }
+  </style>
+</head>
+<body>
+  <a href="https://savedsouls-foundation.org" target="_blank" class="banner">
+    <img src="/dog-wheelchair-small.webp" alt="Rolstoelhond">
+    <div class="text">
+      <h2>Rolstoelhonden</h2>
+      <p>Thailand • Doneer €100</p>
+      <span class="cta">HELP →</span>
+    </div>
+  </a>
+</body>
+</html>

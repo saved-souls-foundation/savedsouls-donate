@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import PressBanner from "../../components/PressBanner";
+import PressBanners from "../../components/PressBanners";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -14,15 +15,20 @@ export const metadata: Metadata = {
     "Press and media information for Saved Souls Foundation. Contact for interviews, photos, and press inquiries. Thailand's only shelter for disabled and special needs dogs.",
 };
 
-export default async function PressPage() {
+export default async function PressPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   let bannerTitle = "Download banner";
   let bannerSubtitle = "Kies een formaat voor social media, websites of presentaties. PNG, JPG of SVG.";
   let bannerDisclaimer = "Gebruik niet zonder toestemming a.u.b.";
+  let webBannersTitle = "Web banners";
+  let webBannersSubtitle = "Embed these HTML banners on your website. Available in English and Dutch. Click to open full size.";
   try {
     const t = await getTranslations("press");
     bannerTitle = t("bannerTitle");
     bannerSubtitle = t("bannerSubtitle");
     bannerDisclaimer = t("bannerDisclaimer");
+    webBannersTitle = t("webBannersTitle");
+    webBannersSubtitle = t("webBannersSubtitle");
   } catch {
     // fallback bij ontbrekende vertalingen
   }
@@ -65,6 +71,14 @@ export default async function PressPage() {
               subtitle={bannerSubtitle}
               disclaimer={bannerDisclaimer}
             />
+          </div>
+
+          {/* Web banners */}
+          <div className="bg-white dark:bg-stone-900 rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200 dark:border-stone-700">
+            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
+              {webBannersTitle}
+            </h2>
+            <PressBanners locale={locale} subtitle={webBannersSubtitle} />
           </div>
 
           <div className="bg-white dark:bg-stone-900 rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200 dark:border-stone-700">

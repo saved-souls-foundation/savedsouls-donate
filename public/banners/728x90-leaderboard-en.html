@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Souls - Leaderboard EN</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; overflow: hidden; }
+    .banner {
+      width: 728px; height: 90px;
+      background: linear-gradient(135deg, #2aa348 0%, #1e7d38 100%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; position: relative; overflow: hidden;
+      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .banner img {
+      height: 70px; border-radius: 8px;
+      animation: walk 4s ease-in-out infinite;
+    }
+    @keyframes walk {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(120px); }
+    }
+    .text { color: white; text-align: right; }
+    .text h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .text p { font-size: 14px; opacity: 0.95; }
+    .cta {
+      background: #E67A4C; color: white; padding: 10px 20px;
+      border-radius: 8px; font-weight: 700; font-size: 14px;
+      text-decoration: none; display: inline-block; margin-top: 6px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(230,122,76,0.5); }
+  </style>
+</head>
+<body>
+  <a href="https://savedsouls-foundation.org" target="_blank" class="banner">
+    <img src="/dog-wheelchair-small.webp" alt="Wheelchair dog">
+    <div class="text">
+      <h2>Every Dog Deserves to Run</h2>
+      <p>Fund a wheelchair for €100 • Thailand</p>
+      <span class="cta">DONATE NOW →</span>
+    </div>
+  </a>
+</body>
+</html>

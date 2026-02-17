@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Souls - Billboard NL</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; overflow: hidden; }
+    .banner {
+      width: 970px; height: 250px;
+      background: linear-gradient(120deg, #2aa348 0%, #1e7d38 50%, #0d9488 100%);
+      display: flex; align-items: center; gap: 40px; padding: 0 50px;
+      overflow: hidden; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+    .banner img {
+      height: 200px; border-radius: 12px; flex-shrink: 0;
+      animation: walk 5s ease-in-out infinite;
+    }
+    @keyframes walk {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(80px); }
+    }
+    .text { color: white; flex: 1; }
+    .text h2 { font-size: 36px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
+    .text p { font-size: 18px; opacity: 0.95; margin-bottom: 20px; }
+    .cta {
+      background: #E67A4C; color: white; padding: 14px 32px;
+      border-radius: 10px; font-weight: 700; font-size: 18px;
+      text-decoration: none; display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(230,122,76,0.5); }
+  </style>
+</head>
+<body>
+  <a href="https://savedsouls-foundation.org" target="_blank" class="banner">
+    <img src="/woman-dog-wheelchair.webp" alt="Rolstoelhond bij Saved Souls">
+    <div class="text">
+      <h2>Je volgende beste vriend wacht—rolstoel en al</h2>
+      <p>430 honden. 91 katten. Khon Kaen, Thailand. Wij zeggen nooit nee tegen verlamde honden.</p>
+      <span class="cta">ADOPTEER • DONEER • SPONSOR →</span>
+    </div>
+  </a>
+</body>
+</html>

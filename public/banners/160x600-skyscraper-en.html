@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Souls - Skyscraper EN</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; overflow: hidden; }
+    .banner {
+      width: 160px; height: 600px;
+      background: linear-gradient(180deg, #2aa348 0%, #1e7d38 50%, #0d9488 100%);
+      display: flex; flex-direction: column; align-items: center; padding: 25px 15px;
+      overflow: hidden; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .banner img {
+      width: 130px; height: 100px; object-fit: cover; border-radius: 8px;
+      animation: walk 4s ease-in-out infinite;
+    }
+    @keyframes walk {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(30px); }
+    }
+    .text { color: white; text-align: center; margin-top: 20px; }
+    .text h2 { font-size: 16px; font-weight: 800; margin-bottom: 8px; line-height: 1.3; }
+    .text p { font-size: 11px; opacity: 0.95; }
+    .cta {
+      background: #E67A4C; color: white; padding: 10px 16px;
+      border-radius: 8px; font-weight: 700; font-size: 12px;
+      text-decoration: none; display: inline-block; margin-top: 25px;
+      transition: transform 0.2s;
+    }
+    .cta:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <a href="https://savedsouls-foundation.org" target="_blank" class="banner">
+    <img src="/dog-wheelchair-small.webp" alt="Wheelchair dog">
+    <div class="text">
+      <h2>Saved Souls Foundation</h2>
+      <p>Wheelchair dogs in Thailand. Donate • Adopt • Sponsor</p>
+      <span class="cta">HELP NOW →</span>
+    </div>
+  </a>
+</body>
+</html>
