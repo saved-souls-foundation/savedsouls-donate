@@ -246,7 +246,7 @@ export default function StoryPage() {
           <div className="max-w-2xl mx-auto text-center">
             <ScrollReveal>
               <p className="text-stone-600 text-sm mb-4">{t("ctaEmail")}</p>
-              <p className="text-stone-500 text-xs mb-8">© 2026 Saved Souls Foundation — มูลนิธิเซฟต์ โซลส์</p>
+              <p className="text-stone-500 text-sm mb-8">© 2026 Saved Souls Foundation — มูลนิธิเซฟต์ โซลส์</p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   href="/#donate"

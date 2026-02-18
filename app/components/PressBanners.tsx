@@ -39,7 +39,7 @@ export default function PressBanners({ locale = "en", subtitle }: { locale?: str
   return (
     <div className="space-y-6">
       {subtitle && (
-        <p className="text-sm text-stone-600 dark:text-stone-400">
+        <p className="text-base text-stone-600 dark:text-stone-400">
           {subtitle}
         </p>
       )}
@@ -55,7 +55,7 @@ export default function PressBanners({ locale = "en", subtitle }: { locale?: str
               key={b.name}
               className="rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800/50 p-4"
             >
-              <p className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-3">{b.name}</p>
+              <p className="text-base font-semibold text-stone-700 dark:text-stone-300 mb-3">{b.name}</p>
               <a
                 href={src}
                 target="_blank"

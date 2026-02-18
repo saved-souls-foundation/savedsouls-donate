@@ -206,7 +206,7 @@ function AdoptInquiryForm() {
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="group">
-                  <label htmlFor="name" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                  <label htmlFor="name" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                     Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -219,7 +219,7 @@ function AdoptInquiryForm() {
                   />
                 </div>
                 <div className="group">
-                  <label htmlFor="email" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                  <label htmlFor="email" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -235,7 +235,7 @@ function AdoptInquiryForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="group">
-                  <label htmlFor="city" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                  <label htmlFor="city" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                     City <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -248,7 +248,7 @@ function AdoptInquiryForm() {
                   />
                 </div>
                 <div className="group">
-                  <label htmlFor="country" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                  <label htmlFor="country" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                     Country <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -266,7 +266,7 @@ function AdoptInquiryForm() {
               </div>
 
               <div>
-                <label htmlFor="experience" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                <label htmlFor="experience" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                   What is your experience with dogs? <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -280,7 +280,7 @@ function AdoptInquiryForm() {
               </div>
 
               <div>
-                <label htmlFor="about" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                <label htmlFor="about" className="block text-base font-semibold text-stone-700 dark:text-stone-300 mb-2">
                   Tell us about yourself and why you want to adopt <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -338,7 +338,7 @@ function AdoptInquiryForm() {
             Lifelong support
           </Link>
         </div>
-        <p className="mt-6 text-center text-xs text-stone-400 dark:text-stone-500">
+        <p className="mt-6 text-center text-sm text-stone-400 dark:text-stone-500">
           Made with ♥ for every rescued soul
         </p>
       </main>

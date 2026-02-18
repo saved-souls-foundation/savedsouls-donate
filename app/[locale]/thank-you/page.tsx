@@ -63,7 +63,7 @@ export default function ThankYouPage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
         </Link>
         <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
           ← {t("backToHome")}

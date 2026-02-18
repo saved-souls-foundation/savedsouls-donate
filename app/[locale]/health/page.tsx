@@ -306,7 +306,7 @@ export default function HealthPage() {
                     <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
                       <WikiLink diseaseKey={`diseaseCommon${i}`}>{t(`diseaseCommon${i}Name`)}</WikiLink>
                     </p>
-                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCommon${i}Info`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`diseaseCommon${i}Info`)}</p>
                   </div>
                 ))}
               </div>
@@ -322,7 +322,7 @@ export default function HealthPage() {
                     <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
                       <WikiLink diseaseKey={`diseaseDog${i}`}>{t(`diseaseDog${i}Name`)}</WikiLink>
                     </p>
-                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseDog${i}Info`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`diseaseDog${i}Info`)}</p>
                   </div>
                 ))}
               </div>
@@ -338,7 +338,7 @@ export default function HealthPage() {
                     <p className="font-bold text-stone-800 dark:text-stone-100 text-sm mb-1">
                       <WikiLink diseaseKey={`diseaseCat${i}`}>{t(`diseaseCat${i}Name`)}</WikiLink>
                     </p>
-                    <p className="text-stone-600 dark:text-stone-400 text-xs">{t(`diseaseCat${i}Info`)}</p>
+                    <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`diseaseCat${i}Info`)}</p>
                   </div>
                 ))}
               </div>

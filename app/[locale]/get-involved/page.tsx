@@ -110,7 +110,7 @@ export default async function GetInvolvedPage() {
                 title="Saved Souls Foundation logo"
               />
             </div>
-            <span className="text-xs font-bold" style={{ color: ACCENT_GREEN }}>
+            <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>
               Saved Souls Foundation
             </span>
           </Link>

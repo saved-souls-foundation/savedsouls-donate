@@ -126,11 +126,11 @@ export default function ToysTrainingPage() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="p-4 rounded-xl bg-white/80 dark:bg-stone-800/50 border border-teal-100 dark:border-teal-800">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("patienceTitle")}</h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">{t("patienceText")}</p>
+              <p className="text-base text-stone-600 dark:text-stone-400">{t("patienceText")}</p>
             </div>
             <div className="p-4 rounded-xl bg-white/80 dark:bg-stone-800/50 border border-teal-100 dark:border-teal-800">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("consistencyTitle")}</h3>
-              <p className="text-sm text-stone-600 dark:text-stone-400">{t("consistencyText")}</p>
+              <p className="text-base text-stone-600 dark:text-stone-400">{t("consistencyText")}</p>
             </div>
           </div>
         </section>

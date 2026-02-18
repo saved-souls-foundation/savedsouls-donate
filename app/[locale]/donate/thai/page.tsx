@@ -43,7 +43,7 @@ export default function ThaiDonatePage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
             Saved Souls Foundation
           </span>
         </Link>
@@ -93,7 +93,7 @@ export default function ThaiDonatePage() {
                 {t("qrPlaceholder")}
               </span>
             </div>
-            <p className="text-sm text-stone-600 dark:text-stone-400 text-center">
+            <p className="text-base text-stone-600 dark:text-stone-400 text-center">
               {t("qrInstruction")}
             </p>
           </div>
@@ -105,7 +105,7 @@ export default function ThaiDonatePage() {
             <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">
               {t("banksTitle")}
             </h2>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+            <p className="text-base text-stone-600 dark:text-stone-400 mb-4">
               {t("banksIntro")}
             </p>
             <div className="flex flex-wrap gap-2 mb-4">
@@ -120,7 +120,7 @@ export default function ThaiDonatePage() {
                 Kasikorn Bank
               </p>
               <p className="font-mono text-lg mt-1 break-all">{KASIKORN_ACCOUNT}</p>
-              <p className="text-xs text-stone-500 mt-1">SWIFT: {KASIKORN_SWIFT}</p>
+              <p className="text-sm text-stone-500 mt-1">SWIFT: {KASIKORN_SWIFT}</p>
               <button
                 onClick={copyAccount}
                 className="mt-3 px-4 py-2 rounded-lg bg-[#2aa348] text-white text-sm font-medium hover:opacity-90"
@@ -141,7 +141,7 @@ export default function ThaiDonatePage() {
             <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">
               {t("ewalletsTitle")}
             </h2>
-            <p className="text-sm text-stone-600 dark:text-stone-400">
+            <p className="text-base text-stone-600 dark:text-stone-400">
               {t("ewalletsComingSoon")}
             </p>
           </div>

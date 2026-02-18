@@ -145,7 +145,7 @@ export default function RawHidePage() {
               </div>
             </div>
           </div>
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-2 italic">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mt-2 italic">
             {t("flowchartSource")}
           </p>
         </section>
@@ -165,7 +165,7 @@ export default function RawHidePage() {
             <li>• {t("chemical4")}</li>
             <li>• {t("chemical5")}</li>
           </ul>
-          <p className="text-sm text-stone-600 dark:text-stone-400 italic">
+          <p className="text-base text-stone-600 dark:text-stone-400 italic">
             {t("chemicalsNote")}
           </p>
         </section>
@@ -200,7 +200,7 @@ export default function RawHidePage() {
         {/* Sources */}
         <section className="mb-12 rounded-xl p-6 bg-stone-100 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
           <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-3">{t("sourcesTitle")}</h3>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-base">
             <li>
               <a
                 href={PLATSNUIT_URL}

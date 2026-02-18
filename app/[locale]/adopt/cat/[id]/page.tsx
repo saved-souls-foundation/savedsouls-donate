@@ -128,7 +128,7 @@ export default function CatDetailPage() {
               <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
                 Adoption Inquiry
               </h2>
-              <p className="text-sm text-stone-500 dark:text-stone-500 mb-4">
+              <p className="text-base text-stone-500 dark:text-stone-500 mb-4">
                 Interested in adopting {cat.name}? Fill out our adoption inquiry form and we&apos;ll get back to you within 48 hours.
               </p>
               <Link

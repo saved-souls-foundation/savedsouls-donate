@@ -123,7 +123,7 @@ export default function ShareStoryButton({ label, shareTitle, shareText, classNa
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 py-2 px-2 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-600 shadow-xl z-50 min-w-[200px]"
           role="menu"
         >
-          <p className="px-3 py-1 text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wide">
+          <p className="px-3 py-1 text-sm font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wide">
             {t("shareVia")}
           </p>
           {canNativeShare && (

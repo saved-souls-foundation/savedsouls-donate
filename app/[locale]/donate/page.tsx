@@ -43,7 +43,7 @@ export default async function DonatePage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
         </Link>
         <div className="flex items-center gap-4">
           <div className="hidden sm:block flex-shrink-0">
@@ -94,8 +94,8 @@ export default async function DonatePage() {
               <p className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
                 {t("dogFood.totalCost")}
               </p>
-              <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">{t("dogFood.costBreakdown")}</p>
-              <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <p className="text-base text-stone-500 dark:text-stone-400 mb-4">{t("dogFood.costBreakdown")}</p>
+              <ul className="space-y-2 text-base text-stone-600 dark:text-stone-400">
                 <li>{t("dogFood.cost1")}</li>
                 <li>{t("dogFood.cost2")}</li>
                 <li>{t("dogFood.cost3")}</li>
@@ -134,8 +134,8 @@ export default async function DonatePage() {
               <p className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
                 {t("catFood.totalCost")}
               </p>
-              <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">{t("catFood.costBreakdown")}</p>
-              <ul className="space-y-2 text-stone-600 dark:text-stone-400">
+              <p className="text-base text-stone-500 dark:text-stone-400 mb-4">{t("catFood.costBreakdown")}</p>
+              <ul className="space-y-2 text-base text-stone-600 dark:text-stone-400">
                 <li>{t("catFood.cost1")}</li>
                 <li>{t("catFood.cost2")}</li>
                 <li className="pt-2 font-medium">{t("catFood.cost3")}</li>
@@ -260,7 +260,7 @@ export default async function DonatePage() {
             </a>
           </div>
 
-          <p className="text-center text-stone-500 dark:text-stone-400 text-sm">
+          <p className="text-center text-stone-500 dark:text-stone-400 text-base">
             {t("comingSoon")}
           </p>
         </section>

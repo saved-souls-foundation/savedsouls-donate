@@ -318,7 +318,7 @@ export default function FaqPage() {
                   <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-3">
                     {t(`chapters.${key}.title`)}
                   </h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400 mb-4 leading-relaxed line-clamp-4">
+                  <p className="text-base text-stone-600 dark:text-stone-400 mb-4 leading-relaxed line-clamp-4">
                     {t(`chapters.${key}.teaser`)}
                   </p>
                   <div className="flex flex-wrap gap-2">

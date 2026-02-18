@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
-import { readFile } from "fs/promises";
-import path from "path";
 import { routing } from "@/i18n/routing";
+import { fetchAnimalsFromApi } from "@/lib/animals-api";
 
 const BASE_URL = "https://savedsouls-foundation.org";
 
@@ -64,12 +63,11 @@ const STATIC_PATHS = [
 
 async function getAnimalIds(): Promise<{ dogs: string[]; cats: string[] }> {
   try {
-    const filePath = path.join(process.cwd(), "data", "animals.json");
-    const data = await readFile(filePath, "utf-8");
-    const json = JSON.parse(data);
-    const dogs = (json.dogs as Array<{ id: string }>).map((d) => d.id);
-    const cats = (json.cats as Array<{ id: string }>).map((c) => c.id);
-    return { dogs, cats };
+    const { dogs, cats } = await fetchAnimalsFromApi();
+    return {
+      dogs: dogs.map((d) => d.id),
+      cats: cats.map((c) => c.id),
+    };
   } catch {
     return { dogs: [], cats: [] };
   }

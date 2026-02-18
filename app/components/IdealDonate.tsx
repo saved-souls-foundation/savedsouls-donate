@@ -94,7 +94,7 @@ export default function IdealDonate() {
             height={100}
           />
         </div>
-        <p className="text-sm text-stone-600 dark:text-stone-400">
+        <p className="text-base text-stone-600 dark:text-stone-400">
           {t("idealSubtitle")}
         </p>
       </Link>
@@ -105,7 +105,7 @@ export default function IdealDonate() {
         className="flex flex-wrap items-center justify-center gap-2 mb-4 py-3 px-4 rounded-lg min-h-[44px] w-full cursor-pointer transition-colors border-0 text-left hover:opacity-90"
         style={{ backgroundColor: "#E67A4C" }}
       >
-        <span className="text-xs font-bold text-white flex flex-col items-center text-center leading-tight">
+        <span className="text-sm font-bold text-white flex flex-col items-center text-center leading-tight">
           {t("payAsYouLike")}
           <span className="mt-0.5">{t("donateAsYouWish")}</span>
           <span className="mt-1.5 font-normal opacity-90">{t("mollieMethods")}</span>
@@ -114,7 +114,7 @@ export default function IdealDonate() {
 
       {/* Thaise betaalmethoden placeholder */}
       <div className="mb-4 py-3 px-4 bg-stone-100 dark:bg-stone-800 rounded-lg border border-stone-200 dark:border-stone-600">
-        <p className="text-xs font-semibold text-stone-700 dark:text-stone-300 text-center mb-2">
+        <p className="text-sm font-semibold text-stone-700 dark:text-stone-300 text-center mb-2">
           {t("thaiPayments")}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
@@ -135,7 +135,7 @@ export default function IdealDonate() {
       </div>
 
         <div>
-          <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+          <p className="text-base font-medium text-stone-700 dark:text-stone-300 mb-2">
             {t("idealAmount")}
           </p>
           <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 min-h-[100px]">

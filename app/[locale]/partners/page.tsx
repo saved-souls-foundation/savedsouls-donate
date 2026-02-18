@@ -15,6 +15,8 @@ const SOFT_PINK = "#fce7f3";
 const PARTNERS = [
   { name: "TVAV", key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png" },
   { name: "K9Aid", key: "k9aid", url: "https://k9aid.org", logo: "/partners/k9aid.png" },
+  { name: "Project Street Dogs Thailand", key: "streetdogsthailand", url: "https://streetdogsthailand.com", logo: "/partners/streetdogsthailand.png" },
+  { name: "GiftHoney", key: "gifthoney", url: "https://gifthoney.co", logo: "/partners/gifthoney.png" },
 ];
 
 function PartnerCard({
@@ -40,12 +42,12 @@ function PartnerCard({
     >
       <article className="relative overflow-hidden rounded-3xl bg-white/95 dark:bg-stone-900/95 border-2 border-rose-200/50 dark:border-rose-900/30 shadow-xl hover:shadow-2xl hover:border-rose-300 dark:hover:border-rose-800/50 transition-all duration-500 p-8 md:p-10">
         <div className="relative flex flex-col items-center text-center">
-          <div className="relative w-32 h-32 mb-6">
+          <div className="relative w-48 h-48 mb-6">
             <div className="partner-logo-hearts absolute inset-0 flex items-center justify-center">
               <img
                 src={partner.logo}
                 alt={`${partner.name} logo`}
-                className="w-24 h-24 object-contain z-10 transition-transform duration-700 group-hover:scale-110"
+                className="w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;
                   el.style.display = "none";
@@ -80,7 +82,7 @@ function PartnerCard({
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: PINK }}>
             {fullName}
           </h2>
-          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed max-w-md">
+          <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed max-w-md">
             {description}
           </p>
           <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400 group-hover:gap-3 transition-all">
@@ -190,7 +192,7 @@ export default function PartnersPage() {
                   <h3 className="text-base font-bold text-stone-800 dark:text-stone-100 mb-1">
                     {item.isIntro ? t("tagline") : t(item.key)}
                   </h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+                  <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed">
                     {item.isIntro ? t("subtitle") : t(item.teaserKey!)}
                   </p>
                 </div>

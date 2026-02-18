@@ -171,7 +171,7 @@ export default function PressBanner({
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-1">{title}</h3>
-        <p className="text-sm text-stone-500 dark:text-stone-400">{subtitle}</p>
+        <p className="text-base text-stone-500 dark:text-stone-400">{subtitle}</p>
       </div>
 
       {/* Preview - geanimeerd met hond in rolstoel */}
@@ -186,7 +186,7 @@ export default function PressBanner({
           <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">Saved Souls Foundation</h3>
             <p className="text-sm md:text-base text-white/95 mt-1">Where Broken Souls Learn to Love Again</p>
-            <p className="text-xs md:text-sm text-white/85 mt-1">Khon Kaen, Thailand</p>
+            <p className="text-sm md:text-base text-white/85 mt-1">Khon Kaen, Thailand</p>
             <span className="text-5xl md:text-6xl mt-2 animate-banner-heart opacity-20">💚</span>
           </div>
           <div className="w-1/3 min-w-[200px] h-full relative flex items-center justify-center pr-4">
@@ -204,7 +204,7 @@ export default function PressBanner({
       </div>
 
       {disclaimer && (
-        <p className="text-sm text-stone-500 dark:text-stone-400 italic">
+        <p className="text-base text-stone-500 dark:text-stone-400 italic">
           {disclaimer}
         </p>
       )}

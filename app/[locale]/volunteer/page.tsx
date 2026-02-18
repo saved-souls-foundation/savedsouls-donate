@@ -39,7 +39,7 @@ export default async function VolunteerPage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
         </Link>
         <Link
           href="/"
@@ -85,7 +85,7 @@ export default async function VolunteerPage() {
                   <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
                     {t("story1Quote")}
                   </blockquote>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story1Author")}</p>
+                  <p className="text-stone-600 dark:text-stone-400 text-base font-medium mt-1">{t("story1Author")}</p>
                 </div>
               </div>
               <div className="flex gap-3 items-start">
@@ -96,7 +96,7 @@ export default async function VolunteerPage() {
                   <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
                     {t("story2Quote")}
                   </blockquote>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story2Author")}</p>
+                  <p className="text-stone-600 dark:text-stone-400 text-base font-medium mt-1">{t("story2Author")}</p>
                 </div>
               </div>
               <div className="flex gap-3 items-start">
@@ -107,7 +107,7 @@ export default async function VolunteerPage() {
                   <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
                     {t("story3Quote")}
                   </blockquote>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story3Author")}</p>
+                  <p className="text-stone-600 dark:text-stone-400 text-base font-medium mt-1">{t("story3Author")}</p>
                 </div>
               </div>
             </div>

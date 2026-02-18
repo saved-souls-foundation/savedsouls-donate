@@ -68,13 +68,13 @@ export default function NutritionPage() {
           <div className="grid md:grid-cols-2 gap-6 mb-6">
             <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">🥩 {t("rawTitle")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t("rawPros")}</p>
-              <p className="text-amber-700 dark:text-amber-400 text-sm mt-2 font-medium">{t("rawCons")}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t("rawPros")}</p>
+              <p className="text-amber-700 dark:text-amber-400 text-base mt-2 font-medium">{t("rawCons")}</p>
             </div>
             <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">🍲 {t("cookedTitle")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t("cookedPros")}</p>
-              <p className="text-stone-500 dark:text-stone-500 text-sm mt-2">{t("cookedNote")}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t("cookedPros")}</p>
+              <p className="text-stone-500 dark:text-stone-500 text-base mt-2">{t("cookedNote")}</p>
             </div>
           </div>
           <p className="text-stone-600 dark:text-stone-400 italic">{t("rawVsCookedConclusion")}</p>
@@ -100,7 +100,7 @@ export default function NutritionPage() {
                 ),
               })}
             </p>
-            <p className="text-amber-700/80 dark:text-amber-300/80 text-xs mt-2">
+            <p className="text-amber-700/80 dark:text-amber-300/80 text-sm mt-2">
               <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org`)}&return=${encodeURIComponent("/nutrition")}`} className="underline hover:no-underline">
                 {t("bacteriaWarningSource")}
               </Link>
@@ -114,7 +114,7 @@ export default function NutritionPage() {
                   height={120}
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
-                <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">Salmonella</span>
+                <span className="text-sm text-amber-800/80 dark:text-amber-300/80 mt-1">Salmonella</span>
               </Link>
               <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Listeria`)}&return=${encodeURIComponent("/nutrition")}`} className="flex flex-col items-center group shrink-0 snap-center">
                 <Image
@@ -124,7 +124,7 @@ export default function NutritionPage() {
                   height={120}
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
-                <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">Listeria</span>
+                <span className="text-sm text-amber-800/80 dark:text-amber-300/80 mt-1">Listeria</span>
               </Link>
               <Link href={`/go?url=${encodeURIComponent(`https://${wikiLang}.wikipedia.org/wiki/Escherichia_coli`)}&return=${encodeURIComponent("/nutrition")}`} className="flex flex-col items-center group shrink-0 snap-center">
                 <Image
@@ -134,7 +134,7 @@ export default function NutritionPage() {
                   height={120}
                   className="rounded-lg object-cover w-28 h-24 md:w-24 md:h-20"
                 />
-                <span className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-1">E. coli</span>
+                <span className="text-sm text-amber-800/80 dark:text-amber-300/80 mt-1">E. coli</span>
               </Link>
             </div>
           </div>
@@ -151,15 +151,15 @@ export default function NutritionPage() {
           <div className="space-y-6">
             <div>
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t.rich("barfRawWhat", barfRawRich)}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t.rich("barfRawWhatText", barfRawRich)}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t.rich("barfRawWhatText", barfRawRich)}</p>
             </div>
             <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("barfRawKvv")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t.rich("barfRawKvvText", barfRawRich)}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t.rich("barfRawKvvText", barfRawRich)}</p>
             </div>
             <div>
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-3">{t.rich("barfRawTips", barfRawRich)}</h3>
-              <ul className="space-y-2 text-stone-600 dark:text-stone-400 text-sm">
+              <ul className="space-y-2 text-stone-600 dark:text-stone-400 text-base">
                 <li className="flex gap-2">• {t("barfRawTip1")}</li>
                 <li className="flex gap-2">• {t("barfRawTip2")}</li>
                 <li className="flex gap-2">• {t("barfRawTip3")}</li>
@@ -196,17 +196,17 @@ export default function NutritionPage() {
             <div className="p-5 rounded-xl bg-stone-50 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-600">
               <div className="text-2xl mb-2">🥩</div>
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("barfGuideBarf")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t("barfGuideBarfText")}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t("barfGuideBarfText")}</p>
             </div>
             <div className="p-5 rounded-xl bg-stone-50 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-600">
               <div className="text-2xl mb-2">🦌</div>
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("barfGuidePmr")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t("barfGuidePmrText")}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t("barfGuidePmrText")}</p>
             </div>
             <div className="p-5 rounded-xl bg-stone-50 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-600">
               <div className="text-2xl mb-2">🐀</div>
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-2">{t("barfGuideWholePrey")}</h3>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">{t("barfGuideWholePreyText")}</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">{t("barfGuideWholePreyText")}</p>
             </div>
           </div>
         </section>
@@ -219,7 +219,7 @@ export default function NutritionPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="p-5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2">🐕 {t("barfGuideDogTitle")}</h3>
-              <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+              <ul className="space-y-2 text-base text-stone-600 dark:text-stone-400">
                 {["barfGuideDog1", "barfGuideDog2", "barfGuideDog3", "barfGuideDog4", "barfGuideDog5", "barfGuideDog6", "barfGuideDog7"].map((key) => (
                   <li key={key}>• {t(key)}</li>
                 ))}
@@ -227,14 +227,14 @@ export default function NutritionPage() {
             </div>
             <div className="p-5 rounded-xl bg-violet-50/50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800">
               <h3 className="font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2">🐈 {t("barfGuideCatTitle")}</h3>
-              <ul className="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+              <ul className="space-y-2 text-base text-stone-600 dark:text-stone-400">
                 {["barfGuideCat1", "barfGuideCat2", "barfGuideCat3", "barfGuideCat4", "barfGuideCat5"].map((key) => (
                   <li key={key}>• {t(key)}</li>
                 ))}
               </ul>
               <div className="mt-4 p-3 rounded-lg bg-amber-100/80 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700">
                 <p className="text-amber-900 dark:text-amber-100 text-sm font-bold">⚠️ {t("barfGuideTaurine")}</p>
-                <p className="text-amber-800 dark:text-amber-200 text-xs mt-1">{t("barfGuideTaurineText")}</p>
+                <p className="text-amber-800 dark:text-amber-200 text-sm mt-1">{t("barfGuideTaurineText")}</p>
               </div>
             </div>
           </div>
@@ -332,7 +332,7 @@ export default function NutritionPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="p-4 rounded-xl bg-white/80 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-600">
-                <p className="text-stone-500 dark:text-stone-500 text-xs line-through mb-1">{t(`barfGuideMyth${i}`)}</p>
+                <p className="text-stone-500 dark:text-stone-500 text-sm line-through mb-1">{t(`barfGuideMyth${i}`)}</p>
                 <p className="text-stone-700 dark:text-stone-300 text-sm font-medium">✓ {t(`barfGuideMyth${i}Truth`)}</p>
               </div>
             ))}
@@ -537,7 +537,7 @@ export default function NutritionPage() {
                     <p className="text-stone-600 dark:text-stone-400 text-sm">{t(`recipe${i}Desc`)}</p>
                   </div>
                 </div>
-                <div className="text-sm text-stone-600 dark:text-stone-400 space-y-1">
+                <div className="text-base text-stone-600 dark:text-stone-400 space-y-1">
                   <p className="font-medium text-stone-700 dark:text-stone-300">{t("ingredients")}:</p>
                   <p>{t(`recipe${i}Ingredients`)}</p>
                   <p className="font-medium text-stone-700 dark:text-stone-300 mt-2">{t("instructions")}:</p>

@@ -4,7 +4,7 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const pathWithoutLocale = pathname.replace(/^\/(nl|en|de|th|ru)(\/|$)/, "$2") || "/";
   const requestHeaders = new Headers(request.headers);

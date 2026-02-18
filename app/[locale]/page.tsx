@@ -94,14 +94,14 @@ function ContactForm() {
             <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
               Thanks for contacting us!
             </p>
-            <p className="text-stone-600 dark:text-stone-400 text-sm">
+            <p className="text-stone-600 dark:text-stone-400 text-base">
               Your message has been sent to info@savedsouls-foundation.org. We&apos;ll get back to you as soon as we can.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="contact-name" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor="contact-name" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Name
               </label>
               <input
@@ -115,7 +115,7 @@ function ContactForm() {
               />
             </div>
             <div>
-              <label htmlFor="contact-email" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor="contact-email" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Email
               </label>
               <input
@@ -129,7 +129,7 @@ function ContactForm() {
               />
             </div>
             <div>
-              <label htmlFor="contact-subject" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor="contact-subject" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Subject
               </label>
               <input
@@ -142,7 +142,7 @@ function ContactForm() {
               />
             </div>
             <div>
-              <label htmlFor="contact-message" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor="contact-message" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Message
               </label>
               <textarea
@@ -187,19 +187,9 @@ export default function DonatePage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [useAutoTheme, setUseAutoTheme] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [miraclesInView, setMiraclesInView] = useState(false);
-  const [miraclesProgress, setMiraclesProgress] = useState(0);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const miraclesRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: none)");
-    setIsTouchDevice(mq.matches);
-    const handler = () => setIsTouchDevice(mq.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const miraclesRef = useRef<HTMLElement>(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -232,35 +222,11 @@ export default function DonatePage() {
 
   useEffect(() => {
     const el = scrollRef.current;
-    const section = miraclesRef.current;
     if (!el) return;
-    const onScroll = () => {
-      const y = el.scrollTop;
-      setScrollY(y);
-      if (section) {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const viewportH = el.clientHeight;
-        const inViewStart = sectionTop - viewportH * 0.5;
-        const inViewEnd = sectionTop + sectionHeight * 0.3;
-        const progress = Math.max(0, Math.min(1, (y - inViewStart) / (inViewEnd - inViewStart)));
-        setMiraclesProgress(progress);
-      }
-    };
+    const onScroll = () => setScrollY(el.scrollTop);
     onScroll();
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const section = miraclesRef.current;
-    if (!section) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setMiraclesInView(entry.isIntersecting),
-      { threshold: 0.2, rootMargin: "0px" }
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
   }, []);
 
   const t = useTranslations("common");
@@ -305,7 +271,7 @@ export default function DonatePage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
         </button>
 
         {/* Desktop nav */}
@@ -484,42 +450,64 @@ export default function DonatePage() {
         </div>
       </div>
 
-      {/* Hero – large headline + one CTA */}
-      <header className="min-h-[85vh] flex flex-col justify-center px-4 py-16 md:py-24 max-w-4xl mx-auto text-center">
-        <p className="text-xl md:text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">
-          {tHome("foundation")}
-        </p>
-        <p className="text-base md:text-lg font-bold text-stone-600 dark:text-stone-400 mb-8">
-          {tHome("location")}
-        </p>
-        <div className="rounded-2xl overflow-hidden shadow-lg mb-8 max-w-2xl mx-auto w-full aspect-[4/3] bg-stone-200 dark:bg-stone-800 relative">
-          <Image
-            src="/woman-hug-dog.webp"
-            alt="Saved Souls Foundation volunteer hugging a rescued dog in Khon Kaen, Thailand"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 672px"
-            priority
-          />
+      {/* Hero – banner met foto-strip */}
+      <header className="px-4 py-8 md:py-12">
+        <div className="max-w-5xl mx-auto">
+          <div className="rounded-2xl overflow-hidden shadow-xl border-2 border-white/80 dark:border-stone-700/80 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5 bg-stone-900">
+              {[
+                { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },
+                { src: "/team-thankyou.png", alt: "Team at the entrance of Saved Souls Foundation" },
+                { src: "/volunteers-with-dogs.png", alt: "Volunteers with rescued dogs" },
+                { src: "/woman-dog-wheelchair.webp", alt: "Dog with wheelchair at Saved Souls" },
+              ].map((img, i) => (
+                <div key={i} className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 25vw, 280px"
+                    priority={i < 2}
+                    style={{ filter: "brightness(1.15) contrast(1.04) saturate(1.03)" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-transparent" />
+                </div>
+              ))}
+            </div>
+            <div
+              className="relative px-6 py-5 md:py-6 text-center"
+              style={{
+                background: "linear-gradient(180deg, rgba(42,163,72,0.08) 0%, rgba(255,255,255,0.95) 40%)",
+              }}
+            >
+              <p className="text-lg md:text-xl font-bold text-stone-800 dark:text-stone-100 mb-0.5">
+                {tHome("foundation")}
+              </p>
+              <p className="text-sm md:text-base font-bold mb-4" style={{ color: ACCENT_GREEN }}>
+                {tHome("location")}
+              </p>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-4 text-stone-800 dark:text-stone-100">
+                {tHome("headline")}
+              </h1>
+              <a
+                href="https://paypal.me/savedsoulsfoundation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white text-base transition-opacity hover:opacity-90"
+                style={{ backgroundColor: BUTTON_ORANGE }}
+              >
+                {tHome("cta")}
+              </a>
+            </div>
+          </div>
+          <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg mb-2 max-w-2xl mx-auto text-center font-bold">
+            {tHome("intro1")}
+          </p>
+          <p className="text-stone-700 dark:text-stone-300 text-base md:text-lg font-bold max-w-2xl mx-auto text-center">
+            {tHome("intro2")}
+          </p>
         </div>
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6 text-stone-800 dark:text-stone-100">
-          {tHome("headline")}
-        </h1>
-        <a
-          href="https://paypal.me/savedsoulsfoundation"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-white text-lg transition-opacity hover:opacity-90 w-fit mx-auto mb-10"
-          style={{ backgroundColor: BUTTON_ORANGE }}
-        >
-          {tHome("cta")}
-        </a>
-        <p className="text-stone-600 dark:text-stone-400 text-lg md:text-xl mb-6 max-w-2xl mx-auto font-bold">
-          {tHome("intro1")}
-        </p>
-        <p className="text-stone-700 dark:text-stone-300 text-lg md:text-xl font-bold max-w-2xl mx-auto">
-          {tHome("intro2")}
-        </p>
       </header>
 
       {/* Content sections – headline + text + one CTA per section */}
@@ -532,6 +520,7 @@ export default function DonatePage() {
                 alt="Saved Souls Foundation caring for a rescued dog at our shelter in Khon Kaen"
                 className="rounded-2xl w-full aspect-square object-cover shadow-lg"
                 loading="lazy"
+                style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
             </div>
             <div className="text-center md:text-left">
@@ -562,6 +551,7 @@ export default function DonatePage() {
                 alt="Two rescued dogs at Saved Souls Foundation, bonded by affection"
                 className="w-full h-full object-cover"
                 loading="lazy"
+                style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
             </div>
             <div className="text-center md:text-left">
@@ -592,6 +582,7 @@ export default function DonatePage() {
                 alt="A rescued dog at Saved Souls Foundation waiting for a loving home"
                 className="rounded-2xl w-full aspect-square object-cover shadow-lg"
                 loading="lazy"
+                style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
             </div>
             <div className="text-center md:text-left">
@@ -637,32 +628,22 @@ export default function DonatePage() {
               <Link
                 key={item.title}
                 href="/donate"
-                className="group relative block rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-600/80 shadow-xl min-h-[280px] transition-all duration-700 ease-out hover:shadow-2xl hover:border-stone-300 dark:hover:border-stone-500 cursor-pointer"
-                style={{
-                  opacity: miraclesInView ? 1 : 0.6,
-                  transform: miraclesInView ? "translateY(0) scale(1)" : "translateY(24px) scale(0.98)",
-                  transitionDelay: `${i * 100}ms`,
-                }}
+                className="group relative block rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-600/80 shadow-xl min-h-[280px] transition-shadow duration-300 hover:shadow-2xl hover:border-stone-300 dark:hover:border-stone-500 cursor-pointer"
               >
                 <div
-                  className={`absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out group-hover:blur-none ${isTouchDevice && miraclesInView ? "blur-none" : "blur-[1px]"}`}
+                  className="absolute inset-0 bg-cover bg-center"
                   style={{
                     backgroundImage: `url(${item.img})`,
-                    transform: `scale(${1 + (1 - miraclesProgress) * 0.03})`,
+                    filter: "brightness(1.1) contrast(1.03)",
                   }}
                 />
                 <div
-                  className={`absolute inset-0 transition-all duration-500 ease-out group-hover:opacity-0 ${isTouchDevice && miraclesInView ? "opacity-0" : "opacity-50"}`}
-                  style={{
-                    backgroundColor: theme === "dark" ? "rgb(28,25,23)" : "rgb(255,255,255)",
-                    backdropFilter: isTouchDevice && miraclesInView ? "none" : `blur(${8 - miraclesProgress * 4}px)`,
-                    WebkitBackdropFilter: isTouchDevice && miraclesInView ? "none" : `blur(${8 - miraclesProgress * 4}px)`,
-                  }}
+                  className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent"
                 />
-                <div className={`relative z-10 p-6 flex flex-col justify-end min-h-[280px] transition-all duration-500 ${isTouchDevice && miraclesInView ? "bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent" : "bg-gradient-to-t from-white/95 via-white/60 to-transparent dark:from-stone-900/95 dark:via-stone-900/60 dark:to-transparent group-hover:from-white/90 group-hover:via-white/40 group-hover:to-transparent dark:group-hover:from-stone-900/90 dark:group-hover:via-stone-900/40"}`}>
+                <div className="relative z-10 p-6 flex flex-col justify-end min-h-[280px] bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent">
                   <h3 className="text-lg font-bold mb-2 drop-shadow-sm" style={{ color: ACCENT_GREEN }}>{item.title}</h3>
-                  <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed drop-shadow-sm">{item.desc}</p>
-                  <p className="mt-2 text-xs font-medium" style={{ color: ACCENT_GREEN }}>Click to see where donations go →</p>
+                  <p className="text-stone-600 dark:text-stone-400 text-base leading-relaxed drop-shadow-sm">{item.desc}</p>
+                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>Click to see where donations go →</p>
                 </div>
               </Link>
             ))}
@@ -738,6 +719,7 @@ export default function DonatePage() {
                 alt="A rescued dog with a wheelchair at Saved Souls Foundation, ready for adoption"
                 className="rounded-2xl w-full aspect-square object-cover shadow-lg"
                 loading="lazy"
+                style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
             </div>
             <div className="text-center md:text-left">
@@ -851,13 +833,13 @@ export default function DonatePage() {
           <p className="text-stone-600 dark:text-stone-400 text-center mb-6">
             {tHome("donateSubtitle")}
           </p>
-          <ul className="text-stone-600 dark:text-stone-400 text-center mb-2 space-y-1 text-sm">
+          <ul className="text-stone-600 dark:text-stone-400 text-center mb-2 space-y-1 text-base">
             <li><strong className="text-stone-800 dark:text-stone-200">€25</strong> {tHome("donate25")}</li>
             <li><strong className="text-stone-800 dark:text-stone-200">€50</strong> {tHome("donate50")}</li>
             <li><strong className="text-stone-800 dark:text-stone-200">€100</strong> {tHome("donate100")}</li>
             <li><strong className="text-stone-800 dark:text-stone-200">€25</strong> {tHome("donate250")}</li>
           </ul>
-          <p className="text-stone-600 dark:text-stone-400 text-center mb-8 text-sm">
+          <p className="text-stone-600 dark:text-stone-400 text-center mb-8 text-base">
             {tHome("donateBreakdown")}
           </p>
 
@@ -870,13 +852,13 @@ export default function DonatePage() {
               <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-lg flex items-center justify-center text-stone-500 text-sm">
                 {tHome("paypalQr")}
               </div>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{tHome("paypal")}</p>
+              <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("paypal")}</p>
             </div>
             <div className="flex flex-col items-center">
               <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-lg flex items-center justify-center text-stone-500 text-sm">
                 {tHome("promptpayQr")}
               </div>
-              <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{tHome("promptpay")}</p>
+              <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("promptpay")}</p>
             </div>
           </div>
 
@@ -889,7 +871,7 @@ export default function DonatePage() {
               <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all">
                 033-8-13623-4
               </p>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">SWIFT: KASITHBK</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">SWIFT: KASITHBK</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <CopyButton text="033-8-13623-4" label={tHome("copyAccount")} copiedLabel={t("copied")} />
                 <CopyButton text="KASITHBK" label={tHome("copySwift")} copiedLabel={t("copied")} />
@@ -900,7 +882,7 @@ export default function DonatePage() {
               <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all">
                 CH17 0900 0000 8027 1722 9
               </p>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">SWIFT: POFICHBEXXX</p>
+              <p className="text-stone-600 dark:text-stone-400 text-base">SWIFT: POFICHBEXXX</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <CopyButton
                   text="CH17 0900 0000 8027 1722 9"
@@ -934,7 +916,7 @@ export default function DonatePage() {
             I visited Saved Souls in 2024. The love and patience they give to each
             disabled dog is unforgettable. I now sponsor two wheelchairs.
           </blockquote>
-          <p className="mt-2 text-stone-500 dark:text-stone-500 text-sm">
+          <p className="mt-2 text-stone-500 dark:text-stone-500 text-base">
             — Anne, volunteer from the Netherlands
           </p>
         </div>
@@ -942,7 +924,7 @@ export default function DonatePage() {
 
       {/* Contact form – stays at bottom of homepage */}
       <div className="max-w-xl mx-auto px-4 pt-4 pb-8 md:pb-2 text-center">
-        <p className="text-sm text-stone-500 dark:text-stone-400">
+        <p className="text-base text-stone-500 dark:text-stone-400">
           Address, map and bank details?{" "}
           <Link href="/contact" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
             See our contact page →

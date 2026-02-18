@@ -62,10 +62,10 @@ function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) 
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: ACCENT_GREEN }}>
             {animal.name} {animal.thaiName && <span className="text-stone-500 dark:text-stone-400 font-normal text-base">/ {animal.thaiName}</span>}
           </h2>
-          <p className="text-sm text-stone-600 dark:text-stone-400">
+          <p className="text-base text-stone-600 dark:text-stone-400">
             {animal.gender === "male" ? "Male" : "Female"} · {animal.age || animal.size}
           </p>
-          {animal.age && <p className="text-xs text-stone-500 dark:text-stone-500 mt-1">{SIZE_LABELS[animal.size]}</p>}
+          {animal.age && <p className="text-sm text-stone-500 dark:text-stone-500 mt-1">{SIZE_LABELS[animal.size]}</p>}
         </div>
       </article>
     </Link>

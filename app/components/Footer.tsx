@@ -74,7 +74,7 @@ export default function Footer() {
             />
           </div>
           <p className="font-semibold text-center text-sm">Saved Souls Foundation</p>
-          <p className="text-white/90 text-center text-xs">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
+          <p className="text-white/90 text-center text-sm">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
         </div>
         <div className="flex items-center justify-center gap-3 mt-1">
           {SOCIAL_LINKS.map(({ name, href, icon }) => (
@@ -92,10 +92,10 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <p className="text-white/80 mt-3 text-xs">
+      <p className="text-white/80 mt-3 text-sm">
         © {new Date().getFullYear()} Saved Souls Foundation
       </p>
-      <nav className="text-white/70 mt-2 text-xs flex flex-wrap justify-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }} aria-label="Footer navigation">
+      <nav className="text-white/70 mt-2 text-sm flex flex-wrap justify-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }} aria-label="Footer navigation">
         <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
         <Link href="/story" className="hover:underline">{t("ourStory")}</Link>
         <Link href="/faq" className="hover:underline">{t("faq")}</Link>

@@ -13,6 +13,8 @@ const PINK = "#ec4899";
 const PARTNERS = [
   { key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png", platinum: true },
   { key: "k9aid", url: "https://k9aid.org", logo: "/partners/k9aid.png", platinum: true },
+  { key: "streetdogsthailand", url: "https://streetdogsthailand.com", logo: "/partners/streetdogsthailand.png", platinum: true },
+  { key: "gifthoney", url: "https://gifthoney.co", logo: "/partners/gifthoney.png", platinum: true },
   { key: "dogsbymerlyn", url: "https://www.stichtingdogsbymerlyn.com/", logo: "/partners/dogs-by-merlyn.png", honorary: true },
   { key: "dierenthuis", url: "https://dierenthuis.nl/nl/home", logo: "/partners/dierenthuis.png", honorary: true },
 ];
@@ -209,19 +211,19 @@ export default async function SheltersPage() {
                   </span>
                 )}
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-28 h-28 mb-6 flex items-center justify-center">
+                  <div className="w-40 h-40 mb-6 flex items-center justify-center">
                     <Image
                       src={partner.logo}
                       alt={tPartners(`${partner.key}.fullName`)}
-                      width={112}
-                      height={112}
+                      width={160}
+                      height={160}
                       className="object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: PINK }}>
                     {tPartners(`${partner.key}.fullName`)}
                   </h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+                  <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                     {tPartners(`${partner.key}.description`)}
                   </p>
                   <span className="inline-flex items-center gap-2 text-sm font-semibold text-rose-600 dark:text-rose-400 group-hover:gap-3 transition-all">

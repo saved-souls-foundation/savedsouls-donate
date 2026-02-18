@@ -33,7 +33,7 @@ export default function ContactPage() {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="text-xs font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
+          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
         </Link>
         <Link
           href="/"
@@ -73,7 +73,7 @@ export default function ContactPage() {
                 <p className="leading-relaxed font-medium mt-1">
                   133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand
                 </p>
-                <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+                <p className="text-base text-stone-500 dark:text-stone-400 mt-1">
                   Opening hours: 1:30 – 3:30 p.m. daily. Please contact us to schedule an appointment.
                 </p>
               </div>
@@ -113,7 +113,7 @@ export default function ContactPage() {
             >
               info@savedsouls-foundation.org
             </a>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+            <p className="text-base text-stone-500 dark:text-stone-400 mt-1">
               For general enquiries or use the <Link href="/#contact" className="underline" style={{ color: ACCENT_GREEN }}>contact form on our homepage</Link>.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function ContactPage() {
             </h2>
             <p className="font-medium">+66 62 369 8246 <span className="text-stone-500 dark:text-stone-400 text-sm">(Thai)</span></p>
             <p className="font-medium mt-1">+98 000 5406 <span className="text-stone-500 dark:text-stone-400 text-sm">(English)</span></p>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-2">
+            <p className="text-base text-stone-500 dark:text-stone-400 mt-2">
               Office hours: 8:00 AM – 4:00 PM
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function ContactPage() {
                 <p className="text-stone-600 dark:text-stone-400 text-sm mt-1">SWIFT: POFICHBEXXX</p>
               </div>
             </div>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-3">
+            <p className="text-base text-stone-500 dark:text-stone-400 mt-3">
               Or donate directly via <Link href="/#donate" className="underline" style={{ color: ACCENT_GREEN }}>PayPal on our homepage</Link>.
             </p>
           </div>

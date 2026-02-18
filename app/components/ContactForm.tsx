@@ -65,14 +65,14 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
             <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
               Thanks for contacting us!
             </p>
-            <p className="text-stone-600 dark:text-stone-400 text-sm">
+            <p className="text-stone-600 dark:text-stone-400 text-base">
               Your message has been sent to info@savedsouls-foundation.org. We&apos;ll get back to you as soon as we can.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor={nameId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor={nameId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Name
               </label>
               <input
@@ -86,7 +86,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
               />
             </div>
             <div>
-              <label htmlFor={emailId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor={emailId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Email
               </label>
               <input
@@ -100,7 +100,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
               />
             </div>
             <div>
-              <label htmlFor={subjectId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor={subjectId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Subject
               </label>
               <input
@@ -113,7 +113,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
               />
             </div>
             <div>
-              <label htmlFor={messageId} className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+              <label htmlFor={messageId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
                 Message
               </label>
               <textarea

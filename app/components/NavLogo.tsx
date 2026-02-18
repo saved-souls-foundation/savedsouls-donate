@@ -21,7 +21,7 @@ export default function NavLogo() {
           title="Saved Souls Foundation logo"
         />
       </div>
-      <span className="text-xs font-semibold" style={{ color: "#2aa348" }}>Saved Souls Foundation</span>
+      <span className="text-sm font-semibold" style={{ color: "#2aa348" }}>Saved Souls Foundation</span>
     </Link>
   );
 }
