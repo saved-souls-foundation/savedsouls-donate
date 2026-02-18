@@ -90,6 +90,34 @@ function downloadJpg(svg: string, width: number, height: number, filename: strin
   img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
 }
 
+function downloadWebp(svg: string, width: number, height: number, filename: string) {
+  const img = document.createElement("img");
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = ACCENT_GREEN;
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      },
+      "image/webp",
+      0.92
+    );
+  };
+  img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
+}
+
 type Props = {
   title?: string;
   subtitle?: string;
@@ -118,7 +146,7 @@ export default function PressBanner({
   const handleDownload = async (
     width: number,
     height: number,
-    format: "png" | "jpg" | "svg",
+    format: "png" | "jpg" | "svg" | "webp",
     label: string
   ) => {
     setDownloading(label);
@@ -129,6 +157,8 @@ export default function PressBanner({
         downloadSvg(svg, `${baseName}.svg`);
       } else if (format === "png") {
         downloadPng(svg, width, height, `${baseName}.png`);
+      } else if (format === "webp") {
+        downloadWebp(svg, width, height, `${baseName}.webp`);
       } else {
         downloadJpg(svg, width, height, `${baseName}.jpg`);
       }
@@ -179,7 +209,7 @@ export default function PressBanner({
         </p>
       )}
 
-      {/* Download in 3 formaten: PNG, JPG, SVG */}
+      {/* Download in diverse formaten: PNG, JPG, WebP, SVG */}
       <div className="flex flex-wrap gap-3">
         <button
           onClick={() => handleDownload(1200, 400, "png", "PNG")}
@@ -196,6 +226,14 @@ export default function PressBanner({
           style={{ backgroundColor: ACCENT_GREEN }}
         >
           {downloading === "JPG" ? "..." : "Download JPG"}
+        </button>
+        <button
+          onClick={() => handleDownload(1200, 400, "webp", "WebP")}
+          disabled={!!downloading}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white transition-all hover:scale-105 disabled:opacity-50"
+          style={{ backgroundColor: ACCENT_GREEN }}
+        >
+          {downloading === "WebP" ? "..." : "Download WebP"}
         </button>
         <button
           onClick={() => handleDownload(1200, 400, "svg", "SVG")}

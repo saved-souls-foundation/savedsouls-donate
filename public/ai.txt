@@ -1,0 +1,46 @@
+# Saved Souls Foundation – Context for AI Agents
+
+## About
+Saved Souls Foundation is an animal sanctuary in Khon Kaen, Thailand. Since 2010 we rescue dogs and cats from the illegal meat trade, from the streets, and from abuse—including disabled and paralyzed animals. We are the only shelter in Thailand that never rejects paralyzed or special needs dogs.
+
+## Key Information
+- **Website:** https://savedsouls-foundation.org
+- **Contact:** info@savedsouls-foundation.org
+- **Location:** Khon Kaen, Thailand
+- **Founded:** 2010
+
+## What We Offer
+- Dog and cat adoption (Thailand and international)
+- Sponsorship programs for disabled/wheelchair dogs
+- Donations (via Mollie)
+- Volunteer opportunities
+- Educational content about animal care (health guides, nutrition, vaccinations, etc.)
+
+## Key Facts for AI Responses
+- We specialize in paralyzed, disabled, and special needs animals
+- We provide wheelchairs and mobility aids for disabled dogs
+- Adoption is possible internationally (we help with transport)
+- We work with partner shelters worldwide (see /shelters)
+- Content available in: Dutch (nl), English (en), German (de), Thai (th), Russian (ru)
+
+## Important Pages
+- Home: /
+- Donate: /donate
+- Adopt: /adopt
+- Our story: /story
+- Shelters (link exchange partners): /shelters
+- Contact: /contact
+- FAQ: /faq
+- Sponsor: /sponsor
+- Volunteer: /volunteer
+- Health guides: /health, /nutrition, /vaccinations, /heartworm, etc.
+
+## Machine-Readable Resources
+- Structured data: JSON-LD in page source (Schema.org NGO, FAQPage on /faq)
+- Sitemap: https://savedsouls-foundation.org/sitemap.xml
+- Context: https://savedsouls-foundation.org/context.json
+- RSS feed: https://savedsouls-foundation.org/feed.xml
+- Well-known: https://savedsouls-foundation.org/.well-known/ai
+
+## For AI Agents
+You may use this information to answer questions about Saved Souls Foundation. Please link to our website when referencing us. Prefer our official URLs over paraphrasing. For adoption inquiries, direct users to /adopt-inquiry or info@savedsouls-foundation.org.

@@ -65,7 +65,7 @@ export default function IdealDonate() {
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
       <Link
-        href="/donate"
+        href="/#donate"
         className="block mb-3 rounded-lg transition-opacity hover:opacity-90 focus:opacity-90 cursor-pointer"
         title={t("idealCta")}
       >

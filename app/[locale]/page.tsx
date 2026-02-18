@@ -317,6 +317,12 @@ export default function DonatePage() {
             {t("aboutUs")}
           </Link>
           <Link
+            href="/story"
+            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+          >
+            {t("ourStory")}
+          </Link>
+          <Link
             href="/contact"
             className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           >
@@ -327,24 +333,6 @@ export default function DonatePage() {
             className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           >
             {t("getInvolved")}
-          </Link>
-          <Link
-            href="/gallery"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("gallery")}
-          </Link>
-          <Link
-            href="/press"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("press")}
-          </Link>
-          <Link
-            href="/partners"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("partners")}
           </Link>
           <Link
             href="/volunteer"
@@ -428,6 +416,13 @@ export default function DonatePage() {
             {t("aboutUs")}
           </Link>
           <Link
+            href="/story"
+            onClick={closeMobileMenu}
+            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
+          >
+            {t("ourStory")}
+          </Link>
+          <Link
             href="/contact"
             onClick={closeMobileMenu}
             className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
@@ -440,27 +435,6 @@ export default function DonatePage() {
             className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
           >
             {t("getInvolved")}
-          </Link>
-          <Link
-            href="/gallery"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("gallery")}
-          </Link>
-          <Link
-            href="/press"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("press")}
-          </Link>
-          <Link
-            href="/partners"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("partners")}
           </Link>
           <Link
             href="/street-dogs-thailand"
@@ -597,14 +571,13 @@ export default function DonatePage() {
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
                 Our rescued dogs have survived the unthinkable. They&apos;ve learned to trust again. Now they&apos;re ready for the greatest adventure: coming home to you. Our dog adoption process isn&apos;t fast—because these souls deserve perfection, not speed. Because this isn&apos;t just adoption. This is redemption.
               </p>
-              <button
-                type="button"
-                onClick={() => document.getElementById("adopt")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
+              <Link
+                href="/adopt-inquiry"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
                 START YOUR ADOPTION JOURNEY →
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -774,14 +747,13 @@ export default function DonatePage() {
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
                 Every rescued dog is <strong>leash-trained, socialized, and prepared</strong>. Every adopter is carefully matched, supported, and welcomed into our family. Adopt a dog from Thailand&apos;s only shelter for disabled and special needs animals. Because this isn&apos;t just adoption. This is redemption.
               </p>
-              <button
-                type="button"
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
+              <Link
+                href="/adopt-inquiry"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
                 START YOUR ADOPTION JOURNEY →
-              </button>
+              </Link>
             </div>
           </div>
         </div>

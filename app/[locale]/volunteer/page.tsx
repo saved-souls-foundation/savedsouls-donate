@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { Home, Rabbit, Luggage, HeartHandshake, Quote, CalendarClock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -68,10 +70,54 @@ export default async function VolunteerPage() {
         </header>
 
         <section className="space-y-8">
+          {/* Volunteer Stories */}
+          <div className="rounded-2xl p-6 md:p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center justify-center gap-2" style={{ color: ACCENT_GREEN }}>
+              {t("storiesTitle")}
+              <Quote className="h-7 w-7 shrink-0" stroke="currentColor" />
+            </h2>
+            <div className="space-y-6">
+              <div className="flex gap-3 items-start">
+                <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 shadow">
+                  <Image src="/volunteer-story-1.png" alt="" width={64} height={64} className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
+                    {t("story1Quote")}
+                  </blockquote>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story1Author")}</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 shadow">
+                  <Image src="/volunteer-story-2.png" alt="" width={64} height={64} className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
+                    {t("story2Quote")}
+                  </blockquote>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story2Author")}</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 shadow">
+                  <Image src="/volunteer-story-3.png" alt="" width={64} height={64} className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
+                    {t("story3Quote")}
+                  </blockquote>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm font-medium mt-1">{t("story3Author")}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Ready to Make a Difference */}
           <div className="rounded-2xl p-6 md:p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-green-300 dark:hover:border-green-800/50">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
               {t("readyTitle")}
+              <HeartHandshake className="h-7 w-7 shrink-0" stroke="currentColor" />
             </h2>
 
             <div className="space-y-6">
@@ -116,8 +162,9 @@ export default async function VolunteerPage() {
 
           {/* Your Day at Saved Souls */}
           <div className="rounded-2xl p-6 md:p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-green-300 dark:hover:border-green-800/50">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
               {t("yourDay")}
+              <CalendarClock className="h-7 w-7 shrink-0" stroke="currentColor" />
             </h2>
             <div className="space-y-4">
               <div>
@@ -133,12 +180,36 @@ export default async function VolunteerPage() {
                 </p>
               </div>
             </div>
+            <div className="mt-6 rounded-xl overflow-hidden shadow-lg border-2 border-stone-200 dark:border-stone-700 max-w-md mx-auto relative">
+              <Image
+                src="/volunteer-swim-therapy.png"
+                alt={t("imgSwimTherapyAlt")}
+                width={448}
+                height={336}
+                className="w-full h-auto object-contain object-top"
+                sizes="(max-width: 768px) 100vw, 448px"
+              />
+            </div>
+          </div>
+
+          {/* Foto vrijwilligers met honden - midden van de pagina */}
+          <div className="flex justify-center my-10">
+            <div className="rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-700 max-w-2xl w-full aspect-[4/3] relative animate-volunteer-connection">
+              <Image
+                src="/volunteers-with-dogs.png"
+                alt={t("imgVolunteersAlt")}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 672px"
+              />
+            </div>
           </div>
 
           {/* What to Pack */}
           <div className="rounded-2xl p-6 md:p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-green-300 dark:hover:border-green-800/50">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
               {t("whatToPack")}
+              <Luggage className="h-7 w-7 shrink-0" stroke="currentColor" />
             </h2>
             <ul className="space-y-2 text-stone-600 dark:text-stone-400 font-bold">
               <li className="flex items-start gap-2">
@@ -162,8 +233,9 @@ export default async function VolunteerPage() {
 
           {/* Your Home Away From Home */}
           <div className="rounded-2xl p-6 md:p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-green-300 dark:hover:border-green-800/50">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
               {t("homeTitle")}
+              <Home className="h-7 w-7 shrink-0" stroke="currentColor" />
             </h2>
             <div className="space-y-4 font-bold">
               <p className="text-stone-600 dark:text-stone-400"><strong className="text-stone-800 dark:text-stone-100">{t("sharedHouse")}</strong> {t("sharedHouseText")}</p>
@@ -182,8 +254,9 @@ export default async function VolunteerPage() {
 
           {/* Ready to Jump In - CTA */}
           <div className="rounded-2xl p-8 md:p-10 bg-stone-100 dark:bg-stone-800/50 border-2 border-stone-200 dark:border-stone-700 text-center transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:border-green-300 dark:hover:border-green-800/50">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center justify-center gap-2" style={{ color: ACCENT_GREEN }}>
               {t("readyJump")}
+              <Rabbit className="h-7 w-7 shrink-0" stroke="currentColor" />
             </h2>
             <div className="space-y-4 mb-8 font-bold">
               <p>
@@ -215,7 +288,14 @@ export default async function VolunteerPage() {
               <strong>{t("footer")}</strong><br />
               {t("footerTagline")}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+              <Link
+                href="/#donate"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                style={{ backgroundColor: BUTTON_ORANGE }}
+              >
+                {tCommon("donate")}
+              </Link>
               <a
                 href="mailto:volunteer@savedsouls-foundation.org"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"

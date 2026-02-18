@@ -126,53 +126,103 @@ export default function PartnersPage() {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-4 py-16 md:py-24">
-        <header className="text-center mb-16 md:mb-20">
-          <div className="inline-flex items-center gap-2 mb-6">
+      <main className="max-w-5xl mx-auto px-4 py-16 md:py-24">
+        <header className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 mb-4">
             <span className="text-4xl animate-pulse">❤️</span>
             <span className="text-4xl animate-pulse" style={{ animationDelay: "0.2s" }}>🤝</span>
             <span className="text-4xl animate-pulse" style={{ animationDelay: "0.4s" }}>❤️</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-2">
             {t("title")}
           </h1>
-          <p className="text-lg md:text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed font-bold">
-            {t("subtitle")}
+          <p className="text-xl md:text-2xl font-semibold mb-2" style={{ color: PINK }}>
+            {t("joinUs")}
           </p>
-          <p className="mt-6 text-base text-rose-600 dark:text-rose-400 font-bold">
-            {t("contactPrompt")}{" "}
-            <Link href="/contact" className="underline hover:no-underline">
-              {t("contactLink")}
-            </Link>
+          <p className="text-lg text-stone-500 dark:text-stone-400 font-medium">
+            {t("tagline")}
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-          {PARTNERS.map((partner, index) => (
-            <PartnerCard
-              key={partner.name}
-              partner={partner}
-              index={index}
-              fullName={t(`${partner.key}.fullName`)}
-              description={t(`${partner.key}.description`)}
-              visitWebsite={t("visitWebsite")}
-            />
-          ))}
-        </div>
+        {/* Partners */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-8 text-center" style={{ color: PINK }}>
+            {t("ourPartnersTitle")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+            {PARTNERS.map((partner, index) => (
+              <PartnerCard
+                key={partner.name}
+                partner={partner}
+                index={index}
+                fullName={t(`${partner.key}.fullName`)}
+                description={t(`${partner.key}.description`)}
+                visitWebsite={t("visitWebsite")}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Tekst in placeholders met symbolen */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-8 text-center" style={{ color: PINK }}>
+            {t("whatWeOffer")}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[
+              { emoji: "📢", emoji2: "✨", key: "subtitle", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30", isIntro: true, span: "sm:col-span-2 lg:col-span-3" },
+              { emoji: "🏆", emoji2: "📍", key: "benefit1", teaserKey: "benefit1Teaser", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30", span: "" },
+              { emoji: "🌳", emoji2: "🛣️", key: "benefit2", teaserKey: "benefit2Teaser", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30", span: "" },
+              { emoji: "📱", emoji2: "🚀", key: "benefit3", teaserKey: "benefit3Teaser", gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30", span: "" },
+              { emoji: "🎬", emoji2: "📹", key: "benefit4", teaserKey: "benefit4Teaser", gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30", span: "" },
+              { emoji: "🚪", emoji2: "✨", key: "benefit5", teaserKey: "benefit5Teaser", gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30", span: "" },
+            ].map((item, i) => (
+              <div
+                key={item.key}
+                className={`rounded-2xl overflow-hidden bg-gradient-to-br ${item.gradient} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group benefit-card ${item.span || ""}`}
+                style={{ ["--card-i" as string]: i }}
+              >
+                <div className="p-4 pb-2 flex items-center justify-center gap-2 bg-white/40 dark:bg-black/10">
+                  <span className="text-3xl md:text-4xl transition-transform group-hover:scale-110">{item.emoji}</span>
+                  <span className="text-xl md:text-2xl opacity-80">{item.emoji2}</span>
+                </div>
+                <div className="p-4 pt-2">
+                  <h3 className="text-base font-bold text-stone-800 dark:text-stone-100 mb-1">
+                    {item.isIntro ? t("tagline") : t(item.key)}
+                  </h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+                    {item.isIntro ? t("subtitle") : t(item.teaserKey!)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-center text-stone-600 dark:text-stone-400 font-semibold">
+            {t("contactPrompt")}{" "}
+            <Link href="/contact" className="underline hover:no-underline" style={{ color: PINK }}>
+              {t("contactLink")}
+            </Link>
+          </p>
+        </section>
 
         <section
           ref={ctaRef}
-          className={`mt-20 text-center p-8 md:p-12 rounded-3xl bg-gradient-to-br from-rose-100/80 to-pink-100/60 dark:from-rose-950/40 dark:to-pink-950/30 border border-rose-200/50 dark:border-rose-900/30 partner-cta ${ctaVisible ? "partner-cta-visible" : ""}`}
+          className={`mt-20 text-center p-8 md:p-12 rounded-3xl bg-gradient-to-br from-rose-100/80 to-pink-100/60 dark:from-rose-950/40 dark:to-pink-950/30 border-2 border-rose-300/60 dark:border-rose-800/50 shadow-xl partner-cta ${ctaVisible ? "partner-cta-visible" : ""}`}
         >
-          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: PINK }}>
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="text-3xl">🐾</span>
+            <span className="text-3xl">❤️</span>
+            <span className="text-3xl">🤝</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: PINK }}>
             {t("becomePartnerTitle")}
           </h2>
-          <p className="text-stone-600 dark:text-stone-400 max-w-xl mx-auto mb-6">
+          <p className="text-stone-600 dark:text-stone-400 max-w-xl mx-auto mb-8 text-lg font-medium">
             {t("becomePartnerText")}
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-lg"
             style={{ backgroundColor: PINK }}
           >
             {t("becomePartnerButton")}
@@ -196,6 +246,12 @@ export default function PartnersPage() {
           animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
           opacity: 0;
           animation-delay: calc(var(--card-i) * 0.2s);
+        }
+
+        .benefit-card {
+          animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          opacity: 0;
+          animation-delay: calc(0.4s + var(--card-i) * 0.1s);
         }
 
         @keyframes cta-enter {

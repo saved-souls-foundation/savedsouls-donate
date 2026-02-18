@@ -65,11 +65,21 @@ export default async function GetInvolvedPage() {
     { href: "/contact", label: t("visitSanctuary") },
     { href: "/sponsor", label: t("sponsor") },
     { href: "/adopt", label: t("adoptTitle") },
+    { href: "/thank-you", label: tCommon("thankYou") },
+  ];
+
+  const orgLinks = [
+    { href: "/gallery", label: tCommon("gallery") },
+    { href: "/press", label: tCommon("press") },
+    { href: "/partners", label: tCommon("partners") },
+    { href: "/shelters", label: tCommon("shelters") },
+    { href: "/admin", label: tCommon("cms") },
   ];
 
   const infoPages = [
     { href: "/faq", label: tCommon("faq") },
     { href: "/raw-hide", label: tCommon("rawHide") },
+    { href: "/toys-training", label: tCommon("toysTraining") },
     { href: "/school-project", label: tCommon("schoolProject") },
     { href: "/nutrition", label: tCommon("nutrition") },
     { href: "/health", label: tCommon("health") },
@@ -185,6 +195,28 @@ export default async function GetInvolvedPage() {
                 <Link
                   key={link.href + link.label}
                   href={link.href}
+                  className={`inline-flex items-center px-4 py-2.5 rounded-xl font-medium border-2 border-transparent hover:scale-105 hover:shadow-lg transition-all duration-200 ${
+                    link.href === "/thank-you"
+                      ? "bg-pink-100 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300 hover:bg-pink-200 hover:text-pink-800 hover:border-pink-300 dark:hover:bg-pink-900/50 dark:hover:text-pink-200 dark:hover:border-pink-600"
+                      : "bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348]"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* Pers, Partners, CMS */}
+          <section className="rounded-2xl bg-white dark:bg-stone-800/80 border-2 border-stone-200 dark:border-stone-600 shadow-xl p-8 md:p-10 mb-6">
+            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
+              <span>🔗</span> {t("orgLinksTitle")}
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {orgLinks.map((link) => (
+                <Link
+                  key={link.href + link.label}
+                  href={link.href}
                   className="inline-flex items-center px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 font-medium border-2 border-transparent hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 hover:scale-105 hover:shadow-lg dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348] transition-all duration-200"
                 >
                   {link.label}
@@ -203,7 +235,11 @@ export default async function GetInvolvedPage() {
                 <Link
                   key={link.href + link.label}
                   href={link.href}
-                  className="inline-flex items-center px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 font-medium border-2 border-transparent hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 hover:scale-105 hover:shadow-lg dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348] transition-all duration-200"
+                  className={`inline-flex items-center px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 font-medium border-2 border-transparent hover:scale-105 hover:shadow-lg transition-all duration-200 ${
+                    link.href === "/raw-hide"
+                      ? "hover:bg-red-100 hover:text-red-600 hover:border-red-300 dark:hover:bg-red-950/30 dark:hover:text-red-400 dark:hover:border-red-700"
+                      : "hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348]"
+                  }`}
                 >
                   {link.label}
                 </Link>

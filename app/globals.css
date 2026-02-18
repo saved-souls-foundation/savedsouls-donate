@@ -131,6 +131,30 @@ body {
   animation: heart-fly-right 0.6s ease-out forwards;
 }
 
+/* Volunteer photo: zachte "connection" animatie – Ken Burns zoom + warme gloed */
+@keyframes volunteer-connection {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 30px rgba(42, 163, 72, 0.12);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 45px rgba(42, 163, 72, 0.18);
+  }
+  75% {
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 30px rgba(42, 163, 72, 0.12);
+  }
+}
+
+.animate-volunteer-connection {
+  animation: volunteer-connection 8s ease-in-out infinite;
+}
+
 /* Print styles for course materials */
 @media print {
   .print\:hidden {

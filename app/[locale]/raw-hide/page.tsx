@@ -2,26 +2,21 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
 
-const EMBRACE_URL = "https://www.embracepetinsurance.com/waterbowl/article/dangers-of-rawhide";
-const AKC_URL = "https://akc.org/expert-advice/health/are-rawhide-chews-dangerous-for-dog";
-const FDA_RECALL_URL = "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts";
 const PLATSNUIT_URL = "https://www.adopteereenplatsnuit.be/blog/gezondheid/het-gevaar-van-rawhides-of-buffelhuid-hondensnacks/";
+const EMBRACE_URL = "https://www.embracepetinsurance.com/waterbowl/article/dangers-of-rawhide";
+const AKC_URL = "https://www.akc.org/expert-advice/health/are-rawhide-chews-dangerous-for-dog";
+const FDA_URL = "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts";
 
 export default function RawHidePage() {
   const t = useTranslations("rawHide");
   const tCommon = useTranslations("common");
-  const locale = useLocale();
-  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
-  const goEmbrace = `/go?url=${encodeURIComponent(EMBRACE_URL)}&return=${encodeURIComponent("/raw-hide")}`;
-  const goAkc = `/go?url=${encodeURIComponent(AKC_URL)}&return=${encodeURIComponent("/raw-hide")}`;
-  const goFda = `/go?url=${encodeURIComponent(FDA_RECALL_URL)}&return=${encodeURIComponent("/raw-hide")}`;
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
@@ -218,19 +213,37 @@ export default function RawHidePage() {
               </a>
             </li>
             <li>
-              <Link href={goEmbrace} className="underline hover:no-underline" style={{ color: ACCENT_GREEN }}>
-                Embrace Pet Insurance – Dangers of Rawhide
-              </Link>
+              <a
+                href={EMBRACE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:no-underline"
+                style={{ color: ACCENT_GREEN }}
+              >
+                Embrace Pet Insurance – Dangers of Rawhide ↗
+              </a>
             </li>
             <li>
-              <Link href={goAkc} className="underline hover:no-underline" style={{ color: ACCENT_GREEN }}>
-                AKC – Are Rawhide Chews Dangerous for Dogs?
-              </Link>
+              <a
+                href={AKC_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:no-underline"
+                style={{ color: ACCENT_GREEN }}
+              >
+                AKC – Are Rawhide Chews Dangerous for Dogs? ↗
+              </a>
             </li>
             <li>
-              <Link href={goFda} className="underline hover:no-underline" style={{ color: ACCENT_GREEN }}>
-                FDA – Pet Food Recalls (Salmonella in rawhide)
-              </Link>
+              <a
+                href={FDA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:no-underline"
+                style={{ color: ACCENT_GREEN }}
+              >
+                FDA – Pet Food Recalls (Salmonella in rawhide) ↗
+              </a>
             </li>
           </ul>
         </section>

@@ -10,6 +10,8 @@ type ParallaxPageProps = {
   speed?: number;
   /** Set to true to hide default overlay (for custom styling) */
   noOverlay?: boolean;
+  /** Optional custom overlay class (e.g. dark red for raw-hide page) */
+  overlayClassName?: string;
 };
 
 export default function ParallaxPage({
@@ -17,6 +19,7 @@ export default function ParallaxPage({
   backgroundImage = "/savedsoul-logo.webp",
   speed = 0.25,
   noOverlay = false,
+  overlayClassName,
 }: ParallaxPageProps) {
   const [scrollY, setScrollY] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,7 +45,11 @@ export default function ParallaxPage({
           transform: `translateY(${scrollY * speed}px)`,
         }}
       />
-      {!noOverlay && <div className="fixed inset-0 z-[1] bg-white/75 dark:bg-stone-950/85 pointer-events-none" />}
+      {!noOverlay && (
+        <div
+          className={`fixed inset-0 z-[1] pointer-events-none ${overlayClassName ?? "bg-white/75 dark:bg-stone-950/85"}`}
+        />
+      )}
       <div ref={scrollRef} className="relative z-10 h-full overflow-y-auto overscroll-contain">
         {children}
       </div>

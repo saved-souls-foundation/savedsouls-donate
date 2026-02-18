@@ -24,11 +24,20 @@ export const metadata: Metadata = {
     description:
       "Saved Souls Foundation Khon Kaen: rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs. The only shelter in Thailand for paralyzed and special needs animals.",
     type: "website",
+    images: [
+      {
+        url: "/savedsoul-logo.webp",
+        width: 1200,
+        height: 630,
+        alt: "Saved Souls Foundation – Animal sanctuary in Khon Kaen, Thailand",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Saved Souls Foundation | Donate & Adopt Disabled Dogs",
     description: "Saved Souls Foundation: dog rescue shelter in Khon Kaen, Thailand. Rescued dogs, stray dogs, wheelchair dogs. Donate, adopt, sponsor.",
+    images: ["/savedsoul-logo.webp"],
   },
   robots: "index, follow",
   metadataBase: new URL("https://savedsouls-foundation.org"),
@@ -43,11 +52,24 @@ const jsonLd = {
   address: {
     "@type": "PostalAddress",
     addressLocality: "Khon Kaen",
+    addressRegion: "Khon Kaen",
     addressCountry: "TH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 16.4322,
+    longitude: 102.8236,
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "info@savedsouls-foundation.org",
+    contactType: "general",
+    availableLanguage: ["Dutch", "English", "German", "Thai", "Russian"],
   },
   foundingDate: "2010",
   areaServed: "Thailand",
   keywords: "dog rescue Thailand, disabled dogs, wheelchair dogs, animal shelter Khon Kaen",
+  knowsAbout: ["disability", "paralyzed dogs", "wheelchair dogs", "animal rescue", "dog adoption"],
 };
 
 const LOCALE_TO_LANG: Record<string, string> = {

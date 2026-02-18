@@ -8,5 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ["/admin", "/api/"],
     },
     sitemap: "https://savedsouls-foundation.org/sitemap.xml",
+    host: "https://savedsouls-foundation.org",
   };
 }

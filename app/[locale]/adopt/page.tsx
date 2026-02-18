@@ -127,8 +127,6 @@ export default function AdoptPage() {
     return filteredAnimals.slice(start, start + PER_PAGE);
   }, [filteredAnimals, page]);
 
-  useEffect(() => setPage(1), [type, gender, size]);
-
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
       <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
@@ -166,7 +164,7 @@ export default function AdoptPage() {
             <button
               key={t}
               type="button"
-              onClick={() => setType(t)}
+              onClick={() => { setType(t); setPage(1); }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${type === t ? "text-white" : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"}`}
               style={type === t ? { backgroundColor: ACCENT_GREEN } : {}}
             >
@@ -175,7 +173,7 @@ export default function AdoptPage() {
           ))}
           <select
             value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            onChange={(e) => { setGender(e.target.value); setPage(1); }}
             className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
           >
             <option value="all">All Genders</option>
@@ -184,7 +182,7 @@ export default function AdoptPage() {
           </select>
           <select
             value={size}
-            onChange={(e) => setSize(e.target.value)}
+            onChange={(e) => { setSize(e.target.value); setPage(1); }}
             className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
           >
             <option value="all">All Sizes</option>
@@ -194,7 +192,7 @@ export default function AdoptPage() {
           </select>
           <button
             type="button"
-            onClick={() => { setGender("all"); setSize("all"); setType("all"); }}
+            onClick={() => { setGender("all"); setSize("all"); setType("all"); setPage(1); }}
             className="px-4 py-2 rounded-lg text-sm font-medium text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
           >
             Clear

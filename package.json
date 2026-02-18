@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate-banners": "node scripts/generate-banner-images.mjs"
+    "generate-banners": "node scripts/generate-banner-images.mjs",
+    "fetch-shelter-logos": "node scripts/fetch-shelter-logos.mjs",
+    "export-shelter-emails": "node scripts/export-shelter-emails.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.4.0",

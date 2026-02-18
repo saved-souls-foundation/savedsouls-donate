@@ -2,7 +2,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
+import { alternatesForPath } from "@/lib/metadata";
 
 type Props = {
   children: React.ReactNode;
@@ -11,6 +13,15 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  const headersList = await headers();
+  const pathWithoutLocale = headersList.get("x-path-without-locale") ?? "/";
+  return {
+    alternates: alternatesForPath(pathWithoutLocale, locale),
+  };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
