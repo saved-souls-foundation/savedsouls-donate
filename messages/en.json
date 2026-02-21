@@ -56,6 +56,7 @@
     "footerAbout": "About",
     "faq": "FAQ",
     "shelters": "Other shelters",
+    "shop": "Shop",
     "financialOverview": "Financial overview",
     "blog": "Blog",
     "followUsOnFacebook": "Follow us on Facebook"
@@ -616,6 +617,26 @@
     "ctaTitle": "Help us close the gap",
     "ctaText": "Every euro goes directly to the animals. Donate once, become a sponsor, or choose a specific cause. Together we make the difference."
   },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Support our animals with merchandise. Hoodies, tote bags, calendars and more. Every purchase helps.",
+    "metaDescription": "Shop Saved Souls Foundation merchandise. Hoodies, tote bags, calendars, posters. Every purchase supports our 430 dogs and 91 cats in Thailand.",
+    "badge": "Merchandise",
+    "heroAlt": "Saved Souls team at the sanctuary",
+    "heroText": "Every purchase goes directly to our animals in Khon Kaen.",
+    "productsTitle": "What we offer",
+    "products": {
+      "hoodie": "Hoodies & T-shirts",
+      "tote": "Tote bags",
+      "cup": "Ceramic cups",
+      "calendar": "Desk calendars",
+      "poster": "Posters & art",
+      "cap": "Caps"
+    },
+    "ctaTitle": "Visit our shop",
+    "ctaText": "All proceeds go to our 430 dogs and 91 cats. Shop hoodies, calendars, tote bags and more.",
+    "ctaButton": "Go to shop"
+  },
   "getInvolved": {
     "title": "Get Involved",
     "subtitle": "There are many ways to support Saved Souls Foundation. Choose what fits you.",
@@ -953,6 +974,12 @@
     }
   },
   "press": {
+    "pressReleaseBadge": "For immediate release",
+    "pressReleaseTitle": "Saved Souls Foundation Announces New Website — Coming Soon — and Calls for Urgent Support",
+    "pressReleaseExcerpt": "Thailand's animal rescue foundation seeks volunteers, donations, vehicles, and loving adoptive homes. The foundation is building a brand-new website and urgently needs support across four critical areas.",
+    "pressReleaseDate": "Date: February 21, 2026",
+    "downloadPdf": "Download PDF",
+    "downloadWord": "Download Word",
     "bannerTitle": "Download banner",
     "bannerSubtitle": "Choose a format for social media, websites or presentations. PNG, JPG, WebP or SVG.",
     "bannerDisclaimer": "Please do not use without permission.",

@@ -325,6 +325,12 @@ export default function FaqPage() {
                   {tCommon("financialOverview")} →
                 </Link>
               </div>
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{tCommon("shop")}</p>
+                <Link href="/shop" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {tCommon("shop")} →
+                </Link>
+              </div>
             </div>
           </div>
         </section>

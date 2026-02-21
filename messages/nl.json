@@ -56,6 +56,7 @@
     "footerAbout": "Over ons",
     "faq": "FAQ",
     "shelters": "Andere asielen",
+    "shop": "Shop",
     "financialOverview": "Financiële verantwoording",
     "blog": "Blog",
     "followUsOnFacebook": "Volg ons op Facebook"
@@ -616,6 +617,26 @@
     "ctaTitle": "Help ons het gat te dichten",
     "ctaText": "Elke euro gaat direct naar de dieren. Doneer eenmalig, word sponsor, of kies een specifiek doel. Samen maken we het verschil."
   },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Steun onze dieren met merchandise. Hoodies, tassen, kalenders en meer. Elke aankoop helpt.",
+    "metaDescription": "Shop Saved Souls Foundation merchandise. Hoodies, tassen, kalenders, posters. Elke aankoop steunt onze 430 honden en 91 katten in Thailand.",
+    "badge": "Merchandise",
+    "heroAlt": "Saved Souls team bij het sanctuary",
+    "heroText": "Elke aankoop gaat direct naar onze dieren in Khon Kaen.",
+    "productsTitle": "Wat we aanbieden",
+    "products": {
+      "hoodie": "Hoodies & T-shirts",
+      "tote": "Tassen",
+      "cup": "Kopjes",
+      "calendar": "Bureaukalenders",
+      "poster": "Posters & kunst",
+      "cap": "Petten"
+    },
+    "ctaTitle": "Bezoek onze shop",
+    "ctaText": "Alle opbrengsten gaan naar onze 430 honden en 91 katten. Shop hoodies, kalenders, tassen en meer.",
+    "ctaButton": "Naar de shop"
+  },
   "getInvolved": {
     "title": "Doe mee",
     "subtitle": "Er zijn vele manieren om Saved Souls Foundation te steunen. Kies wat bij je past.",
@@ -953,6 +974,12 @@
     }
   },
   "press": {
+    "pressReleaseBadge": "Direct voor publicatie",
+    "pressReleaseTitle": "Saved Souls Foundation kondigt nieuwe website aan — Binnenkort — en roept op tot dringende steun",
+    "pressReleaseExcerpt": "De Thaise dierenreddingsstichting zoekt vrijwilligers, donaties, voertuigen en liefdevolle adoptiegezinnen. De stichting bouwt een gloednieuwe website en heeft dringend steun nodig op vier cruciale gebieden.",
+    "pressReleaseDate": "Datum: 21 februari 2026",
+    "downloadPdf": "Download PDF",
+    "downloadWord": "Download Word",
     "bannerTitle": "Download banner",
     "bannerSubtitle": "Kies een formaat voor social media, websites of presentaties. PNG, JPG, WebP of SVG.",
     "bannerDisclaimer": "Gebruik niet zonder toestemming a.u.b.",

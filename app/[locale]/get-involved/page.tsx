@@ -67,6 +67,7 @@ export default async function GetInvolvedPage() {
     { href: "/contact", label: t("visitSanctuary") },
     { href: "/sponsor", label: t("sponsor") },
     { href: "/adopt", label: t("adoptTitle") },
+    { href: "/shop", label: tCommon("shop") },
     { href: "/thank-you", label: tCommon("thankYou") },
   ];
 

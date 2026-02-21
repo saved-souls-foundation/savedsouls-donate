@@ -89,6 +89,12 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
             {t("getInvolved")}
           </Link>
           <Link
+            href="/shop"
+            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+          >
+            {t("shop")}
+          </Link>
+          <Link
             href="/adopt"
             className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: BTN_ADOPT }}
@@ -184,6 +190,9 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
           </Link>
           <Link href="/get-involved" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
             {t("getInvolved")}
+          </Link>
+          <Link href="/shop" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+            {t("shop")}
           </Link>
           <Link href="/street-dogs-thailand" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
             {t("streetDogsThailand")}

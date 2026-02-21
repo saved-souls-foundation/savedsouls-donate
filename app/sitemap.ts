@@ -35,6 +35,7 @@ const STATIC_PATHS = [
   "/feed-a-year",
   "/clinic-renovation",
   "/car-action",
+  "/shop",
   "/find-out-more",
   "/soul-saver",
   "/disclaimer",

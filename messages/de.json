@@ -56,6 +56,7 @@
     "footerAbout": "Über uns",
     "faq": "FAQ",
     "shelters": "Andere Tierheime",
+    "shop": "Shop",
     "financialOverview": "Finanzielle Übersicht",
     "blog": "Blog",
     "followUsOnFacebook": "Folge uns auf Facebook"
@@ -616,6 +617,26 @@
     "ctaTitle": "Hilf uns, die Lücke zu schließen",
     "ctaText": "Jeder Euro geht direkt an die Tiere. Spende einmalig, werde Pate oder wähle ein konkretes Ziel. Gemeinsam machen wir den Unterschied."
   },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Unterstütze unsere Tiere mit Merchandise. Hoodies, Taschen, Kalender und mehr. Jeder Kauf hilft.",
+    "metaDescription": "Shop Saved Souls Foundation Merchandise. Hoodies, Taschen, Kalender, Poster. Jeder Kauf unterstützt unsere 430 Hunde und 91 Katzen in Thailand.",
+    "badge": "Merchandise",
+    "heroAlt": "Saved Souls Team im Sanctuary",
+    "heroText": "Jeder Kauf geht direkt an unsere Tiere in Khon Kaen.",
+    "productsTitle": "Was wir anbieten",
+    "products": {
+      "hoodie": "Hoodies & T-Shirts",
+      "tote": "Taschen",
+      "cup": "Tassen",
+      "calendar": "Bürokalender",
+      "poster": "Poster & Kunst",
+      "cap": "Kappen"
+    },
+    "ctaTitle": "Besuche unseren Shop",
+    "ctaText": "Alle Einnahmen gehen an unsere 430 Hunde und 91 Katzen. Hoodies, Kalender, Taschen und mehr.",
+    "ctaButton": "Zum Shop"
+  },
   "getInvolved": {
     "title": "Mitmachen",
     "subtitle": "Es gibt viele Wege, Saved Souls Foundation zu unterstützen. Wähle, was zu dir passt.",
@@ -953,6 +974,12 @@
     }
   },
   "press": {
+    "pressReleaseBadge": "Zur sofortigen Veröffentlichung",
+    "pressReleaseTitle": "Saved Souls Foundation kündigt neue Website an — Demnächst — und ruft zu dringender Unterstützung auf",
+    "pressReleaseExcerpt": "Thailands Tierschutzstiftung sucht Freiwillige, Spenden, Fahrzeuge und liebevolle Adoptivfamilien. Die Stiftung baut eine brandneue Website und benötigt dringend Unterstützung in vier kritischen Bereichen.",
+    "pressReleaseDate": "Datum: 21. Februar 2026",
+    "downloadPdf": "PDF herunterladen",
+    "downloadWord": "Word herunterladen",
     "bannerTitle": "Banner herunterladen",
     "bannerSubtitle": "Wähle ein Format für Social Media, Websites oder Präsentationen. PNG, JPG oder SVG.",
     "bannerDisclaimer": "Bitte nicht ohne Erlaubnis verwenden.",
