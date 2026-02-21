@@ -48,31 +48,9 @@ export default function ThankYouPage() {
         <RunningHeart delay={2.8} top="92%" size={28} duration={9} />
       </div>
 
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity">
-          <div className="shrink-0 rounded overflow-hidden border border-stone-200 dark:border-stone-600" style={{ width: 70, height: 70 }}>
-            <video
-              src="/savedsouls-fondation-logo.mp4"
-              width={70}
-              height={70}
-              className="block w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              title="Saved Souls Foundation logo"
-            />
-          </div>
-          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
-        </Link>
-        <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
-          ← {t("backToHome")}
-        </Link>
-      </nav>
-
       <main className="relative z-10 max-w-3xl mx-auto px-4 py-12 md:py-20 overflow-hidden">
         {/* Hero */}
-        <header className={`text-center mb-16 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <header className={`text-center mb-12 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-6xl md:text-8xl block mb-4 animate-pulse-heart">💚</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ animationDelay: "0.2s" }}>
             {t("title")}
@@ -81,6 +59,15 @@ export default function ThankYouPage() {
             {t("subtitle")}
           </p>
         </header>
+
+        {/* Donation celebration illustration */}
+        <div className="mb-16 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600">
+          <img
+            src="/donate-thank-you.png"
+            alt="Community support for animal shelter – donations make a difference"
+            className="w-full h-auto object-contain"
+          />
+        </div>
 
         {/* Thank you cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">

@@ -10,7 +10,11 @@ const FEED_ITEMS = [
   { path: "/press", title: "Press & Media", description: "Press kit, logos, and media contact for journalists." },
   { path: "/contact", title: "Contact", description: "Get in touch with Saved Souls Foundation." },
   { path: "/shelters", title: "Shelters", description: "Partner shelters and animal rescues worldwide." },
-  { path: "/faq", title: "FAQ", description: "Frequently asked questions about adoption, donations, and more." },
+  { path: "/faq", title: "FAQ", description: "Pet care FAQ: dog adoption, dog care, dog food, cat health. Hond adopteren, hond verzorgen, beste hondenvoer, hond ontwormen, kat steriliseren. Saved Souls Foundation." },
+  { path: "/get-involved", title: "Get Involved", description: "Donate, sponsor, volunteer or adopt. All ways to support Saved Souls Foundation in Khon Kaen, Thailand." },
+  { path: "/financial-overview", title: "Financial Overview", description: "Monthly costs, transparency, where your donation goes. 500,000 baht needed per month. Help us close the gap." },
+  { path: "/health", title: "Health", description: "Dog & cat health: vaccinations, fleas, ticks, deworming, eye care, skin. Hond inenten, hond vlooien, hond heeft diarree, kat vlooien. Practical pet health guides." },
+  { path: "/nutrition", title: "Nutrition", description: "Pet nutrition: BARF, raw feeding, best dog food, best cat food. Rauw voer hond, hond barf dieet, hond mag niet eten, kat nat of droogvoer. Recipes and feeding tips." },
 ];
 
 function escapeXml(str: string): string {
@@ -41,7 +45,7 @@ export async function GET() {
   <channel>
     <title>Saved Souls Foundation</title>
     <link>${BASE_URL}</link>
-    <description>Saved Souls Foundation - Animal sanctuary in Khon Kaen, Thailand. Rescue, adopt, donate, volunteer.</description>
+    <description>Saved Souls Foundation - Animal sanctuary in Khon Kaen, Thailand. Pet care, dog adoption, dog food, cat health. Rescue, adopt, donate, volunteer. Huisdieren verzorging, hond adopteren, beste hondenvoer.</description>
     <language>en</language>
     <lastBuildDate>${now}</lastBuildDate>
     <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml"/>

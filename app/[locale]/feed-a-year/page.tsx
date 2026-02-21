@@ -34,21 +34,6 @@ export default function FeedAYearPage() {
       <div className="fixed inset-0 z-[1] pointer-events-none bg-white dark:bg-stone-50" />
 
       <div className="relative z-10 min-h-screen bg-white dark:bg-stone-50">
-        <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-50/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-300">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <div className="shrink-0 rounded overflow-hidden border-2 border-stone-200 dark:border-stone-400" style={{ width: 50, height: 50 }}>
-              <video src="/savedsouls-fondation-logo.mp4" width={50} height={50} className="block w-full h-full object-cover" autoPlay muted loop playsInline title="Logo" />
-            </div>
-            <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>Saved Souls</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher />
-            <Link href="/get-involved" className="text-sm font-medium text-stone-600 dark:text-stone-500 hover:text-stone-900 dark:hover:text-stone-900">
-              ← {tCommon("backToHome")}
-            </Link>
-          </div>
-        </nav>
-
         <main className="max-w-4xl mx-auto px-4 py-16 md:py-24">
           <header className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-black mb-4 text-stone-800 dark:text-stone-900" style={{ color: ACCENT_GREEN }}>

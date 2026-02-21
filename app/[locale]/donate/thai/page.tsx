@@ -22,47 +22,6 @@ export default function ThaiDonatePage() {
 
   return (
     <ParallaxPage>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link
-          href="/"
-          className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity"
-        >
-          <div
-            className="shrink-0 rounded overflow-hidden border border-stone-200 dark:border-stone-600"
-            style={{ width: 70, height: 70 }}
-          >
-            <video
-              src="/savedsouls-fondation-logo.mp4"
-              width={70}
-              height={70}
-              className="block w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              title="Saved Souls Foundation logo"
-            />
-          </div>
-          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
-            Saved Souls Foundation
-          </span>
-        </Link>
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:block flex-shrink-0">
-            <LanguageSwitcher />
-          </div>
-          <div className="sm:hidden flex-shrink-0">
-            <LanguageSwitcher compact />
-          </div>
-          <Link
-            href="/donate"
-            className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {tDonate("navBack")}
-          </Link>
-        </div>
-      </nav>
-
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-4">
@@ -72,6 +31,26 @@ export default function ThaiDonatePage() {
             {t("subtitle")}
           </p>
         </header>
+
+        {/* PayPal QR */}
+        <section id="paypal" className="scroll-mt-24 mb-12">
+          <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
+            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4">
+              PayPal
+            </h2>
+            <a
+              href="https://paypal.me/savedsoulsfoundation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-square max-w-[220px] mx-auto rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 flex items-center justify-center p-3 mb-4 block hover:border-[#2aa348]/50 transition-colors"
+            >
+              <Image src="/logos/paypal-qr.png" alt="PayPal QR code – Saved Souls Foundation" width={200} height={200} className="w-full h-full object-contain" />
+            </a>
+            <p className="text-base text-stone-600 dark:text-stone-400 text-center">
+              {t("qrInstruction")}
+            </p>
+          </div>
+        </section>
 
         {/* PromptPay / Thai QR */}
         <section id="promptpay" className="scroll-mt-24 mb-12">

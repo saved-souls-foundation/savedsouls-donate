@@ -19,15 +19,6 @@ export default async function MaterialsPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm print:hidden">
-        <Link href="/school-project" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>Saved Souls</span>
-        </Link>
-        <Link href="/school-project" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900">
-          ← {t("backToProject")}
-        </Link>
-      </nav>
-
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>

@@ -16,19 +16,20 @@ export interface AnimalRecord {
   age: string;
   size: "small" | "medium" | "large";
   image: string;
+  images: string[];
   story?: string;
 }
 
 async function fetchAllPages(
   baseUrl: string
-): Promise<Array<{ id: number; name: string; gender: string; image: string; adoption_story?: string; weight?: number; date_of_birth?: string }>> {
-  const all: Array<{ id: number; name: string; gender: string; image: string; adoption_story?: string; weight?: number; date_of_birth?: string }> = [];
+): Promise<Array<{ id: number; name: string; gender: string; image: string; images?: string[]; adoption_story?: string; weight?: number; date_of_birth?: string }>> {
+  const all: Array<{ id: number; name: string; gender: string; image: string; images?: string[]; adoption_story?: string; weight?: number; date_of_birth?: string }> = [];
   let page = 1;
   let hasMore = true;
 
   while (hasMore) {
     const url = `${baseUrl}?page=${page}&per_page=${PER_PAGE}`;
-    const res = await fetch(url, { next: { revalidate: 300 } });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error(`API error: ${res.status}`);
     const json = await res.json();
     const data = json.data || [];
@@ -87,6 +88,7 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
 
   const dogs: AnimalRecord[] = rawDogs.map((d) => {
     const { name, thaiName } = parseName(d.name || "");
+    const images = Array.isArray(d.images) && d.images.length > 0 ? d.images : (d.image ? [d.image] : []);
     return {
       id: String(d.id),
       name,
@@ -95,13 +97,15 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
       gender: toGender(d.gender),
       age: formatAge(d.date_of_birth),
       size: weightToSize(d.weight),
-      image: d.image || "",
+      image: d.image || images[0] || "",
+      images,
       story: d.adoption_story || "",
     };
   });
 
   const cats: AnimalRecord[] = rawCats.map((c) => {
     const { name, thaiName } = parseName(c.name || "");
+    const images = Array.isArray(c.images) && c.images.length > 0 ? c.images : (c.image ? [c.image] : []);
     return {
       id: String(c.id),
       name,
@@ -110,7 +114,8 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
       gender: toGender(c.gender),
       age: formatAge(c.date_of_birth),
       size: weightToSize(c.weight),
-      image: c.image || "",
+      image: c.image || images[0] || "",
+      images,
       story: c.adoption_story || "",
     };
   });

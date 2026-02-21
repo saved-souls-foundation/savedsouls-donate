@@ -116,18 +116,6 @@ export default function PartnersPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp" speed={0.2}>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/95 dark:bg-stone-900/95 backdrop-blur-sm border-b border-stone-200 dark:border-stone-800">
-        <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
-          Saved Souls
-        </Link>
-        <div className="flex items-center gap-4">
-          <LanguageSwitcher compact />
-          <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
-            ← {tCommon("backToHome")}
-          </Link>
-        </div>
-      </nav>
-
       <main className="max-w-5xl mx-auto px-4 py-16 md:py-24">
         <header className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-2 mb-4">

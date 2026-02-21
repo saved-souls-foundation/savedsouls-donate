@@ -52,6 +52,7 @@ const SECTIONS = [
   { key: "infections", emoji: "🦠", color: "from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30" },
   { key: "tropics", emoji: "🌴", color: "from-yellow-50 to-lime-50 dark:from-yellow-950/30 dark:to-lime-950/30" },
   { key: "dangers", emoji: "⚠️", color: "from-stone-50 to-stone-100 dark:from-stone-800/50 dark:to-stone-900/50" },
+  { key: "firstAid", emoji: "🚑", color: "from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30" },
   { key: "general", emoji: "🏥", color: "from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30" },
 ] as const;
 
@@ -79,15 +80,6 @@ export default function HealthPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>Saved Souls</span>
-        </Link>
-        <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900">
-          ← {tCommon("backToHome")}
-        </Link>
-      </nav>
-
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         {/* Hero */}
         <header className="text-center mb-16">
@@ -107,6 +99,15 @@ export default function HealthPage() {
           <div className="flex-1">
             <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed">
               {t("intro")}
+            </p>
+            <p className="mt-4 text-stone-600 dark:text-stone-400">
+              🚑 {t("firstAidPrompt")}<Link href="/first-aid" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("firstAidLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🏠 {t("firstPetHomePrompt")}<Link href="/first-pet-home" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("firstPetHomeLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🎆 {t("fireworksPetsPrompt")}<Link href="/fireworks-pets" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("fireworksPetsLink")}</Link>
             </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
@@ -129,6 +130,7 @@ export default function HealthPage() {
             const isInfections = key === "infections";
             const isTropics = key === "tropics";
             const isDangers = key === "dangers";
+            const isFirstAid = key === "firstAid";
             const isGeneral = key === "general";
             const content = (
               <div className="flex items-start gap-4">
@@ -205,6 +207,11 @@ export default function HealthPage() {
                       → {t("dangersReadMore")}
                     </p>
                   )}
+                  {isFirstAid && (
+                    <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
+                      → {t("firstAidReadMore")}
+                    </p>
+                  )}
                   {isGeneral && (
                     <p className="mt-3 text-sm font-semibold" style={{ color: ACCENT_GREEN }}>
                       → {t("generalReadMore")}
@@ -216,7 +223,7 @@ export default function HealthPage() {
             return (
               <section
                 key={key}
-                className={`rounded-2xl p-6 md:p-8 bg-gradient-to-br ${color} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-shadow ${(isFleasTicks || isVaccinations || isHeartworm || isDeworming || isEyeEarCare || isEarMitesSneezing || isCatFlu || isSkinCoat || isSkinProblems || isInfections || isTropics || isDangers || isGeneral) ? "cursor-pointer" : ""}`}
+                className={`rounded-2xl p-6 md:p-8 bg-gradient-to-br ${color} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-shadow ${(isFleasTicks || isVaccinations || isHeartworm || isDeworming || isEyeEarCare || isEarMitesSneezing || isCatFlu || isSkinCoat || isSkinProblems || isInfections || isTropics || isDangers || isFirstAid || isGeneral) ? "cursor-pointer" : ""}`}
               >
                 {isFleasTicks ? (
                   <Link href="/flea-tick-parasite-guide" className="block">
@@ -264,6 +271,10 @@ export default function HealthPage() {
                   </Link>
                 ) : isDangers ? (
                   <Link href="/dangers" className="block">
+                    {content}
+                  </Link>
+                ) : isFirstAid ? (
+                  <Link href="/first-aid" className="block">
                     {content}
                   </Link>
                 ) : isGeneral ? (
@@ -375,6 +386,25 @@ export default function HealthPage() {
             🩺 {t("vetDisclaimer")}
           </p>
         </div>
+
+        {/* Vet costs comparison link */}
+        <Link
+          href="/vet-costs-comparison"
+          className="mb-16 block rounded-2xl p-6 md:p-8 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-rose-950/30 border-2 border-amber-200 dark:border-amber-600 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">🌍</span>
+            <div className="text-left">
+              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100">
+                {t("vetCostsLinkTitle")}
+              </h3>
+              <p className="text-stone-600 dark:text-stone-400 text-sm mt-1">
+                {t("vetCostsLinkText")}
+              </p>
+            </div>
+            <span className="ml-auto text-2xl">→</span>
+          </div>
+        </Link>
 
         {/* Donatie CTA */}
         <section className="mb-16 rounded-2xl p-8 md:p-12 text-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600">

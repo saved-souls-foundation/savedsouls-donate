@@ -25,19 +25,6 @@ export default function StoryPage() {
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp" noOverlay>
       <div className="min-h-screen bg-white">
-        {/* Nav */}
-        <nav className="sticky top-0 z-30 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 backdrop-blur-md border-b border-stone-200">
-          <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
-            Saved Souls
-          </Link>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher compact />
-            <Link href="/" className="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">
-              ← {tCommon("backToHome")}
-            </Link>
-          </div>
-        </nav>
-
         {/* Hero – full impact */}
         <section className="relative min-h-[70vh] flex flex-col overflow-hidden">
           <div className="absolute inset-0">

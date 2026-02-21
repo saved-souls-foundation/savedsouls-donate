@@ -1,96 +1,102 @@
 import { Link } from "@/i18n/navigation";
-import type { Metadata } from "next";
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
 
-export const metadata: Metadata = {
-  title: "Disclaimer | Saved Souls Foundation",
-  description: "Disclaimer and legal information for Saved Souls Foundation website.",
-};
+export async function generateMetadata() {
+  const t = await getTranslations("disclaimer");
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
-export default function DisclaimerPage() {
+export default async function DisclaimerPage() {
+  const t = await getTranslations("disclaimer");
+
   return (
     <ParallaxPage>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link
-          href="/"
-          className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity"
-          style={{ color: ACCENT_GREEN }}
-        >
-          Saved Souls
-        </Link>
-        <Link
-          href="/"
-          className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-        >
-          ← Back to home
-        </Link>
-      </nav>
-
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center">
-          Disclaimer
+          {t("title")}
         </h1>
-        <p className="text-stone-600 dark:text-stone-400 text-center mb-10 text-sm">
-          Saved Souls Foundation
+        <p className="text-stone-600 dark:text-stone-400 text-center mb-6 text-sm">
+          {t("subtitle")}
         </p>
+
+        <div className="flex justify-center mb-10">
+          <div className="relative w-full max-w-sm aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border-2 border-amber-200 dark:border-amber-700">
+            <Image
+              src="/dog-wetboek.png"
+              alt={t("dogImageAlt")}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 28rem"
+            />
+          </div>
+        </div>
 
         <section className="space-y-6 text-stone-700 dark:text-stone-300 text-sm leading-relaxed">
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              General
+              {t("generalTitle")}
             </h2>
-            <p>
-              The information on this website is for general purposes only. Saved Souls Foundation (the &quot;Foundation&quot;) strives to keep the content accurate and up to date but makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, or availability of the website or the information contained on it.
-            </p>
+            <p>{t("generalText")}</p>
           </div>
 
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Donations
+              {t("reservationTitle")}
             </h2>
-            <p>
-              Donations are voluntary and support the Foundation&apos;s work. The Foundation is a registered non-profit organization. Donation-related tax or legal effects depend on your jurisdiction; we recommend consulting your own advisor where relevant.
-            </p>
+            <p>{t("reservationText")}</p>
           </div>
 
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              External links
+              {t("accuracyTitle")}
             </h2>
-            <p>
-              This site may contain links to external websites. We have no control over their content or privacy practices and are not responsible for them. The inclusion of any link does not imply endorsement by the Foundation.
-            </p>
+            <p>{t("accuracyText")}</p>
           </div>
 
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Cookies
+              {t("liabilityTitle")}
             </h2>
-            <p>
-              This website may use cookies for essential functionality and to improve your experience. By using the site and accepting our cookie notice, you agree to such use. You can change browser settings to limit or block cookies.
-            </p>
+            <p>{t("liabilityText")}</p>
           </div>
 
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Liability
+              {t("donationsTitle")}
             </h2>
-            <p>
-              To the fullest extent permitted by applicable law, the Foundation shall not be liable for any direct, indirect, or consequential loss or damage arising from the use of this website or reliance on its content.
-            </p>
+            <p>{t("donationsText")}</p>
           </div>
 
           <div>
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Contact
+              {t("externalLinksTitle")}
+            </h2>
+            <p>{t("externalLinksText")}</p>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
+              {t("cookiesTitle")}
+            </h2>
+            <p>{t("cookiesText")}</p>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
+              {t("contactTitle")}
             </h2>
             <p>
-              For questions about this disclaimer or the Foundation, please contact us at{" "}
+              {t("contactText")}
               <a href="mailto:info@savedsouls-foundation.org" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
-                info@savedsouls-foundation.org
+                {t("contactEmail")}
               </a>
               .
             </p>
@@ -103,7 +109,7 @@ export default function DisclaimerPage() {
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
             style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
           >
-            Back to home
+            {t("backToHome")}
           </Link>
         </div>
       </main>

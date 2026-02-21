@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
 import { alternatesForPath } from "@/lib/metadata";
+import CarActionButton from "@/app/components/CarActionButton";
 
 type Props = {
   children: React.ReactNode;
@@ -38,6 +39,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider messages={messages}>
       {children}
+      <CarActionButton />
     </NextIntlClientProvider>
   );
 }

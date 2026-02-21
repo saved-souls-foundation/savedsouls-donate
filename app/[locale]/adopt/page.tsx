@@ -1,8 +1,10 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
+import SiteHeader from "../../components/SiteHeader";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -20,6 +22,7 @@ interface Animal {
   age?: string;
   size: Size;
   image: string;
+  images?: string[];
 }
 
 const SIZE_LABELS: Record<Size, string> = { small: "Small", medium: "Medium", large: "Large" };
@@ -32,11 +35,11 @@ function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) 
   return (
     <Link href={href} className="group block">
       <article className="relative overflow-hidden rounded-2xl bg-white dark:bg-stone-900 shadow-lg border border-stone-200 dark:border-stone-700 transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-2 hover:border-[#2aa348]/40">
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-[3/4] overflow-hidden">
           <img
             src={imageSrc}
             alt={`${animal.name} – rescued ${animal.type} at Saved Souls Foundation`}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
             loading="lazy"
             onError={(e) => {
               const t = e.target as HTMLImageElement;
@@ -47,16 +50,17 @@ function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) 
             }}
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/20 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-30"
+            className="absolute inset-0 bg-gradient-to-t from-stone-900/85 via-transparent to-stone-900/20 transition-opacity duration-500 group-hover:opacity-70"
             aria-hidden
           />
-          <div
-            className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#2aa348]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            aria-hidden
-          />
-          <span className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full text-sm font-semibold text-white bg-[#2aa348] shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-            View More →
-          </span>
+          <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-3 p-4">
+            <h2 className="text-lg font-bold text-white drop-shadow-md min-w-0">
+              {animal.name} {animal.thaiName && <span className="text-white/90 font-normal text-base">/ {animal.thaiName}</span>}
+            </h2>
+            <span className="shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-white bg-[#2aa348] shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              View More →
+            </span>
+          </div>
         </div>
         <div className="p-4 md:p-5">
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: ACCENT_GREEN }}>
@@ -75,6 +79,7 @@ function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) 
 const PER_PAGE = 24;
 
 export default function AdoptPage() {
+  const t = useTranslations("adoptPage");
   const [gender, setGender] = useState("all");
   const [size, setSize] = useState("all");
   const [type, setType] = useState<"all" | AnimalType>("all");
@@ -95,6 +100,7 @@ export default function AdoptPage() {
           age: d.age ? String(d.age) : undefined,
           size: (d.size as Size) || "medium",
           image: String(d.image || ""),
+          images: Array.isArray(d.images) ? (d.images as string[]) : (d.image ? [String(d.image)] : []),
         }));
         const cats: Animal[] = (data.cats || []).map((c: Record<string, unknown>) => ({
           id: String(c.id),
@@ -105,6 +111,7 @@ export default function AdoptPage() {
           age: undefined,
           size: (c.size as Size) || "medium",
           image: String(c.image || ""),
+          images: Array.isArray(c.images) ? (c.images as string[]) : (c.image ? [String(c.image)] : []),
         }));
         setAnimals([...dogs, ...cats]);
         setLoading(false);
@@ -129,26 +136,7 @@ export default function AdoptPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
-          Saved Souls
-        </Link>
-        <div className="flex items-center gap-2">
-          <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
-            ← Home
-          </Link>
-          <Link
-            href="https://paypal.me/savedsoulsfoundation"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: BUTTON_ORANGE }}
-          >
-            Donate
-          </Link>
-        </div>
-      </nav>
-
+      <SiteHeader />
       <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
         <header className="text-center mb-10 md:mb-14">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2">
@@ -157,7 +145,20 @@ export default function AdoptPage() {
           <p className="text-lg text-stone-600 dark:text-stone-400" style={{ color: ACCENT_GREEN }}>
             Every soul deserves a loving home
           </p>
+          <Link
+            href="/first-pet-home"
+            className="mt-4 inline-block px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-opacity hover:opacity-90"
+            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+          >
+            First time taking a pet home? Read our guide →
+          </Link>
         </header>
+
+        <div className="mb-10 p-6 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-800 shadow-sm">
+          <p className="text-lg text-stone-700 dark:text-stone-300 leading-relaxed text-center max-w-3xl mx-auto">
+            {t("pleaseHelpUs")}
+          </p>
+        </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
           {(["all", "dog", "cat"] as const).map((t) => (

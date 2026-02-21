@@ -57,8 +57,21 @@ const jsonLd = {
   },
   foundingDate: "2010",
   areaServed: "Thailand",
-  keywords: "dog rescue Thailand, disabled dogs, wheelchair dogs, animal shelter Khon Kaen",
-  knowsAbout: ["disability", "paralyzed dogs", "wheelchair dogs", "animal rescue", "dog adoption"],
+  keywords: "dog rescue Thailand, disabled dogs, wheelchair dogs, animal shelter Khon Kaen, pet nutrition, dog health, cat health, first aid pets",
+  knowsAbout: [
+    "disability",
+    "paralyzed dogs",
+    "wheelchair dogs",
+    "animal rescue",
+    "dog adoption",
+    "cat adoption",
+    "pet nutrition",
+    "dog health",
+    "cat health",
+    "vaccinations",
+    "first aid for dogs and cats",
+    "pet care for beginners",
+  ],
 };
 
 const LOCALE_TO_LANG: Record<string, string> = {

@@ -15,8 +15,6 @@ const PARTNERS = [
   { key: "k9aid", url: "https://k9aid.org", logo: "/partners/k9aid.png", platinum: true },
   { key: "streetdogsthailand", url: "https://streetdogsthailand.com", logo: "/partners/streetdogsthailand.png", platinum: true },
   { key: "gifthoney", url: "https://gifthoney.co", logo: "/partners/gifthoney.png", platinum: true },
-  { key: "dogsbymerlyn", url: "https://www.stichtingdogsbymerlyn.com/", logo: "/partners/dogs-by-merlyn.png", honorary: true },
-  { key: "dierenthuis", url: "https://dierenthuis.nl/nl/home", logo: "/partners/dierenthuis.png", honorary: true },
 ];
 
 const SHELTERS = [
@@ -146,18 +144,6 @@ export default async function SheltersPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
-          Saved Souls
-        </Link>
-        <div className="flex items-center gap-4">
-          <LanguageSwitcher compact />
-          <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:text-stone-100">
-            ← {tCommon("backToHome")}
-          </Link>
-        </div>
-      </nav>
-
       <main className="max-w-5xl mx-auto px-4 py-12 md:py-20">
         <header className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
@@ -192,24 +178,11 @@ export default async function SheltersPage() {
                 href={partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block rounded-2xl overflow-hidden border-2 bg-white/95 dark:bg-stone-900/95 shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 p-8 md:p-10 relative ${
-                  "platinum" in partner && partner.platinum
-                    ? "border-slate-400/70 dark:border-slate-500/70 hover:border-slate-500 dark:hover:border-slate-400 ring-2 ring-slate-300/40 dark:ring-slate-600/40"
-                    : "honorary" in partner && partner.honorary
-                    ? "border-amber-200/70 dark:border-amber-700/50 hover:border-amber-300 dark:hover:border-amber-600/60 ring-2 ring-amber-200/40 dark:ring-amber-800/30"
-                    : "border-rose-200/60 dark:border-rose-900/40 hover:border-rose-300 dark:hover:border-rose-800/60"
-                }`}
+                className="group block rounded-2xl overflow-hidden border-2 bg-white/95 dark:bg-stone-900/95 shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 p-8 md:p-10 relative border-slate-400/70 dark:border-slate-500/70 hover:border-slate-500 dark:hover:border-slate-400 ring-2 ring-slate-300/40 dark:ring-slate-600/40"
               >
-                {"platinum" in partner && partner.platinum && (
-                  <span className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-500 text-slate-800 dark:text-slate-100 border border-slate-400/50 dark:border-slate-500 shadow-sm">
-                    ★ {t("platinumPartner")}
-                  </span>
-                )}
-                {"honorary" in partner && partner.honorary && (
-                  <span className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700">
-                    ★ {t("honoraryMention")}
-                  </span>
-                )}
+                <span className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-500 text-slate-800 dark:text-slate-100 border border-slate-400/50 dark:border-slate-500 shadow-sm">
+                  ★ {t("platinumPartner")}
+                </span>
                 <div className="flex flex-col items-center text-center">
                   <div className="w-40 h-40 mb-6 flex items-center justify-center">
                     <Image

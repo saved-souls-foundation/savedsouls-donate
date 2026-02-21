@@ -15,6 +15,7 @@ type Cat = {
   gender: string;
   size: string;
   image: string;
+  images?: string[];
   story?: string;
 };
 
@@ -24,11 +25,16 @@ export default function CatDetailPage() {
   const [cat, setCat] = useState<Cat | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [id]);
 
   useEffect(() => {
     async function fetchCat() {
       try {
-        const res = await fetch("/api/animals");
+        const res = await fetch("/api/animals", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to load");
         const data = await res.json();
         const found = data.cats?.find((c: Cat) => String(c.id) === String(id));
@@ -69,26 +75,19 @@ export default function CatDetailPage() {
 
   const genderLabel = cat.gender.charAt(0).toUpperCase() + cat.gender.slice(1);
   const sizeLabel = cat.size.charAt(0).toUpperCase() + cat.size.slice(1);
+  const photos = (cat.images && cat.images.length > 0 ? cat.images : [cat.image]).filter(Boolean);
+  const mainImage = photos[selectedIndex] || cat.image;
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
-          Saved Souls
-        </Link>
-        <Link href="/adopt" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">
-          ← Back to adopt
-        </Link>
-      </nav>
-
       <main className="max-w-5xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           <div>
-            <div className="relative rounded-2xl overflow-hidden shadow-xl mb-6 group">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl mb-3 group">
               <img
-                src={cat.image}
+                src={mainImage}
                 alt={`${cat.name} – rescued cat at Saved Souls Foundation`}
-                className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full aspect-[3/4] object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 onError={(e) => {
                   const t = e.target as HTMLImageElement;
                   if (!t.dataset.fallback) {
@@ -98,10 +97,39 @@ export default function CatDetailPage() {
                 }}
               />
               <div
-                className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent pointer-events-none opacity-80 group-hover:opacity-50 transition-opacity duration-500"
+                className="absolute inset-0 bg-gradient-to-t from-stone-900/85 via-transparent to-stone-900/20 pointer-events-none"
                 aria-hidden
               />
             </div>
+            {photos.length > 1 && (
+              <div className="flex gap-2 flex-wrap">
+                {photos.map((src, i) => (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setSelectedIndex(i)}
+                    className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
+                      i === selectedIndex
+                        ? "border-[#2aa348] ring-2 ring-[#2aa348]/30"
+                        : "border-stone-200 dark:border-stone-600 hover:border-stone-400"
+                    }`}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-cover object-top"
+                      onError={(e) => {
+                        const t = e.target as HTMLImageElement;
+                        if (!t.dataset.fallback) {
+                          t.dataset.fallback = "1";
+                          t.src = FALLBACK_IMAGE;
+                        }
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>

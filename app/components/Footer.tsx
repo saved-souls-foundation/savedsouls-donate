@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 const ACCENT_GREEN = "#2aa348";
 
 const SOCIAL_LINKS = [
-  { name: "Facebook", href: "https://www.facebook.com/savedsoulsfoundation", icon: "facebook" },
+  { name: "Facebook", href: "https://www.facebook.com/SavedSoulsFoundation/", icon: "facebook" },
   { name: "Instagram", href: "https://www.instagram.com/savedsoulsfoundation", icon: "instagram" },
   { name: "YouTube", href: "https://www.youtube.com/@savedsoulsfoundation", icon: "youtube" },
   { name: "X", href: "https://x.com/SoulsaversSSF", icon: "x" },
@@ -62,7 +62,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-1 w-full">
           <div className="shrink-0 rounded overflow-hidden border border-white/30" style={{ width: 50, height: 50 }}>
             <video
-              src="/savedsouls-fondation-logo.mp4"
+              src="/savedsouls-foundation-logo.mp4"
               width={50}
               height={50}
               className="block w-full h-full object-cover"
@@ -91,12 +91,24 @@ export default function Footer() {
             </a>
           ))}
         </div>
+        <a
+          href="https://www.facebook.com/SavedSoulsFoundation/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:scale-[1.02] shadow-lg"
+          style={{ backgroundColor: "#1877F2" }}
+          aria-label={t("followUsOnFacebook")}
+        >
+          <SocialIcon icon="facebook" className="text-white" />
+          <span>{t("followUsOnFacebook")}</span>
+        </a>
       </div>
       <p className="text-white/80 mt-3 text-sm">
         © {new Date().getFullYear()} Saved Souls Foundation
       </p>
       <nav className="text-white/70 mt-2 text-sm flex flex-wrap justify-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }} aria-label="Footer navigation">
         <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
+        <Link href="/blog" className="hover:underline">{t("blog")}</Link>
         <Link href="/story" className="hover:underline">{t("ourStory")}</Link>
         <Link href="/faq" className="hover:underline">{t("faq")}</Link>
         <Link href="/partners" className="hover:underline">{t("partners")}</Link>

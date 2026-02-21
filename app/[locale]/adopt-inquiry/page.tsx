@@ -3,7 +3,9 @@
 import { Link } from "@/i18n/navigation";
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Footer from "../../components/Footer";
+import SiteHeader from "../../components/SiteHeader";
 import { COUNTRIES } from "@/lib/countries";
 
 const ACCENT_GREEN = "#2aa348";
@@ -12,6 +14,7 @@ const ACCENT_TEAL = "#0d9488";
 const ACCENT_AMBER = "#f59e0b";
 
 function AdoptInquiryForm() {
+  const t = useTranslations("adoptInquiry");
   const searchParams = useSearchParams();
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -59,21 +62,7 @@ function AdoptInquiryForm() {
         ))}
       </div>
 
-      <nav className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-stone-200/50 dark:border-stone-700/50">
-        <Link
-          href="/"
-          className="text-lg font-bold tracking-tight transition-all duration-300 hover:scale-105"
-          style={{ color: ACCENT_GREEN }}
-        >
-          Saved Souls
-        </Link>
-        <Link
-          href="/adopt"
-          className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-        >
-          ← Back to adopt
-        </Link>
-      </nav>
+      <SiteHeader />
 
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
         {/* Hero kop */}
@@ -83,28 +72,34 @@ function AdoptInquiryForm() {
             style={{ backgroundColor: `${ACCENT_GREEN}20`, color: ACCENT_GREEN }}
           >
             <span className="animate-[pulse-heart_1.5s_ease-in-out_infinite]">♥</span>
-            Start your journey
+            {t("badge")}
             <span className="animate-[pulse-heart_1.5s_ease-in-out_infinite]" style={{ animationDelay: "0.5s" }}>♥</span>
           </span>
           <h1 className="text-4xl md:text-5xl font-extrabold text-stone-800 dark:text-stone-100 mb-4 tracking-tight">
-            Give a soul a{" "}
-            <span
-              className="relative inline-block"
-              style={{
-                background: `linear-gradient(135deg, ${ACCENT_GREEN}, ${ACCENT_TEAL})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              second chance
-            </span>
+            {t("titlePart2") ? (
+              <>
+                {t("titlePart1")}{" "}
+                <span
+                  className="relative inline-block"
+                  style={{
+                    background: `linear-gradient(135deg, ${ACCENT_GREEN}, ${ACCENT_TEAL})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {t("titlePart2")}
+                </span>
+              </>
+            ) : (
+              t("titlePart1")
+            )}
           </h1>
           <p className="text-lg text-stone-600 dark:text-stone-400 max-w-md mx-auto mb-2">
-            Fill out the form below and our team will get back to you within 48 hours.
+            {t("subtitle")}
           </p>
           <p className="text-sm text-rose-400/80 dark:text-rose-300/70 font-medium">
-            Every adoption is a love story ♥
+            {t("tagline")}
           </p>
         </div>
 
@@ -128,11 +123,11 @@ function AdoptInquiryForm() {
             style={{ color: ACCENT_GREEN }}
           >
             <span className="text-rose-400">♥</span>
-            Adoption Inquiry
+            {t("formTitle")}
             <span className="text-rose-400">♥</span>
           </h2>
           <p className="text-center text-sm text-stone-500 dark:text-stone-400 mb-8">
-            We can&apos;t wait to help you find your perfect match
+            {t("formSubtitle")}
           </p>
 
           {sent ? (
@@ -144,17 +139,17 @@ function AdoptInquiryForm() {
                 </span>
                 <span className="text-4xl text-rose-400 animate-[pulse-heart_1s_ease-in-out_infinite]" style={{ animationDelay: "0.3s" }}>♥</span>
               </div>
-              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">Thank you!</h3>
+              <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">{t("thankYouTitle")}</h3>
               <p className="text-stone-600 dark:text-stone-400 mb-2">
-                We&apos;ll contact you soon about your adoption inquiry.
+                {t("thankYouText")}
               </p>
-              <p className="text-rose-400/80 text-sm font-medium mb-6">A new love story is about to begin ♥</p>
+              <p className="text-rose-400/80 text-sm font-medium mb-6">{t("thankYouTagline")}</p>
               <Link
                 href="/adopt"
                 className="inline-flex items-center px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 style={{ backgroundColor: ACCENT_GREEN }}
               >
-                Browse more animals →
+                {t("browseMore")}
               </Link>
             </div>
           ) : (
@@ -319,7 +314,7 @@ function AdoptInquiryForm() {
             style={{ color: "inherit" }}
           >
             <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs group-hover:scale-110 transition-transform" style={{ backgroundColor: `${ACCENT_GREEN}20`, color: ACCENT_GREEN }}>♥</span>
-            Free home visit
+            {t("trustBadge1")}
           </Link>
           <Link
             href="/full-medical-check"
@@ -327,7 +322,7 @@ function AdoptInquiryForm() {
             style={{ color: "inherit" }}
           >
             <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs group-hover:scale-110 transition-transform" style={{ backgroundColor: `${ACCENT_GREEN}20`, color: ACCENT_GREEN }}>♥</span>
-            Full medical check
+            {t("trustBadge2")}
           </Link>
           <Link
             href="/lifelong-support"
@@ -335,11 +330,11 @@ function AdoptInquiryForm() {
             style={{ color: "inherit" }}
           >
             <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs group-hover:scale-110 transition-transform" style={{ backgroundColor: `${ACCENT_GREEN}20`, color: ACCENT_GREEN }}>♥</span>
-            Lifelong support
+            {t("trustBadge3")}
           </Link>
         </div>
         <p className="mt-6 text-center text-sm text-stone-400 dark:text-stone-500">
-          Made with ♥ for every rescued soul
+          {t("footer")}
         </p>
       </main>
       <Footer />

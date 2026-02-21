@@ -15,34 +15,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <ParallaxPage>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link
-          href="/"
-          className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity"
-        >
-          <div className="shrink-0 rounded overflow-hidden border border-stone-200 dark:border-stone-600" style={{ width: 70, height: 70 }}>
-            <video
-              src="/savedsouls-fondation-logo.mp4"
-              width={70}
-              height={70}
-              className="block w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              title="Saved Souls Foundation logo"
-            />
-          </div>
-          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
-        </Link>
-        <Link
-          href="/"
-          className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-        >
-          ← Back to home
-        </Link>
-      </nav>
-
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center">
           Contact
@@ -57,7 +29,7 @@ export default function ContactPage() {
             <div className="flex items-start gap-4 mb-3">
               <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 bg-stone-100 dark:bg-stone-800">
                 <video
-                  src="/savedsouls-fondation-logo.mp4"
+                  src="/savedsouls-foundation-logo.mp4"
                   className="w-full h-full object-cover"
                   autoPlay
                   muted

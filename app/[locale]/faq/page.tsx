@@ -20,10 +20,22 @@ const CHAPTERS = [
   { key: "dogsCats", href: "/adopt", emoji: "🐕", emoji2: "🐈", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30" },
   { key: "nutrition", href: "/nutrition", emoji: "🥩", emoji2: "🍽️", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30", wiki: "Raw_feeding" },
   { key: "health", href: "/health", emoji: "🏥", emoji2: "🛡️", gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30", wiki: "Veterinary_medicine" },
+  { key: "firstAid", href: "/first-aid", emoji: "🚑", emoji2: "🏠", gradient: "from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30" },
+  { key: "firstPetHome", href: "/first-pet-home", emoji: "🏠", emoji2: "🐕", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30" },
   { key: "behavior", href: "/behavior", emoji: "🧠", emoji2: "💚", gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30", wiki: "Dog_behavior" },
   { key: "training", href: "/toys-training", emoji: "🧸", emoji2: "🎯", gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30", wiki: "Dog_training" },
   { key: "snacks", href: "/raw-hide", emoji: "🦴", emoji2: "⚠️", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30", wiki: "Rawhide_(material)" },
   { key: "vaccinations", href: "/vaccinations", emoji: "💉", emoji2: "📅", gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30", wiki: "Vaccination_of_dogs" },
+  { key: "dogHomeAlone", href: "/dog-home-alone", emoji: "🚪", emoji2: "🐕", gradient: "from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/30" },
+  { key: "travelWithPet", href: "/travel-with-pet", emoji: "✈️", emoji2: "🐾", gradient: "from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30" },
+  { key: "houseTraining", href: "/house-training", emoji: "🎯", emoji2: "🐕", gradient: "from-lime-50 to-emerald-50 dark:from-lime-950/30 dark:to-emerald-950/30" },
+  { key: "movingWithPet", href: "/moving-with-pet", emoji: "🏠", emoji2: "📦", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
+  { key: "catHairball", href: "/cat-hairball", emoji: "🐈", emoji2: "✨", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30" },
+  { key: "puppySocialization", href: "/puppy-socialization", emoji: "🐕", emoji2: "🐾", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30" },
+  { key: "dogBarking", href: "/dog-barking", emoji: "🔊", emoji2: "🐕", gradient: "from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/30" },
+  { key: "catIndoorOutdoor", href: "/cat-indoor-outdoor", emoji: "🐈", emoji2: "🪟", gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30" },
+  { key: "dogVomitingDiarrhea", href: "/dog-vomiting-diarrhea", emoji: "🩺", emoji2: "🐕", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
+  { key: "dogAndCatTogether", href: "/dog-and-cat-together", emoji: "🐕", emoji2: "🐈", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30" },
 ] as const;
 
 const FAQ_SECTIONS: { titleKey: string; indices: number[] }[] = [
@@ -148,22 +160,6 @@ export default function FaqPage() {
 
   return (
     <ParallaxPage>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link
-          href="/"
-          className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity"
-          style={{ color: ACCENT_GREEN }}
-        >
-          Saved Souls
-        </Link>
-        <Link
-          href="/"
-          className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-        >
-          ← {tCommon("backToHome")}
-        </Link>
-      </nav>
-
       <main className="min-h-screen">
         {/* Hero */}
         <section className="relative pt-12 md:pt-16 pb-8 md:pb-12">
@@ -288,6 +284,47 @@ export default function FaqPage() {
                   ))}
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Direct naar – links met placeholders */}
+        <section className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-stone-200 dark:border-stone-700 shadow-xl p-6 md:p-10">
+            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
+              {t("linksTitle")}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderGetInvolved")}</p>
+                <Link href="/get-involved" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {t("getInvolved")} →
+                </Link>
+              </div>
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderDonate")}</p>
+                <Link href="/#donate" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {tCommon("donate")} →
+                </Link>
+              </div>
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderAdopt")}</p>
+                <Link href="/adopt" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {tCommon("adopt")} →
+                </Link>
+              </div>
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderGuides")}</p>
+                <Link href="/get-involved#info" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {t("linksPlaceholderGuides")} →
+                </Link>
+              </div>
+              <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
+                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderFinancial")}</p>
+                <Link href="/financial-overview" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                  {tCommon("financialOverview")} →
+                </Link>
+              </div>
             </div>
           </div>
         </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import SiteHeader from "./SiteHeader";
 
 type ParallaxPageProps = {
   children: React.ReactNode;
@@ -51,6 +52,7 @@ export default function ParallaxPage({
         />
       )}
       <div ref={scrollRef} className="relative z-10 h-full overflow-y-auto overscroll-contain">
+        <SiteHeader />
         {children}
       </div>
     </div>

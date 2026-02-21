@@ -8,11 +8,12 @@ import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
 import DonateButton from "../components/DonateButton";
 import Footer from "../components/Footer";
+import SiteHeader from "../components/SiteHeader";
 import IdealDonate from "../components/IdealDonate";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
+const BTN_VOLUNTEER = "#ea580c";
 
 /** YouTube video IDs */
 const YOUTUBE_VIDEO_ID = "2vNi6Aa3_Gg";
@@ -47,6 +48,7 @@ function CopyButton({
 }
 
 function ContactForm() {
+  const tHome = useTranslations("home");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -68,7 +70,7 @@ function ContactForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError((data as { error?: string }).error || "Something went wrong. Please try again.");
+        setError((data as { error?: string }).error || tHome("contactError"));
         return;
       }
       setSent(true);
@@ -77,7 +79,7 @@ function ContactForm() {
       setSubject("");
       setMessage("");
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(tHome("contactError"));
     } finally {
       setSending(false);
     }
@@ -87,22 +89,22 @@ function ContactForm() {
     <section id="contact" className="py-16 md:py-20 pb-24 md:pb-20 bg-white/95 dark:bg-stone-900/95">
       <div className="max-w-xl mx-auto w-full px-4">
         <h2 className="text-xl font-bold mb-6 text-center dark:text-[#2aa348]" style={{ color: ACCENT_GREEN }}>
-          Contact
+          {tHome("contactTitle")}
         </h2>
         {sent ? (
           <div className="text-center py-8 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
             <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Thanks for contacting us!
+              {tHome("contactThanksTitle")}
             </p>
             <p className="text-stone-600 dark:text-stone-400 text-base">
-              Your message has been sent to info@savedsouls-foundation.org. We&apos;ll get back to you as soon as we can.
+              {tHome("contactThanksMessage")}
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="contact-name" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Name
+                {tHome("contactName")}
               </label>
               <input
                 id="contact-name"
@@ -111,12 +113,12 @@ function ContactForm() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="Your name"
+                placeholder={tHome("contactNamePlaceholder")}
               />
             </div>
             <div>
               <label htmlFor="contact-email" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Email
+                {tHome("contactEmail")}
               </label>
               <input
                 id="contact-email"
@@ -125,12 +127,12 @@ function ContactForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="your@email.com"
+                placeholder={tHome("contactEmailPlaceholder")}
               />
             </div>
             <div>
               <label htmlFor="contact-subject" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Subject
+                {tHome("contactSubject")}
               </label>
               <input
                 id="contact-subject"
@@ -138,12 +140,12 @@ function ContactForm() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="What is your message about?"
+                placeholder={tHome("contactSubjectPlaceholder")}
               />
             </div>
             <div>
               <label htmlFor="contact-message" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Message
+                {tHome("contactMessage")}
               </label>
               <textarea
                 id="contact-message"
@@ -152,7 +154,7 @@ function ContactForm() {
                 required
                 rows={4}
                 className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348] resize-y"
-                placeholder="Write your message..."
+                placeholder={tHome("contactMessagePlaceholder")}
               />
             </div>
             {error && (
@@ -164,7 +166,7 @@ function ContactForm() {
               className="w-full py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
-              {sending ? "Sending…" : "Send message"}
+              {sending ? tHome("contactSending") : tHome("contactSend")}
             </button>
           </form>
         )}
@@ -186,16 +188,12 @@ export default function DonatePage() {
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [useAutoTheme, setUseAutoTheme] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const miraclesRef = useRef<HTMLElement>(null);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    closeMobileMenu();
   };
 
   useEffect(() => {
@@ -251,204 +249,20 @@ export default function DonatePage() {
         ref={scrollRef}
         className="relative z-10 h-full overflow-y-auto overscroll-contain"
       >
-      {/* Nav – logo left, Adopt / Sponsor / Donate right */}
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <button
-          type="button"
-          onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity"
-        >
-          <div className="shrink-0 rounded overflow-hidden border border-stone-200 dark:border-stone-600" style={{ width: 70, height: 70 }}>
-            <video
-              src="/savedsouls-fondation-logo.mp4"
-              width={70}
-              height={70}
-              className="block w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              title="Saved Souls Foundation logo"
-            />
-          </div>
-          <span className="text-sm font-semibold" style={{ color: ACCENT_GREEN }}>Saved Souls Foundation</span>
-        </button>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-2 md:gap-4">
-          <Link
-            href="/about-us"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("aboutUs")}
-          </Link>
-          <Link
-            href="/story"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("ourStory")}
-          </Link>
-          <Link
-            href="/contact"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("contact")}
-          </Link>
-          <Link
-            href="/get-involved"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("getInvolved")}
-          </Link>
-          <Link
-            href="/volunteer"
-            className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
-          >
-            {t("volunteer")}
-          </Link>
-          <Link
-            href="/adopt"
-            className="px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-opacity hover:opacity-90"
-            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-          >
-            {t("adopt")}
-          </Link>
-          <a
-            href="#sponsor"
-            onClick={(e) => { e.preventDefault(); document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" }); }}
-            className="px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-opacity hover:opacity-90"
-            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-          >
-            {t("sponsor")}
-          </a>
-          <a
-            href="#donate"
-            onClick={(e) => { e.preventDefault(); document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" }); }}
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: BUTTON_ORANGE }}
-          >
-            {t("donate")}
-          </a>
-          <div className="flex-shrink-0 ml-2">
-            <LanguageSwitcher />
-          </div>
-        </div>
-
-        {/* Mobile: taal + hamburger */}
-        <div className="flex md:hidden items-center gap-2">
-          <div className="flex-shrink-0">
-            <LanguageSwitcher compact />
-          </div>
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((o) => !o)}
-            className="p-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"
-            aria-label={mobileMenuOpen ? "Menu sluiten" : "Menu openen"}
-            aria-expanded={mobileMenuOpen}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu backdrop */}
-      <button
-        type="button"
-        onClick={closeMobileMenu}
-        className={`md:hidden fixed inset-0 z-[9] bg-black/20 transition-opacity duration-200 ${
-          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        aria-hidden
+      <SiteHeader
+        scrollToSection={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
       />
 
-      {/* Mobile dropdown menu */}
-      <div
-        className={`md:hidden fixed inset-x-0 top-[57px] z-10 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-200 ease-out overflow-hidden ${
-          mobileMenuOpen ? "max-h-[42rem] opacity-100 overflow-y-auto" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"
-        }`}
+      {/* Kliniek actie – opvallende geanimeerde button */}
+      <Link
+        href="/clinic-renovation"
+        className="fixed bottom-6 right-6 z-30 flex items-center gap-2 px-5 py-4 rounded-2xl font-bold text-white shadow-xl animate-star-pulse hover:scale-105 transition-transform"
+        style={{ backgroundColor: BUTTON_ORANGE }}
+        aria-label={tHome("clinicActionCta")}
       >
-        <div className="px-4 py-4 flex flex-col gap-1">
-          <Link
-            href="/about-us"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("aboutUs")}
-          </Link>
-          <Link
-            href="/story"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("ourStory")}
-          </Link>
-          <Link
-            href="/contact"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("contact")}
-          </Link>
-          <Link
-            href="/get-involved"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("getInvolved")}
-          </Link>
-          <Link
-            href="/street-dogs-thailand"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("streetDogsThailand")}
-          </Link>
-          <Link
-            href="/volunteer"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("volunteer")}
-          </Link>
-          <Link
-            href="/thank-you"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
-          >
-            {t("thankYou")}
-          </Link>
-          <Link
-            href="/adopt"
-            onClick={closeMobileMenu}
-            className="px-4 py-3 rounded-lg text-left font-semibold hover:bg-stone-100 dark:hover:bg-stone-800"
-            style={{ color: ACCENT_GREEN }}
-          >
-            {t("adopt")}
-          </Link>
-          <button
-            type="button"
-            onClick={() => scrollToSection("sponsor")}
-            className="px-4 py-3 rounded-lg text-left font-semibold hover:bg-stone-100 dark:hover:bg-stone-800"
-            style={{ color: ACCENT_GREEN }}
-          >
-            {t("sponsor")}
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToSection("donate")}
-            className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90"
-            style={{ backgroundColor: BUTTON_ORANGE }}
-          >
-            {t("donate")}
-          </button>
-        </div>
-      </div>
+        <span className="text-2xl" aria-hidden>⭐</span>
+        <span className="text-base md:text-lg">{tHome("clinicActionCta")}</span>
+      </Link>
 
       {/* Hero – banner met foto-strip */}
       <header className="px-4 py-8 md:py-12">
@@ -490,15 +304,13 @@ export default function DonatePage() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-4 text-stone-800 dark:text-stone-100">
                 {tHome("headline")}
               </h1>
-              <a
-                href="https://paypal.me/savedsoulsfoundation"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/soul-saver"
                 className="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white text-base transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
                 {tHome("cta")}
-              </a>
+              </Link>
             </div>
           </div>
           <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg mb-2 max-w-2xl mx-auto text-center font-bold">
@@ -525,17 +337,17 @@ export default function DonatePage() {
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-                Love Doesn&apos;t Give Up—Neither Do We
+                {tHome("findOutMoreTitle")}
               </h2>
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-                Through years of patient love, swimming therapy for our paralyzed dogs and disabled dogs, and a promise that every soul matters, we&apos;re rewriting their stories. When others see &quot;too damaged,&quot; we see deserving. When others say &quot;impossible,&quot; we say &quot;not yet.&quot; Read how we rescue dogs and care for wheelchair dogs in Thailand.
+                {tHome("findOutMoreText")}
               </p>
               <Link
                 href="/find-out-more"
                 className="inline-block px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
                 style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
               >
-                FIND OUT MORE
+                {tHome("findOutMoreCta")}
               </Link>
             </div>
           </div>
@@ -556,17 +368,17 @@ export default function DonatePage() {
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-                Your Next Best Friend is Waiting—Wheelchair and All
+                {tHome("adoptTitle")}
               </h2>
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-                Our rescued dogs have survived the unthinkable. They&apos;ve learned to trust again. Now they&apos;re ready for the greatest adventure: coming home to you. Our dog adoption process isn&apos;t fast—because these souls deserve perfection, not speed. Because this isn&apos;t just adoption. This is redemption.
+                {tHome("adoptText")}
               </p>
               <Link
                 href="/adopt-inquiry"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
-                START YOUR ADOPTION JOURNEY →
+                {tHome("adoptCta")}
               </Link>
             </div>
           </div>
@@ -587,10 +399,10 @@ export default function DonatePage() {
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-                Right Now, a Soul is Waiting for You
+                {tHome("soulWaitingTitle")}
               </h2>
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-6">
-            At this very moment, a paralyzed dog is lying in our clinic—waiting for the wheelchair that will give them freedom again. A meat trade survivor is taking their first tentative steps toward trusting a human hand.             Your donation to our dog rescue shelter in Thailand is the difference between survival and surrender.
+                {tHome("soulWaitingText")}
               </p>
               <button
                 type="button"
@@ -598,7 +410,7 @@ export default function DonatePage() {
                 className="px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
-                DONATE NOW — SAVE A SOUL →
+                {tHome("donateNowCta")}
               </button>
             </div>
           </div>
@@ -614,19 +426,19 @@ export default function DonatePage() {
         <div className="absolute inset-0 bg-stone-50/95 dark:bg-stone-800/95" />
         <div className="max-w-5xl mx-auto px-4 relative z-10">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-4">
-            We Specialize in Miracles
+            {tHome("miraclesTitle")}
           </h2>
           <p className="text-stone-600 dark:text-stone-400 text-center mb-12 max-w-2xl mx-auto">
-            Where other shelters see &quot;hopeless,&quot; we see hope. Our mission? Saving stray dogs, rescued dogs, and disabled animals no one else will fight for—in Khon Kaen, Thailand.
+            {tHome("miraclesText")}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {[
-              { title: "Disabled dogs & wheelchair dogs", desc: "Paralyzed dogs who deserve wheelchairs, not euthanasia. Rescued dogs who need swimming therapy, not sympathy.", img: "/woman-dog-wheelchair.webp" },
-              { title: "Meat trade & stray dog survivors", desc: "Rescued dogs learning that hands can heal, not harm. Stray dogs who never knew they mattered—until now.", img: "/dog-sand-happy.webp" },
-              { title: "Every day we", desc: "Cook fresh meals. Train. Rehabilitate. Love fiercely. Our rescued dogs didn't survive hell just to be forgotten. They survived because they were meant to thrive.", img: "/dog-white-brown-resting.webp" },
+              { title: tHome("miraclesCard1Title"), desc: tHome("miraclesCard1Desc"), img: "/woman-dog-wheelchair.webp" },
+              { title: tHome("miraclesCard2Title"), desc: tHome("miraclesCard2Desc"), img: "/dog-sand-happy.webp" },
+              { title: tHome("miraclesCard3Title"), desc: tHome("miraclesCard3Desc"), img: "/dog-white-brown-resting.webp" },
             ].map((item, i) => (
               <Link
-                key={item.title}
+                key={i}
                 href="/donate"
                 className="group relative block rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-600/80 shadow-xl min-h-[280px] transition-shadow duration-300 hover:shadow-2xl hover:border-stone-300 dark:hover:border-stone-500 cursor-pointer"
               >
@@ -643,7 +455,7 @@ export default function DonatePage() {
                 <div className="relative z-10 p-6 flex flex-col justify-end min-h-[280px] bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent">
                   <h3 className="text-lg font-bold mb-2 drop-shadow-sm" style={{ color: ACCENT_GREEN }}>{item.title}</h3>
                   <p className="text-stone-600 dark:text-stone-400 text-base leading-relaxed drop-shadow-sm">{item.desc}</p>
-                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>Click to see where donations go →</p>
+                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>{tHome("miraclesCardCta")}</p>
                 </div>
               </Link>
             ))}
@@ -654,7 +466,7 @@ export default function DonatePage() {
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
               style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
             >
-              SPONSOR A SURVIVOR&apos;S JOURNEY →
+              {tHome("miraclesSponsorCta")}
             </Link>
           </div>
         </div>
@@ -664,10 +476,10 @@ export default function DonatePage() {
       <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-            Every Euro. Every Soul. Every Heartbeat Counts.
+            {tHome("everyEuroTitle")}
           </h2>
           <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-            No corporate salaries. No fancy offices. Just you, us, and the animals who need us. Your money becomes their life.
+            {tHome("everyEuroText")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -677,7 +489,7 @@ export default function DonatePage() {
               className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
-              One-time donation
+              {tHome("oneTimeDonation")}
             </a>
             <button
               type="button"
@@ -685,7 +497,7 @@ export default function DonatePage() {
               className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
               style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
             >
-              Monthly Soul Saver
+              {tHome("monthlySoulSaver")}
             </button>
           </div>
         </div>
@@ -695,16 +507,16 @@ export default function DonatePage() {
       <section className="py-12 bg-white dark:bg-stone-900 border-y border-stone-200 dark:border-stone-700">
         <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
           <div>
-            <AnimatedStat prefix="More than " target={2500} duration={2200} />
-            <p className="text-stone-600 dark:text-stone-400">Rescued dogs & cats helped</p>
+            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={2500} duration={2200} startOnView={false} />
+            <p className="text-stone-600 dark:text-stone-400">{tHome("statsRescued")}</p>
           </div>
           <div>
-            <AnimatedStat prefix="More than " target={39} duration={1800} />
-            <p className="text-stone-600 dark:text-stone-400">Wheelchairs in use</p>
+            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={39} duration={1800} startOnView={false} />
+            <p className="text-stone-600 dark:text-stone-400">{tHome("statsWheelchairs")}</p>
           </div>
           <div>
-            <AnimatedStat prefix="Sinds " target={2010} from={1999} duration={2500} />
-            <p className="text-stone-600 dark:text-stone-400">From 2 rescued dogs in Khon Kaen → 2500+ souls today</p>
+            <AnimatedStat prefix={tHome("statsPrefixSince")} target={2010} from={1999} duration={2500} startOnView={false} />
+            <p className="text-stone-600 dark:text-stone-400">{tHome("statsSince")}</p>
           </div>
         </div>
       </section>
@@ -724,17 +536,17 @@ export default function DonatePage() {
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-                Your Next Best Friend is Waiting—Wheelchair and All
+                {tHome("adoptTitle")}
               </h2>
               <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-                Every rescued dog is <strong>leash-trained, socialized, and prepared</strong>. Every adopter is carefully matched, supported, and welcomed into our family. Adopt a dog from Thailand&apos;s only shelter for disabled and special needs animals. Because this isn&apos;t just adoption. This is redemption.
+                {tHome("adoptHubText")}
               </p>
               <Link
                 href="/adopt-inquiry"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
-                START YOUR ADOPTION JOURNEY →
+                {tHome("adoptCta")}
               </Link>
             </div>
           </div>
@@ -745,10 +557,10 @@ export default function DonatePage() {
       <section id="sponsor" className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-            Sponsor a Survivor&apos;s Journey
+            {tHome("sponsorTitle")}
           </h2>
           <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-            Your monthly support funds wheelchairs for paralyzed dogs, swimming therapy for rescued dogs, fresh meals for stray dogs, and the patient love that turns &quot;hopeless&quot; into hope. Sponsor a dog and be the reason a soul thrives.
+            {tHome("sponsorText")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -756,7 +568,7 @@ export default function DonatePage() {
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
-              Sponsor a dog
+              {tHome("sponsorDog")}
             </Link>
             <button
               type="button"
@@ -764,9 +576,29 @@ export default function DonatePage() {
               className="px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
               style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
             >
-              Donate monthly
+              {tHome("donateMonthly")}
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Volunteer Hero – grote gele geanimeerde knop */}
+      <section id="volunteer" className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
+            {tHome("volunteerTitle")}
+          </h2>
+          <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
+            {tHome("volunteerText")}
+          </p>
+          <Link
+            href="/volunteer"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold text-white shadow-xl animate-star-pulse-orange hover:scale-105 transition-transform text-lg"
+            style={{ backgroundColor: BTN_VOLUNTEER }}
+          >
+            <span className="text-xl" aria-hidden>🌟</span>
+            {tHome("volunteerCta")}
+          </Link>
         </div>
       </section>
 
@@ -774,7 +606,7 @@ export default function DonatePage() {
       <section className="py-12 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <blockquote className="text-xl md:text-2xl font-serif italic text-stone-700 dark:text-stone-300">
-            &ldquo;We can&apos;t save them all. But for each one we save, we change their entire world.&rdquo;
+            &ldquo;{tHome("quote")}&rdquo;
           </blockquote>
         </div>
       </section>
@@ -784,7 +616,7 @@ export default function DonatePage() {
         <section className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-8">
-              Meet our rescued dogs at Saved Souls Foundation
+              {tHome("video1Title")}
             </h2>
             <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 shadow-lg" style={{ paddingBottom: "56.25%" }}>
               <iframe
@@ -805,10 +637,10 @@ export default function DonatePage() {
         <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-4">
-              A Sanctuary in the Heart of Isaan
+              {tHome("video2Title")}
             </h2>
             <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-2xl mx-auto leading-relaxed">
-              Deep in Khon Kaen, in the lush northeast of Thailand, a small team with enormous hearts runs a shelter that never turns away a soul. Hundreds of rescued dogs and cats call this place home—and every day, our dedicated staff and volunteers prove that love can heal what the world has broken.
+              {tHome("video2Text")}
             </p>
             <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 shadow-lg" style={{ paddingBottom: "56.25%" }}>
               <iframe
@@ -849,13 +681,18 @@ export default function DonatePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
             <div className="flex flex-col items-center">
-              <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-lg flex items-center justify-center text-stone-500 text-sm">
-                {tHome("paypalQr")}
-              </div>
+              <a
+                href="https://paypal.me/savedsoulsfoundation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 flex items-center justify-center p-2 hover:border-[#2aa348]/50 transition-colors"
+              >
+                <Image src="/logos/paypal-qr.png" alt={tHome("paypalQr")} width={160} height={160} className="w-full h-full object-contain" />
+              </a>
               <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("paypal")}</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-lg flex items-center justify-center text-stone-500 text-sm">
+              <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-2xl flex items-center justify-center text-stone-500 text-sm">
                 {tHome("promptpayQr")}
               </div>
               <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("promptpay")}</p>
@@ -913,11 +750,10 @@ export default function DonatePage() {
       <section className="py-12 bg-white/95 dark:bg-stone-900/95 border-t border-stone-200 dark:border-stone-700">
         <div className="max-w-3xl mx-auto px-4">
           <blockquote className="pl-4 border-l-4 border-[#2aa348] py-2 text-stone-600 dark:text-stone-400 italic">
-            I visited Saved Souls in 2024. The love and patience they give to each
-            disabled dog is unforgettable. I now sponsor two wheelchairs.
+            {tHome("testimonialQuote")}
           </blockquote>
           <p className="mt-2 text-stone-500 dark:text-stone-500 text-base">
-            — Anne, volunteer from the Netherlands
+            {tHome("testimonialAuthor")}
           </p>
         </div>
       </section>
@@ -925,9 +761,9 @@ export default function DonatePage() {
       {/* Contact form – stays at bottom of homepage */}
       <div className="max-w-xl mx-auto px-4 pt-4 pb-8 md:pb-2 text-center">
         <p className="text-base text-stone-500 dark:text-stone-400">
-          Address, map and bank details?{" "}
+          {tHome("contactFooterText")}
           <Link href="/contact" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
-            See our contact page →
+            {tHome("contactFooterLink")}
           </Link>
         </p>
       </div>

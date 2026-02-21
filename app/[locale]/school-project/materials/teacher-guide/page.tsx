@@ -10,12 +10,6 @@ export default async function TeacherGuidePage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
-      <nav className="sticky top-0 z-20 px-4 py-4 bg-white/98 dark:bg-stone-900/98 border-b border-stone-200 print:hidden">
-        <Link href="/school-project/materials" className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
-          ← {t("backToMaterials")}
-        </Link>
-      </nav>
-
       <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
         <div className="bg-white dark:bg-stone-900 rounded-2xl p-6 md:p-10 shadow-lg border border-stone-200 dark:border-stone-700 print:shadow-none print:border">
           <header className="mb-8 pb-6 border-b border-stone-200 dark:border-stone-600">

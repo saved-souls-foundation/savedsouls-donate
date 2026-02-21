@@ -28,15 +28,6 @@ export default function NutritionPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>Saved Souls</span>
-        </Link>
-        <Link href="/" className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900">
-          ← {tCommon("backToHome")}
-        </Link>
-      </nav>
-
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         {/* Hero */}
         <header className="text-center mb-16">
@@ -53,6 +44,11 @@ export default function NutritionPage() {
           <div className="flex-1">
             <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed">
               {t("intro")}
+            </p>
+            <p className="mt-4 text-stone-600 dark:text-stone-400">
+              🏠 {t("firstPetHomePrompt")}<Link href="/first-pet-home" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("firstPetHomeLink")}</Link>
+              {" · "}
+              <Link href="/health" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("healthLink")}</Link>
             </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 animate-banner-glow transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">

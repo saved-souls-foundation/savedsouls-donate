@@ -1,11 +1,26 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { alternatesForPath } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "FAQ | Saved Souls Foundation",
-  description:
-    "Frequently asked questions about Saved Souls Foundation: adoption, donations, volunteering, visiting our sanctuary in Khon Kaen, Thailand.",
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "faq" });
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: t("metaKeywords").split(/\s*,\s*/),
+    alternates: alternatesForPath("/faq", locale),
+    openGraph: {
+      title: t("metaTitle"),
+      description: t("metaDescription"),
+    },
+  };
+}
 
 export default async function FaqLayout({
   children,

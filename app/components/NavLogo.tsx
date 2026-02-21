@@ -10,7 +10,7 @@ export default function NavLogo() {
     >
       <div className="shrink-0 rounded overflow-hidden border border-stone-200 dark:border-stone-600" style={{ width: 70, height: 70 }}>
         <video
-          src="/savedsouls-fondation-logo.mp4"
+          src="/savedsouls-foundation-logo.mp4"
           width={70}
           height={70}
           className="block w-full h-full object-cover"

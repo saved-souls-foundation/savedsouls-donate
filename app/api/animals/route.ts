@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { fetchAnimalsFromApi } from "@/lib/animals-api";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const { dogs, cats } = await fetchAnimalsFromApi();

@@ -26,7 +26,7 @@ export default async function GetInvolvedPage() {
 
   const mainActions = [
     {
-      href: "/#donate",
+      href: "/donate",
       img: "/hero-hug.webp",
       label: t("donate"),
       tagline: t("donateTagline"),
@@ -61,6 +61,8 @@ export default async function GetInvolvedPage() {
 
   const moreWays = [
     { href: "/feed-a-year", label: t("feedAYear") },
+    { href: "/clinic-renovation", label: t("clinicRenovation") },
+    { href: "/car-action", label: t("carAction") },
     { href: "/donate/thai", label: t("donateBankTransfer") },
     { href: "/contact", label: t("visitSanctuary") },
     { href: "/sponsor", label: t("sponsor") },
@@ -76,60 +78,64 @@ export default async function GetInvolvedPage() {
     { href: "/admin", label: tCommon("cms") },
   ];
 
-  const infoPages = [
-    { href: "/faq", label: tCommon("faq") },
-    { href: "/raw-hide", label: tCommon("rawHide") },
-    { href: "/toys-training", label: tCommon("toysTraining") },
-    { href: "/school-project", label: tCommon("schoolProject") },
-    { href: "/nutrition", label: tCommon("nutrition") },
-    { href: "/health", label: tCommon("health") },
-    { href: "/flea-tick-parasite-guide", label: tCommon("fleaTickParasiteGuide") },
-    { href: "/behavior", label: tCommon("behavior") },
-    { href: "/disabled-dog-guide", label: tCommon("disabledDogGuide") },
-    { href: "/dog-meat-survivors", label: tCommon("dogMeatSurvivors") },
-    { href: "/paralyzed-dogs-guide", label: tCommon("paralyzedDogsGuide") },
-    { href: "/william-heinecke-elephants", label: tCommon("williamHeineckeElephants") },
-    { href: "/minor-hotels", label: tCommon("minorHotels") },
+  const infoPagesByPlaceholder: { placeholderKey: string; links: { href: string; label: string }[] }[] = [
+    {
+      placeholderKey: "infoPlaceholderGeneral",
+      links: [
+        { href: "/faq", label: tCommon("faq") },
+        { href: "/blog", label: tCommon("blog") },
+        { href: "/donate/causes", label: tCommon("donateCauses") },
+        { href: "/financial-overview", label: tCommon("financialOverview") },
+        { href: "/school-project", label: tCommon("schoolProject") },
+        { href: "/fireworks-pets", label: tCommon("fireworksPets") },
+      ],
+    },
+    {
+      placeholderKey: "infoPlaceholderHealth",
+      links: [
+        { href: "/nutrition", label: tCommon("nutrition") },
+        { href: "/health", label: tCommon("health") },
+        { href: "/flea-tick-parasite-guide", label: tCommon("fleaTickParasiteGuide") },
+      ],
+    },
+    {
+      placeholderKey: "infoPlaceholderBehavior",
+      links: [
+        { href: "/behavior", label: tCommon("behavior") },
+        { href: "/toys-training", label: tCommon("toysTraining") },
+        { href: "/raw-hide", label: tCommon("rawHide") },
+      ],
+    },
+    {
+      placeholderKey: "infoPlaceholderFirstPet",
+      links: [
+        { href: "/dog-home-alone", label: tCommon("dogHomeAlone") },
+        { href: "/travel-with-pet", label: tCommon("travelWithPet") },
+        { href: "/house-training", label: tCommon("houseTraining") },
+        { href: "/moving-with-pet", label: tCommon("movingWithPet") },
+        { href: "/puppy-socialization", label: tCommon("puppySocialization") },
+        { href: "/dog-barking", label: tCommon("dogBarking") },
+        { href: "/dog-and-cat-together", label: tCommon("dogAndCatTogether") },
+      ],
+    },
+    {
+      placeholderKey: "infoPlaceholderGuides",
+      links: [
+        { href: "/cat-hairball", label: tCommon("catHairball") },
+        { href: "/cat-indoor-outdoor", label: tCommon("catIndoorOutdoor") },
+        { href: "/dog-vomiting-diarrhea", label: tCommon("dogVomitingDiarrhea") },
+        { href: "/disabled-dog-guide", label: tCommon("disabledDogGuide") },
+        { href: "/dog-meat-survivors", label: tCommon("dogMeatSurvivors") },
+        { href: "/paralyzed-dogs-guide", label: tCommon("paralyzedDogsGuide") },
+        { href: "/william-heinecke-elephants", label: tCommon("williamHeineckeElephants") },
+        { href: "/minor-hotels", label: tCommon("minorHotels") },
+      ],
+    },
   ];
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp" noOverlay>
       <div className="min-h-screen bg-gradient-to-b from-white via-stone-50/95 to-white dark:from-stone-900 dark:via-stone-900/98 dark:to-stone-900">
-        <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-700 shadow-sm">
-          <Link href="/" className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity">
-            <div className="shrink-0 rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 shadow" style={{ width: 70, height: 70 }}>
-              <video
-                src="/savedsouls-fondation-logo.mp4"
-                width={70}
-                height={70}
-                className="block w-full h-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                title="Saved Souls Foundation logo"
-              />
-            </div>
-            <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>
-              Saved Souls Foundation
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:block">
-              <LanguageSwitcher />
-            </div>
-            <div className="sm:hidden">
-              <LanguageSwitcher compact />
-            </div>
-            <Link
-              href="/"
-              className="text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-            >
-              ← {tCommon("backToHome")}
-            </Link>
-          </div>
-        </nav>
-
         <main className="max-w-5xl mx-auto px-4 py-12 md:py-20">
           {/* Hero */}
           <header className="text-center mb-16 md:mb-20">
@@ -225,32 +231,39 @@ export default async function GetInvolvedPage() {
             </div>
           </section>
 
-          {/* Information & guides */}
-          <section className="rounded-2xl bg-white dark:bg-stone-800/80 border-2 border-stone-200 dark:border-stone-600 shadow-xl p-8 md:p-10">
+          {/* Information & guides – met placeholder categorieën */}
+          <section id="info" className="rounded-2xl bg-white dark:bg-stone-800/80 border-2 border-stone-200 dark:border-stone-600 shadow-xl p-8 md:p-10">
             <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-2" style={{ color: ACCENT_GREEN }}>
               <span>📖</span> {t("infoTitle")}
             </h2>
-            <div className="flex flex-wrap gap-3">
-              {infoPages.map((link) => (
-                <Link
-                  key={link.href + link.label}
-                  href={link.href}
-                  className={`inline-flex items-center px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 font-medium border-2 border-transparent hover:scale-105 hover:shadow-lg transition-all duration-200 ${
-                    link.href === "/raw-hide"
-                      ? "hover:bg-red-100 hover:text-red-600 hover:border-red-300 dark:hover:bg-red-950/30 dark:hover:text-red-400 dark:hover:border-red-700"
-                      : "hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+            {infoPagesByPlaceholder.map((group) => (
+              <div key={group.placeholderKey} className="mb-8 last:mb-0">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-3 pb-1 border-b border-stone-200 dark:border-stone-600">
+                  {t(group.placeholderKey)}
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href + link.label}
+                      href={link.href}
+                      className={`inline-flex items-center px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-700/80 text-stone-700 dark:text-stone-300 font-medium border-2 border-transparent hover:scale-105 hover:shadow-lg transition-all duration-200 ${
+                        link.href === "/raw-hide"
+                          ? "hover:bg-red-100 hover:text-red-600 hover:border-red-300 dark:hover:bg-red-950/30 dark:hover:text-red-400 dark:hover:border-red-700"
+                          : "hover:bg-[#2aa348]/15 hover:text-[#2aa348] hover:border-[#2aa348]/40 dark:hover:bg-[#2aa348]/20 dark:hover:text-[#2aa348]"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
           </section>
 
           {/* CTA */}
           <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/#donate"
+              href="/donate"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
