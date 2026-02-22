@@ -44,7 +44,7 @@ export default function BehaviorPage() {
             </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600">
-            <Image src="/dog-care.webp" alt={t("imgAlt")} width={400} height={300} className="w-full h-64 object-cover" />
+            <Image src="/blog/behave-hero.webp" alt={t("imgAlt")} width={400} height={300} className="w-full h-auto object-contain" />
           </div>
         </section>
 

@@ -11,7 +11,8 @@
     "lint": "eslint",
     "generate-banners": "node scripts/generate-banner-images.mjs",
     "fetch-shelter-logos": "node scripts/fetch-shelter-logos.mjs",
-    "export-shelter-emails": "node scripts/export-shelter-emails.mjs"
+    "export-shelter-emails": "node scripts/export-shelter-emails.mjs",
+    "sync-facebook-blog": "node scripts/sync-facebook-blog.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.4.0",

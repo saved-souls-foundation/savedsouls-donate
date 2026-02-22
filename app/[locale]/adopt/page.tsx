@@ -145,20 +145,84 @@ export default function AdoptPage() {
           <p className="text-lg text-stone-600 dark:text-stone-400" style={{ color: ACCENT_GREEN }}>
             Every soul deserves a loving home
           </p>
-          <Link
-            href="/first-pet-home"
-            className="mt-4 inline-block px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-opacity hover:opacity-90"
-            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-          >
-            First time taking a pet home? Read our guide →
-          </Link>
+          <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/luchtbrug"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+              style={{ backgroundColor: ACCENT_GREEN }}
+            >
+              {t("luchtbrugLink")}
+            </Link>
+            <Link
+              href="/first-pet-home"
+              className="inline-block px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-opacity hover:opacity-90"
+              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+            >
+              {t("firstPetLink")}
+            </Link>
+          </div>
         </header>
 
-        <div className="mb-10 p-6 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-800 shadow-sm">
-          <p className="text-lg text-stone-700 dark:text-stone-300 leading-relaxed text-center max-w-3xl mx-auto">
-            {t("pleaseHelpUs")}
+        <section className="mb-12 p-6 md:p-10 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-emerald-50/30 dark:from-stone-900 dark:via-stone-800 dark:to-emerald-950/20 border-2 border-amber-200 dark:border-amber-800 shadow-lg">
+          <p className="text-lg md:text-xl text-stone-700 dark:text-stone-300 leading-relaxed mb-4">
+            {t("happyFaces1Before")}
+            <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+              {t("happyFaces1Link")}
+            </a>
+            {t("happyFaces1After")}
           </p>
-        </div>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+            {t("happyFaces2")}
+          </p>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+            {t("happyFaces3")}
+          </p>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+            {t("happyFaces4")}
+          </p>
+          <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4">
+            {t("happyFaces5")}
+          </p>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
+            {t("happyFaces6")}
+          </p>
+          <ul className="space-y-2 mb-6 text-stone-700 dark:text-stone-300">
+            <li>✨ {t("happyFaces7")}</li>
+            <li>✨ {t("happyFaces8")}</li>
+            <li>✨ {t("happyFaces9")}</li>
+            <li>✨ {t("happyFaces10")}</li>
+          </ul>
+          <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4" style={{ color: ACCENT_GREEN }}>
+            {t("happyFaces11")}
+          </p>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+            {t("happyFaces12")}
+          </p>
+          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
+            {t("happyFaces12Share")}{" "}
+            <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+              Facebook
+            </a>
+            {" · "}
+            <a href="https://www.youtube.com/@savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+              YouTube
+            </a>
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a href="#animals" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
+              {t("happyFacesAdopt")}
+            </a>
+            <Link href="/sponsor" className="px-5 py-2.5 rounded-xl font-semibold border-2 hover:opacity-90" style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}>
+              {t("happyFacesSponsor")}
+            </Link>
+            <Link href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
+              {t("happyFacesDonate")}
+            </Link>
+            <Link href="/volunteer" className="px-5 py-2.5 rounded-xl font-semibold border-2 border-stone-400 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+              {t("happyFacesVolunteer")}
+            </Link>
+          </div>
+        </section>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
           {(["all", "dog", "cat"] as const).map((t) => (
@@ -200,6 +264,7 @@ export default function AdoptPage() {
           </button>
         </div>
 
+        <div id="animals" className="scroll-mt-8">
         {loading ? (
           <div className="text-center py-12">Loading...</div>
         ) : (
@@ -242,6 +307,7 @@ export default function AdoptPage() {
         {!loading && filteredAnimals.length === 0 && (
           <p className="text-center text-stone-500 py-12">No animals match your filters.</p>
         )}
+        </div>
       </main>
       <Footer />
     </div>

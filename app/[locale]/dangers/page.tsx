@@ -55,7 +55,14 @@ export default function DangersPage() {
             <li>• {t("plant2")}</li>
             <li>• {t("plant3")}</li>
           </ul>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed">{t("toxicPlantsTip")}</p>
+          <p className="text-stone-600 dark:text-stone-400 mb-4 leading-relaxed">{t("toxicPlantsTip")}</p>
+          <Link
+            href="/toxic-plants"
+            className="inline-flex items-center gap-2 font-semibold underline hover:no-underline"
+            style={{ color: ACCENT_GREEN }}
+          >
+            {t("toxicPlantsReadMore")} →
+          </Link>
         </section>
 
         <section className="mb-16 rounded-2xl p-6 md:p-10 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">

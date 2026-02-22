@@ -8,7 +8,22 @@ export type BlogPost = {
   listingImage?: string; // optional: used on blog listing page instead of heroImage
   images?: string[]; // optional inline images
   layout?: "default" | "adopt"; // adopt = hero with frost overlay, link to adopt page
+  source?: "static";
 };
+
+/** Facebook posts (van sync-facebook-blog.mjs) */
+export type FacebookPost = {
+  slug: string;
+  date: string;
+  heroImage: string;
+  listingImage?: string;
+  permalink: string;
+  message: string;
+  excerpt: string;
+  source: "facebook";
+};
+
+export type BlogPostOrFacebook = BlogPost | FacebookPost;
 
 export const BLOG_POSTS: BlogPost[] = [
   {
@@ -30,6 +45,35 @@ export function getBlogPost(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);
 }
 
-export function getAllBlogPosts(): BlogPost[] {
-  return [...BLOG_POSTS].sort((a, b) => (b.date > a.date ? 1 : -1));
+/** Haalt een post op (static of Facebook) op basis van slug */
+export function getPostBySlug(slug: string): BlogPostOrFacebook | undefined {
+  const staticPost = BLOG_POSTS.find((p) => p.slug === slug);
+  if (staticPost) return { ...staticPost, source: "static" as const };
+  const fbPost = getFacebookPosts().find((p) => p.slug === slug);
+  return fbPost ?? undefined;
+}
+
+let _facebookPosts: FacebookPost[] | null = null;
+
+function getFacebookPosts(): FacebookPost[] {
+  if (_facebookPosts !== null) return _facebookPosts;
+  try {
+    // Dynamic import for JSON - works at build/runtime
+    const data = require("../data/facebook-posts.json") as unknown;
+    _facebookPosts = Array.isArray(data) ? (data as FacebookPost[]) : [];
+  } catch {
+    _facebookPosts = [];
+  }
+  return _facebookPosts;
+}
+
+export function getAllBlogPosts(): BlogPostOrFacebook[] {
+  const staticPosts = BLOG_POSTS.map((p) => ({ ...p, source: "static" as const }));
+  const fbPosts = getFacebookPosts();
+  const merged = [...staticPosts, ...fbPosts];
+  return merged.sort((a, b) => (b.date > a.date ? 1 : -1));
+}
+
+export function isFacebookPost(post: BlogPostOrFacebook): post is FacebookPost {
+  return post.source === "facebook";
 }

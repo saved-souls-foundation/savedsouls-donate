@@ -21,7 +21,7 @@ export default function FleaTickParasiteGuidePage() {
   const t = useTranslations("fleaTickParasiteGuide");
   const tCommon = useTranslations("common");
   const locale = useLocale();
-  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+  const wikiLang = ["nl", "en", "de", "es", "th", "ru"].includes(locale) ? locale : "en";
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">

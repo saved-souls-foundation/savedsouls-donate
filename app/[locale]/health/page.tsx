@@ -60,7 +60,7 @@ export default function HealthPage() {
   const t = useTranslations("health");
   const tCommon = useTranslations("common");
   const locale = useLocale();
-  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+  const wikiLang = ["nl", "en", "de", "es", "th", "ru"].includes(locale) ? locale : "en";
 
   const WikiLink = ({ diseaseKey, children }: { diseaseKey: string; children: React.ReactNode }) => {
     const slug = DISEASE_WIKI[diseaseKey];
@@ -108,6 +108,15 @@ export default function HealthPage() {
             </p>
             <p className="mt-2 text-stone-600 dark:text-stone-400">
               🎆 {t("fireworksPetsPrompt")}<Link href="/fireworks-pets" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("fireworksPetsLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              💜 {t("petLossPrompt")}<Link href="/pet-loss" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("petLossLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🏥 {t("petInsurancePrompt")}<Link href="/pet-insurance" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("petInsuranceLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🐾 {t("seniorPetPrompt")}<Link href="/senior-pet" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("seniorPetLink")}</Link>
             </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">

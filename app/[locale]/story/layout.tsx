@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url,
       siteName: "Saved Souls Foundation",
       type: "article",
-      locale: locale === "en" ? "en_US" : locale === "nl" ? "nl_NL" : locale === "de" ? "de_DE" : locale === "th" ? "th_TH" : "ru_RU",
+      locale: locale === "en" ? "en_US" : locale === "nl" ? "nl_NL" : locale === "de" ? "de_DE" : locale === "es" ? "es_ES" : locale === "th" ? "th_TH" : "ru_RU",
       images: [{ url: `${BASE_URL}/savedsoul-logo.webp`, width: 1200, height: 630, alt: "Saved Souls Foundation" }],
     },
     twitter: {

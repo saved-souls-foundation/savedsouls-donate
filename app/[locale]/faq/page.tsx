@@ -36,6 +36,18 @@ const CHAPTERS = [
   { key: "catIndoorOutdoor", href: "/cat-indoor-outdoor", emoji: "🐈", emoji2: "🪟", gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30" },
   { key: "dogVomitingDiarrhea", href: "/dog-vomiting-diarrhea", emoji: "🩺", emoji2: "🐕", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
   { key: "dogAndCatTogether", href: "/dog-and-cat-together", emoji: "🐕", emoji2: "🐈", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30" },
+  { key: "toxicPlants", href: "/toxic-plants", emoji: "🌿", emoji2: "⚠️", gradient: "from-lime-50 to-emerald-50 dark:from-lime-950/30 dark:to-emerald-950/30" },
+  { key: "petLoss", href: "/pet-loss", emoji: "💔", emoji2: "🕯️", gradient: "from-slate-50 to-stone-50 dark:from-slate-950/30 dark:to-stone-950/30" },
+  { key: "petInsurance", href: "/pet-insurance", emoji: "📋", emoji2: "🛡️", gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30" },
+  { key: "seniorPet", href: "/senior-pet", emoji: "🐕", emoji2: "❤️", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30" },
+  { key: "petProofHouse", href: "/pet-proof-house", emoji: "🏠", emoji2: "🛡️", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30" },
+  { key: "petSitter", href: "/pet-sitter", emoji: "🐾", emoji2: "✈️", gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30" },
+  { key: "petPassport", href: "/pet-passport", emoji: "📄", emoji2: "✈️", gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30" },
+  { key: "microchipping", href: "/microchipping", emoji: "📍", emoji2: "🐕", gradient: "from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30" },
+  { key: "sterilization", href: "/sterilization", emoji: "🏥", emoji2: "❤️", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30" },
+  { key: "petAndChildren", href: "/pet-and-children", emoji: "👶", emoji2: "🐕", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30" },
+  { key: "overheating", href: "/overheating", emoji: "🌡️", emoji2: "⚠️", gradient: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30" },
+  { key: "foster", href: "/foster", emoji: "🏠", emoji2: "💜", gradient: "from-teal-50 to-emerald-50 dark:from-teal-950/30 dark:to-emerald-950/30" },
 ] as const;
 
 const FAQ_SECTIONS: { titleKey: string; indices: number[] }[] = [
@@ -150,7 +162,7 @@ export default function FaqPage() {
   const locale = useLocale();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+  const wikiLang = ["nl", "en", "de", "es", "th", "ru"].includes(locale) ? locale : "en";
 
   const faqCount = 30;
   const faqs = Array.from({ length: faqCount }, (_, i) => ({

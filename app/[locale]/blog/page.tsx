@@ -3,10 +3,9 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
-import { getAllBlogPosts } from "@/lib/blog-posts";
+import { getAllBlogPosts, isFacebookPost } from "@/lib/blog-posts";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -19,9 +18,21 @@ function formatDate(dateStr: string, locale: string): string {
   }).format(date);
 }
 
+function getPostTitle(post: ReturnType<typeof getAllBlogPosts>[0], t: (key: string) => string): string {
+  if (isFacebookPost(post)) {
+    const firstLine = post.message.split("\n")[0]?.trim().slice(0, 80);
+    return firstLine || "Update van Facebook";
+  }
+  return t(`posts.${post.slug}.title`);
+}
+
+function getPostExcerpt(post: ReturnType<typeof getAllBlogPosts>[0], t: (key: string) => string): string {
+  if (isFacebookPost(post)) return post.excerpt;
+  return t(`posts.${post.slug}.excerpt`);
+}
+
 export default function BlogPage() {
   const t = useTranslations("blog");
-  const tCommon = useTranslations("common");
   const locale = useLocale();
   const posts = getAllBlogPosts();
 
@@ -41,35 +52,45 @@ export default function BlogPage() {
         </header>
 
         <section className="space-y-8">
-          {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-600 shadow-lg hover:shadow-xl hover:border-[#2aa348]/40 transition-all duration-300"
-            >
+          {posts.map((post) => {
+            const title = getPostTitle(post, t);
+            const excerpt = getPostExcerpt(post, t);
+
+            const cardContent = (
               <div className="relative aspect-[16/10] md:aspect-[21/9] overflow-hidden">
-                <Image
-                  src={post.listingImage ?? post.heroImage}
-                  alt=""
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 896px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <time className="text-sm font-medium text-white/90 drop-shadow-lg">
-                    {formatDate(post.date, locale)}
-                  </time>
-                  <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-lg mt-1">
-                    {t(`posts.${post.slug}.title`)}
-                  </h2>
-                  <p className="text-white/90 text-sm md:text-base mt-2 line-clamp-2 drop-shadow">
-                    {t(`posts.${post.slug}.excerpt`)}
-                  </p>
+                  <Image
+                    src={post.listingImage ?? post.heroImage}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 896px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <time dateTime={post.date} className="text-sm font-medium text-white drop-shadow-lg">
+                      {formatDate(post.date, locale)}
+                    </time>
+                    {isFacebookPost(post) && (
+                      <span className="ml-2 text-xs text-white/70 drop-shadow">Facebook</span>
+                    )}
+                    <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-lg mt-1">
+                      {title}
+                    </h2>
+                    <p className="text-white/90 text-sm md:text-base mt-2 line-clamp-2 drop-shadow">
+                      {excerpt}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+            );
+
+            const className = "block group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-600 shadow-lg hover:shadow-xl hover:border-[#2aa348]/40 transition-all duration-300";
+
+            return (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className={className}>
+                {cardContent}
+              </Link>
+            );
+          })}
         </section>
 
         <div className="mt-16 text-center">

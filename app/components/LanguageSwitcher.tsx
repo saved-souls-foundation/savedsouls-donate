@@ -9,6 +9,7 @@ const LOCALE_FLAGS: Record<string, string> = {
   nl: "🇳🇱",
   en: "🇬🇧",
   de: "🇩🇪",
+  es: "🇪🇸",
   th: "🇹🇭",
   ru: "🇷🇺",
 };

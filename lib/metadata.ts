@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const BASE_URL = "https://savedsouls-foundation.org";
-const LOCALES = ["nl", "en", "de", "th", "ru"] as const;
+const LOCALES = ["nl", "en", "de", "es", "th", "ru"] as const;
 
 /**
  * Genereert hreflang-alternates voor meertalige SEO.

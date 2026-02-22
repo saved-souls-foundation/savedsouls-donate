@@ -15,7 +15,7 @@ export default function NutritionPage() {
   const t = useTranslations("nutrition");
   const tCommon = useTranslations("common");
   const locale = useLocale();
-  const wikiLang = ["nl", "en", "de", "th", "ru"].includes(locale) ? locale : "en";
+  const wikiLang = ["nl", "en", "de", "es", "th", "ru"].includes(locale) ? locale : "en";
   const barfGoUrl = `/go?url=${encodeURIComponent(BARF_WIKI_URL)}&return=${encodeURIComponent("/nutrition")}`;
   const barfRawRich = {
     barf: (chunks: React.ReactNode) => (

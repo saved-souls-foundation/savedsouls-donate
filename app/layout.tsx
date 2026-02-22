@@ -53,7 +53,7 @@ const jsonLd = {
     "@type": "ContactPoint",
     email: "info@savedsouls-foundation.org",
     contactType: "general",
-    availableLanguage: ["Dutch", "English", "German", "Thai", "Russian"],
+    availableLanguage: ["Dutch", "English", "German", "Spanish", "Thai", "Russian"],
   },
   foundingDate: "2010",
   areaServed: "Thailand",
@@ -78,6 +78,7 @@ const LOCALE_TO_LANG: Record<string, string> = {
   nl: "nl",
   en: "en",
   de: "de",
+  es: "es",
   th: "th",
   ru: "ru",
 };

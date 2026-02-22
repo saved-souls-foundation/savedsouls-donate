@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../../components/ParallaxPage";
 import Footer from "../../../components/Footer";
-import { getBlogPost } from "@/lib/blog-posts";
+import { getPostBySlug, isFacebookPost } from "@/lib/blog-posts";
 import { notFound } from "next/navigation";
 
 const ACCENT_GREEN = "#2aa348";
@@ -24,7 +24,7 @@ function formatDate(dateStr: string, locale: string): string {
 export default function BlogPostPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const post = getBlogPost(slug);
+  const post = getPostBySlug(slug);
   const t = useTranslations("blog");
   const tCommon = useTranslations("common");
   const locale = useLocale();
@@ -35,25 +35,31 @@ export default function BlogPostPage() {
     window.open("https://paypal.me/savedsoulsfoundation", "_blank");
   };
 
-  const isAdoptLayout = post.layout === "adopt";
+  const isFacebook = isFacebookPost(post);
+  const isAdoptLayout = !isFacebook && post.layout === "adopt";
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo.webp">
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-20">
         <article>
           <header className="mb-10">
-            <time className="text-sm font-medium text-stone-500 dark:text-stone-400">
+            <time dateTime={post.date} className="text-sm font-medium text-stone-500 dark:text-stone-400">
               {formatDate(post.date, locale)}
             </time>
+            {isFacebook && (
+              <span className="ml-2 text-xs font-medium text-stone-500 dark:text-stone-400">Facebook</span>
+            )}
             <h1 className="text-3xl md:text-4xl font-black text-stone-800 dark:text-stone-100 mt-2 mb-4 leading-tight">
-              {t(`posts.${slug}.title`)}
+              {isFacebook
+                ? (post.message.split("\n")[0]?.trim().slice(0, 100) || "Update van Facebook")
+                : t(`posts.${slug}.title`)}
             </h1>
           </header>
 
           <div className="mb-10 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 relative aspect-[16/10]">
             <Image
               src={post.heroImage}
-              alt={t(`posts.${slug}.heroAlt`)}
+              alt={isFacebook ? "" : t(`posts.${slug}.heroAlt`)}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 896px"
@@ -75,7 +81,25 @@ export default function BlogPostPage() {
             )}
           </div>
 
-          {!isAdoptLayout && (
+          {isFacebook && (
+            <div className="prose prose-lg dark:prose-invert max-w-none">
+              <div className="whitespace-pre-wrap text-stone-600 dark:text-stone-400 leading-relaxed text-lg">
+                {post.message}
+              </div>
+              <p className="mt-6">
+                <a
+                  href={post.permalink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                >
+                  {t("viewOriginalOnFacebook")} →
+                </a>
+              </p>
+            </div>
+          )}
+
+          {!isAdoptLayout && !isFacebook && (
             <>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-lg">
@@ -153,7 +177,9 @@ export default function BlogPostPage() {
           ) : (
             <>
               <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6">{t(`posts.${slug}.ctaText`)}</p>
+              <p className="text-stone-600 dark:text-stone-400 mb-6">
+                {isFacebook ? t("ctaSubtitle") : t(`posts.${slug}.ctaText`)}
+              </p>
               <button
                 onClick={handleDonate}
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"

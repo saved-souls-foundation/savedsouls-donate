@@ -10,6 +10,7 @@ const BTN_ADOPT = "#059669";
 const BTN_SPONSOR = "#0891b2";
 const BTN_VOLUNTEER = "#ea580c";
 const BTN_DONATE = "#dc2626";
+const BTN_INFLUENCERS = "#8b5cf6";
 
 type SiteHeaderProps = {
   /** Op homepage: scroll naar sectie. Anders: link naar /#sponsor en /#donate */
@@ -41,7 +42,7 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
 
   return (
     <>
-      <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
+      <nav className="sticky top-0 z-[110] flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
         <Link
           href="/"
           className="flex flex-col items-center gap-0.5 hover:opacity-90 transition-opacity"
@@ -93,6 +94,13 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
             className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           >
             {t("shop")}
+          </Link>
+          <Link
+            href="/influencers"
+            className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: BTN_INFLUENCERS }}
+          >
+            {t("influencers")}
           </Link>
           <Link
             href="/adopt"
@@ -172,70 +180,80 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
         </div>
       </nav>
 
-      {/* Mobile dropdown menu */}
-      <div
-        className={`md:hidden fixed inset-x-0 top-[57px] z-10 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 shadow-lg transition-all duration-200 ease-out overflow-hidden ${
-          mobileMenuOpen ? "max-h-[42rem] opacity-100 overflow-y-auto" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"
-        }`}
-      >
-        <div className="px-4 py-4 flex flex-col gap-1">
-          <Link href="/about-us" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("aboutUs")}
-          </Link>
-          <Link href="/story" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("ourStory")}
-          </Link>
-          <Link href="/contact" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("contact")}
-          </Link>
-          <Link href="/get-involved" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("getInvolved")}
-          </Link>
-          <Link href="/shop" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("shop")}
-          </Link>
-          <Link href="/street-dogs-thailand" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("streetDogsThailand")}
-          </Link>
-          <Link href="/thank-you" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-            {t("thankYou")}
-          </Link>
-          <Link href="/adopt" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_ADOPT }}>
-            {t("adopt")}
-          </Link>
-          {isHomePage ? (
-            <button type="button" onClick={handleSponsor} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_SPONSOR }}>
-              {t("sponsor")}
-            </button>
-          ) : (
-            <Link href="/#sponsor" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_SPONSOR }}>
-              {t("sponsor")}
-            </Link>
-          )}
-          <Link href="/volunteer" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
-            {t("volunteer")}
-          </Link>
-          {isHomePage ? (
-            <button type="button" onClick={handleDonate} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
-              {t("donate")}
-            </button>
-          ) : (
-            <Link href="/#donate" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-left font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
-              {t("donate")}
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile menu backdrop */}
+      {/* Mobile menu backdrop – onder nav, boven pagina-inhoud */}
       <button
         type="button"
         onClick={closeMobileMenu}
-        className={`md:hidden fixed inset-0 z-[9] bg-black/20 transition-opacity duration-200 ${
+        className={`md:hidden fixed inset-0 top-[57px] z-[105] bg-black/40 backdrop-blur-sm transition-opacity duration-200 ${
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden
       />
+
+      {/* Mobile dropdown menu – boven backdrop, leesbaar */}
+      <div
+        className={`md:hidden fixed inset-x-0 top-[57px] z-[106] max-h-[calc(100vh-57px)] overflow-y-auto bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 shadow-xl transition-all duration-200 ease-out ${
+          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none max-h-0"
+        }`}
+      >
+        <div className="px-4 py-6 flex flex-col gap-2">
+          {/* Navigatielinks */}
+          <div className="flex flex-col gap-1">
+            <Link href="/about-us" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("aboutUs")}
+            </Link>
+            <Link href="/story" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("ourStory")}
+            </Link>
+            <Link href="/contact" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("contact")}
+            </Link>
+            <Link href="/get-involved" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("getInvolved")}
+            </Link>
+            <Link href="/shop" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("shop")}
+            </Link>
+            <Link href="/street-dogs-thailand" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("streetDogsThailand")}
+            </Link>
+            <Link href="/thank-you" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+              {t("thankYou")}
+            </Link>
+          </div>
+
+          {/* Actieknoppen – gegroepeerd onderaan */}
+          <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700 flex flex-col gap-2">
+            <Link href="/influencers" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_INFLUENCERS }}>
+              {t("influencers")}
+            </Link>
+            <Link href="/adopt" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_ADOPT }}>
+              {t("adopt")}
+            </Link>
+            {isHomePage ? (
+              <button type="button" onClick={handleSponsor} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_SPONSOR }}>
+                {t("sponsor")}
+              </button>
+            ) : (
+              <Link href="/#sponsor" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_SPONSOR }}>
+                {t("sponsor")}
+              </Link>
+            )}
+            <Link href="/volunteer" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
+              {t("volunteer")}
+            </Link>
+            {isHomePage ? (
+              <button type="button" onClick={handleDonate} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_DONATE }}>
+                {t("donate")}
+              </button>
+            ) : (
+              <Link href="/#donate" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+                {t("donate")}
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
