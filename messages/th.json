@@ -91,7 +91,10 @@
     "heartworm": "พยาธิหัวใจ",
     "infections": "การติดเชื้อ",
     "dangers": "อันตราย",
-    "findOutMore": "ดูเพิ่มเติม"
+    "findOutMore": "ดูเพิ่มเติม",
+    "recentDonations": "บริจาคล่าสุด",
+    "footerRegistration": "เมื่อวันที่ 9 ตุลาคม 2560 เราได้รับการจดทะเบียนอย่างเป็นทางการเป็นองค์กรไม่แสวงหาผลกำไรในประเทศไทยภายใต้ชื่อ Saved Souls Foundation (เลขทะเบียน 1/2560)",
+    "footerRegistrationShort": "องค์กรไม่แสวงหาผลกำไรอย่างเป็นทางการ Thailand · เลขทะเบียน 1/2560"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -1266,7 +1269,9 @@
     "founderName": "กาเบรียลา ลีโอนฮาร์ด",
     "founderDate": "20 พฤษภาคม 2567",
     "founderMessage": "Dear Followers 💚\n\nI am very pleased to announce to you all that Saved Souls Foundation has a new management.\n\nMelanie de Wit will face this great challenge and I am sure that she will succeed. Her calm, thoughtful and determined nature will be a great asset to our foundation.\n\nI personally will continue to support Melanie and help where help is needed.\n\nMy plans for the future are still open, but I will always have animals around me in my life.\n\nI thank everyone for your loyalty to our animals and I am sure Melanie will do her job wonderfully.\n\nWarm regards,\nGabriela 💚",
-    "photosCaption": "เราทำให้เกิดความแตกต่างด้วยกัน 💚"
+    "photosCaption": "เราทำให้เกิดความแตกต่างด้วยกัน 💚",
+    "shareTitle": "แชร์การกระทำของคุณ",
+    "shareSubtitle": "สร้างแรงบันดาลใจให้คนอื่นช่วยด้วย – แชร์บนโซเชียลมีเดีย"
   },
   "partners": {
     "title": "พันธมิตรและผู้สนับสนุน",

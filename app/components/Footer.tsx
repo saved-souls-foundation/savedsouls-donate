@@ -75,6 +75,9 @@ export default function Footer() {
           </div>
           <p className="font-semibold text-center text-sm">Saved Souls Foundation</p>
           <p className="text-white/90 text-center text-sm">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
+          <p className="text-white/80 text-center text-xs mt-1">
+            {t("footerRegistrationShort")}
+          </p>
         </div>
         <div className="flex items-center justify-center gap-3 mt-1">
           {SOCIAL_LINKS.map(({ name, href, icon }) => (

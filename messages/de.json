@@ -91,7 +91,10 @@
     "heartworm": "Herzwurm",
     "infections": "Infektionen",
     "dangers": "Gefahren",
-    "findOutMore": "Mehr erfahren"
+    "findOutMore": "Mehr erfahren",
+    "recentDonations": "Letzte Spenden",
+    "footerRegistration": "Am 9. Oktober 2017 wurden wir offiziell als thailändische Non-Profit-Organisation unter dem Namen Saved Souls Foundation registriert (Registrierungsnummer 1/2560).",
+    "footerRegistrationShort": "Offizielle Non-Profit-Organisation Thailand · Registrierungsnummer 1/2560"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -1266,7 +1269,9 @@
     "founderName": "Gabriela Leonhard",
     "founderDate": "20. Mai 2024",
     "founderMessage": "Dear Followers 💚\n\nI am very pleased to announce to you all that Saved Souls Foundation has a new management.\n\nMelanie de Wit will face this great challenge and I am sure that she will succeed. Her calm, thoughtful and determined nature will be a great asset to our foundation.\n\nI personally will continue to support Melanie and help where help is needed.\n\nMy plans for the future are still open, but I will always have animals around me in my life.\n\nI thank everyone for your loyalty to our animals and I am sure Melanie will do her job wonderfully.\n\nWarm regards,\nGabriela 💚",
-    "photosCaption": "Gemeinsam machen wir den Unterschied 💚"
+    "photosCaption": "Gemeinsam machen wir den Unterschied 💚",
+    "shareTitle": "Teile deine Aktion",
+    "shareSubtitle": "Inspiriere andere zum Helfen – teile in den sozialen Medien."
   },
   "partners": {
     "title": "Partner & Sponsoring",

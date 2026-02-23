@@ -91,7 +91,10 @@
     "infections": "Infecties",
     "dangers": "Gevaren",
     "findOutMore": "Meer weten",
-    "siteSearchCancel": "Annuleren"
+    "siteSearchCancel": "Annuleren",
+    "recentDonations": "Laatste donaties",
+    "footerRegistration": "Op 9 oktober 2017 zijn we officieel geregistreerd als Thaise non-profit organisatie onder de naam Saved Souls Foundation (registratienummer 1/2560).",
+    "footerRegistrationShort": "Officieel non-profit organisatie Thailand · Registratienummer 1/2560"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -1286,7 +1289,9 @@
     "founderName": "Gabriela Leonhard",
     "founderDate": "20 mei 2024",
     "founderMessage": "Dear Followers 💚\n\nI am very pleased to announce to you all that Saved Souls Foundation has a new management.\n\nMelanie de Wit will face this great challenge and I am sure that she will succeed. Her calm, thoughtful and determined nature will be a great asset to our foundation.\n\nI personally will continue to support Melanie and help where help is needed.\n\nMy plans for the future are still open, but I will always have animals around me in my life.\n\nI thank everyone for your loyalty to our animals and I am sure Melanie will do her job wonderfully.\n\nWarm regards,\nGabriela 💚",
-    "photosCaption": "Samen maken we het verschil 💚"
+    "photosCaption": "Samen maken we het verschil 💚",
+    "shareTitle": "Deel je actie",
+    "shareSubtitle": "Inspireer anderen om ook te helpen – deel op social media."
   },
   "partners": {
     "title": "Partner & Sponsorship",

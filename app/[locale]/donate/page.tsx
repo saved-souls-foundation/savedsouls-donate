@@ -5,6 +5,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
 import BankTransferSection from "../../components/BankTransferSection";
+import RecentDonations from "../../components/RecentDonationsFooter";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -41,9 +42,11 @@ export default async function DonatePage() {
           </p>
         </header>
 
-        <div className="mb-8 p-6 rounded-2xl bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm border border-stone-200/80 dark:border-stone-700/80 shadow-xl shadow-stone-200/50 dark:shadow-stone-900/50" style={{ borderLeft: `4px solid ${ACCENT_GREEN}` }}>
+        <div className="mb-6 p-6 rounded-2xl bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm border border-stone-200/80 dark:border-stone-700/80 shadow-xl shadow-stone-200/50 dark:shadow-stone-900/50" style={{ borderLeft: `4px solid ${ACCENT_GREEN}` }}>
           <IdealDonate />
         </div>
+
+        <RecentDonations />
 
         <div id="bank-transfer" className="scroll-mt-24 mb-8">
           <BankTransferSection />

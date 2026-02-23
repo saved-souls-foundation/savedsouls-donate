@@ -93,6 +93,54 @@ body {
   animation: pulse-heart 2s ease-in-out infinite;
 }
 
+@keyframes donation-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes donation-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-donation-fade-up {
+  animation: donation-fade-up 0.5s ease-out forwards;
+}
+
+.animate-donation-marquee {
+  animation: donation-marquee 20s linear infinite;
+}
+
+@keyframes donation-shimmer {
+  0% { transform: translateX(-100%); opacity: 0; }
+  15% { opacity: 0.5; }
+  85% { opacity: 0.5; }
+  100% { transform: translateX(calc(100% + 100vw)); opacity: 0; }
+}
+
+@keyframes donation-heart-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.animate-donation-shimmer {
+  animation: donation-shimmer 4s ease-in-out infinite;
+}
+
+.animate-donation-heart {
+  animation: donation-heart-pulse 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-donation-marquee {
+    animation: none;
+  }
+  .animate-donation-shimmer,
+  .animate-donation-heart {
+    animation: none;
+  }
+}
+
 @keyframes shimmer-frost {
   0% { background-position: -200% 0; opacity: 0.5; }
   50% { opacity: 1; }

@@ -9,6 +9,71 @@ import { useTranslations } from "next-intl";
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
 
+function ShareButtons() {
+  const t = useTranslations("thankYou");
+  const tGetInvolved = useTranslations("getInvolved");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || typeof window === "undefined") return null;
+
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(
+    `${tGetInvolved("shareTitle")} – ${tGetInvolved("shareText")}`
+  );
+  const shareLinks = [
+    {
+      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      label: "Facebook",
+      icon: "📘",
+      color: "#1877f2",
+    },
+    {
+      href: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+      label: "X",
+      icon: "𝕏",
+      color: "#000",
+    },
+    {
+      href: `https://wa.me/?text=${text}%20${url}`,
+      label: "WhatsApp",
+      icon: "💬",
+      color: "#25d366",
+    },
+    {
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      label: "LinkedIn",
+      icon: "💼",
+      color: "#0a66c2",
+    },
+  ];
+
+  return (
+    <div className="text-center mb-16">
+      <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
+        {t("shareTitle")}
+      </h2>
+      <p className="text-stone-600 dark:text-stone-400 mb-6">{t("shareSubtitle")}</p>
+      <div className="flex flex-wrap justify-center gap-3">
+        {shareLinks.map(({ href, label, icon, color }) => (
+          <a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+            style={{ backgroundColor: color }}
+          >
+            <span aria-hidden>{icon}</span>
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RunningHeart({ delay, top, size, duration }: { delay: number; top: string; size: number; duration: number }) {
   return (
     <span
@@ -61,13 +126,16 @@ export default function ThankYouPage() {
         </header>
 
         {/* Donation celebration illustration */}
-        <div className="mb-16 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600">
+        <div className="mb-12 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600">
           <img
             src="/donate-thank-you.png"
             alt="Community support for animal shelter – donations make a difference"
             className="w-full h-auto object-contain"
           />
         </div>
+
+        {/* Social share – direct na bedankt */}
+        <ShareButtons />
 
         {/* Thank you cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">

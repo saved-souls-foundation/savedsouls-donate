@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import SiteHeader from "../components/SiteHeader";
 import IdealDonate from "../components/IdealDonate";
 import BankTransferSection from "../components/BankTransferSection";
+import RecentDonations from "../components/RecentDonationsFooter";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -276,13 +277,24 @@ export default function DonatePage() {
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-4 text-stone-800 dark:text-stone-100">
                 {tHome("headline")}
               </h1>
-              <Link
-                href="/soul-saver"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white text-base transition-opacity hover:opacity-90"
-                style={{ backgroundColor: BUTTON_ORANGE }}
-              >
-                {tHome("cta")}
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <button
+                  type="button"
+                  onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base md:text-lg shadow-lg hover:scale-105 transition-all"
+                  style={{ backgroundColor: "#c41e3a" }}
+                >
+                  <span aria-hidden>❤️</span>
+                  {t("donate")}
+                </button>
+                <Link
+                  href="/soul-saver"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90 text-center"
+                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+                >
+                  {tHome("cta")}
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -674,9 +686,11 @@ export default function DonatePage() {
             </p>
           </div>
 
-          <div className="mb-8 p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-xl" style={{ borderLeft: `4px solid ${ACCENT_GREEN}` }}>
+          <div className="mb-6 p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-xl" style={{ borderLeft: `4px solid ${ACCENT_GREEN}` }}>
             <IdealDonate />
           </div>
+
+          <RecentDonations />
 
           <p className="text-center text-stone-500 dark:text-stone-500 text-xs mb-8">
             {tHome("donateBreakdown")}
