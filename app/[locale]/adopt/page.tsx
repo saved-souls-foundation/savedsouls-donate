@@ -2,6 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
 import SiteHeader from "../../components/SiteHeader";
@@ -80,12 +81,22 @@ const PER_PAGE = 24;
 
 export default function AdoptPage() {
   const t = useTranslations("adoptPage");
+  const searchParams = useSearchParams();
+  const typeParam = searchParams.get("type");
+  const initialType = typeParam === "dog" || typeParam === "cat" ? typeParam : "all";
   const [gender, setGender] = useState("all");
   const [size, setSize] = useState("all");
-  const [type, setType] = useState<"all" | AnimalType>("all");
+  const [type, setType] = useState<"all" | AnimalType>(initialType);
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (typeParam === "dog" || typeParam === "cat") {
+      setType(typeParam);
+      setPage(1);
+    }
+  }, [typeParam]);
 
   useEffect(() => {
     fetch("/api/animals")

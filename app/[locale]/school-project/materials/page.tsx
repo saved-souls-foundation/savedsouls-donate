@@ -18,7 +18,7 @@ export default async function MaterialsPage() {
   ];
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>

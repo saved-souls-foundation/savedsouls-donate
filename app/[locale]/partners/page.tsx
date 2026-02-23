@@ -115,7 +115,7 @@ export default function PartnersPage() {
   }, []);
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp" speed={0.2}>
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp" speed={0.2}>
       <main className="max-w-5xl mx-auto px-4 py-16 md:py-24">
         <header className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-2 mb-4">

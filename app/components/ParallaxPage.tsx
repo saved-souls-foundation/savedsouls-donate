@@ -17,7 +17,7 @@ type ParallaxPageProps = {
 
 export default function ParallaxPage({
   children,
-  backgroundImage = "/savedsoul-logo.webp",
+  backgroundImage = "/savedsoul-logo-bg.webp",
   speed = 0.25,
   noOverlay = false,
   overlayClassName,

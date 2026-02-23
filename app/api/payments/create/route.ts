@@ -7,7 +7,7 @@ function getBaseUrl(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
-const PRESET_AMOUNTS = [25, 50, 100, 250];
+const PRESET_AMOUNTS = [25, 50, 100, 250, 500];
 const MIN_AMOUNT = 1;
 const MAX_AMOUNT = 50000;
 
@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const amountCents = Math.round(Number(body.amount) * 100);
     const locale = String(body.locale || "en").slice(0, 2);
+    const message = typeof body.message === "string" ? body.message.slice(0, 280) : undefined;
 
     if (!Number.isFinite(amountCents) || amountCents < MIN_AMOUNT * 100 || amountCents > MAX_AMOUNT * 100) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
@@ -45,6 +46,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         purpose: "donation",
         locale,
+        ...(message && { donorMessage: message }),
       },
     });
 

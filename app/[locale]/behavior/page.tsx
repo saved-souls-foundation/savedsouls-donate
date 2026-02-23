@@ -21,7 +21,7 @@ export default function BehaviorPage() {
   const tCommon = useTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         {/* Hero */}
         <header className="text-center mb-16">

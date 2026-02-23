@@ -9,7 +9,7 @@ export default async function FundraisingPage() {
   const t = await getTranslations("schoolProject.materials.fundraising");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
         <div className="bg-white dark:bg-stone-900 rounded-2xl p-6 md:p-10 shadow-lg border border-stone-200 dark:border-stone-700 print:shadow-none print:border">
           <header className="mb-8 pb-6 border-b border-stone-200 dark:border-stone-600">

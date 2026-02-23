@@ -35,7 +35,7 @@ export default function ThankYouPage() {
   }, []);
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       {/* Hearts running across the screen - on top with pointer-events-none so they're visible */}
       <div className="pointer-events-none fixed inset-0 z-[15] overflow-visible" aria-hidden>
         <RunningHeart delay={0} top="10%" size={32} duration={10} />

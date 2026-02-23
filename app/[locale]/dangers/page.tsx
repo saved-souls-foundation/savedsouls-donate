@@ -12,7 +12,7 @@ export default function DangersPage() {
   const tCommon = useTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600 mb-6 text-sm text-stone-600 dark:text-stone-400">

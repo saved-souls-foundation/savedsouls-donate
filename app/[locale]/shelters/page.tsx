@@ -143,7 +143,7 @@ export default async function SheltersPage() {
   const tCommon = await getTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-5xl mx-auto px-4 py-12 md:py-20">
         <header className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
@@ -207,6 +207,48 @@ export default async function SheltersPage() {
               </a>
             ))}
           </div>
+        </section>
+
+        {/* Ere vermelding – honorary mention */}
+        <section className="mb-16 md:mb-20">
+          <div className="text-center mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-stone-800 dark:text-stone-100" style={{ color: ACCENT_GREEN }}>
+              {t("honoraryMention")}
+            </h2>
+          </div>
+          <a
+            href="https://www.mydisabledhairyfriends.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-2xl overflow-hidden border-2 bg-white/95 dark:bg-stone-900/95 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-6 md:p-8 max-w-2xl mx-auto border-amber-200/70 dark:border-amber-700/50 hover:border-amber-300 dark:hover:border-amber-600"
+          >
+            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+              <div className="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center p-2">
+                <Image
+                  src="/logos/mdhf.png"
+                  alt={t("mdhfName")}
+                  width={128}
+                  height={128}
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: "#E67A4C" }}>
+                  {t("mdhfName")}
+                </h3>
+                <p className="text-sm text-amber-700 dark:text-amber-400 font-medium mb-2">
+                  {t("mdhfTagline")}
+                </p>
+                <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-3">
+                  {t("mdhfDescription")}
+                </p>
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 dark:text-amber-400 group-hover:gap-3 transition-all">
+                  {t("visitSite")}
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </span>
+              </div>
+            </div>
+          </a>
         </section>
 
         {/* Other shelters – tekst onder de partners */}

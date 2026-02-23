@@ -23,7 +23,7 @@ export default function LuchtbrugPage() {
   ];
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
         {/* Hero met slogan */}
         <header className="text-center mb-14 md:mb-20">

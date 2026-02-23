@@ -21,7 +21,7 @@ export default async function InfluencersPage() {
   const t = await getTranslations("influencers");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12 md:mb-16">
           <div

@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
-import DonateButton from "../components/DonateButton";
 import Footer from "../components/Footer";
 import SiteHeader from "../components/SiteHeader";
 import IdealDonate from "../components/IdealDonate";
@@ -237,13 +236,13 @@ export default function DonatePage() {
         className="fixed inset-0 z-0 bg-stone-200 dark:bg-stone-900"
         aria-hidden
         style={{
-          backgroundImage: "url('/savedsoul-logo.webp')",
+          backgroundImage: "url('/savedsoul-logo-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           transform: `translateY(${scrollY * 0.35}px)`,
         }}
       />
-      <div className="fixed inset-0 z-[1] bg-white/70 dark:bg-stone-950/80 pointer-events-none" />
+      <div className="fixed inset-0 z-[1] bg-white/85 dark:bg-stone-950/90 pointer-events-none" />
 
       <div
         ref={scrollRef}
@@ -271,7 +270,7 @@ export default function DonatePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5 bg-stone-900">
               {[
                 { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },
-                { src: "/team-thankyou.png", alt: "Team at the entrance of Saved Souls Foundation" },
+                { src: "/team-thankyou.webp", alt: "Team at the entrance of Saved Souls Foundation" },
                 { src: "/volunteers-with-dogs.png", alt: "Volunteers with rescued dogs" },
                 { src: "/woman-dog-wheelchair.webp", alt: "Dog with wheelchair at Saved Souls" },
               ].map((img, i) => (
@@ -313,12 +312,33 @@ export default function DonatePage() {
               </Link>
             </div>
           </div>
-          <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg mb-2 max-w-2xl mx-auto text-center font-bold">
-            {tHome("intro1")}
-          </p>
-          <p className="text-stone-700 dark:text-stone-300 text-base md:text-lg font-bold max-w-2xl mx-auto text-center">
-            {tHome("intro2")}
-          </p>
+
+          <div className="max-w-2xl mx-auto mb-10">
+            <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed mb-6">
+              {tHome("intro1")}
+            </p>
+            <p className="text-stone-700 dark:text-stone-300 text-base md:text-lg text-center font-medium leading-relaxed mb-6">
+              {tHome("intro2")}
+            </p>
+            <p className="text-sm font-medium text-stone-500 dark:text-stone-400 text-center mb-4">{tHome("quickLinksTitle")}</p>
+            <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
+              {t("adopt")}
+            </Link>
+            <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
+              {t("donate")}
+            </button>
+            <button type="button" onClick={() => document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: "#0891b2" }}>
+              {t("sponsor")}
+            </button>
+            <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
+              {t("volunteer")}
+            </Link>
+            </div>
+            <Link href="/adopt" className="block mt-6 text-center text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors">
+              {tHome("adoptDiversityText")} →
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -326,11 +346,13 @@ export default function DonatePage() {
       <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
-            <div className="flex-shrink-0 w-full md:w-80 lg:w-96">
-              <img
+            <div className="flex-shrink-0 w-full md:w-80 lg:w-96 relative aspect-square">
+              <Image
                 src="/dog-grass-walking.webp"
                 alt="Saved Souls Foundation caring for a rescued dog at our shelter in Khon Kaen"
-                className="rounded-2xl w-full aspect-square object-cover shadow-lg"
+                fill
+                className="rounded-2xl object-cover shadow-lg"
+                sizes="(max-width: 768px) 100vw, 384px"
                 loading="lazy"
                 style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
@@ -357,11 +379,13 @@ export default function DonatePage() {
       <section className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row-reverse md:items-center gap-8 md:gap-12">
-            <div className="flex-shrink-0 w-full max-w-sm mx-auto md:mx-0 md:w-72 lg:w-80 h-[260px] md:h-[280px] rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800 shadow-lg">
-              <img
+            <div className="flex-shrink-0 w-full max-w-sm mx-auto md:mx-0 md:w-72 lg:w-80 h-[260px] md:h-[280px] rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-800 shadow-lg relative">
+              <Image
                 src="/two-dogs-platform.webp"
                 alt="Two rescued dogs at Saved Souls Foundation, bonded by affection"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 320px"
                 loading="lazy"
                 style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
@@ -388,11 +412,13 @@ export default function DonatePage() {
       <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center gap-8 mb-8">
-            <div className="flex-shrink-0 w-full md:w-72 lg:w-80 mx-auto">
-              <img
+            <div className="flex-shrink-0 w-full md:w-72 lg:w-80 mx-auto relative aspect-square">
+              <Image
                 src="/dog-reaching.webp"
                 alt="A rescued dog at Saved Souls Foundation waiting for a loving home"
-                className="rounded-2xl w-full aspect-square object-cover shadow-lg"
+                fill
+                className="rounded-2xl object-cover shadow-lg"
+                sizes="(max-width: 768px) 100vw, 320px"
                 loading="lazy"
                 style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
@@ -433,13 +459,13 @@ export default function DonatePage() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {[
-              { title: tHome("miraclesCard1Title"), desc: tHome("miraclesCard1Desc"), img: "/woman-dog-wheelchair.webp" },
-              { title: tHome("miraclesCard2Title"), desc: tHome("miraclesCard2Desc"), img: "/dog-sand-happy.webp" },
-              { title: tHome("miraclesCard3Title"), desc: tHome("miraclesCard3Desc"), img: "/dog-white-brown-resting.webp" },
+              { title: tHome("miraclesCard1Title"), desc: tHome("miraclesCard1Desc"), img: "/woman-dog-wheelchair.webp", href: "/about-us#wheelchair", cta: tHome("miraclesCard1Cta") },
+              { title: tHome("miraclesCard2Title"), desc: tHome("miraclesCard2Desc"), img: "/dog-sand-happy.webp", href: "/dog-meat-survivors", cta: tHome("miraclesCard2Cta") },
+              { title: tHome("miraclesCard3Title"), desc: tHome("miraclesCard3Desc"), img: "/dog-white-brown-resting.webp", href: "/adopt", cta: tHome("miraclesCard3Cta") },
             ].map((item, i) => (
               <Link
                 key={i}
-                href="/donate"
+                href={item.href}
                 className="group relative block rounded-2xl overflow-hidden border border-stone-200/80 dark:border-stone-600/80 shadow-xl min-h-[280px] transition-shadow duration-300 hover:shadow-2xl hover:border-stone-300 dark:hover:border-stone-500 cursor-pointer"
               >
                 <div
@@ -455,7 +481,7 @@ export default function DonatePage() {
                 <div className="relative z-10 p-6 flex flex-col justify-end min-h-[280px] bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent">
                   <h3 className="text-lg font-bold mb-2 drop-shadow-sm" style={{ color: ACCENT_GREEN }}>{item.title}</h3>
                   <p className="text-stone-600 dark:text-stone-400 text-base leading-relaxed drop-shadow-sm">{item.desc}</p>
-                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>{tHome("miraclesCardCta")}</p>
+                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>{item.cta}</p>
                 </div>
               </Link>
             ))}
@@ -507,15 +533,15 @@ export default function DonatePage() {
       <section className="py-12 bg-white dark:bg-stone-900 border-y border-stone-200 dark:border-stone-700">
         <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
           <div>
-            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={2500} duration={2200} startOnView={false} />
+            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={2500} duration={2200} startOnView />
             <p className="text-stone-600 dark:text-stone-400">{tHome("statsRescued")}</p>
           </div>
           <div>
-            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={39} duration={1800} startOnView={false} />
+            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={39} duration={1800} startOnView />
             <p className="text-stone-600 dark:text-stone-400">{tHome("statsWheelchairs")}</p>
           </div>
           <div>
-            <AnimatedStat prefix={tHome("statsPrefixSince")} target={2010} from={1999} duration={2500} startOnView={false} />
+            <AnimatedStat prefix={tHome("statsPrefixSince")} target={2010} from={1999} duration={2500} startOnView />
             <p className="text-stone-600 dark:text-stone-400">{tHome("statsSince")}</p>
           </div>
         </div>
@@ -525,11 +551,13 @@ export default function DonatePage() {
       <section id="adopt" className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row-reverse md:items-center gap-8 mb-8">
-            <div className="flex-shrink-0 w-full md:w-72 mx-auto">
-              <img
+            <div className="flex-shrink-0 w-full md:w-72 mx-auto relative aspect-square">
+              <Image
                 src="/dog-wheelchair-small.webp"
                 alt="A rescued dog with a wheelchair at Saved Souls Foundation, ready for adoption"
-                className="rounded-2xl w-full aspect-square object-cover shadow-lg"
+                fill
+                className="rounded-2xl object-cover shadow-lg"
+                sizes="(max-width: 768px) 100vw, 288px"
                 loading="lazy"
                 style={{ filter: "brightness(1.1) contrast(1.03)" }}
               />
@@ -656,93 +684,68 @@ export default function DonatePage() {
         </section>
       )}
 
-      {/* Donate section */}
-      <section id="donate" className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center text-stone-800 dark:text-stone-100">
-            {tHome("donateTitle")}
-          </h2>
-          <p className="text-stone-600 dark:text-stone-400 text-center mb-6">
-            {tHome("donateSubtitle")}
-          </p>
-          <ul className="text-stone-600 dark:text-stone-400 text-center mb-2 space-y-1 text-base">
-            <li><strong className="text-stone-800 dark:text-stone-200">€25</strong> {tHome("donate25")}</li>
-            <li><strong className="text-stone-800 dark:text-stone-200">€50</strong> {tHome("donate50")}</li>
-            <li><strong className="text-stone-800 dark:text-stone-200">€100</strong> {tHome("donate100")}</li>
-            <li><strong className="text-stone-800 dark:text-stone-200">€25</strong> {tHome("donate250")}</li>
-          </ul>
-          <p className="text-stone-600 dark:text-stone-400 text-center mb-8 text-base">
-            {tHome("donateBreakdown")}
-          </p>
+      {/* Donate section – Apple/Bol/Amazon stijl: minimaal, één focus */}
+      <section id="donate" className="py-16 md:py-24 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
+        <div className="max-w-lg mx-auto px-4">
+          <div className="text-center mb-8">
+            <div className="w-40 h-40 mx-auto mb-4 rounded-2xl overflow-hidden border-4 shadow-lg" style={{ borderColor: ACCENT_GREEN }}>
+              <img src="/donatie-thanks.webp" alt={tHome("donateThanksImageAlt")} className="w-full h-full object-cover" />
+            </div>
+            <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-2 flex items-center justify-center gap-2">
+              <img src="/icons/paw.svg" alt="" className="w-6 h-6" aria-hidden />
+              {tHome("donateTitle")}
+              <img src="/icons/heart.svg" alt="" className="w-6 h-6" aria-hidden />
+            </h2>
+            <p className="text-stone-600 dark:text-stone-400 text-sm" style={{ color: ACCENT_GREEN }}>
+              {tHome("donateSubtitle")}
+            </p>
+          </div>
 
-          <div className="max-w-md mx-auto mb-10">
+          <div className="mb-8 p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-xl" style={{ borderLeft: `4px solid ${ACCENT_GREEN}` }}>
             <IdealDonate />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-            <div className="flex flex-col items-center">
-              <a
-                href="https://paypal.me/savedsoulsfoundation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 flex items-center justify-center p-2 hover:border-[#2aa348]/50 transition-colors"
-              >
-                <Image src="/logos/paypal-qr.png" alt={tHome("paypalQr")} width={160} height={160} className="w-full h-full object-contain" />
-              </a>
-              <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("paypal")}</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-40 h-40 bg-stone-300 dark:bg-stone-700 rounded-2xl flex items-center justify-center text-stone-500 text-sm">
-                {tHome("promptpayQr")}
-              </div>
-              <p className="mt-2 text-base text-stone-600 dark:text-stone-400">{tHome("promptpay")}</p>
-            </div>
-          </div>
+          <p className="text-center text-stone-500 dark:text-stone-500 text-xs mb-8">
+            {tHome("donateBreakdown")}
+          </p>
 
-          <h3 className="text-lg font-bold mb-4 text-center" style={{ color: ACCENT_GREEN }}>
-            {tHome("bankTransfer")}
-          </h3>
-          <div className="space-y-4 mb-8">
-            <div className="p-4 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-              <p className="font-semibold text-stone-800 dark:text-stone-200">Kasikorn Bank</p>
-              <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all">
-                033-8-13623-4
-              </p>
-              <p className="text-stone-600 dark:text-stone-400 text-base">SWIFT: KASITHBK</p>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <CopyButton text="033-8-13623-4" label={tHome("copyAccount")} copiedLabel={t("copied")} />
-                <CopyButton text="KASITHBK" label={tHome("copySwift")} copiedLabel={t("copied")} />
-              </div>
-            </div>
-            <div className="p-4 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-              <p className="font-semibold text-stone-800 dark:text-stone-200">PostFinance (Switzerland)</p>
-              <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all">
-                CH17 0900 0000 8027 1722 9
-              </p>
-              <p className="text-stone-600 dark:text-stone-400 text-base">SWIFT: POFICHBEXXX</p>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <CopyButton
-                  text="CH17 0900 0000 8027 1722 9"
-                  label={tHome("copyIban")}
-                  copiedLabel={t("copied")}
-                />
-                <CopyButton text="POFICHBEXXX" label={tHome("copySwift")} copiedLabel={t("copied")} />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <DonateButton href="https://paypal.me/savedsoulsfoundation">
-              {tHome("donateNow")}
-            </DonateButton>
-            <Link
-              href="/sponsor"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-lg border-2 transition-colors hover:opacity-90 text-center"
-              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-            >
-              {tHome("becomeMonthly")}
+          <div className="text-center mb-8">
+            <Link href="/sponsor" className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
+              {tHome("becomeMonthly")} →
             </Link>
           </div>
+
+          {/* Bankoverschrijving – uitklapbaar */}
+          <details id="bank-transfer" className="group rounded-xl border border-stone-200 dark:border-stone-600 overflow-hidden">
+            <summary className="px-6 py-4 cursor-pointer list-none flex items-center justify-between bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+              <span className="font-semibold text-stone-800 dark:text-stone-200" style={{ color: ACCENT_GREEN }}>
+                {tHome("bankTransfer")}
+              </span>
+              <span className="text-stone-400 group-open:rotate-180 transition-transform">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
+              </span>
+            </summary>
+            <div className="p-6 pt-0 space-y-4">
+              <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">Kasikorn Bank (Thailand)</p>
+                <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">033-8-13623-4</p>
+                <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: KASITHBK</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <CopyButton text="033-8-13623-4" label={tHome("copyAccount")} copiedLabel={t("copied")} />
+                  <CopyButton text="KASITHBK" label={tHome("copySwift")} copiedLabel={t("copied")} />
+                </div>
+              </div>
+              <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">PostFinance (Zwitserland)</p>
+                <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">CH17 0900 0000 8027 1722 9</p>
+                <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: POFICHBEXXX</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <CopyButton text="CH17 0900 0000 8027 1722 9" label={tHome("copyIban")} copiedLabel={t("copied")} />
+                  <CopyButton text="POFICHBEXXX" label={tHome("copySwift")} copiedLabel={t("copied")} />
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
       </section>
 

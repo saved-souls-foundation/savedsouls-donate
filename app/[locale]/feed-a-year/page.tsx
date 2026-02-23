@@ -29,7 +29,7 @@ export default function FeedAYearPage() {
   );
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp" speed={0.3} noOverlay>
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp" speed={0.3} noOverlay>
       {/* Witte achtergrond */}
       <div className="fixed inset-0 z-[1] pointer-events-none bg-white dark:bg-stone-50" />
 

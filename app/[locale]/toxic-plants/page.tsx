@@ -19,7 +19,7 @@ export default function ToxicPlantsPage() {
   const tCommon = useTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         {/* Hero afbeelding - voeg toxic-plants-hero.webp toe aan public/ */}
         <div className="mb-12 rounded-3xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 min-h-[16rem] md:min-h-[28rem]">

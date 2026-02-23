@@ -1,177 +1,311 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
-import ParallaxPage from "../../components/ParallaxPage";
-import Footer from "../../components/Footer";
+import { useTranslations } from "next-intl";
+import ParallaxPage from "@/app/components/ParallaxPage";
+import Footer from "@/app/components/Footer";
+import ScrollReveal from "@/app/components/ScrollReveal";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
+const BTN_VOLUNTEER = "#ea580c";
+const BTN_INFLUENCERS = "#8b5cf6";
 
-export const metadata: Metadata = {
-  title: "About us | Saved Souls Foundation",
-  description:
-    "Saved Souls Foundation was founded in 2010 by Gabriela Leonhard. Registered non-profit in Khon Kaen, Thailand. We provide care, swimming therapy and sterilization for rescued animals.",
-};
+export default function AboutUsPage() {
+  const t = useTranslations("aboutUs");
+  const tCommon = useTranslations("common");
+  const [heroLoaded, setHeroLoaded] = useState(false);
 
-export default async function AboutUsPage() {
-  const t = await getTranslations("common");
+  useEffect(() => {
+    const timer = setTimeout(() => setHeroLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <ParallaxPage>
-      <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
-        <header className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-            {t("aboutUs")}
-          </h1>
-          <p className="text-lg text-stone-600 dark:text-stone-400" style={{ color: ACCENT_GREEN }}>
-            Saved Souls Foundation
-          </p>
-        </header>
-
-        <section className="space-y-8 text-stone-700 dark:text-stone-300 font-bold">
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Our foundation
-            </h2>
-            <p className="leading-relaxed">
-              Saved Souls Animal Sanctuary was founded in 2010 by Gabriela Leonhard. The shelter is located in Ban Khok Ngam, Ban Fang District, Khon Kaen province, northeastern Thailand, and sits on a 6-rai (9,600 m²) plot of land.
-            </p>
-            <p className="leading-relaxed mt-4">
-              On October 9th, 2017, we officially became a registered non-profit organization under the name <strong>Saved Souls Foundation</strong> (registration number 1/2560).
-            </p>
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp" noOverlay>
+      <div className="min-h-screen bg-white">
+        {/* Hero – full impact */}
+        <section className="relative min-h-[70vh] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image src="/team-dogs.webp" alt="" fill className="object-cover" priority sizes="100vw" />
+            <div className="absolute inset-0 bg-white/70" />
           </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Our care
-            </h2>
-            <p className="leading-relaxed">
-              We are dedicated to providing the highest quality of life for all our animals. Fresh meals are cooked daily, and swimming therapy plays an important role—especially for our disabled dogs.
-            </p>
-          </div>
-
-          {/* Video – sanctuary MP4 */}
-          <div className="pt-2">
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 text-center" style={{ color: ACCENT_GREEN }}>
-              See our sanctuary
-            </h2>
-            <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 shadow-lg" style={{ paddingBottom: "56.25%" }}>
-              <video
-                className="absolute inset-0 w-full h-full object-cover"
-                src="/sanctuary.mp4"
-                controls
-                playsInline
-                autoPlay
-                muted
-                loop
-                title="Saved Souls Foundation – sanctuary"
-              >
-                Your browser does not support video. <a href="/sanctuary.mp4">Download the video</a>.
-              </video>
+          <div className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 py-20">
+            <div
+              className={`text-center transition-all duration-1000 ease-out ${
+                heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+            >
+              <p className="text-stone-600 text-sm md:text-base uppercase tracking-[0.3em] mb-6 font-medium">
+                {t("heroSubtitle")}
+              </p>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-stone-900 mb-6 leading-tight tracking-tight max-w-4xl mx-auto">
+                {t("heroTitle")}
+              </h1>
+              <p className="text-xl md:text-2xl text-stone-700 max-w-2xl mx-auto leading-relaxed">
+                {t("heroIntro")}
+              </p>
             </div>
-          </div>
-
-          {/* Team photo */}
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 text-center" style={{ color: ACCENT_GREEN }}>
-              Our team & volunteers
-            </h2>
-            <div className="rounded-2xl overflow-hidden shadow-lg relative aspect-[4/3]">
-              <Image
-                src="/team-dogs.webp"
-                alt="Saved Souls Foundation team and volunteers with rescued dogs"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 800px"
-              />
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Disabled dogs: wheelchairs & outdoor time
-            </h2>
-            <p className="leading-relaxed">
-              For our disabled dogs, we provide wheelchairs and access to a large dog park where they can play, explore, and enjoy the fresh air. The other dogs are taken for relaxing walks in the peaceful surroundings of our foundation.
-            </p>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-                <Image src="/woman-dog-wheelchair.webp" alt="Volunteer with a dog in a wheelchair" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
-              </div>
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-                <Image src="/dog-wheelchair-small.webp" alt="Rescued dog with wheelchair" fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+            <div className={`absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-1000 delay-500 ${heroLoaded ? "opacity-60" : "opacity-0"}`}>
+              <span className="text-stone-600 text-sm">Scroll</span>
+              <div className="w-6 h-10 rounded-full border-2 border-stone-500 flex justify-center pt-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-stone-700 animate-bounce" />
               </div>
             </div>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Every animal deserves love & a safe home
-            </h2>
-            <p className="leading-relaxed">
-              At Saved Souls Foundation, we believe every animal deserves love, care, and a safe place to call home. Our dedicated staff and volunteers make sure our dogs and cats receive the affection and attention they need—from daily walks with as many dogs as possible to bonding time with our cats in our cozy cat shelter.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Sterilization & health
-            </h2>
-            <p className="leading-relaxed">
-              All of our dogs are sterilized and vaccinated. In addition, we organize sterilization campaigns for street dogs and cats to help prevent unwanted litters and reduce suffering in the long term.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Adoption
-            </h2>
-            <p className="leading-relaxed">
-              We help dogs find loving homes both locally and across the country. With dedicated care, love, and training, we make sure every dog is leash-trained before joining their new family. We also host adoption events where potential owners can meet their future companions in person.
-            </p>
-            <p className="leading-relaxed mt-4">
-              Want to join one? Subscribe to our newsletter or follow us on Facebook and Instagram for the latest updates!
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-3" style={{ color: ACCENT_GREEN }}>
-              Visit us
-            </h2>
-            <p className="leading-relaxed">
-              Looking to adopt a dog or cat? You&apos;re always welcome to visit our shelter—just contact us to schedule an appointment. Send us an email at{" "}
-              <a href="mailto:info@savedsouls-foundation.org" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
-                info@savedsouls-foundation.org
-              </a>{" "}
-              for general enquiries or fill in the contact form on our homepage.
-            </p>
-            <p className="leading-relaxed mt-4">
-              You can also reach us by phone: <strong>+66 62 369 8246</strong> (Thai) or <strong>+98 000 5406</strong> (English). Office hours: 8:00 AM – 4:00 PM.
-            </p>
-            <p className="leading-relaxed mt-4">
-              Visit us at 133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand. Opening hours: 1:30 – 3:30 p.m. daily.
-            </p>
           </div>
         </section>
 
-        <div className="mt-12 md:mt-16 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: BUTTON_ORANGE }}
-          >
-            Back to home
-          </Link>
-          <Link
-            href="/#donate"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
-            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-          >
-            Donate
-          </Link>
-        </div>
-      </main>
-      <Footer />
+        {/* Intro block */}
+        <section className="px-4 py-16 md:py-24 bg-white">
+          <div className="max-w-3xl mx-auto">
+            <ScrollReveal>
+              <p className="text-lg md:text-xl text-stone-700 leading-relaxed text-center">
+                {t("intro1")}
+              </p>
+              <p className="text-lg md:text-xl text-stone-700 leading-relaxed text-center mt-6">
+                {t("intro2")}
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 mt-8">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Care – daily meals & swimming therapy */}
+        <section className="px-4 py-16 md:py-24 bg-stone-50">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("careTitle")}
+              </h2>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("care1")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("care2")}</p>
+              <blockquote className="relative pl-6 md:pl-8 border-l-4 border-amber-500 my-8">
+                <p className="text-xl md:text-2xl text-stone-800 italic leading-relaxed">{t("careQuote")}</p>
+              </blockquote>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Video – sanctuary */}
+        <section className="px-4 py-16 md:py-24 bg-white border-y border-stone-200">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("videoTitle")}
+              </h2>
+              <div className="relative w-full rounded-2xl overflow-hidden shadow-xl border border-stone-200" style={{ paddingBottom: "56.25%" }}>
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src="/sanctuary.mp4"
+                  controls
+                  playsInline
+                  autoPlay
+                  muted
+                  loop
+                  title={t("videoAlt")}
+                >
+                  Your browser does not support video. <a href="/sanctuary.mp4">Download the video</a>.
+                </video>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Team photo + text */}
+        <section className="px-4 py-16 md:py-24 bg-stone-50">
+          <div className="max-w-5xl mx-auto">
+            <ScrollReveal delay={100}>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("teamTitle")}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl order-2 md:order-1">
+                  <Image src="/team-dogs.webp" alt={t("photoTeam")} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+                </div>
+                <div className="order-1 md:order-2">
+                  <p className="text-stone-700 leading-relaxed mb-4">{t("team1")}</p>
+                  <p className="text-stone-700 leading-relaxed mb-6">{t("team2")}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>{tCommon("volunteer")}</Link>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Wheelchair dogs – photo + text */}
+        <section id="wheelchair" className="px-4 py-16 md:py-24 bg-white scroll-mt-20">
+          <div className="max-w-5xl mx-auto">
+            <ScrollReveal>
+              <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-6" style={{ color: ACCENT_GREEN }}>
+                    {t("wheelchairTitle")}
+                  </h2>
+                  <p className="text-stone-700 leading-relaxed mb-4">{t("wheelchair1")}</p>
+                  <p className="text-stone-700 leading-relaxed mb-6">{t("wheelchair2")}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
+                    <Image src="/woman-dog-wheelchair.webp" alt={t("photoWheelchair")} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+                  </div>
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
+                    <Image src="/dog-wheelchair-small.webp" alt={t("photoWheelchairSmall")} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Love – every animal deserves */}
+        <section className="px-4 py-16 md:py-24 bg-stone-50 border-y border-stone-200">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("loveTitle")}
+              </h2>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("love1")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("love2")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Sterilization & health */}
+        <section className="px-4 py-16 md:py-24 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("sterilizationTitle")}
+              </h2>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("sterilization1")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("sterilization2")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Adoption */}
+        <section className="px-4 py-16 md:py-24 bg-stone-50 border-y border-stone-200">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8 text-center" style={{ color: ACCENT_GREEN }}>
+                {t("adoptionTitle")}
+              </h2>
+              <p className="text-stone-700 leading-relaxed mb-4">{t("adoption1")}</p>
+              <p className="text-stone-700 leading-relaxed mb-4">{t("adoption2")}</p>
+              <p className="text-stone-700 leading-relaxed mb-4">{t("adoption3")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("adoption4")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                <Link href="/influencers" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_INFLUENCERS }}>{tCommon("influencers")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Visit us – contact info */}
+        <section className="px-4 py-16 md:py-24 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal>
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-100 border border-amber-300 text-amber-800 text-sm font-medium mb-8">
+                📍 {t("visitTitle")}
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-8" style={{ color: ACCENT_GREEN }}>
+                {t("visitTitle")}
+              </h2>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("visit1")}</p>
+              <p className="text-stone-700 leading-relaxed mb-4">
+                {t("visit2")}{" "}
+                <a href="mailto:info@savedsouls-foundation.org" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
+                  info@savedsouls-foundation.org
+                </a>{" "}
+                {t("visit3")}
+              </p>
+              <p className="text-stone-700 leading-relaxed mb-4">
+                {t("visit4")} <strong>+66 62 369 8246</strong> {t("visit5")} <strong>+98 000 5406</strong> {t("visit6")}
+              </p>
+              <p className="text-stone-700 leading-relaxed mb-4">{t("visit7")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("visit8")}</p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>{tCommon("volunteer")}</Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="px-4 py-16 md:py-24 bg-stone-50 border-t border-stone-200">
+          <div className="max-w-2xl mx-auto text-center">
+            <ScrollReveal>
+              <p className="text-stone-500 text-sm mb-8">© 2026 Saved Souls Foundation — มูลนิธิเซฟต์ โซลส์</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link
+                  href="/adopt"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: ACCENT_GREEN }}
+                >
+                  {tCommon("adopt")}
+                </Link>
+                <Link
+                  href="/#donate"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BUTTON_ORANGE }}
+                >
+                  {tCommon("donate")}
+                </Link>
+                <Link
+                  href="/volunteer"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BTN_VOLUNTEER }}
+                >
+                  {tCommon("volunteer")}
+                </Link>
+                <Link
+                  href="/influencers"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BTN_INFLUENCERS }}
+                >
+                  {tCommon("influencers")}
+                </Link>
+                <Link
+                  href="/story"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-all hover:scale-105"
+                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+                >
+                  {t("ctaStory")}
+                </Link>
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-stone-600 border-2 border-stone-300 transition-all hover:scale-105 hover:border-stone-400"
+                >
+                  {t("ctaBackHome")}
+                </Link>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
     </ParallaxPage>
   );
 }

@@ -21,7 +21,7 @@ export default async function VolunteerPage() {
   const tCommon = await getTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12 md:mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-4">
@@ -169,6 +169,16 @@ export default async function VolunteerPage() {
             </h2>
             <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">{t("pdfSpecialNeeds")}</p>
             <p className="text-stone-600 dark:text-stone-400 leading-relaxed">{t("pdfSpecialNeeds2")}</p>
+            <div className="mt-6 rounded-xl overflow-hidden shadow-lg border-2 border-stone-200 dark:border-stone-700 max-w-md mx-auto">
+              <Image
+                src="/volunteer-holding-dog.png"
+                alt={t("imgVolunteerHoldingDogAlt")}
+                width={672}
+                height={504}
+                className="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, 448px"
+              />
+            </div>
           </div>
 
           {/* Every Soul Is Valuable - We Need You! */}

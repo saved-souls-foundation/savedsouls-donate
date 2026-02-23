@@ -17,7 +17,7 @@ export default function SoulSaverPage() {
 
   return (
     <ParallaxPage
-      backgroundImage="/savedsoul-logo.webp"
+      backgroundImage="/savedsoul-logo-bg.webp"
       overlayClassName="bg-gradient-to-b from-amber-50/85 via-orange-50/70 to-stone-50/90 dark:from-amber-950/50 dark:via-stone-900/80 dark:to-stone-950/90"
     >
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">

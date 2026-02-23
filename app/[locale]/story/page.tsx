@@ -11,6 +11,8 @@ import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
+const BTN_VOLUNTEER = "#ea580c";
+const BTN_INFLUENCERS = "#8b5cf6";
 
 export default function StoryPage() {
   const t = useTranslations("story");
@@ -23,7 +25,7 @@ export default function StoryPage() {
   }, []);
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp" noOverlay>
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp" noOverlay>
       <div className="min-h-screen bg-white">
         {/* Hero – full impact */}
         <section className="relative min-h-[70vh] flex flex-col overflow-hidden">
@@ -66,6 +68,10 @@ export default function StoryPage() {
               <p className="text-lg md:text-xl text-stone-700 leading-relaxed text-center mt-6">
                 {t("intro2")}
               </p>
+              <div className="flex flex-wrap justify-center gap-3 mt-8">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
             </ScrollReveal>
           </div>
         </section>
@@ -84,7 +90,10 @@ export default function StoryPage() {
                   </h2>
                   <p className="text-stone-700 leading-relaxed mb-4">{t("woman1")}</p>
                   <p className="text-stone-700 leading-relaxed mb-4">{t("woman2")}</p>
-                  <p className="text-stone-700 leading-relaxed">{t("woman3")}</p>
+                  <p className="text-stone-700 leading-relaxed mb-6">{t("woman3")}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
@@ -105,7 +114,10 @@ export default function StoryPage() {
                 <cite className="block mt-4 text-stone-600 text-sm not-italic">— Gabriela</cite>
               </blockquote>
               <p className="text-stone-700 leading-relaxed mb-4">{t("sound3")}</p>
-              <p className="text-stone-700 leading-relaxed">{t("sound4")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("sound4")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
             </ScrollReveal>
           </div>
         </section>
@@ -138,7 +150,11 @@ export default function StoryPage() {
                   <p className="text-stone-700 leading-relaxed mb-4">{t("trust1")}</p>
                   <p className="text-stone-700 leading-relaxed mb-4">{t("trust2")}</p>
                   <p className="text-stone-700 leading-relaxed mb-4">{t("trust3")}</p>
-                  <p className="text-stone-700 leading-relaxed">{t("trust4")}</p>
+                  <p className="text-stone-700 leading-relaxed mb-6">{t("trust4")}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                    <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>{tCommon("volunteer")}</Link>
+                  </div>
                 </div>
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
                   <Image src="/woman-dog-wheelchair.webp" alt={t("photoTherapy")} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
@@ -156,7 +172,11 @@ export default function StoryPage() {
                 {t("biggerTitle")}
               </h2>
               <p className="text-stone-700 leading-relaxed mb-6">{t("bigger1")}</p>
-              <p className="text-stone-700 leading-relaxed">{t("bigger2")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("bigger2")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
             </ScrollReveal>
           </div>
         </section>
@@ -172,7 +192,10 @@ export default function StoryPage() {
                 {t("officialTitle")}
               </h2>
               <p className="text-stone-700 leading-relaxed mb-6">{t("official1")}</p>
-              <p className="text-stone-700 leading-relaxed">{t("official2")}</p>
+              <p className="text-stone-700 leading-relaxed mb-6">{t("official2")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+              </div>
             </ScrollReveal>
           </div>
         </section>
@@ -194,7 +217,11 @@ export default function StoryPage() {
                   <cite className="text-stone-600">— Gabriela</cite>
                 </blockquote>
                 <p className="text-lg text-stone-700 leading-relaxed mb-8">{t("why1")}</p>
-                <p className="text-xl font-semibold text-stone-900 mb-12">{t("why2")}</p>
+                <p className="text-xl font-semibold text-stone-900 mb-8">{t("why2")}</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
+                  <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                </div>
               </ScrollReveal>
             </div>
           </div>
@@ -223,7 +250,11 @@ export default function StoryPage() {
               <p className="text-stone-700 leading-relaxed mb-6">{t("chapter4")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("chapter5")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("chapter6")}</p>
-              <p className="text-xl font-semibold text-stone-900 mt-10">{t("chapterClosing")}</p>
+              <p className="text-xl font-semibold text-stone-900 mt-10 mb-8">{t("chapterClosing")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>{tCommon("volunteer")}</Link>
+                <Link href="/influencers" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_INFLUENCERS }}>{tCommon("influencers")}</Link>
+              </div>
             </ScrollReveal>
           </div>
         </section>
@@ -234,17 +265,38 @@ export default function StoryPage() {
             <ScrollReveal>
               <p className="text-stone-600 text-sm mb-4">{t("ctaEmail")}</p>
               <p className="text-stone-500 text-sm mb-8">© 2026 Saved Souls Foundation — มูลนิธิเซฟต์ โซลส์</p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link
+                  href="/adopt"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: ACCENT_GREEN }}
+                >
+                  {tCommon("adopt")}
+                </Link>
                 <Link
                   href="/#donate"
-                  className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
                   style={{ backgroundColor: BUTTON_ORANGE }}
                 >
                   {tCommon("donate")}
                 </Link>
                 <Link
+                  href="/volunteer"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BTN_VOLUNTEER }}
+                >
+                  {tCommon("volunteer")}
+                </Link>
+                <Link
+                  href="/influencers"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BTN_INFLUENCERS }}
+                >
+                  {tCommon("influencers")}
+                </Link>
+                <Link
                   href="/about-us"
-                  className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-all hover:scale-105"
                   style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
                 >
                   {tCommon("aboutUs")}

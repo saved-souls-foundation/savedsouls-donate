@@ -5,8 +5,8 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import ShareStoryButton from "../../components/ShareStoryButton";
+import DonationImpactSpinner from "../../components/DonationImpactSpinner";
 import DogPhotoCard from "../../components/DogPhotoCard";
-import DogDonateButton from "../../components/DogDonateButton";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -15,7 +15,6 @@ const DOG_PHOTOS = [
   "/dog-care.webp",
   "/dog-wheelchair-small.webp",
 ];
-const BUTTON_ORANGE = "#E67A4C";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -35,7 +34,7 @@ export default async function StreetDogsThailandPage() {
   const tThankYou = await getTranslations("thankYou");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
         <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity" style={{ color: ACCENT_GREEN }}>
           Saved Souls
@@ -59,7 +58,7 @@ export default async function StreetDogsThailandPage() {
             </p>
           </header>
 
-          {/* Dog photos – klikbaar naar donatie */}
+          {/* Drie foto's met frost – tekst erboven */}
           <section className="mb-12">
             <p className="text-center text-xl md:text-2xl font-bold text-stone-800 dark:text-stone-200 mb-6" style={{ color: ACCENT_GREEN }}>
               {t("photosQuestion")}
@@ -79,11 +78,6 @@ export default async function StreetDogsThailandPage() {
                   />
                 </Link>
               ))}
-            </div>
-            <div className="flex justify-center mt-6">
-              <DogDonateButton href="/donate" variant="orange" imageSrc={DOG_PHOTOS[0]}>
-                {t("btnDonate")}
-              </DogDonateButton>
             </div>
           </section>
 
@@ -136,26 +130,13 @@ export default async function StreetDogsThailandPage() {
             </h2>
             <p className="text-stone-800 dark:text-stone-200 font-medium mb-4">{t("adoption1")}</p>
             <p className="text-stone-800 dark:text-stone-200 font-medium mb-4">{t("adoption2")}</p>
+            <p className="text-stone-800 dark:text-stone-200 font-medium mb-4">{t("adoptionLuchtbrug")}<Link href="/luchtbrug" className="underline font-semibold hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("adoptionLuchtbrugLink")}</Link>.</p>
             <p className="text-stone-800 dark:text-stone-200 font-medium mb-4">{t("adoption3")}<Link href="/contact" className="underline font-semibold hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("adoptionContactLink")}</Link>.</p>
             <p className="text-stone-800 dark:text-stone-200 font-medium">{t("adoption4")}</p>
           </section>
 
-          <section className="mb-12 p-6 md:p-8 rounded-2xl bg-green-50 dark:bg-stone-800/80 border-2 border-green-200 dark:border-green-900/50">
-            <h2 className="text-2xl font-bold mb-4" style={{ color: ACCENT_GREEN }}>
-              {t("donationImpactTitle")}
-            </h2>
-            <p className="text-stone-800 dark:text-stone-200 font-medium mb-6">{t("donationImpactIntro")}</p>
-            <ul className="space-y-3 text-stone-800 dark:text-stone-200 font-medium">
-              <li><strong>€10 / $10</strong> — {t("donation10")}</li>
-              <li><strong>€25 / $25</strong> — {t("donation25")}</li>
-              <li><strong>€50 / $50</strong> — {t("donation50")}</li>
-              <li><strong>€100 / $100</strong> — {t("donation100")}</li>
-            </ul>
-            <div className="flex justify-center mt-6">
-              <DogDonateButton href="/donate" variant="green" imageSrc={DOG_PHOTOS[1]}>
-                {t("btnDonate")}
-              </DogDonateButton>
-            </div>
+          <section className="mb-12">
+            <DonationImpactSpinner />
           </section>
 
           <section className="mb-12">
@@ -187,16 +168,24 @@ export default async function StreetDogsThailandPage() {
             </h2>
             <p className="text-stone-800 dark:text-stone-200 font-medium mb-6">{t("ctaText")}</p>
             <div className="flex justify-center mb-8">
-              <DogDonateButton href="/donate" variant="orange" imageSrc={DOG_PHOTOS[2]} className="px-10 text-lg">
+              <Link
+                href="/donate"
+                className="inline-flex items-center justify-center px-10 py-4 rounded-xl font-semibold text-lg text-white transition-opacity hover:opacity-95"
+                style={{ backgroundColor: ACCENT_GREEN }}
+              >
                 {t("btnDonate")}
-              </DogDonateButton>
+              </Link>
             </div>
           </section>
 
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center mt-12">
-            <DogDonateButton href="/donate" variant="orange">
+            <Link
+              href="/donate"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-opacity hover:opacity-95"
+              style={{ backgroundColor: ACCENT_GREEN }}
+            >
               {t("btnDonate")}
-            </DogDonateButton>
+            </Link>
             <Link
               href="/volunteer"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105"

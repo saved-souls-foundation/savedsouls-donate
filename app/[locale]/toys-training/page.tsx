@@ -24,7 +24,7 @@ export default function ToysTrainingPage() {
   const tCommon = useTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-5xl mx-auto px-4 py-12 md:py-16">
         {/* Hero */}
         <header className="text-center mb-16 md:mb-20">

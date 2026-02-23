@@ -26,6 +26,9 @@ Saved Souls Foundation is an animal sanctuary in Khon Kaen, Thailand. Since 2010
 ## Important Pages
 - Home: /
 - Donate: /donate
+- Support (Ko-fi style): /support
+- Get involved (donate, sponsor, volunteer, adopt): /get-involved
+- Guides & information (all pet care guides): /gidsen
 - Adopt: /adopt
 - First time pet home: /first-pet-home (tips for new owners)
 - First aid dog & cat: /first-aid (bleeding, poisoning, CPR, choking)
@@ -44,6 +47,9 @@ Saved Souls Foundation is an animal sanctuary in Khon Kaen, Thailand. Since 2010
 - Dog and cat together: /dog-and-cat-together (introducing dog and cat)
 - Financial overview: /financial-overview (monthly costs 500,000 baht, transparency, where donations go)
 - Blog: /blog (news, end-of-month feeding costs, updates)
+
+## Site Search
+The website has a search bar in the header. Visitors can search by page title to find guides, FAQ, health info, etc.
 
 ## Machine-Readable Resources
 - Structured data: JSON-LD in page source (Schema.org NGO, FAQPage on /faq)

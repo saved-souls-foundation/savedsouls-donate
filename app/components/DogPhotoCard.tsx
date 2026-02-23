@@ -59,9 +59,9 @@ export default function DogPhotoCard({ src, alt, className = "", frostOnScroll =
           unoptimized
         />
       )}
-      {/* Frost overlay - verdwijnt bij hover (desktop) of scroll-into-view (mobiel) */}
+      {/* Frost overlay – grijs, verdwijnt bij hover (desktop) of scroll-into-view (mobiel) */}
       <div
-        className={`absolute inset-0 bg-white/25 dark:bg-white/15 backdrop-blur-sm pointer-events-none transition-opacity duration-500 ${
+        className={`absolute inset-0 bg-stone-400/30 dark:bg-stone-500/25 backdrop-blur-sm pointer-events-none transition-opacity duration-500 ${
           frostOnScroll ? (inView ? "opacity-0" : "opacity-100") : "opacity-100"
         } md:opacity-100 md:group-hover:opacity-0`}
         aria-hidden

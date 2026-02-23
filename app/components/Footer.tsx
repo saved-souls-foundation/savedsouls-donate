@@ -108,6 +108,7 @@ export default function Footer() {
       </p>
       <nav className="text-white/70 mt-2 text-sm flex flex-wrap justify-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }} aria-label="Footer navigation">
         <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
+        <Link href="/gidsen" className="hover:underline">{t("gidsen")}</Link>
         <Link href="/blog" className="hover:underline">{t("blog")}</Link>
         <Link href="/shop" className="hover:underline">{t("shop")}</Link>
         <Link href="/story" className="hover:underline">{t("ourStory")}</Link>

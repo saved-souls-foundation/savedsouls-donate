@@ -39,7 +39,7 @@ export default function PreviewHeroPage() {
         className="fixed inset-0 z-0 bg-stone-200 dark:bg-stone-900"
         aria-hidden
         style={{
-          backgroundImage: "url('/savedsoul-logo.webp')",
+          backgroundImage: "url('/savedsoul-logo-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           transform: `translateY(${scrollY * 0.35}px)`,

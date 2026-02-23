@@ -34,7 +34,7 @@ function GoPageContent() {
 
   if (!isAllowedUrl(url)) {
     return (
-      <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+      <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
         <main className="max-w-2xl mx-auto px-4 py-16 text-center">
           <p className="text-stone-600 dark:text-stone-400 mb-6">{t("invalidLink")}</p>
           <Link href="/" className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white" style={{ backgroundColor: ACCENT_GREEN }}>
@@ -46,7 +46,7 @@ function GoPageContent() {
   }
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-2xl mx-auto px-4 py-16">
         <div className="rounded-2xl p-8 md:p-12 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg text-center">
           <div className="text-5xl mb-6">📖</div>
@@ -81,7 +81,7 @@ function GoPageContent() {
 export default function GoPage() {
   return (
     <Suspense fallback={
-      <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+      <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
         <main className="max-w-2xl mx-auto px-4 py-16 text-center">
           <p className="text-stone-600 dark:text-stone-400 mb-6">...</p>
         </main>

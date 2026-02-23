@@ -39,7 +39,7 @@ export default function BlogPostPage() {
   const isAdoptLayout = !isFacebook && post.layout === "adopt";
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-20">
         <article>
           <header className="mb-10">

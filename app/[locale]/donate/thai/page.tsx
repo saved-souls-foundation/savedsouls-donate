@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -16,8 +16,11 @@ export default function ThaiDonatePage() {
   const t = useTranslations("donate.thai");
   const tDonate = useTranslations("donate");
 
+  const [copied, setCopied] = useState(false);
   const copyAccount = useCallback(() => {
     navigator.clipboard.writeText(KASIKORN_ACCOUNT);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
   }, []);
 
   return (
@@ -35,9 +38,9 @@ export default function ThaiDonatePage() {
         {/* PayPal QR */}
         <section id="paypal" className="scroll-mt-24 mb-12">
           <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
-            <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-              PayPal
-            </h2>
+            <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="block mb-4 hover:opacity-90">
+              <Image src="/logos/paypal-official.png" alt="PayPal" width={111} height={69} className="h-14 w-auto object-contain" />
+            </a>
             <a
               href="https://paypal.me/savedsoulsfoundation"
               target="_blank"
@@ -46,8 +49,11 @@ export default function ThaiDonatePage() {
             >
               <Image src="/logos/paypal-qr.png" alt="PayPal QR code – Saved Souls Foundation" width={200} height={200} className="w-full h-full object-contain" />
             </a>
-            <p className="text-base text-stone-600 dark:text-stone-400 text-center">
-              {t("qrInstruction")}
+            <p className="text-base font-semibold text-stone-800 dark:text-stone-200 text-center mb-1">
+              {t("paypalQrLabel")}
+            </p>
+            <p className="text-sm text-stone-600 dark:text-stone-400 text-center">
+              {t("paypalQrInstruction")}
             </p>
           </div>
         </section>
@@ -55,24 +61,22 @@ export default function ThaiDonatePage() {
         {/* PromptPay / Thai QR */}
         <section id="promptpay" className="scroll-mt-24 mb-12">
           <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
-            <div className="flex items-center gap-3 mb-4">
+            <a href="#promptpay" className="block mb-4 hover:opacity-90 scroll-smooth">
               <Image
-                src="/logos/thai-qr-payment.png"
-                alt="Thai QR Payment"
-                width={40}
-                height={40}
-                className="object-contain"
+                src="/logos/promptpay-official.png"
+                alt="PromptPay"
+                width={213}
+                height={120}
+                className="h-16 w-auto object-contain"
               />
-              <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100">
-                {t("promptpayTitle")}
-              </h2>
-            </div>
+            </a>
             <div className="aspect-square max-w-[220px] mx-auto bg-stone-200 dark:bg-stone-700 rounded-xl flex items-center justify-center mb-4">
               <span className="text-stone-500 text-sm text-center px-4">
                 {t("qrPlaceholder")}
               </span>
             </div>
-            <p className="text-base text-stone-600 dark:text-stone-400 text-center">
+            <p className="text-base text-stone-600 dark:text-stone-400 text-center flex items-center justify-center gap-2">
+              <Image src="/logos/promptpay-official.png" alt="" width={71} height={40} className="h-8 w-auto shrink-0" />
               {t("qrInstruction")}
             </p>
           </div>
@@ -100,12 +104,19 @@ export default function ThaiDonatePage() {
               </p>
               <p className="font-mono text-lg mt-1 break-all">{KASIKORN_ACCOUNT}</p>
               <p className="text-sm text-stone-500 mt-1">SWIFT: {KASIKORN_SWIFT}</p>
-              <button
-                onClick={copyAccount}
-                className="mt-3 px-4 py-2 rounded-lg bg-[#2aa348] text-white text-sm font-medium hover:opacity-90"
-              >
-                {t("copyAccount")}
-              </button>
+              <div className="mt-3">
+                <button
+                  onClick={copyAccount}
+                  className="px-4 py-2 rounded-lg bg-[#2aa348] text-white text-sm font-medium hover:opacity-90"
+                >
+                  {t("copyAccount")}
+                </button>
+                {copied && (
+                  <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 py-3 px-6 rounded-xl bg-[#2aa348] text-white text-sm font-semibold shadow-lg border-2 border-white/20" role="alert">
+                    ✓ {t("copyAccountSuccess")}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>

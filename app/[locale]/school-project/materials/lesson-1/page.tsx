@@ -9,7 +9,7 @@ export default async function Lesson1Page() {
   const t = await getTranslations("schoolProject.materials.lesson1");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <nav className="sticky top-0 z-20 px-4 py-4 bg-white/98 dark:bg-stone-900/98 border-b border-stone-200 print:hidden">
         <Link href="/school-project/materials" className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
           ← {t("backToMaterials")}

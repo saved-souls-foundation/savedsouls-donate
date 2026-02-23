@@ -1,103 +1,89 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { usePathname } from "@/i18n/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { ChevronDown } from "lucide-react";
 
-const LOCALE_FLAGS: Record<string, string> = {
-  nl: "🇳🇱",
-  en: "🇬🇧",
-  de: "🇩🇪",
-  es: "🇪🇸",
-  th: "🇹🇭",
-  ru: "🇷🇺",
+/** Taalnamen (Nederlands, niet Nederland) */
+const LOCALE_NAMES: Record<string, string> = {
+  nl: "Nederlands",
+  en: "English",
+  de: "Deutsch",
+  es: "Español",
+  th: "ไทย",
+  ru: "Русский",
 };
 
-const RADIUS = 42;
-const FLAG_SIZE = 36;
-const RADIUS_COMPACT = 26;
-const FLAG_SIZE_COMPACT = 24;
-
 export default function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
-  const radius = compact ? RADIUS_COMPACT : RADIUS;
-  const flagSize = compact ? FLAG_SIZE_COMPACT : FLAG_SIZE;
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const switchLocale = (newLocale: string) => {
     if (newLocale === locale) return;
-    const newPath = `/${newLocale}${pathname}`;
-    router.push(newPath);
+    setOpen(false);
+    router.push(pathname, { locale: newLocale });
   };
 
   const locales = routing.locales;
-  const angleStep = 360 / locales.length;
+  const currentName = LOCALE_NAMES[locale] ?? locale;
 
   return (
-    <div
-      className="relative flex items-center justify-center flex-shrink-0"
-      style={{ width: radius * 2 + flagSize, height: radius * 2 + flagSize }}
-      role="group"
-      aria-label="Taal kiezen"
-    >
-      {/* Wereldbol in het midden */}
-      <div
-        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-        style={{ fontSize: compact ? "1rem" : "1.5rem" }}
+    <div ref={containerRef} className="relative" role="group" aria-label="Taal kiezen">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`flex items-center gap-1 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors ${
+          compact ? "px-2 py-1.5 text-sm" : "px-3 py-2 text-sm"
+        }`}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-controls="locale-listbox"
       >
-        🌍
-      </div>
+        <span>{currentName}</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+          aria-hidden
+        />
+      </button>
 
-      {/* Roteerende vlaggen eromheen */}
-      <div className="lang-orbit absolute inset-0">
-        {locales.map((loc, i) => {
-          const angle = (angleStep * i - 90) * (Math.PI / 180);
-          const x = 50 + (radius / (radius + flagSize / 2)) * 50 * Math.cos(angle);
-          const y = 50 + (radius / (radius + flagSize / 2)) * 50 * Math.sin(angle);
-          return (
-            <button
-              key={loc}
-              type="button"
-              onClick={() => switchLocale(loc)}
-              className={`lang-flag absolute flex items-center justify-center rounded-full transition-all hover:scale-110 touch-manipulation ${
-                loc === locale
-                  ? "bg-stone-200 dark:bg-stone-700 ring-2 ring-green-500 dark:ring-green-600"
-                  : "bg-white/90 dark:bg-stone-800/90 shadow-md hover:bg-stone-100 dark:hover:bg-stone-700"
-              }`}
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: flagSize,
-                height: flagSize,
-                transform: "translate(-50%, -50%)",
-                fontSize: flagSize * 0.65,
-              }}
-              title={loc}
-            >
-              {LOCALE_FLAGS[loc] ?? loc}
-            </button>
-          );
-        })}
-      </div>
-
-      <style jsx>{`
-        @keyframes orbit {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        .lang-orbit {
-          animation: orbit 24s linear infinite;
-        }
-        .lang-orbit:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+      {open && (
+        <ul
+          id="locale-listbox"
+          role="listbox"
+          className="absolute right-0 top-full mt-1 py-2 min-w-[140px] rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-xl z-[120]"
+        >
+          {locales.map((loc) => (
+            <li key={loc} role="option" aria-selected={loc === locale}>
+              <button
+                type="button"
+                onClick={() => switchLocale(loc)}
+                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                  loc === locale
+                    ? "bg-[#2aa348]/15 text-[#2aa348] dark:bg-[#2aa348]/25 font-medium"
+                    : "text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700"
+                }`}
+              >
+                {LOCALE_NAMES[loc] ?? loc}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

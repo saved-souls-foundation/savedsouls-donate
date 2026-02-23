@@ -1,24 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
-const PRESET_AMOUNTS = [25, 50, 100, 250];
-const SCREENSHOT_HIDE_AFTER = new Date("2026-12-31"); // Verbergen vanaf 1 jan 2027
+/** Ronde preset-bedragen – zelfde in elke valuta (10, 25, 50, 75, 100…) */
+const PRESET_AMOUNTS = [10, 25, 50, 75, 100, 125, 150, 200, 250, 500, 1000, 1500, 2000, 2500, 5000, 10000];
+
+/** Voor JPY/KRW/IDR – grotere bedragen (100 = ~0,60 EUR) */
+const PRESET_AMOUNTS_SMALL = [1000, 2500, 5000, 10000, 25000, 50000, 100000];
+/** Valuta ondersteund door Frankfurter API */
+const CURRENCIES: { code: string; name: string; symbol: string }[] = [
+  { code: "EUR", name: "Euro", symbol: "€" },
+  { code: "USD", name: "US Dollar", symbol: "$" },
+  { code: "GBP", name: "British Pound", symbol: "£" },
+  { code: "CHF", name: "Swiss Franc", symbol: "CHF" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "C$" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
+  { code: "THB", name: "Thai Baht", symbol: "฿" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹" },
+  { code: "KRW", name: "South Korean Won", symbol: "₩" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
+  { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$" },
+  { code: "NZD", name: "New Zealand Dollar", symbol: "NZ$" },
+  { code: "SEK", name: "Swedish Krona", symbol: "kr" },
+  { code: "NOK", name: "Norwegian Krone", symbol: "kr" },
+  { code: "DKK", name: "Danish Krone", symbol: "kr" },
+  { code: "PLN", name: "Polish Złoty", symbol: "zł" },
+  { code: "CZK", name: "Czech Koruna", symbol: "Kč" },
+  { code: "HUF", name: "Hungarian Forint", symbol: "Ft" },
+  { code: "RON", name: "Romanian Leu", symbol: "lei" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
+  { code: "MXN", name: "Mexican Peso", symbol: "$" },
+  { code: "ZAR", name: "South African Rand", symbol: "R" },
+  { code: "TRY", name: "Turkish Lira", symbol: "₺" },
+  { code: "ILS", name: "Israeli Shekel", symbol: "₪" },
+  { code: "PHP", name: "Philippine Peso", symbol: "₱" },
+  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp" },
+  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM" },
+  { code: "ISK", name: "Icelandic Króna", symbol: "kr" },
+];
 
 export default function IdealDonate() {
   const t = useTranslations("home");
   const locale = useLocale();
-  const [amount, setAmount] = useState(25);
+  const [amount, setAmount] = useState(100);
   const [customAmount, setCustomAmount] = useState("");
+  const [amountSelect, setAmountSelect] = useState<string>("100");
+  const [currency, setCurrency] = useState("EUR");
+  const [rateToEur, setRateToEur] = useState<number | null>(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const effectiveAmount = customAmount ? parseFloat(customAmount) : amount;
-  const isValid = effectiveAmount >= 1 && effectiveAmount <= 50000;
+  const fetchRate = useCallback(async () => {
+    if (currency === "EUR") {
+      setRateToEur(1);
+      return;
+    }
+    try {
+      const res = await fetch(`https://api.frankfurter.app/latest?from=${currency}&to=EUR`);
+      const data = await res.json();
+      if (data.rates?.EUR) setRateToEur(data.rates.EUR);
+      else setRateToEur(null);
+    } catch {
+      setRateToEur(null);
+    }
+  }, [currency]);
+
+  useEffect(() => {
+    fetchRate();
+  }, [fetchRate]);
+
+  useEffect(() => {
+    const list = currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
+    if (amountSelect !== "custom" && !list.includes(amount)) {
+      const first = list[0];
+      setAmountSelect(String(first));
+      setAmount(first);
+    }
+  }, [currency]);
+
+  const isCustomAmount = amountSelect === "custom";
+  const effectiveAmount = isCustomAmount ? parseFloat(customAmount) : amount;
+  const amountInEur = currency === "EUR" ? effectiveAmount : (rateToEur ? effectiveAmount * rateToEur : 0);
+  const presets = currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
+  const isValid = effectiveAmount >= 1 && effectiveAmount <= 50000 && amountInEur >= 1;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +99,7 @@ export default function IdealDonate() {
       const res = await fetch("/api/payments/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: effectiveAmount, locale }),
+        body: JSON.stringify({ amount: Math.round(amountInEur * 100) / 100, locale }),
       });
       const data = (await res.json().catch(() => ({}))) as { checkoutUrl?: string; error?: string };
       if (!res.ok) {
@@ -48,144 +118,139 @@ export default function IdealDonate() {
     }
   };
 
-  const showScreenshot = new Date() < SCREENSHOT_HIDE_AFTER;
+  const curr = CURRENCIES.find((c) => c.code === currency) || CURRENCIES[0];
 
-  const thaiPayments: { href: string; src: string; alt: string }[] = [
-    { href: "/donate/thai#promptpay", src: "/logos/thai-qr-payment.png", alt: "Thai QR Payment" },
-    { href: "/donate/thai#promptpay", src: "/logos/thai-scanqr.svg", alt: "Scan QR" },
-    { href: "/donate/thai#banks", src: "/logos/thai-kasikorn.png", alt: "Kasikorn Bank" },
-    { href: "/donate/thai#banks", src: "/logos/thai-bangkok-bank.png", alt: "Bangkok Bank" },
-    { href: "/donate/thai#banks", src: "/logos/thai-scb.png", alt: "SCB" },
-    { href: "/donate/thai#banks", src: "/logos/thai-krungthai.png", alt: "Krungthai Bank" },
-    { href: "/donate/thai#banks", src: "/logos/thai-bankthai.png", alt: "BankThai" },
-    { href: "/donate/thai#ewallets", src: "/logos/thai-truemoney.png", alt: "TrueMoney" },
-    { href: "/donate/thai#ewallets", src: "/logos/thai-linepay.png", alt: "LINE Pay" },
-  ];
+  const displayAmount = isCustomAmount ? effectiveAmount : amount;
+  const displayAmountStr = Number.isFinite(displayAmount) && displayAmount >= 1
+    ? (currency === "EUR" ? "€" : curr.symbol) + Math.round(displayAmount).toLocaleString("nl-NL", { maximumFractionDigits: 0 })
+    : "—";
 
   return (
-    <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
-      <Link
-        href="/#donate"
-        className="block mb-3 rounded-lg transition-opacity hover:opacity-90 focus:opacity-90 cursor-pointer"
-        title={t("idealCta")}
-      >
-        {showScreenshot && (
-          <div className="mb-2 min-h-[80px] flex items-center justify-center bg-stone-100 dark:bg-stone-800 rounded-lg">
-            <img
-              src="/ideal-wero-screenshot.png"
-              alt="iDEAL en Wero"
-              className="w-full max-w-[160px] mx-auto rounded-lg object-contain"
-            />
-          </div>
-        )}
-        <div className="flex items-center gap-3 mb-2 min-h-[52px] py-2 bg-stone-50 dark:bg-stone-800/50 rounded-lg px-3">
-          <img
-            src="/wero-logo.svg"
-            alt="iDEAL Wero"
-            className="h-10 w-auto object-contain dark:hidden"
-            width={322}
-            height={100}
-          />
-          <img
-            src="/wero-logo-dark.svg"
-            alt="iDEAL Wero"
-            className="h-10 w-auto object-contain hidden dark:block"
-            width={322}
-            height={100}
-          />
-        </div>
-        <p className="text-base text-stone-600 dark:text-stone-400">
-          {t("idealSubtitle")}
-        </p>
-      </Link>
-      <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
-      <button
-        type="submit"
-        form="mollie-donate-form"
-        className="flex flex-wrap items-center justify-center gap-2 mb-4 py-3 px-4 rounded-lg min-h-[44px] w-full cursor-pointer transition-colors border-0 text-left hover:opacity-90"
-        style={{ backgroundColor: "#E67A4C" }}
-      >
-        <span className="text-sm font-bold text-white flex flex-col items-center text-center leading-tight">
-          {t("payAsYouLike")}
-          <span className="mt-0.5">{t("donateAsYouWish")}</span>
-          <span className="mt-1.5 font-normal opacity-90">{t("mollieMethods")}</span>
-        </span>
-      </button>
-
-      {/* Thaise betaalmethoden placeholder */}
-      <div className="mb-4 py-3 px-4 bg-stone-100 dark:bg-stone-800 rounded-lg border border-stone-200 dark:border-stone-600">
-        <p className="text-sm font-semibold text-stone-700 dark:text-stone-300 text-center mb-2">
-          {t("thaiPayments")}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
-          {thaiPayments.map((p) => (
-            <Link
-              key={`${p.href}-${p.src}`}
-              href={p.href}
-              className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors cursor-pointer"
-              title={p.alt}
-            >
-              <Image src={p.src} alt={p.alt} width={25} height={25} className="object-contain" />
-            </Link>
-          ))}
-        </div>
-        <p className="text-[11px] text-stone-600 dark:text-stone-400 text-center">
-          {t("thaiPaymentsMethods")}
-        </p>
+    <div className="max-w-sm mx-auto">
+      <p className="text-center text-stone-500 dark:text-stone-400 text-sm mb-4" style={{ color: "#2aa348" }}>
+        {t("donateTagline")}
+      </p>
+      {/* iDEAL · Wero + Mollie – herkenbaar voor Nederlandse bezoekers */}
+      <div className="flex items-center gap-2 mb-4">
+        <img src="/wero-logo.svg" alt="" className="h-7 w-auto dark:hidden" width={100} height={31} />
+        <img src="/wero-logo-dark.svg" alt="" className="h-7 w-auto hidden dark:block" width={100} height={31} />
+        <span className="text-sm text-stone-600 dark:text-stone-400">iDEAL · Wero</span>
+        <span className="text-stone-300 dark:text-stone-600">·</span>
+        <span className="text-[11px] text-stone-500 dark:text-stone-400">via Mollie</span>
       </div>
 
-        <div>
-          <p className="text-base font-medium text-stone-700 dark:text-stone-300 mb-2">
-            {t("idealAmount")}
-          </p>
-          <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 min-h-[100px]">
-          <div className="flex flex-wrap gap-2 mb-2">
-            {PRESET_AMOUNTS.map((a) => (
-              <button
-                key={a}
-                type="button"
-                onClick={() => { setAmount(a); setCustomAmount(""); }}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  !customAmount && amount === a
-                    ? "bg-[#2aa348] text-white"
-                    : "bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-600"
-                }`}
-              >
-                €{a}
-              </button>
-            ))}
+      <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
+        {/* Eén regel: bedrag + valuta – zoals Bol/Amazon */}
+        <div className="flex gap-2">
+          <div className="flex-1 min-w-0">
+            <label htmlFor="amount-select" className="sr-only">{t("idealAmount")}</label>
+            <select
+              id="amount-select"
+              value={amountSelect}
+              onChange={(e) => {
+                const v = e.target.value;
+                setAmountSelect(v);
+                if (v === "custom") {
+                  setCustomAmount("");
+                  setAmount(100);
+                } else {
+                  setAmount(Number(v));
+                  setCustomAmount("");
+                }
+              }}
+              className="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-base focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-500"
+            >
+              {presets.map((a) => (
+                <option key={a} value={a}>
+                  {curr.symbol}{a.toLocaleString("nl-NL", { maximumFractionDigits: 0 })}
+                </option>
+              ))}
+              <option value="custom">{t("idealCustom")}</option>
+            </select>
           </div>
+          <div className="w-28 shrink-0">
+            <label htmlFor="currency-select" className="sr-only">{t("currencyLabel")}</label>
+            <select
+              id="currency-select"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="w-full px-3 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-500"
+            >
+              {CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code}>{c.code}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {isCustomAmount && (
           <div className="flex items-center gap-2">
-            <span className="text-stone-600 dark:text-stone-400">€</span>
+            <span className="text-stone-500 dark:text-stone-400">{curr.symbol}</span>
             <input
               type="number"
               min={1}
               max={50000}
               step={0.01}
-              placeholder={t("idealCustom")}
+              placeholder="0"
               value={customAmount}
               onChange={(e) => setCustomAmount(e.target.value)}
-              className="w-24 px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100"
+              className="flex-1 px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-base"
             />
           </div>
-          </div>
-        </div>
-        {error && (
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
+
+        {currency !== "EUR" && rateToEur && (
+          <p className="text-xs text-stone-500 dark:text-stone-400">≈ {Math.round(amountInEur).toLocaleString("nl-NL", { maximumFractionDigits: 0 })} EUR</p>
+        )}
+
+        {/* Impact-tekst bij gekozen bedrag (alleen bij preset, in EUR-equivalent) */}
+        {!isCustomAmount && amountInEur >= 1 && (
+          <p className="text-sm text-stone-600 dark:text-stone-400" style={{ color: "#2aa348" }}>
+            {amountInEur <= 15 ? t("donate10") : amountInEur <= 37 ? t("donate25") : amountInEur <= 75 ? t("donate50") : amountInEur <= 175 ? t("donate100") : amountInEur <= 375 ? t("donate250") : amountInEur <= 750 ? t("donate500") : amountInEur <= 7500 ? t("donate5000") : amountInEur <= 15000 ? t("donate10000") : t("donateImpactGeneric")}
+          </p>
+        )}
+
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+
+        {/* Primaire CTA – groot, duidelijk, zoals Apple */}
         <button
           type="submit"
           disabled={loading || !isValid}
-          className="w-full py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-4 rounded-xl font-semibold text-white text-lg transition-opacity hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ backgroundColor: "#2aa348" }}
         >
-          {loading ? t("idealLoading") : t("idealCta")}
+          {loading ? t("idealLoading") : `${t("idealCta")} · ${displayAmountStr}`}
         </button>
-      </form>
-      <p className="mt-3 text-[10px] text-stone-400 dark:text-stone-500 text-center">
-        Powered by Mollie
-      </p>
 
+        {/* Trust – veiligheid + betaalmethoden */}
+        <p className="text-[11px] text-stone-400 dark:text-stone-500 text-center">
+          {t("idealSubtitle")} · {t("mollieMethods")}
+        </p>
+
+        {/* Secundaire opties – verborgen tot nodig */}
+        <details className="group">
+          <summary className="text-xs text-stone-500 dark:text-stone-400 cursor-pointer hover:text-stone-600 dark:hover:text-stone-300 text-center list-none flex items-center justify-center gap-2 flex-wrap">
+            <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
+              <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
+            </a>
+            <Link href="/donate/thai#promptpay" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
+              <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-10 w-auto object-contain" />
+            </Link>
+            <span>· {t("thaiPayments")} · {t("bankTransfer")}</span>
+          </summary>
+          <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700 space-y-2 text-center">
+            <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
+              <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
+              <span className="text-xs" style={{ color: "#2aa348" }}>→</span>
+            </a>
+            <Link href="/donate/thai#promptpay" className="inline-flex items-center justify-center gap-1">
+              <Image src="/logos/promptpay-official.png" alt="PromptPay" width={71} height={40} className="h-10 w-auto object-contain" />
+              <span className="text-xs" style={{ color: "#2aa348" }}>{t("thaiPaymentsMethods")} →</span>
+            </Link>
+            <a href="#bank-transfer" className="block text-xs" style={{ color: "#2aa348" }}>{t("bankTransfer")} →</a>
+          </div>
+        </details>
+      </form>
     </div>
   );
 }

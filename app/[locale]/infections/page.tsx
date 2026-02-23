@@ -12,7 +12,7 @@ export default function InfectionsPage() {
   const tCommon = useTranslations("common");
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
         <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
           <span className="text-sm font-bold" style={{ color: ACCENT_GREEN }}>Saved Souls</span>

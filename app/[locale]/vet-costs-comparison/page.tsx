@@ -27,7 +27,7 @@ export default function VetCostsComparisonPage() {
   ];
 
   return (
-    <ParallaxPage backgroundImage="/savedsoul-logo.webp">
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
       <main className="max-w-5xl mx-auto px-4 py-12 md:py-16">
         {/* Hero – vrolijk en spannend */}
         <header className="text-center mb-16">
