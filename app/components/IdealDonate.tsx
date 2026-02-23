@@ -83,21 +83,21 @@ export default function IdealDonate() {
     fetchRate();
   }, [fetchRate]);
 
+  const presets = currency === "THB" ? PRESET_AMOUNTS_THB : currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
+  const minAmount = currency === "THB" ? 100 : 5;
+  const maxAmount = currency === "THB" ? 1000000 : 50000;
+
   useEffect(() => {
-    const list = isThai ? PRESET_AMOUNTS_THB : currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
-    if (amountSelect !== "custom" && !list.includes(amount)) {
-      const first = list[0];
+    if (amountSelect !== "custom" && !presets.includes(amount)) {
+      const first = presets[0];
       setAmountSelect(String(first));
       setAmount(first);
     }
-  }, [currency, isThai]);
+  }, [currency]);
 
   const isCustomAmount = amountSelect === "custom";
   const effectiveAmount = isCustomAmount ? parseFloat(customAmount) : amount;
   const amountInEur = currency === "EUR" ? effectiveAmount : (rateToEur ? effectiveAmount * rateToEur : 0);
-  const presets = isThai ? PRESET_AMOUNTS_THB : currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
-  const minAmount = isThai ? 100 : 5;
-  const maxAmount = isThai ? 1000000 : 50000;
   const isValid = effectiveAmount >= minAmount && effectiveAmount <= maxAmount && amountInEur >= 1;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -132,7 +132,7 @@ export default function IdealDonate() {
 
   const displayAmount = isCustomAmount ? effectiveAmount : amount;
   const displayAmountStr = Number.isFinite(displayAmount) && displayAmount >= 1
-    ? curr.symbol + Math.round(displayAmount).toLocaleString(isThai ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })
+    ? curr.symbol + Math.round(displayAmount).toLocaleString(currency === "THB" ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })
     : "—";
 
   return (
@@ -162,7 +162,7 @@ export default function IdealDonate() {
                 setAmountSelect(v);
                 if (v === "custom") {
                   setCustomAmount("");
-                  setAmount(isThai ? 1000 : 5);
+                  setAmount(currency === "THB" ? 1000 : 5);
                 } else {
                   setAmount(Number(v));
                   setCustomAmount("");
@@ -172,7 +172,7 @@ export default function IdealDonate() {
             >
               {presets.map((a) => (
                 <option key={a} value={a}>
-                  {curr.symbol}{a.toLocaleString(isThai ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })}
+                  {curr.symbol}{a.toLocaleString(currency === "THB" ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })}
                 </option>
               ))}
               <option value="custom">{t("idealCustom")}</option>
@@ -200,7 +200,7 @@ export default function IdealDonate() {
               type="number"
               min={minAmount}
               max={maxAmount}
-              step={isThai ? 100 : 0.01}
+              step={currency === "THB" ? 100 : 0.01}
               placeholder="0"
               value={customAmount}
               onChange={(e) => setCustomAmount(e.target.value)}
