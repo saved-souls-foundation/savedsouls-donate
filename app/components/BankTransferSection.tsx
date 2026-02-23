@@ -49,18 +49,59 @@ export default function BankTransferSection() {
       </summary>
       <div className="p-6 pt-0 space-y-4">
         <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">Kasikorn Bank (Thailand)</p>
-          <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">033-8-13623-4</p>
-          <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: KASITHBK</p>
+          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Thai Bank Account</p>
+          <dl className="space-y-1.5 text-sm md:text-base">
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+              <dd className="font-medium text-stone-800 dark:text-stone-200">Saved-Souls Foundation</dd>
+              <dd className="text-stone-600 dark:text-stone-300">Ban Fang, Khon Kaen</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+              <dd className="font-medium text-stone-800 dark:text-stone-200">Kasikorn Bank</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">033-8-13623-4</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300">KASITHBK</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Bank Code</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300">004</dd>
+            </div>
+          </dl>
           <div className="mt-3 flex flex-wrap gap-2">
             <CopyButton text="033-8-13623-4" label={t("copyAccount")} copiedLabel={tCommon("copied")} />
             <CopyButton text="KASITHBK" label={t("copySwift")} copiedLabel={tCommon("copied")} />
           </div>
         </div>
         <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">PostFinance (Zwitserland)</p>
-          <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">CH17 0900 0000 8027 1722 9</p>
-          <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: POFICHBEXXX</p>
+          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Swiss Bank Account</p>
+          <dl className="space-y-1.5 text-sm md:text-base">
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+              <dd className="font-medium text-stone-800 dark:text-stone-200">Saved Souls Animal Sanctuary / Tierheim Ban Fang</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+              <dd className="font-medium text-stone-800 dark:text-stone-200">PostFinance AG</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300">80-271722-9</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">IBAN</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">CH17 0900 0000 8027 1722 9</dd>
+            </div>
+            <div>
+              <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+              <dd className="font-mono text-stone-700 dark:text-stone-300">POFICHBEXXX</dd>
+            </div>
+          </dl>
           <div className="mt-3 flex flex-wrap gap-2">
             <CopyButton text="CH17 0900 0000 8027 1722 9" label={t("copyIban")} copiedLabel={tCommon("copied")} />
             <CopyButton text="POFICHBEXXX" label={t("copySwift")} copiedLabel={tCommon("copied")} />

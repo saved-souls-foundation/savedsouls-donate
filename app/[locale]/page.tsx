@@ -9,6 +9,7 @@ import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
 import SiteHeader from "../components/SiteHeader";
 import IdealDonate from "../components/IdealDonate";
+import BankTransferSection from "../components/BankTransferSection";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -17,34 +18,6 @@ const BTN_VOLUNTEER = "#ea580c";
 /** YouTube video IDs */
 const YOUTUBE_VIDEO_ID = "2vNi6Aa3_Gg";
 const YOUTUBE_VIDEO_ID_2 = "l7qYY1c_n3M";
-
-function CopyButton({
-  text,
-  label,
-  copiedLabel = "Copied!",
-}: {
-  text: string;
-  label: string;
-  copiedLabel?: string;
-}) {
-  const [copied, setCopied] = useState(false);
-
-  const copy = () => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={copy}
-      className="ml-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors border border-[#2aa348] text-[#2aa348] hover:bg-[#2aa348] hover:text-white dark:border-[#2aa348] dark:text-[#2aa348] dark:hover:bg-[#2aa348] dark:hover:text-white"
-    >
-      {copied ? copiedLabel : label}
-    </button>
-  );
-}
 
 function ContactForm() {
   const tHome = useTranslations("home");
@@ -716,36 +689,9 @@ export default function DonatePage() {
           </div>
 
           {/* Bankoverschrijving – uitklapbaar */}
-          <details id="bank-transfer" className="group rounded-xl border border-stone-200 dark:border-stone-600 overflow-hidden">
-            <summary className="px-6 py-4 cursor-pointer list-none flex items-center justify-between bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
-              <span className="font-semibold text-stone-800 dark:text-stone-200" style={{ color: ACCENT_GREEN }}>
-                {tHome("bankTransfer")}
-              </span>
-              <span className="text-stone-400 group-open:rotate-180 transition-transform">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" /></svg>
-              </span>
-            </summary>
-            <div className="p-6 pt-0 space-y-4">
-              <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">Kasikorn Bank (Thailand)</p>
-                <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">033-8-13623-4</p>
-                <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: KASITHBK</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <CopyButton text="033-8-13623-4" label={tHome("copyAccount")} copiedLabel={t("copied")} />
-                  <CopyButton text="KASITHBK" label={tHome("copySwift")} copiedLabel={t("copied")} />
-                </div>
-              </div>
-              <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-2">PostFinance (Zwitserland)</p>
-                <p className="font-mono text-stone-700 dark:text-stone-300 text-sm md:text-base break-all">CH17 0900 0000 8027 1722 9</p>
-                <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">SWIFT: POFICHBEXXX</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <CopyButton text="CH17 0900 0000 8027 1722 9" label={tHome("copyIban")} copiedLabel={t("copied")} />
-                  <CopyButton text="POFICHBEXXX" label={tHome("copySwift")} copiedLabel={t("copied")} />
-                </div>
-              </div>
-            </div>
-          </details>
+          <div id="bank-transfer">
+            <BankTransferSection />
+          </div>
         </div>
       </section>
 
