@@ -69,11 +69,15 @@ export default function SiteSearch({ mobileIcon = false }: { mobileIcon?: boolea
       <>
         <button
           type="button"
-          onClick={() => setMobileOverlayOpen(true)}
-          className="p-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            setMobileOverlayOpen(true);
+          }}
+          className="flex items-center justify-center min-w-[44px] min-h-[44px] p-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 cursor-pointer active:bg-stone-200 dark:active:bg-stone-700"
+          style={{ touchAction: "manipulation" }}
           aria-label={t("siteSearchPlaceholder")}
         >
-          <Search className="w-5 h-5" />
+          <Search className="w-5 h-5 shrink-0" />
         </button>
         {mobileOverlayOpen && (
           <div className="fixed inset-0 z-[200] bg-white dark:bg-stone-900 flex flex-col">
