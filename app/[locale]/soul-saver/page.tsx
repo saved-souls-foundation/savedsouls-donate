@@ -6,8 +6,11 @@ import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
+import HeroPolaroidCarousel from "../../components/HeroPolaroidCarousel";
 
 const ACCENT_GREEN = "#2aa348";
+const HERO_GREEN = "#2aa348";
+const DARK_GREEN = "#1a6b2e";
 const CORAL = "#E67A4C";
 const AMBER = "#f59e0b";
 const TEAL = "#0d9488";
@@ -27,6 +30,7 @@ const IMPACT_CARDS_THB = [
 
 export default function SoulSaverPage() {
   const t = useTranslations("soulSaver");
+  const tHome = useTranslations("home");
   const locale = useLocale();
   const isThai = locale === "th";
   const impactCards = isThai ? IMPACT_CARDS_THB : IMPACT_CARDS_EUR;
@@ -36,6 +40,31 @@ export default function SoulSaverPage() {
       backgroundImage="/savedsoul-logo-bg.webp"
       overlayClassName="bg-gradient-to-b from-amber-50/85 via-orange-50/70 to-stone-50/90 dark:from-amber-950/50 dark:via-stone-900/80 dark:to-stone-950/90"
     >
+      {/* Hero banner – groen met tekst en polaroid foto */}
+      <section
+        className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 px-6 md:px-12 lg:px-16 py-12 md:py-16"
+        style={{ backgroundColor: HERO_GREEN }}
+      >
+        <div className="flex-1 text-white text-center md:text-left order-2 md:order-1">
+          <p className="font-serif text-2xl md:text-3xl lg:text-4xl italic mb-2 md:mb-3">
+            {tHome("findOutMoreHeroTagline")}
+          </p>
+          <h1 className="text-xl md:text-2xl font-bold tracking-wide opacity-90 mb-4 md:mb-6" style={{ color: "rgba(255,255,255,0.95)" }}>
+            SAVED SOULS FOUNDATION
+          </h1>
+          <p className="font-serif text-lg md:text-xl lg:text-2xl italic mb-6 md:mb-8">
+            {tHome("findOutMoreHeroCta")}
+          </p>
+          <div
+            className="inline-block px-6 py-3 rounded-lg font-semibold text-white"
+            style={{ backgroundColor: DARK_GREEN }}
+          >
+            {tHome("findOutMoreHeroLocation")}
+          </div>
+        </div>
+        <HeroPolaroidCarousel />
+      </section>
+
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
         {/* Hero – vrolijk en pakkend */}
         <header className="text-center mb-14 md:mb-20">

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { fetchAnimalsFromApi } from "@/lib/animals-api";
 import { fetchSponsorAnimalsFromApi } from "@/lib/sponsor-api";
+import { getAllBlogPosts } from "@/lib/blog-posts";
 
 const BASE_URL = "https://savedsouls-foundation.org";
 
@@ -9,12 +10,13 @@ const STATIC_PATHS = [
   "",
   "/donate",
   "/donate/causes",
-  "/support",
   "/donate/thai",
+  "/support",
   "/gallery",
   "/thank-you",
   "/adopt",
   "/adopt-inquiry",
+  "/adopt-preview",
   "/luchtbrug",
   "/sponsor",
   "/press",
@@ -88,9 +90,19 @@ const STATIC_PATHS = [
   "/dog-vomiting-diarrhea",
   "/dog-and-cat-together",
   "/financial-overview",
+  "/pet-proof-house",
+  "/pet-and-children",
+  "/microchipping",
+  "/overheating",
+  "/pet-sitter",
+  "/pet-insurance",
+  "/pet-loss",
+  "/senior-pet",
+  "/toxic-plants",
+  "/foster",
+  "/sterilization",
+  "/pet-passport",
   "/blog",
-  "/blog/please-help-us-adopt",
-  "/blog/end-of-month-feeding-costs",
 ];
 
 async function getAnimalIds(): Promise<{ dogs: string[]; cats: string[] }> {
@@ -105,8 +117,24 @@ async function getAnimalIds(): Promise<{ dogs: string[]; cats: string[] }> {
   }
 }
 
+async function getSponsorAnimalIds(): Promise<{ dogs: string[]; cats: string[] }> {
+  try {
+    const { dogs, cats } = await fetchSponsorAnimalsFromApi();
+    return {
+      dogs: dogs.map((d) => d.id),
+      cats: cats.map((c) => c.id),
+    };
+  } catch {
+    return { dogs: [], cats: [] };
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { dogs, cats } = await getAnimalIds();
+  const [{ dogs, cats }, { dogs: sponsorDogs, cats: sponsorCats }] = await Promise.all([
+    getAnimalIds(),
+    getSponsorAnimalIds(),
+  ]);
+  const blogPosts = getAllBlogPosts();
   const now = new Date();
 
   const entries: MetadataRoute.Sitemap = [];
@@ -120,6 +148,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: now,
         changeFrequency: p === "" || p === "/donate" ? "weekly" : "monthly",
         priority: p === "" ? 1 : p === "/donate" ? 0.9 : 0.8,
+      });
+    }
+
+    for (const post of blogPosts) {
+      entries.push({
+        url: `${BASE_URL}${localePrefix}/blog/${post.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
       });
     }
 
@@ -138,6 +175,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.7,
+      });
+    }
+
+    for (const id of sponsorDogs) {
+      entries.push({
+        url: `${BASE_URL}${localePrefix}/sponsor/dog/${id}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+
+    for (const id of sponsorCats) {
+      entries.push({
+        url: `${BASE_URL}${localePrefix}/sponsor/cat/${id}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
       });
     }
   }

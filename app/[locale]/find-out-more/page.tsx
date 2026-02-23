@@ -1,17 +1,24 @@
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
+import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
+import HeroPolaroidCarousel from "../../components/HeroPolaroidCarousel";
 
 const ACCENT_GREEN = "#2aa348";
+const HERO_GREEN = "#2aa348";
+const DARK_GREEN = "#1a6b2e";
 
 export const metadata: Metadata = {
   title: "Find out more | Saved Souls Foundation",
   description: "How we rescue and care for dogs in Thailand. Donate, transfer, sponsor a dog or get in touch.",
 };
-const BUTTON_ORANGE = "#E67A4C";
 
-export default function FindOutMorePage() {
+export default async function FindOutMorePage() {
+  const t = await getTranslations("common");
+  const tHome = await getTranslations("home");
+  const tSoulSaver = await getTranslations("soulSaver");
   return (
     <ParallaxPage>
       <nav className="sticky top-0 z-20 flex items-center justify-between gap-4 px-4 md:px-8 py-4 bg-white/98 dark:bg-stone-900/98 backdrop-blur-sm border-b border-stone-200 dark:border-stone-700 shadow-sm">
@@ -29,6 +36,31 @@ export default function FindOutMorePage() {
           ← Back to home
         </Link>
       </nav>
+
+      {/* Hero banner – groen met tekst en polaroid foto */}
+      <section
+        className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 px-6 md:px-12 lg:px-16 py-12 md:py-16"
+        style={{ backgroundColor: HERO_GREEN }}
+      >
+        <div className="flex-1 text-white text-center md:text-left order-2 md:order-1">
+          <p className="font-serif text-2xl md:text-3xl lg:text-4xl italic mb-2 md:mb-3">
+            {tHome("findOutMoreHeroTagline")}
+          </p>
+          <h1 className="text-xl md:text-2xl font-bold tracking-wide opacity-90 mb-4 md:mb-6" style={{ color: "rgba(255,255,255,0.95)" }}>
+            SAVED SOULS FOUNDATION
+          </h1>
+          <p className="font-serif text-lg md:text-xl lg:text-2xl italic mb-6 md:mb-8">
+            {tHome("findOutMoreHeroCta")}
+          </p>
+          <div
+            className="inline-block px-6 py-3 rounded-lg font-semibold text-white"
+            style={{ backgroundColor: DARK_GREEN }}
+          >
+            {tHome("findOutMoreHeroLocation")}
+          </div>
+        </div>
+        <HeroPolaroidCarousel />
+      </section>
 
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-16">
         <header className="text-center mb-12 md:mb-16">
@@ -129,21 +161,19 @@ export default function FindOutMorePage() {
           </div>
         </section>
 
+        {/* Donate CTA – midden op de pagina */}
+        <section className="mb-14 md:mb-20 text-center">
+          <DonateButton size="lg" className="shadow-lg hover:shadow-xl">
+            {t("donateNow")}
+          </DonateButton>
+        </section>
+
         {/* Call to action buttons */}
         <section className="mb-14 md:mb-20">
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-6 text-center" style={{ color: ACCENT_GREEN }}>
             How you can help
           </h2>
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-            <a
-              href="https://paypal.me/savedsoulsfoundation"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-4 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              Donate now
-            </a>
             <Link
               href="/contact"
               className="inline-flex items-center justify-center px-6 py-4 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
@@ -171,14 +201,55 @@ export default function FindOutMorePage() {
           </p>
           <div className="space-y-4 max-w-md mx-auto">
             <div className="p-4 rounded-lg bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
-              <p className="font-semibold text-stone-800 dark:text-stone-200">Kasikorn Bank</p>
-              <p className="text-stone-700 dark:text-stone-300 font-mono text-sm break-all">033-8-13623-4</p>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">SWIFT: KASITHBK</p>
+              <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Thai Bank Account</p>
+              <dl className="space-y-1.5 text-sm">
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                  <dd className="font-medium text-stone-800 dark:text-stone-200">Saved-Souls Foundation</dd>
+                  <dd className="text-stone-600 dark:text-stone-300">Ban Fang, Khon Kaen</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                  <dd className="font-medium text-stone-800 dark:text-stone-200">Kasikorn Bank</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">033-8-13623-4</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300">KASITHBK</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Bank Code</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300">004</dd>
+                </div>
+              </dl>
             </div>
             <div className="p-4 rounded-lg bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
-              <p className="font-semibold text-stone-800 dark:text-stone-200">PostFinance (Switzerland)</p>
-              <p className="text-stone-700 dark:text-stone-300 font-mono text-sm break-all">CH17 0900 0000 8027 1722 9</p>
-              <p className="text-stone-600 dark:text-stone-400 text-sm">SWIFT: POFICHBEXXX</p>
+              <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Swiss Bank Account</p>
+              <dl className="space-y-1.5 text-sm">
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                  <dd className="font-medium text-stone-800 dark:text-stone-200">Saved Souls Animal Sanctuary / Tierheim Ban Fang</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                  <dd className="font-medium text-stone-800 dark:text-stone-200">PostFinance AG</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300">80-271722-9</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">IBAN</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">CH17 0900 0000 8027 1722 9</dd>
+                </div>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+                  <dd className="font-mono text-stone-700 dark:text-stone-300">POFICHBEXXX</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </section>
@@ -190,17 +261,13 @@ export default function FindOutMorePage() {
             <Link
               href="/#adopt"
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: BUTTON_ORANGE }}
+              style={{ backgroundColor: ACCENT_GREEN }}
             >
-              Adoption
+              {t("adopt")}
             </Link>
-            <Link
-              href="/#donate"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
-              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-            >
-              More ways to donate
-            </Link>
+            <DonateButton href="/#donate" size="md" className="!px-6 !py-3">
+              {tSoulSaver("moreWays")}
+            </DonateButton>
           </div>
         </section>
       </main>

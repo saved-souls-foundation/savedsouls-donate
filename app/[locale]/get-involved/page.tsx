@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
+import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
@@ -203,13 +204,9 @@ export default async function GetInvolvedPage() {
 
           {/* CTA */}
           <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/donate"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              {t("donateNow")} ❤️
-            </Link>
+            <DonateButton href="/donate" size="lg" className="shadow-lg hover:shadow-xl hover:scale-105">
+              {t("donateNow")}
+            </DonateButton>
             <Link
               href="/"
               className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-all hover:opacity-90"

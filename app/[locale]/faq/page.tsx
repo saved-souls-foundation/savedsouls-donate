@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
+import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
@@ -142,13 +143,7 @@ function FaqItem({
         <div className="pb-5 pr-12 text-stone-600 dark:text-stone-400 leading-relaxed">
           {answer}
           <div className="mt-4">
-            <Link
-              href="/#donate"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              {donateLabel}
-            </Link>
+            <DonateButton size="sm">{donateLabel}</DonateButton>
           </div>
         </div>
       </div>
@@ -236,16 +231,9 @@ export default function FaqPage() {
                       </Link>
                     )}
                     {titleKey === "sectionDonate" && (
-                      <Link
-                        href="/#donate"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: BUTTON_ORANGE }}
-                      >
+                      <DonateButton size="sm">
                         {tCommon("donate")}
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
+                      </DonateButton>
                     )}
                     {titleKey === "sectionAnimals" && (
                       <Link
@@ -377,13 +365,9 @@ export default function FaqPage() {
                     {t(`chapters.${key}.teaser`)}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                  <Link
-                    href="/#donate"
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                    style={{ backgroundColor: BUTTON_ORANGE }}
-                  >
+                  <DonateButton size="sm" className="!px-3 !py-2 gap-1.5">
                     {tCommon("donate")}
-                  </Link>
+                  </DonateButton>
                   <Link
                     href={href}
                     className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Home, Rabbit, Luggage, HeartHandshake, Quote, CalendarClock, Users, Heart, AlertTriangle, PawPrint, Camera, ClipboardList, Dog, Cat } from "lucide-react";
+import DonateButton from "@/app/components/DonateButton";
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -8,7 +9,6 @@ import Footer from "../../components/Footer";
 import ClinicActionButton from "../../components/ClinicActionButton";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
 
 export const metadata: Metadata = {
   title: "Volunteer | Saved Souls Foundation",
@@ -494,13 +494,9 @@ export default async function VolunteerPage() {
               {t("footerTagline")}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-              <Link
-                href="/#donate"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                style={{ backgroundColor: BUTTON_ORANGE }}
-              >
+              <DonateButton size="lg" className="hover:scale-105 hover:shadow-lg">
                 {tCommon("donate")}
-              </Link>
+              </DonateButton>
               <Link
                 href="/volunteer-signup"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"

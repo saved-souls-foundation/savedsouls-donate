@@ -3,19 +3,15 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
+import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
 
 export default function FinancialOverviewPage() {
   const t = useTranslations("financialOverview");
   const tCommon = useTranslations("common");
-
-  const handleDonate = () => {
-    window.open("https://paypal.me/savedsoulsfoundation", "_blank");
-  };
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
@@ -105,13 +101,9 @@ export default function FinancialOverviewPage() {
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6 max-w-xl mx-auto">{t("ctaText")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleDonate}
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              {tCommon("donate")} ❤️
-            </button>
+            <DonateButton size="lg" className="hover:scale-105 hover:shadow-lg">
+              {tCommon("donate")}
+            </DonateButton>
             <Link
               href="/sponsor"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold border-2 transition-all hover:scale-105 hover:shadow-lg"

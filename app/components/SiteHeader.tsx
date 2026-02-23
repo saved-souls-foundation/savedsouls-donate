@@ -1,9 +1,22 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import {
+  ChevronDown,
+  BookOpen,
+  HandHeart,
+  Heart,
+  HeartHandshake,
+  Megaphone,
+  ShoppingBag,
+  Baby,
+  LayoutGrid,
+  Dog,
+  Cat,
+  Mail,
+} from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import NavDropdown from "./NavDropdown";
 import SiteSearch from "./SiteSearch";
@@ -21,11 +34,23 @@ type SiteHeaderProps = {
 };
 
 export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileAdoptOpen, setMobileAdoptOpen] = useState(false);
   const [mobileGetInvolvedOpen, setMobileGetInvolvedOpen] = useState(false);
   const t = useTranslations("common");
   const tHome = useTranslations("home");
+
+  const navLinkClass = (path: string, mobile = false) => {
+    const isActive = pathname === path || (path !== "/" && pathname.startsWith(path));
+    const pad = mobile ? "px-4 py-3" : "px-3 py-2 text-sm";
+    const inactive = mobile ? "text-stone-700 dark:text-stone-300" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100";
+    return `${pad} rounded-lg transition-colors ${
+      isActive
+        ? "bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-medium"
+        : `${inactive} hover:bg-stone-100 dark:hover:bg-stone-800`
+    }`;
+  };
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -71,13 +96,13 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
         {/* Desktop nav – strakker: links + 2 primaire knoppen */}
         <div className="hidden md:flex items-center gap-1 lg:gap-2">
           <SiteSearch />
-          <Link href="/about-us" className="px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+          <Link href="/about-us" className={navLinkClass("/about-us")}>
             {t("aboutUs")}
           </Link>
-          <Link href="/story" className="px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+          <Link href="/story" className={navLinkClass("/story")}>
             {t("ourStory")}
           </Link>
-          <Link href="/contact" className="px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+          <Link href="/contact" className={navLinkClass("/contact")}>
             {t("contact")}
           </Link>
           <NavDropdown
@@ -102,25 +127,28 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
             ]}
             buttonClassName="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
             buttonStyle={{ backgroundColor: BTN_ADOPT }}
+            align="right"
           />
           {isHomePage ? (
             <a href="#sponsor" onClick={(e) => { e.preventDefault(); scrollToSection!("sponsor"); }} className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
               {t("sponsor")}
             </a>
           ) : (
-            <Link href="/#sponsor" className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+            <Link href="/#sponsor" className={navLinkClass("/sponsor")}>
               {t("sponsor")}
             </Link>
           )}
-          <Link href="/volunteer" className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+          <Link href="/volunteer" className={navLinkClass("/volunteer")}>
             {t("volunteer")}
           </Link>
           {isHomePage ? (
-            <a href="#donate" onClick={(e) => { e.preventDefault(); scrollToSection!("donate"); }} className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+            <a href="#donate" onClick={(e) => { e.preventDefault(); scrollToSection!("donate"); }} className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
+              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
               {t("donate")}
             </a>
           ) : (
-            <Link href="/#donate" className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+            <Link href="/#donate" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
+              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
               {t("donate")}
             </Link>
           )}
@@ -173,13 +201,13 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
           {/* Zoek staat nu altijd in header als icoon */}
           {/* Navigatielinks */}
           <div className="flex flex-col gap-1">
-            <Link href="/about-us" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+            <Link href="/about-us" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/about-us", true)}`}>
               {t("aboutUs")}
             </Link>
-            <Link href="/story" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+            <Link href="/story" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/story", true)}`}>
               {t("ourStory")}
             </Link>
-            <Link href="/contact" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
+            <Link href="/contact" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/contact", true)}`}>
               {t("contact")}
             </Link>
             {/* Doe mee + uitklapper */}
@@ -190,23 +218,28 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
                 className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
               >
                 {t("getInvolved")}
-                <ChevronDown className={`w-4 h-4 transition-transform ${mobileGetInvolvedOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${mobileGetInvolvedOpen ? "rotate-180" : ""}`} />
               </button>
               {mobileGetInvolvedOpen && (
-                <div className="pl-4 pb-2 flex flex-col gap-1">
-                  <Link href="/get-involved" onClick={closeMobileMenu} className="px-4 py-2 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                <div className="pl-4 pb-2 flex flex-col gap-0.5">
+                  <Link href="/get-involved" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <HandHeart className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("getInvolved")}
                   </Link>
-                  <Link href="/gidsen" onClick={closeMobileMenu} className="px-4 py-2 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/gidsen" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <BookOpen className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("gidsen")}
                   </Link>
-                  <Link href="/volunteer" onClick={closeMobileMenu} className="px-4 py-2 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/volunteer" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <HeartHandshake className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("volunteer")}
                   </Link>
-                  <Link href="/influencers" onClick={closeMobileMenu} className="px-4 py-2 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/influencers" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <Megaphone className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("influencers")}
                   </Link>
-                  <Link href="/kids" onClick={closeMobileMenu} className="px-4 py-2 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/kids" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <Baby className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("kids")}
                   </Link>
                 </div>
@@ -234,20 +267,24 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
                 style={{ backgroundColor: BTN_ADOPT }}
               >
                 {t("adopt")}
-                <ChevronDown className={`w-4 h-4 transition-transform ${mobileAdoptOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${mobileAdoptOpen ? "rotate-180" : ""}`} />
               </button>
               {mobileAdoptOpen && (
-                <div className="mt-2 flex flex-col gap-1 pl-2">
-                  <Link href="/adopt" onClick={closeMobileMenu} className="px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                <div className="mt-2 flex flex-col gap-0.5 pl-2">
+                  <Link href="/adopt" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <LayoutGrid className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("adoptOverview")}
                   </Link>
-                  <Link href="/adopt?type=dog" onClick={closeMobileMenu} className="px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/adopt?type=dog" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <Dog className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("adoptDogs")}
                   </Link>
-                  <Link href="/adopt?type=cat" onClick={closeMobileMenu} className="px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/adopt?type=cat" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <Cat className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("adoptCats")}
                   </Link>
-                  <Link href="/adopt-inquiry" onClick={closeMobileMenu} className="px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                  <Link href="/adopt-inquiry" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                    <Mail className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
                     {t("adoptInquiryNav")}
                   </Link>
                 </div>
@@ -266,11 +303,13 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
               {t("volunteer")}
             </Link>
             {isHomePage ? (
-              <button type="button" onClick={handleDonate} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_DONATE }}>
+              <button type="button" onClick={handleDonate} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
                 {t("donate")}
               </button>
             ) : (
-              <Link href="/#donate" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+              <Link href="/#donate" onClick={closeMobileMenu} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
                 {t("donate")}
               </Link>
             )}

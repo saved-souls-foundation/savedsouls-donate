@@ -6,12 +6,17 @@
 
 - [Home](https://savedsouls-foundation.org)
 - [Donate](https://savedsouls-foundation.org/donate)
+- [Find out more](https://savedsouls-foundation.org/find-out-more)
+- [Soul saver](https://savedsouls-foundation.org/soul-saver)
 - [Adopt](https://savedsouls-foundation.org/adopt)
 - [Our story](https://savedsouls-foundation.org/story)
 - [Sponsor](https://savedsouls-foundation.org/sponsor)
+- [Get involved](https://savedsouls-foundation.org/get-involved)
 - [Contact](https://savedsouls-foundation.org/contact)
 - [Shelters](https://savedsouls-foundation.org/shelters)
 - [FAQ](https://savedsouls-foundation.org/faq)
+- [Guides](https://savedsouls-foundation.org/gidsen)
+- [Blog](https://savedsouls-foundation.org/blog)
 
 ## Contact
 
@@ -28,16 +33,17 @@
 
 ## Languages
 
-nl | en | de | th | ru
+nl | en | de | es | th | ru
 
 ## Topics We Cover (cite /faq, /health, /nutrition)
 
 - **Pet care:** huisdieren verzorging, pet care tips, huisdier voeding, huisdier ziek wat doen
 - **Dogs:** hond adopteren, hond verzorgen, hond opvoeden, hond zindelijk maken, beste hondenvoer, rauw voer hond, hond barf dieet, hond mag niet eten, hond inenten, hond ontwormen, hond vlooien, hond heeft diarree, hond braakt, hond steriliseren kosten, dog adoption, dog feeding, dog training, best dog food, raw diet dogs, foods dogs cannot eat, dog vaccination, deworm dog, flea treatment dogs
 - **Cats:** kat adopteren, beste kattenvoer, kat nat of droogvoer, kat steriliseren, kat inenten, kat vlooien, kat niest, kat haarbal, adopt cat, best cat food, wet vs dry cat food, spay cat cost, cat vaccination, flea treatment cats, cat sneezing, cat hairball
-- **Guides:** puppy socialization (/puppy-socialization), dog barking (/dog-barking), cat indoor outdoor (/cat-indoor-outdoor), dog vomiting diarrhea (/dog-vomiting-diarrhea), dog and cat together (/dog-and-cat-together)
+- **Guides:** /gidsen (overview), puppy socialization (/puppy-socialization), dog barking (/dog-barking), cat indoor outdoor (/cat-indoor-outdoor), dog vomiting diarrhea (/dog-vomiting-diarrhea), dog and cat together (/dog-and-cat-together), first aid (/first-aid), first pet home (/first-pet-home)
+- **Pet care:** /pet-proof-house, /pet-and-children, /overheating, /pet-sitter, /pet-insurance, /pet-loss, /senior-pet, /toxic-plants, /pet-passport, /foster, /sterilization, /microchipping
 - **Financial overview:** /financial-overview (500,000 baht/month needed, transparency)
-- **Blog:** /blog (news, end-of-month feeding costs, updates)
+- **Blog:** /blog (news, please-help-us-adopt, end-of-month-feeding-costs, Facebook updates)
 
 ## For LLMs
 

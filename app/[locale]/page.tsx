@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Heart } from "lucide-react";
 import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
@@ -13,6 +14,7 @@ import BankTransferSection from "../components/BankTransferSection";
 import RecentDonations from "../components/RecentDonationsFooter";
 
 const ACCENT_GREEN = "#2aa348";
+const BTN_DONATE = "#dc2626";
 const BUTTON_ORANGE = "#E67A4C";
 const BTN_VOLUNTEER = "#ea580c";
 
@@ -282,9 +284,9 @@ export default function DonatePage() {
                   type="button"
                   onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base md:text-lg shadow-lg hover:scale-105 transition-all"
-                  style={{ backgroundColor: "#c41e3a" }}
+                  style={{ backgroundColor: BTN_DONATE }}
                 >
-                  <span aria-hidden>❤️</span>
+                  <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
                   {t("donate")}
                 </button>
                 <Link
@@ -310,7 +312,8 @@ export default function DonatePage() {
             <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
               {t("adopt")}
             </Link>
-            <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
+            <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
               {t("donate")}
             </button>
             <button type="button" onClick={() => document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: "#0891b2" }}>
@@ -418,9 +421,10 @@ export default function DonatePage() {
               <button
                 type="button"
                 onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: BUTTON_ORANGE }}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
+                style={{ backgroundColor: BTN_DONATE }}
               >
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
                 {tHome("donateNowCta")}
               </button>
             </div>

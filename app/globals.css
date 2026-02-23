@@ -123,6 +123,15 @@ body {
   50% { transform: scale(1.15); opacity: 1; }
 }
 
+@keyframes polaroid-drop {
+  0% { transform: translateY(-16px); opacity: 0.9; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-polaroid-drop {
+  animation: polaroid-drop 0.35s ease-out forwards;
+}
+
 .animate-donation-shimmer {
   animation: donation-shimmer 4s ease-in-out infinite;
 }
@@ -139,6 +148,21 @@ body {
   .animate-donation-heart {
     animation: none;
   }
+}
+
+/* Dropdown items: subtiele groene accentlijn bij hover */
+.nav-dropdown-item {
+  position: relative;
+}
+.nav-dropdown-item:hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: rgba(42, 163, 72, 0.5);
+  border-radius: 1px;
 }
 
 @keyframes shimmer-frost {

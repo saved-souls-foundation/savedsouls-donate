@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
+import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 import ContactForm from "../../components/ContactForm";
 
@@ -12,7 +14,8 @@ export const metadata: Metadata = {
   description: "Contact Saved Souls Foundation in Khon Kaen, Thailand. Email, phone, address and opening hours.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const t = await getTranslations("common");
   return (
     <ParallaxPage>
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
@@ -108,14 +111,55 @@ export default function ContactPage() {
             </h2>
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200">Kasikorn Bank (Thailand)</p>
-                <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all mt-1">033-8-13623-4</p>
-                <p className="text-stone-600 dark:text-stone-400 text-sm mt-1">SWIFT: KASITHBK</p>
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Thai Bank Account</p>
+                <dl className="space-y-1.5 text-sm md:text-base">
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                    <dd className="font-medium text-stone-800 dark:text-stone-200">Saved-Souls Foundation</dd>
+                    <dd className="text-stone-600 dark:text-stone-300">Ban Fang, Khon Kaen</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                    <dd className="font-medium text-stone-800 dark:text-stone-200">Kasikorn Bank</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">033-8-13623-4</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300">KASITHBK</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Bank Code</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300">004</dd>
+                  </div>
+                </dl>
               </div>
               <div className="p-4 rounded-lg bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200">PostFinance (Switzerland)</p>
-                <p className="text-stone-700 dark:text-stone-300 font-mono text-sm md:text-base break-all mt-1">CH17 0900 0000 8027 1722 9</p>
-                <p className="text-stone-600 dark:text-stone-400 text-sm mt-1">SWIFT: POFICHBEXXX</p>
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Swiss Bank Account</p>
+                <dl className="space-y-1.5 text-sm md:text-base">
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                    <dd className="font-medium text-stone-800 dark:text-stone-200">Saved Souls Animal Sanctuary / Tierheim Ban Fang</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                    <dd className="font-medium text-stone-800 dark:text-stone-200">PostFinance AG</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300">80-271722-9</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">IBAN</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">CH17 0900 0000 8027 1722 9</dd>
+                  </div>
+                  <div>
+                    <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
+                    <dd className="font-mono text-stone-700 dark:text-stone-300">POFICHBEXXX</dd>
+                  </div>
+                </dl>
               </div>
             </div>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-3">
@@ -124,7 +168,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+          <DonateButton size="md">{t("donate")}</DonateButton>
           <a
             href="mailto:info@savedsouls-foundation.org"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"

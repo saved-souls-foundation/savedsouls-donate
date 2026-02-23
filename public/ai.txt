@@ -21,32 +21,30 @@ Saved Souls Foundation is an animal sanctuary in Khon Kaen, Thailand. Since 2010
 - We provide wheelchairs and mobility aids for disabled dogs
 - Adoption is possible internationally (we help with transport)
 - We work with partner shelters worldwide (see /shelters)
-- Content available in: Dutch (nl), English (en), German (de), Thai (th), Russian (ru)
+- Content available in: Dutch (nl), English (en), German (de), Spanish (es), Thai (th), Russian (ru)
 
 ## Important Pages
 - Home: /
-- Donate: /donate
+- Donate: /donate, /donate/causes, /donate/thai, /soul-saver
 - Support (Ko-fi style): /support
-- Get involved (donate, sponsor, volunteer, adopt): /get-involved
-- Guides & information (all pet care guides): /gidsen
-- Adopt: /adopt
+- Get involved: /get-involved
+- Find out more: /find-out-more (our story, bank transfer, how to help)
+- Guides & information: /gidsen (all pet care guides)
+- Adopt: /adopt, /adopt-inquiry, /luchtbrug (international adoption)
 - First time pet home: /first-pet-home (tips for new owners)
-- First aid dog & cat: /first-aid (bleeding, poisoning, CPR, choking)
-- First aid at home: /first-aid-at-home (checklist, emergency numbers)
-- Our story: /story
-- Shelters (link exchange partners): /shelters
+- First aid: /first-aid (bleeding, poisoning, CPR, choking), /first-aid-at-home (checklist, emergency numbers)
+- Our story: /story, /about-us
+- Shelters: /shelters (link exchange partners)
 - Contact: /contact
 - FAQ: /faq
 - Sponsor: /sponsor
-- Volunteer: /volunteer
-- Health guides: /health, /nutrition, /vaccinations, /heartworm, /first-aid, /general-health, etc.
-- Puppy socialization: /puppy-socialization (dog socialization 8-16 weeks)
-- Dog barking: /dog-barking (stop barking, tips)
-- Cat indoor or outdoor: /cat-indoor-outdoor (indoor vs outdoor cat)
-- Dog vomiting or diarrhea: /dog-vomiting-diarrhea (when to see vet)
-- Dog and cat together: /dog-and-cat-together (introducing dog and cat)
-- Financial overview: /financial-overview (monthly costs 500,000 baht, transparency, where donations go)
-- Blog: /blog (news, end-of-month feeding costs, updates)
+- Volunteer: /volunteer, /volunteer-signup
+- School project: /school-project, /kids
+- Health guides: /health, /nutrition, /vaccinations, /heartworm, /first-aid, /general-health, /deworming, /flea-tick-parasite-guide, /vet-costs-comparison, /eye-ear-care, /microchipping, /sterilization
+- Pet care guides: /puppy-socialization, /dog-barking, /cat-indoor-outdoor, /dog-vomiting-diarrhea, /dog-and-cat-together, /dog-home-alone, /house-training, /walking-dog, /travel-with-pet, /moving-with-pet, /cat-hairball, /fireworks-pets, /pet-proof-house, /pet-and-children, /overheating, /pet-sitter, /pet-insurance, /pet-loss, /senior-pet, /toxic-plants, /pet-passport, /foster
+- Special: /dog-meat-survivors, /disabled-dog-guide, /paralyzed-dogs-guide, /raw-hide
+- Financial overview: /financial-overview (monthly costs 500,000 baht, transparency)
+- Blog: /blog (news, please-help-us-adopt, end-of-month-feeding-costs, Facebook updates)
 
 ## Site Search
 The website has a search bar in the header. Visitors can search by page title to find guides, FAQ, health info, etc.

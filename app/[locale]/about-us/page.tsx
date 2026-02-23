@@ -5,11 +5,11 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
+import DonateButton from "@/app/components/DonateButton";
 import Footer from "@/app/components/Footer";
 import ScrollReveal from "@/app/components/ScrollReveal";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
 const BTN_VOLUNTEER = "#ea580c";
 const BTN_INFLUENCERS = "#8b5cf6";
 
@@ -69,7 +69,7 @@ export default function AboutUsPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3 mt-8">
                 <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -88,7 +88,7 @@ export default function AboutUsPage() {
                 <p className="text-xl md:text-2xl text-stone-800 italic leading-relaxed">{t("careQuote")}</p>
               </blockquote>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -154,7 +154,7 @@ export default function AboutUsPage() {
                   <p className="text-stone-700 leading-relaxed mb-4">{t("wheelchair1")}</p>
                   <p className="text-stone-700 leading-relaxed mb-6">{t("wheelchair2")}</p>
                   <div className="flex flex-wrap gap-3">
-                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                    <DonateButton size="sm">{tCommon("donate")}</DonateButton>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -196,7 +196,7 @@ export default function AboutUsPage() {
               <p className="text-stone-700 leading-relaxed mb-6">{t("sterilization1")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("sterilization2")}</p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -265,13 +265,9 @@ export default function AboutUsPage() {
                 >
                   {tCommon("adopt")}
                 </Link>
-                <Link
-                  href="/#donate"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: BUTTON_ORANGE }}
-                >
+                <DonateButton size="md" className="hover:scale-105 hover:shadow-lg">
                   {tCommon("donate")}
-                </Link>
+                </DonateButton>
                 <Link
                   href="/volunteer"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"

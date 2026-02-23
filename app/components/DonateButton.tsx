@@ -1,54 +1,42 @@
 "use client";
 
-import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { Heart } from "lucide-react";
 
-const BUTTON_ORANGE = "#E67A4C";
+const BTN_DONATE = "#dc2626";
 
-export default function DonateButton({
-  href,
-  children,
-  className = "",
-}: {
-  href: string;
+type DonateButtonProps = {
+  href?: string;
   children: React.ReactNode;
   className?: string;
-}) {
+  /** sm = py-2.5 px-5, md = py-3 px-6, lg = py-4 px-8 */
+  size?: "sm" | "md" | "lg";
+};
+
+export default function DonateButton({
+  href = "/#donate",
+  children,
+  className = "",
+  size = "md",
+}: DonateButtonProps) {
+  const sizeClasses = {
+    sm: "px-5 py-2.5 text-sm gap-1.5",
+    md: "px-6 py-3 text-sm gap-2",
+    lg: "px-8 py-4 text-base gap-2",
+  };
+  const iconSizes = {
+    sm: "w-4 h-4",
+    md: "w-4 h-4",
+    lg: "w-5 h-5",
+  };
   return (
-    <a
+    <Link
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group relative overflow-hidden rounded-2xl inline-flex items-center justify-center px-8 py-4 font-semibold text-white text-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl ${className}`}
+      className={`inline-flex items-center justify-center font-semibold text-white rounded-xl hover:opacity-90 transition-opacity ${sizeClasses[size]} ${className}`}
+      style={{ backgroundColor: BTN_DONATE }}
     >
-      {/* Dog photo - frost overlay, 100% helder bij hover */}
-      <div className="absolute inset-0 overflow-hidden">
-        <Image
-          src="/hero-hug.png"
-          alt=""
-          fill
-          className="object-cover scale-105 blur-[0.5px] group-hover:scale-110 group-hover:blur-0 transition-all duration-500"
-          sizes="(max-width: 400px) 100vw, 400px"
-        />
-        {/* Frost overlay - verdwijnt bij hover */}
-        <div
-          className="absolute inset-0 backdrop-blur-[1px] transition-opacity duration-500 group-hover:opacity-0"
-          style={{
-            background: `linear-gradient(135deg, ${BUTTON_ORANGE}77 0%, ${BUTTON_ORANGE}66 50%, #d4693a88 100%)`,
-          }}
-        />
-        {/* Frost shimmer - verdwijnt bij hover */}
-        <div
-          className="absolute inset-0 opacity-25 animate-donate-frost pointer-events-none transition-opacity duration-500 group-hover:opacity-0"
-          style={{
-            background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
-            backgroundSize: "200% 100%",
-          }}
-        />
-      </div>
-      {/* Text layer */}
-      <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
-        {children}
-      </span>
-    </a>
+      <Heart className={`${iconSizes[size]} shrink-0 fill-white stroke-white`} aria-hidden />
+      {children}
+    </Link>
   );
 }

@@ -5,12 +5,12 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
+import DonateButton from "@/app/components/DonateButton";
 import Footer from "@/app/components/Footer";
 import ScrollReveal from "@/app/components/ScrollReveal";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
 const BTN_VOLUNTEER = "#ea580c";
 const BTN_INFLUENCERS = "#8b5cf6";
 
@@ -48,6 +48,9 @@ export default function StoryPage() {
               <p className="text-xl md:text-2xl text-stone-700 max-w-2xl mx-auto leading-relaxed">
                 {t("heroIntro")}
               </p>
+              <div className="flex flex-wrap justify-center gap-3 mt-8">
+                <DonateButton size="lg">{tCommon("donate")}</DonateButton>
+              </div>
             </div>
             <div className={`absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-1000 delay-500 ${heroLoaded ? "opacity-60" : "opacity-0"}`}>
               <span className="text-stone-600 text-sm">Scroll</span>
@@ -70,7 +73,7 @@ export default function StoryPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-3 mt-8">
                 <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -92,7 +95,7 @@ export default function StoryPage() {
                   <p className="text-stone-700 leading-relaxed mb-4">{t("woman2")}</p>
                   <p className="text-stone-700 leading-relaxed mb-6">{t("woman3")}</p>
                   <div className="flex flex-wrap gap-3">
-                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                    <DonateButton size="sm">{tCommon("donate")}</DonateButton>
                   </div>
                 </div>
               </div>
@@ -116,7 +119,7 @@ export default function StoryPage() {
               <p className="text-stone-700 leading-relaxed mb-4">{t("sound3")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("sound4")}</p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -152,7 +155,7 @@ export default function StoryPage() {
                   <p className="text-stone-700 leading-relaxed mb-4">{t("trust3")}</p>
                   <p className="text-stone-700 leading-relaxed mb-6">{t("trust4")}</p>
                   <div className="flex flex-wrap gap-3">
-                    <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                    <DonateButton size="sm">{tCommon("donate")}</DonateButton>
                     <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>{tCommon("volunteer")}</Link>
                   </div>
                 </div>
@@ -175,7 +178,7 @@ export default function StoryPage() {
               <p className="text-stone-700 leading-relaxed mb-6">{t("bigger2")}</p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -194,7 +197,7 @@ export default function StoryPage() {
               <p className="text-stone-700 leading-relaxed mb-6">{t("official1")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("official2")}</p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                <DonateButton size="sm">{tCommon("donate")}</DonateButton>
               </div>
             </ScrollReveal>
           </div>
@@ -220,7 +223,7 @@ export default function StoryPage() {
                 <p className="text-xl font-semibold text-stone-900 mb-8">{t("why2")}</p>
                 <div className="flex flex-wrap justify-center gap-3">
                   <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>{tCommon("adopt")}</Link>
-                  <Link href="/#donate" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>{tCommon("donate")}</Link>
+                  <DonateButton size="sm">{tCommon("donate")}</DonateButton>
                 </div>
               </ScrollReveal>
             </div>
@@ -273,13 +276,9 @@ export default function StoryPage() {
                 >
                   {tCommon("adopt")}
                 </Link>
-                <Link
-                  href="/#donate"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: BUTTON_ORANGE }}
-                >
+                <DonateButton size="md" className="hover:scale-105 hover:shadow-lg">
                   {tCommon("donate")}
-                </Link>
+                </DonateButton>
                 <Link
                   href="/volunteer"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
