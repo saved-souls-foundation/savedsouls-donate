@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { fetchAnimalsFromApi } from "@/lib/animals-api";
+import { fetchSponsorAnimalsFromApi } from "@/lib/sponsor-api";
 
 const BASE_URL = "https://savedsouls-foundation.org";
 
