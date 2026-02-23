@@ -597,7 +597,7 @@
     "submit": "Apadrinar a {name}",
     "loading": "Procesando...",
     "requiredFields": "Por favor introduce nombre y correo.",
-    "minAmount": "Mínimo 300 THB al mes.",
+    "minAmount": "Mínimo {amount} THB al mes.",
     "paymentError": "No se pudo iniciar el pago. Prueba PayPal o transferencia bancaria."
   },
   "sponsorCheckout": {
@@ -1139,6 +1139,7 @@
     "privateMessage": "Mensaje privado (opcional)",
     "messagePlaceholder": "Deja un mensaje...",
     "tipButton": "Propina €{amount}",
+    "tipButtonThb": "Propina ฿{amount}",
     "loading": "Cargando…",
     "poweredBy": "Powered by Mollie",
     "errorGeneric": "Algo salió mal. Prueba PayPal.",

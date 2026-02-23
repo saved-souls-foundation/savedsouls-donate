@@ -617,7 +617,7 @@
     "submit": "Sponsor {name}",
     "loading": "Processing...",
     "requiredFields": "Please fill in name and email.",
-    "minAmount": "Minimum 300 THB per month.",
+    "minAmount": "Minimum {amount} THB per month.",
     "paymentError": "Could not start payment. Try PayPal or bank transfer."
   },
   "sponsorCheckout": {
@@ -1159,6 +1159,7 @@
     "privateMessage": "Private message (optional)",
     "messagePlaceholder": "Leave a message...",
     "tipButton": "Tip €{amount}",
+    "tipButtonThb": "Tip ฿{amount}",
     "loading": "Loading…",
     "poweredBy": "Powered by Mollie",
     "errorGeneric": "Something went wrong. Please try PayPal.",

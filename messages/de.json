@@ -597,7 +597,7 @@
     "submit": "{name} sponsern",
     "loading": "Wird verarbeitet...",
     "requiredFields": "Bitte Name und E-Mail eingeben.",
-    "minAmount": "Mindestens 300 THB pro Monat.",
+    "minAmount": "Mindestens {amount} THB pro Monat.",
     "paymentError": "Zahlung konnte nicht gestartet werden. Versuche PayPal oder Überweisung."
   },
   "sponsorCheckout": {
@@ -1139,6 +1139,7 @@
     "privateMessage": "Private Nachricht (optional)",
     "messagePlaceholder": "Nachricht hinterlassen...",
     "tipButton": "Trinkgeld €{amount}",
+    "tipButtonThb": "Trinkgeld ฿{amount}",
     "loading": "Laden…",
     "poweredBy": "Powered by Mollie",
     "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche PayPal.",

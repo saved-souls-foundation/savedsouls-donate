@@ -597,7 +597,7 @@
     "submit": "สนับสนุน {name}",
     "loading": "กำลังดำเนินการ...",
     "requiredFields": "กรุณากรอกชื่อและอีเมล",
-    "minAmount": "ขั้นต่ำ 300 บาทต่อเดือน",
+    "minAmount": "ขั้นต่ำ {amount} บาทต่อเดือน",
     "paymentError": "ไม่สามารถเริ่มการชำระเงินได้ ลอง PayPal หรือโอนธนาคาร"
   },
   "sponsorCheckout": {
@@ -1139,6 +1139,7 @@
     "privateMessage": "ข้อความส่วนตัว (ไม่บังคับ)",
     "messagePlaceholder": "ฝากข้อความ...",
     "tipButton": "ให้ทิป €{amount}",
+    "tipButtonThb": "ให้ทิป ฿{amount}",
     "loading": "กำลังโหลด…",
     "poweredBy": "Powered by Mollie",
     "errorGeneric": "เกิดข้อผิดพลาด ลอง PayPal",

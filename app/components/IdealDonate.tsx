@@ -6,11 +6,14 @@ import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
-/** Ronde preset-bedragen – zelfde in elke valuta (10, 25, 50, 75, 100…) */
-const PRESET_AMOUNTS = [10, 25, 50, 75, 100, 125, 150, 200, 250, 500, 1000, 1500, 2000, 2500, 5000, 10000];
+/** Ronde preset-bedragen – EUR/USD etc. vanaf 5 */
+const PRESET_AMOUNTS = [5, 10, 15, 20, 25, 50, 75, 100, 125, 150, 200, 250, 500, 1000, 1500, 2000, 2500, 5000, 10000];
 
 /** Voor JPY/KRW/IDR – grotere bedragen (100 = ~0,60 EUR) */
 const PRESET_AMOUNTS_SMALL = [1000, 2500, 5000, 10000, 25000, 50000, 100000];
+
+/** Thai Baht only – 100 tot 1.000.000 */
+const PRESET_AMOUNTS_THB = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
 /** Valuta ondersteund door Frankfurter API */
 const CURRENCIES: { code: string; name: string; symbol: string }[] = [
   { code: "EUR", name: "Euro", symbol: "€" },
@@ -48,17 +51,22 @@ const CURRENCIES: { code: string; name: string; symbol: string }[] = [
 export default function IdealDonate() {
   const t = useTranslations("home");
   const locale = useLocale();
-  const [amount, setAmount] = useState(100);
+  const isThai = locale === "th";
+  const [amount, setAmount] = useState(isThai ? 1000 : 5);
   const [customAmount, setCustomAmount] = useState("");
-  const [amountSelect, setAmountSelect] = useState<string>("100");
-  const [currency, setCurrency] = useState("EUR");
-  const [rateToEur, setRateToEur] = useState<number | null>(1);
+  const [amountSelect, setAmountSelect] = useState<string>(isThai ? "1000" : "5");
+  const [currency, setCurrency] = useState(isThai ? "THB" : "EUR");
+  const [rateToEur, setRateToEur] = useState<number | null>(isThai ? 1 / 38 : 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const fetchRate = useCallback(async () => {
     if (currency === "EUR") {
       setRateToEur(1);
+      return;
+    }
+    if (currency === "THB") {
+      setRateToEur(1 / 38);
       return;
     }
     try {
@@ -76,19 +84,21 @@ export default function IdealDonate() {
   }, [fetchRate]);
 
   useEffect(() => {
-    const list = currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
+    const list = isThai ? PRESET_AMOUNTS_THB : currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
     if (amountSelect !== "custom" && !list.includes(amount)) {
       const first = list[0];
       setAmountSelect(String(first));
       setAmount(first);
     }
-  }, [currency]);
+  }, [currency, isThai]);
 
   const isCustomAmount = amountSelect === "custom";
   const effectiveAmount = isCustomAmount ? parseFloat(customAmount) : amount;
   const amountInEur = currency === "EUR" ? effectiveAmount : (rateToEur ? effectiveAmount * rateToEur : 0);
-  const presets = currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
-  const isValid = effectiveAmount >= 1 && effectiveAmount <= 50000 && amountInEur >= 1;
+  const presets = isThai ? PRESET_AMOUNTS_THB : currency === "JPY" || currency === "KRW" || currency === "IDR" ? PRESET_AMOUNTS_SMALL : PRESET_AMOUNTS;
+  const minAmount = isThai ? 100 : 5;
+  const maxAmount = isThai ? 1000000 : 50000;
+  const isValid = effectiveAmount >= minAmount && effectiveAmount <= maxAmount && amountInEur >= 1;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,7 +132,7 @@ export default function IdealDonate() {
 
   const displayAmount = isCustomAmount ? effectiveAmount : amount;
   const displayAmountStr = Number.isFinite(displayAmount) && displayAmount >= 1
-    ? (currency === "EUR" ? "€" : curr.symbol) + Math.round(displayAmount).toLocaleString("nl-NL", { maximumFractionDigits: 0 })
+    ? curr.symbol + Math.round(displayAmount).toLocaleString(isThai ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })
     : "—";
 
   return (
@@ -140,7 +150,7 @@ export default function IdealDonate() {
       </div>
 
       <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
-        {/* Eén regel: bedrag + valuta – zoals Bol/Amazon */}
+        {/* Eén regel: bedrag + valuta (valuta verborgen bij Thai) */}
         <div className="flex gap-2">
           <div className="flex-1 min-w-0">
             <label htmlFor="amount-select" className="sr-only">{t("idealAmount")}</label>
@@ -152,7 +162,7 @@ export default function IdealDonate() {
                 setAmountSelect(v);
                 if (v === "custom") {
                   setCustomAmount("");
-                  setAmount(100);
+                  setAmount(isThai ? 1000 : 5);
                 } else {
                   setAmount(Number(v));
                   setCustomAmount("");
@@ -162,7 +172,7 @@ export default function IdealDonate() {
             >
               {presets.map((a) => (
                 <option key={a} value={a}>
-                  {curr.symbol}{a.toLocaleString("nl-NL", { maximumFractionDigits: 0 })}
+                  {curr.symbol}{a.toLocaleString(isThai ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })}
                 </option>
               ))}
               <option value="custom">{t("idealCustom")}</option>
@@ -188,9 +198,9 @@ export default function IdealDonate() {
             <span className="text-stone-500 dark:text-stone-400">{curr.symbol}</span>
             <input
               type="number"
-              min={1}
-              max={50000}
-              step={0.01}
+              min={minAmount}
+              max={maxAmount}
+              step={isThai ? 100 : 0.01}
               placeholder="0"
               value={customAmount}
               onChange={(e) => setCustomAmount(e.target.value)}
@@ -199,7 +209,7 @@ export default function IdealDonate() {
           </div>
         )}
 
-        {currency !== "EUR" && rateToEur && (
+        {!isThai && currency !== "EUR" && rateToEur && (
           <p className="text-xs text-stone-500 dark:text-stone-400">≈ {Math.round(amountInEur).toLocaleString("nl-NL", { maximumFractionDigits: 0 })} EUR</p>
         )}
 

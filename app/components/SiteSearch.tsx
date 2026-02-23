@@ -65,20 +65,30 @@ export default function SiteSearch({ mobileIcon = false }: { mobileIcon?: boolea
 
   // Mobile: alleen icoon-knop, klik opent overlay
   if (mobileIcon) {
+    const openSearch = (e?: React.MouseEvent | React.TouchEvent) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      setMobileOverlayOpen(true);
+    };
     return (
       <>
-        <button
-          type="button"
-          onPointerDown={(e) => {
-            e.preventDefault();
-            setMobileOverlayOpen(true);
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={openSearch}
+          onTouchEnd={openSearch}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openSearch();
+            }
           }}
-          className="flex items-center justify-center min-w-[44px] min-h-[44px] p-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 cursor-pointer active:bg-stone-200 dark:active:bg-stone-700"
-          style={{ touchAction: "manipulation" }}
+          className="flex items-center justify-center min-w-[48px] min-h-[48px] p-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 cursor-pointer active:bg-stone-200 dark:active:bg-stone-700 select-none shrink-0"
+          style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
           aria-label={t("siteSearchPlaceholder")}
         >
-          <Search className="w-5 h-5 shrink-0" />
-        </button>
+          <Search className="w-5 h-5 shrink-0 pointer-events-none" />
+        </div>
         {mobileOverlayOpen && (
           <div className="fixed inset-0 z-[200] bg-white dark:bg-stone-900 flex flex-col">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-stone-200 dark:border-stone-700">

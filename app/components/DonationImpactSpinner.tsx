@@ -7,11 +7,14 @@ import { Link } from "@/i18n/navigation";
 const ACCENT_GREEN = "#2aa348";
 
 const AMOUNTS = [10, 25, 50, 75, 100, 150, 200, 250, 500, 1000, 2500, 5000, 10000];
+const AMOUNTS_THB = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
 
 export default function DonationImpactSpinner() {
   const t = useTranslations("streetDogsThailand");
   const locale = useLocale();
-  const [amount, setAmount] = useState(100);
+  const isThai = locale === "th";
+  const amounts = isThai ? AMOUNTS_THB : AMOUNTS;
+  const [amount, setAmount] = useState(isThai ? 1000 : 100);
 
   const IMPACT_KEYS: Record<number, string> = {
     10: "donation10", 25: "donation25", 50: "donation50", 75: "donation75",
@@ -38,9 +41,9 @@ export default function DonationImpactSpinner() {
           onChange={(e) => setAmount(Number(e.target.value))}
           className="w-full sm:w-48 px-4 py-3 rounded-xl border-2 border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-stone-400"
         >
-          {AMOUNTS.map((a) => (
+          {amounts.map((a) => (
             <option key={a} value={a}>
-              €{a.toLocaleString(locale)} / ${a.toLocaleString(locale)}
+              {isThai ? `฿${a.toLocaleString("th-TH")}` : `€${a.toLocaleString(locale)} / $${a.toLocaleString(locale)}`}
             </option>
           ))}
         </select>
@@ -49,7 +52,7 @@ export default function DonationImpactSpinner() {
       {/* Impact result */}
       <div className="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600 mb-6">
         <p className="text-lg font-semibold text-stone-800 dark:text-stone-200">
-          €{amount.toLocaleString(locale)} / ${amount.toLocaleString(locale)} — {impactText}
+          {isThai ? `฿${amount.toLocaleString("th-TH")}` : `€${amount.toLocaleString(locale)} / $${amount.toLocaleString(locale)}`} — {impactText}
         </p>
       </div>
 

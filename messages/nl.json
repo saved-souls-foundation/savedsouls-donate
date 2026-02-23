@@ -617,7 +617,7 @@
     "submit": "Sponsor {name}",
     "loading": "Bezig...",
     "requiredFields": "Vul naam en e-mail in.",
-    "minAmount": "Minimum 300 THB per maand.",
+    "minAmount": "Minimum {amount} THB per maand.",
     "paymentError": "Betaling kon niet starten. Probeer PayPal of bankoverschrijving."
   },
   "sponsorCheckout": {
@@ -1159,6 +1159,7 @@
     "privateMessage": "Privébericht (optioneel)",
     "messagePlaceholder": "Laat een bericht achter...",
     "tipButton": "Tip €{amount}",
+    "tipButtonThb": "Tip ฿{amount}",
     "loading": "Bezig…",
     "poweredBy": "Betaald via Mollie",
     "errorGeneric": "Er ging iets mis. Probeer PayPal.",

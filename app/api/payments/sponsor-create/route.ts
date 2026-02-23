@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     let currency: string;
 
     if (useThb) {
-      const thb = Math.max(300, Math.round(amountThb));
+      const thb = Math.max(100, Math.round(amountThb));
       amountValue = thb.toFixed(2);
       currency = "THB";
     } else {

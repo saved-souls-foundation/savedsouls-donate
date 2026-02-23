@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
@@ -12,8 +12,24 @@ const CORAL = "#E67A4C";
 const AMBER = "#f59e0b";
 const TEAL = "#0d9488";
 
+const IMPACT_CARDS_EUR = [
+  { amount: "€25", paypalAmount: 25, color: TEAL, emoji: "🍽️" },
+  { amount: "€50", paypalAmount: 50, color: ACCENT_GREEN, emoji: "🐾" },
+  { amount: "€100", paypalAmount: 100, color: CORAL, emoji: "🦽" },
+  { amount: "€250", paypalAmount: 250, color: AMBER, emoji: "🏥" },
+];
+const IMPACT_CARDS_THB = [
+  { amount: "฿1,000", paypalAmount: 1000, color: TEAL, emoji: "🍽️" },
+  { amount: "฿2,000", paypalAmount: 2000, color: ACCENT_GREEN, emoji: "🐾" },
+  { amount: "฿4,000", paypalAmount: 4000, color: CORAL, emoji: "🦽" },
+  { amount: "฿10,000", paypalAmount: 10000, color: AMBER, emoji: "🏥" },
+];
+
 export default function SoulSaverPage() {
   const t = useTranslations("soulSaver");
+  const locale = useLocale();
+  const isThai = locale === "th";
+  const impactCards = isThai ? IMPACT_CARDS_THB : IMPACT_CARDS_EUR;
 
   return (
     <ParallaxPage
@@ -48,30 +64,28 @@ export default function SoulSaverPage() {
             {t("impactTitle")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            {[
-              { amount: "€25", paypalAmount: 25, color: TEAL, text: t("impact25"), emoji: "🍽️" },
-              { amount: "€50", paypalAmount: 50, color: ACCENT_GREEN, text: t("impact50"), emoji: "🐾" },
-              { amount: "€100", paypalAmount: 100, color: CORAL, text: t("impact100"), emoji: "🦽" },
-              { amount: "€250", paypalAmount: 250, color: AMBER, text: t("impact250"), emoji: "🏥" },
-            ].map((card, i) => (
-              <a
-                key={i}
-                href={`https://paypal.me/savedsoulsfoundation/${card.paypalAmount}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-2xl p-6 border-2 shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl cursor-pointer"
-                style={{
-                  backgroundColor: `${card.color}15`,
-                  borderColor: `${card.color}40`,
-                }}
-              >
-                <span className="text-3xl mb-2 block">{card.emoji}</span>
-                <p className="text-2xl font-black mb-1" style={{ color: card.color }}>
-                  {card.amount}
-                </p>
-                <p className="text-stone-600 dark:text-stone-400 font-medium">{card.text}</p>
-              </a>
-            ))}
+            {impactCards.map((card, i) => {
+              const textKey = ["impact25", "impact50", "impact100", "impact250"][i];
+              return (
+                <a
+                  key={i}
+                  href={`https://paypal.me/savedsoulsfoundation/${card.paypalAmount}${isThai ? "?currencyCode=THB" : ""}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-2xl p-6 border-2 shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl cursor-pointer"
+                  style={{
+                    backgroundColor: `${card.color}15`,
+                    borderColor: `${card.color}40`,
+                  }}
+                >
+                  <span className="text-3xl mb-2 block">{card.emoji}</span>
+                  <p className="text-2xl font-black mb-1" style={{ color: card.color }}>
+                    {card.amount}
+                  </p>
+                  <p className="text-stone-600 dark:text-stone-400 font-medium">{t(textKey)}</p>
+                </a>
+              );
+            })}
           </div>
         </section>
 

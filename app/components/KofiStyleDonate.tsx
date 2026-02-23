@@ -7,14 +7,21 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const PRESET_AMOUNTS = [5, 10, 25, 50];
+const PRESET_AMOUNTS_THB = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
 const MIN_AMOUNT = 5;
 const MAX_AMOUNT = 50000;
+const MIN_AMOUNT_THB = 100;
+const MAX_AMOUNT_THB = 1000000;
 const MAX_MESSAGE_LENGTH = 280;
 
 export default function KofiStyleDonate() {
   const t = useTranslations("support");
   const locale = useLocale();
-  const [amount, setAmount] = useState(10);
+  const isThai = locale === "th";
+  const presets = isThai ? PRESET_AMOUNTS_THB : PRESET_AMOUNTS;
+  const minAmt = isThai ? MIN_AMOUNT_THB : MIN_AMOUNT;
+  const maxAmt = isThai ? MAX_AMOUNT_THB : MAX_AMOUNT;
+  const [amount, setAmount] = useState(isThai ? 1000 : 10);
   const [customAmount, setCustomAmount] = useState("");
   const [message, setMessage] = useState("");
   const [isMonthly, setIsMonthly] = useState(false);
@@ -22,7 +29,8 @@ export default function KofiStyleDonate() {
   const [error, setError] = useState("");
 
   const effectiveAmount = customAmount ? parseFloat(customAmount) : amount;
-  const isValid = effectiveAmount >= MIN_AMOUNT && effectiveAmount <= MAX_AMOUNT;
+  const isValid = effectiveAmount >= minAmt && effectiveAmount <= maxAmt;
+  const amountInEur = isThai ? effectiveAmount / 38 : effectiveAmount;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +48,7 @@ export default function KofiStyleDonate() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: effectiveAmount,
+          amount: amountInEur,
           locale,
           message: message.slice(0, MAX_MESSAGE_LENGTH) || undefined,
         }),
@@ -139,7 +147,7 @@ export default function KofiStyleDonate() {
                 {t("chooseAmount")}
               </p>
               <div className="flex flex-wrap gap-2 mb-2">
-                {PRESET_AMOUNTS.map((a) => (
+                {presets.map((a) => (
                   <button
                     key={a}
                     type="button"
@@ -153,26 +161,26 @@ export default function KofiStyleDonate() {
                         : "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700"
                     }`}
                   >
-                    €{a}
+                    {isThai ? `฿${a.toLocaleString("th-TH")}` : `€${a}`}
                   </button>
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-stone-600 dark:text-stone-400">€</span>
+                <span className="text-stone-600 dark:text-stone-400">{isThai ? "฿" : "€"}</span>
                 <input
                   type="number"
-                  min={MIN_AMOUNT}
-                  max={MAX_AMOUNT}
-                  step={0.01}
+                  min={minAmt}
+                  max={maxAmt}
+                  step={isThai ? 100 : 0.01}
                   placeholder={t("customAmount")}
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
                   className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100"
                 />
               </div>
-              {!isValid && (customAmount || effectiveAmount < MIN_AMOUNT) && (
+              {!isValid && (customAmount || effectiveAmount < minAmt) && (
                 <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                  {t("minAmount", { amount: MIN_AMOUNT })}
+                  {t("minAmount", { amount: minAmt })}
                 </p>
               )}
             </div>
@@ -206,7 +214,7 @@ export default function KofiStyleDonate() {
               className="w-full py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: "#2aa348" }}
             >
-              {loading ? t("loading") : t("tipButton", { amount: effectiveAmount })}
+              {loading ? t("loading") : (isThai ? t("tipButtonThb", { amount: effectiveAmount.toLocaleString("th-TH") }) : t("tipButton", { amount: effectiveAmount }))}
             </button>
           </>
         )}

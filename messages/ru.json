@@ -597,7 +597,7 @@
     "submit": "Спонсировать {name}",
     "loading": "Обработка...",
     "requiredFields": "Заполните имя и эл. почту.",
-    "minAmount": "Минимум 300 THB в месяц.",
+    "minAmount": "Минимум {amount} THB в месяц.",
     "paymentError": "Не удалось начать платёж. Попробуйте PayPal или банковский перевод."
   },
   "sponsorCheckout": {
@@ -1138,6 +1138,7 @@
     "privateMessage": "Личное сообщение (необязательно)",
     "messagePlaceholder": "Оставьте сообщение...",
     "tipButton": "Чаевые €{amount}",
+    "tipButtonThb": "Чаевые ฿{amount}",
     "loading": "Загрузка…",
     "poweredBy": "Powered by Mollie",
     "errorGeneric": "Что-то пошло не так. Попробуйте PayPal.",

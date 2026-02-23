@@ -115,7 +115,7 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
       const result = (await res.json().catch(() => ({}))) as { checkoutUrl?: string; error?: string };
       if (!res.ok) {
         if (res.status === 503) {
-          const amountThb = Math.max(300, data.amountThb);
+          const amountThb = Math.max(100, data.amountThb);
           window.location.href = `https://paypal.me/savedsoulsfoundation/${amountThb}?currencyCode=THB`;
           return;
         }
