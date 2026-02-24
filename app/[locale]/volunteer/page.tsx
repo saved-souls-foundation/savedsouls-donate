@@ -52,13 +52,26 @@ export default async function VolunteerPage() {
           <p className="text-lg text-stone-600 dark:text-stone-400 leading-relaxed max-w-2xl mx-auto font-bold mb-8">
             {t("intro")}
           </p>
-          <Link
-            href="/volunteer-signup"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-            style={{ backgroundColor: ACCENT_GREEN }}
-          >
-            {tCommon("volunteerSignUp")}
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+            <Link
+              href="/volunteer-signup"
+              className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-semibold text-stone-800 dark:text-stone-100 bg-gradient-to-r from-emerald-100 via-teal-50 to-green-100 dark:from-emerald-900/30 dark:via-teal-900/20 dark:to-green-900/30 border-2 border-emerald-200 dark:border-emerald-700/50 shadow-lg hover:scale-105 hover:shadow-xl transition-all"
+            >
+              <Image src="/savedsoul-logo.webp" alt="" width={40} height={40} className="shrink-0 w-10 h-10 object-contain" />
+              <span>{tCommon("volunteerSignUp")}</span>
+              <span className="text-xl" aria-hidden>🐾</span>
+            </Link>
+            <a
+              href="https://ideali.st/MWGYTs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-semibold text-stone-800 dark:text-stone-100 bg-gradient-to-r from-amber-100 via-sky-50 to-emerald-100 dark:from-amber-900/30 dark:via-sky-900/20 dark:to-emerald-900/30 border-2 border-amber-200 dark:border-amber-700/50 shadow-lg hover:scale-105 hover:shadow-xl transition-all"
+            >
+              <Image src="/logos/idealist.svg" alt="" width={40} height={40} className="shrink-0" />
+              <span>{t("idealistCta")}</span>
+              <span className="text-xl" aria-hidden>✨</span>
+            </a>
+          </div>
         </header>
 
         <section className="space-y-8">

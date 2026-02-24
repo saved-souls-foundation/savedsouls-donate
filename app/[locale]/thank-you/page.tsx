@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
@@ -140,15 +141,34 @@ export default function ThankYouPage() {
         {/* Thank you cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
           {["sponsors", "donors", "adopters", "volunteers"].map((key, i) => (
-            <div
-              key={key}
-              className="p-6 rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-stone-200 dark:border-stone-700 shadow-lg hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 hover:border-green-300 dark:hover:border-green-800/50"
-              style={{ animationDelay: `${0.3 + i * 0.1}s` }}
-            >
-              <span className="text-4xl block mb-3">{t(`${key}Emoji`)}</span>
-              <h2 className="text-xl font-bold mb-2" style={{ color: ACCENT_GREEN }}>{t(key)}</h2>
-              <p className="text-stone-600 dark:text-stone-400">{t(`${key}Text`)}</p>
-            </div>
+            key === "volunteers" ? (
+              <a
+                key={key}
+                href="https://ideali.st/MWGYTs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-6 rounded-2xl bg-gradient-to-br from-amber-50 via-sky-50/80 to-emerald-50 dark:from-amber-900/20 dark:via-sky-900/10 dark:to-emerald-900/20 border-2 border-amber-200 dark:border-amber-700/50 shadow-lg hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 hover:border-amber-300 dark:hover:border-amber-600/50 flex flex-col"
+                style={{ animationDelay: `${0.3 + i * 0.1}s` }}
+              >
+                <span className="text-4xl block mb-3">{t(`${key}Emoji`)}</span>
+                <h2 className="text-xl font-bold mb-2" style={{ color: ACCENT_GREEN }}>{t(key)}</h2>
+                <p className="text-stone-600 dark:text-stone-400 mb-4 flex-1">{t(`${key}Text`)}</p>
+                <span className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold text-stone-700 dark:text-stone-200 bg-white/80 dark:bg-stone-800/80 border border-amber-200 dark:border-amber-700/50">
+                  <Image src="/logos/idealist.svg" alt="" width={24} height={24} className="shrink-0" />
+                  {t("idealistCta")} →
+                </span>
+              </a>
+            ) : (
+              <div
+                key={key}
+                className="p-6 rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-stone-200 dark:border-stone-700 shadow-lg hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 hover:border-green-300 dark:hover:border-green-800/50"
+                style={{ animationDelay: `${0.3 + i * 0.1}s` }}
+              >
+                <span className="text-4xl block mb-3">{t(`${key}Emoji`)}</span>
+                <h2 className="text-xl font-bold mb-2" style={{ color: ACCENT_GREEN }}>{t(key)}</h2>
+                <p className="text-stone-600 dark:text-stone-400">{t(`${key}Text`)}</p>
+              </div>
+            )
           ))}
         </div>
 

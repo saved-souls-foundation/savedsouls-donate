@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="idealist-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD93D"/>
+      <stop offset="100%" style="stop-color:#F5C842"/>
+    </linearGradient>
+    <linearGradient id="idealist-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2"/>
+      <stop offset="100%" style="stop-color:#357ABD"/>
+    </linearGradient>
+    <linearGradient id="idealist-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6BCB77"/>
+      <stop offset="100%" style="stop-color:#4CAF50"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="50" fill="url(#idealist-green)" opacity="0.95"/>
+  <circle cx="60" cy="60" r="35" fill="url(#idealist-blue)" opacity="0.95"/>
+  <circle cx="60" cy="60" r="20" fill="url(#idealist-yellow)" opacity="0.98"/>
+</svg>
