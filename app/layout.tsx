@@ -36,11 +36,11 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "NGO",
   name: "Saved Souls Foundation",
-  description: "Saved Souls Foundation in Khon Kaen, Thailand: the only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
+  description: "Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
   url: "https://savedsouls-foundation.org",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Khon Kaen",
+    addressLocality: "Ban Khok Ngam, Ban Fang",
     addressRegion: "Khon Kaen",
     addressCountry: "TH",
   },
@@ -56,6 +56,15 @@ const jsonLd = {
     availableLanguage: ["Dutch", "English", "German", "Spanish", "Thai", "Russian"],
   },
   foundingDate: "2010",
+  founder: {
+    "@type": "Person",
+    name: "Gabriela Leonhard",
+  },
+  employee: {
+    "@type": "Person",
+    name: "Melanie de Wit",
+    jobTitle: "Manager",
+  },
   areaServed: "Thailand",
   keywords: "dog rescue Thailand, disabled dogs, wheelchair dogs, animal shelter Khon Kaen, pet nutrition, dog health, cat health, first aid pets",
   knowsAbout: [
@@ -71,6 +80,18 @@ const jsonLd = {
     "vaccinations",
     "first aid for dogs and cats",
     "pet care for beginners",
+  ],
+  additionalProperty: [
+    {
+      "@type": "PropertyValue",
+      name: "Dogs in care",
+      value: 430,
+    },
+    {
+      "@type": "PropertyValue",
+      name: "Cats in care",
+      value: 91,
+    },
   ],
 };
 

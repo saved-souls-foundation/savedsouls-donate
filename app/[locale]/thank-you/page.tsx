@@ -209,6 +209,19 @@ export default function ThankYouPage() {
           </div>
         </section>
 
+        {/* Donatie Cat Code */}
+        <p className="text-center text-sm text-stone-500 dark:text-stone-400 mb-8">
+          <a
+            href="https://catcode.be/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:opacity-80"
+            style={{ color: ACCENT_GREEN }}
+          >
+            {t("catCodeDonation")}
+          </a>
+        </p>
+
         {/* CTA */}
         <div className="text-center">
           <Link
