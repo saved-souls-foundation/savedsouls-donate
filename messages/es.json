@@ -125,7 +125,15 @@
     "findOutMore": "Saber más",
     "recentDonations": "Donaciones recientes",
     "footerRegistration": "El 9 de octubre de 2017 nos registramos oficialmente como organización sin ánimo de lucro tailandesa bajo el nombre Saved Souls Foundation (número de registro 1/2560).",
-    "footerRegistrationShort": "Organización sin ánimo de lucro oficial Tailandia · Nº registro 1/2560"
+    "footerRegistrationShort": "Organización sin ánimo de lucro oficial Tailandia · Nº registro 1/2560",
+    "footerShortDesc": "Desde 2010 le damos una segunda oportunidad a las almas rotas — en Khon Kaen, Tailandia.",
+    "footerColOrganisation": "Organización",
+    "footerColGetInvolved": "Participa",
+    "footerColInfo": "Información",
+    "footerColActions": "Acciones",
+    "clinicAction": "Acción clínica",
+    "footerClinicAction": "⭐ ¡Acción clínica!",
+    "carAction": "🚗 Donar un coche"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -787,6 +795,9 @@
     "contactSend": "Enviar mensaje",
     "contactFooterText": "¿Dirección y mapa? ",
     "contactFooterLink": "Ver nuestra página de contacto →",
+    "contactCtaHeading": "¿Preguntas o contacto?",
+    "contactCtaSubtext": "Nos encantaría saber de ti.",
+    "contactCtaButton": "Envíanos un mensaje →",
     "testimonialQuote": "I visited Saved Souls in 2024. The love and patience they give to each disabled dog is unforgettable. I now sponsor two wheelchairs.",
     "testimonialAuthor": "— Anne, volunteer from the Netherlands",
     "menuOpen": "Abrir menú",

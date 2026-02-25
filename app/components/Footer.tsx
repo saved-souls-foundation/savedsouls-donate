@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
-const ACCENT_GREEN = "#2aa348";
+const FOOTER_BG = "#1a3d2b";
 
 const SOCIAL_LINKS = [
   { name: "Facebook", href: "https://www.facebook.com/SavedSoulsFoundation/", icon: "facebook" },
@@ -55,38 +55,41 @@ export default function Footer() {
   const t = useTranslations("common");
   return (
     <footer
-      className="py-5 md:py-6 text-center text-sm text-white border-t border-white/20 dark:border-stone-600"
-      style={{ backgroundColor: ACCENT_GREEN }}
+      className="py-8 md:py-10 text-white"
+      style={{ backgroundColor: FOOTER_BG }}
     >
-      <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-2">
-        <div className="flex flex-col items-center gap-1 w-full">
-          <div className="shrink-0 rounded overflow-hidden border border-white/30" style={{ width: 50, height: 50 }}>
-            <video
-              src="/savedsouls-foundation-logo.mp4"
+      <div className="max-w-5xl mx-auto px-4">
+        {/* Logo */}
+        <div className="flex flex-col items-center text-center">
+          <div className="shrink-0" style={{ width: 50, height: 50 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/savedsouls-logo-white.png"
               width={50}
               height={50}
-              className="block w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              title="Saved Souls Foundation logo"
+              alt="Saved Souls Foundation logo"
+              className="block w-full h-full object-contain"
             />
           </div>
-          <p className="font-semibold text-center text-sm">Saved Souls Foundation</p>
-          <p className="text-white/90 text-center text-sm">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
-          <p className="text-white/80 text-center text-xs mt-1">
+          <p className="font-bold text-white mt-2">Saved Souls Foundation</p>
+          <p className="text-sm text-white/70 max-w-xs mx-auto text-center mt-1 mb-4">
+            {t("footerShortDesc")}
+          </p>
+          <p className="text-white/60 text-sm">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
+          <p className="text-white/50 text-xs mt-1">
             {t("footerRegistrationShort")}
           </p>
         </div>
-        <div className="flex items-center justify-center gap-3 mt-1">
+
+        {/* Social icons */}
+        <div className="flex items-center justify-center gap-3 mt-4">
           {SOCIAL_LINKS.map(({ name, href, icon }) => (
             <a
               key={icon}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-white/80 transition-colors p-1 rounded-full hover:bg-white/20"
+              className="text-white/80 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
               title={name}
               aria-label={name}
             >
@@ -94,33 +97,66 @@ export default function Footer() {
             </a>
           ))}
         </div>
-        <a
-          href="https://www.facebook.com/SavedSoulsFoundation/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-white transition-all hover:opacity-90 hover:scale-[1.02] shadow-lg"
-          style={{ backgroundColor: "#1877F2" }}
-          aria-label={t("followUsOnFacebook")}
+
+        <div className="border-t border-white/10 my-6" />
+
+        {/* 4-column links: Organisatie | Doe mee | Informatie | Acties */}
+        <nav
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+          aria-label="Footer navigation"
+          style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }}
         >
-          <SocialIcon icon="facebook" className="text-white" />
-          <span>{t("followUsOnFacebook")}</span>
-        </a>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColOrganisation")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/story" className="text-sm text-white/70 hover:text-white transition-colors">{t("ourStory")}</Link></li>
+              <li><Link href="/about-us" className="text-sm text-white/70 hover:text-white transition-colors">{t("aboutUs")}</Link></li>
+              <li><Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors">{t("blog")}</Link></li>
+              <li><Link href="/faq" className="text-sm text-white/70 hover:text-white transition-colors">{t("faq")}</Link></li>
+              <li><Link href="/disclaimer" className="text-sm text-white/70 hover:text-white transition-colors">{t("disclaimer")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColGetInvolved")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/get-involved" className="text-sm text-white/70 hover:text-white transition-colors">{t("getInvolved")}</Link></li>
+              <li><Link href="/shop" className="text-sm text-white/70 hover:text-white transition-colors">{t("shop")}</Link></li>
+              <li><Link href="/partners" className="text-sm text-white/70 hover:text-white transition-colors">{t("partners")}</Link></li>
+              <li><Link href="/shelters" className="text-sm text-white/70 hover:text-white transition-colors">{t("shelters")}</Link></li>
+              <li><Link href="/thank-you" className="text-sm text-white/70 hover:text-white transition-colors">{t("thankYou")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColInfo")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/gidsen" className="text-sm text-white/70 hover:text-white transition-colors">{t("gidsen")}</Link></li>
+              <li><Link href="/street-dogs-thailand" className="text-sm text-white/70 hover:text-white transition-colors">{t("streetDogsThailand")}</Link></li>
+              <li><Link href="/school-project" className="text-sm text-white/70 hover:text-white transition-colors">{t("schoolProject")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColActions")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/car-action" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("carAction")}</Link></li>
+              <li><Link href="/clinic-renovation" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("footerClinicAction")}</Link></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div className="border-t border-white/10 my-6" />
+
+        <p className="text-center text-white/40 text-xs">
+          © {new Date().getFullYear()} Saved Souls Foundation
+        </p>
       </div>
-      <p className="text-white/80 mt-3 text-sm">
-        © {new Date().getFullYear()} Saved Souls Foundation
-      </p>
-      <nav className="text-white/70 mt-2 text-sm flex flex-wrap justify-center gap-x-4 gap-y-1" style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }} aria-label="Footer navigation">
-        <Link href="/get-involved" className="hover:underline">{t("getInvolved")}</Link>
-        <Link href="/gidsen" className="hover:underline">{t("gidsen")}</Link>
-        <Link href="/blog" className="hover:underline">{t("blog")}</Link>
-        <Link href="/shop" className="hover:underline">{t("shop")}</Link>
-        <Link href="/story" className="hover:underline">{t("ourStory")}</Link>
-        <Link href="/faq" className="hover:underline">{t("faq")}</Link>
-        <Link href="/partners" className="hover:underline">{t("partners")}</Link>
-        <Link href="/shelters" className="hover:underline">{t("shelters")}</Link>
-        <Link href="/thank-you" className="hover:underline">{t("thankYou")}</Link>
-        <Link href="/disclaimer" className="hover:underline">{t("disclaimer")}</Link>
-      </nav>
     </footer>
   );
 }

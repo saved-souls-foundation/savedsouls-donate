@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Heart, ChevronDown } from "lucide-react";
+import { Heart, ChevronDown, Mail } from "lucide-react";
 import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
 import HeroFadeIn from "../components/HeroFadeIn";
@@ -22,134 +22,6 @@ const BTN_VOLUNTEER = "#ea580c";
 /** YouTube video IDs */
 const YOUTUBE_VIDEO_ID = "2vNi6Aa3_Gg";
 const YOUTUBE_VIDEO_ID_2 = "l7qYY1c_n3M";
-
-function ContactForm() {
-  const tHome = useTranslations("home");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
-
-  const [error, setError] = useState("");
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSending(true);
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setError((data as { error?: string }).error || tHome("contactError"));
-        return;
-      }
-      setSent(true);
-      setName("");
-      setEmail("");
-      setSubject("");
-      setMessage("");
-    } catch {
-      setError(tHome("contactError"));
-    } finally {
-      setSending(false);
-    }
-  };
-
-  return (
-    <section id="contact" className="py-16 md:py-20 pb-24 md:pb-20 bg-white/95 dark:bg-stone-900/95">
-      <div className="max-w-xl mx-auto w-full px-4">
-        <h2 className="text-xl font-bold mb-6 text-center dark:text-[#2aa348]" style={{ color: ACCENT_GREEN }}>
-          {tHome("contactTitle")}
-        </h2>
-        {sent ? (
-          <div className="text-center py-8 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
-            <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              {tHome("contactThanksTitle")}
-            </p>
-            <p className="text-stone-600 dark:text-stone-400 text-base">
-              {tHome("contactThanksMessage")}
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="contact-name" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                {tHome("contactName")}
-              </label>
-              <input
-                id="contact-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder={tHome("contactNamePlaceholder")}
-              />
-            </div>
-            <div>
-              <label htmlFor="contact-email" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                {tHome("contactEmail")}
-              </label>
-              <input
-                id="contact-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder={tHome("contactEmailPlaceholder")}
-              />
-            </div>
-            <div>
-              <label htmlFor="contact-subject" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                {tHome("contactSubject")}
-              </label>
-              <input
-                id="contact-subject"
-                type="text"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder={tHome("contactSubjectPlaceholder")}
-              />
-            </div>
-            <div>
-              <label htmlFor="contact-message" className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                {tHome("contactMessage")}
-              </label>
-              <textarea
-                id="contact-message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-                rows={4}
-                className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348] resize-y"
-                placeholder={tHome("contactMessagePlaceholder")}
-              />
-            </div>
-            {error && (
-              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-            )}
-            <button
-              type="submit"
-              disabled={sending}
-              className="w-full py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              {sending ? tHome("contactSending") : tHome("contactSend")}
-            </button>
-          </form>
-        )}
-      </div>
-    </section>
-  );
-}
 
 const THEME_KEY = "savedsouls-theme";
 
@@ -706,16 +578,24 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Contact form – stays at bottom of homepage */}
-      <div className="max-w-xl mx-auto px-4 pt-4 pb-8 md:pb-2 text-center">
-        <p className="text-base text-stone-500 dark:text-stone-400">
-          {tHome("contactFooterText")}
-          <Link href="/contact" className="underline font-medium" style={{ color: ACCENT_GREEN }}>
-            {tHome("contactFooterLink")}
+      {/* Contact CTA – links to contact page */}
+      <section id="contact" className="py-16 px-6" style={{ backgroundColor: "#f9fafb" }}>
+        <div className="max-w-xl mx-auto text-center">
+          <Mail size={32} color="#2d7a3a" />
+          <h2 className="font-bold text-2xl text-gray-800 dark:text-gray-100 mt-4">
+            {tHome("contactCtaHeading")}
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 text-base">
+            {tHome("contactCtaSubtext")}
+          </p>
+          <Link
+            href="/contact"
+            className="mt-6 inline-flex items-center gap-2 bg-green-700 text-white rounded-full px-8 py-3 font-semibold text-base hover:bg-green-800 transition-colors"
+          >
+            {tHome("contactCtaButton")}
           </Link>
-        </p>
-      </div>
-      <ContactForm />
+        </div>
+      </section>
 
       <div className="pb-[env(safe-area-inset-bottom,0)]">
         <Footer />

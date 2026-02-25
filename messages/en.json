@@ -125,7 +125,15 @@
     "findOutMore": "Find out more",
     "recentDonations": "Recent donations",
     "footerRegistration": "On October 9th, 2017, we officially became a registered non-profit organization under the name Saved Souls Foundation (registration number 1/2560).",
-    "footerRegistrationShort": "Official non-profit organization Thailand · Registration number 1/2560"
+    "footerRegistrationShort": "Official non-profit organization Thailand · Registration number 1/2560",
+    "footerShortDesc": "Since 2010, we've been giving broken souls a second chance — in Khon Kaen, Thailand.",
+    "footerColOrganisation": "Organization",
+    "footerColGetInvolved": "Get involved",
+    "footerColInfo": "Information",
+    "footerColActions": "Actions",
+    "clinicAction": "Clinic action",
+    "footerClinicAction": "⭐ Clinic action!",
+    "carAction": "🚗 Car Donation"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -807,6 +815,9 @@
     "contactSend": "Send message",
     "contactFooterText": "Address and map? ",
     "contactFooterLink": "See our contact page →",
+    "contactCtaHeading": "Questions or contact?",
+    "contactCtaSubtext": "We'd love to hear from you.",
+    "contactCtaButton": "Send us a message →",
     "testimonialQuote": "I visited Saved Souls in 2024. The love and patience they give to each disabled dog is unforgettable. I now sponsor two wheelchairs.",
     "testimonialAuthor": "— Anne, volunteer from the Netherlands",
     "menuOpen": "Open menu",

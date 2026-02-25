@@ -125,7 +125,15 @@
     "findOutMore": "Узнать больше",
     "recentDonations": "Последние пожертвования",
     "footerRegistration": "9 октября 2017 года мы официально зарегистрировались как тайская некоммерческая организация под названием Saved Souls Foundation (регистрационный номер 1/2560).",
-    "footerRegistrationShort": "Официальная некоммерческая организация Таиланд · Рег. № 1/2560"
+    "footerRegistrationShort": "Официальная некоммерческая организация Таиланд · Рег. № 1/2560",
+    "footerShortDesc": "С 2010 года мы даём второй шанс сломленным душам — в Кхон Каен, Таиланд.",
+    "footerColOrganisation": "Организация",
+    "footerColGetInvolved": "Присоединиться",
+    "footerColInfo": "Информация",
+    "footerColActions": "Акции",
+    "clinicAction": "Акция клиники",
+    "footerClinicAction": "⭐ Акция клиники!",
+    "carAction": "🚗 Пожертвовать авто"
   },
   "blog": {
     "metaTitle": "Блог – Saved Souls Foundation",
@@ -787,6 +795,9 @@
     "contactSend": "Отправить сообщение",
     "contactFooterText": "Адрес и карта? ",
     "contactFooterLink": "См. нашу страницу контактов →",
+    "contactCtaHeading": "Вопросы или контакт?",
+    "contactCtaSubtext": "Мы будем рады услышать вас.",
+    "contactCtaButton": "Написать нам →",
     "testimonialQuote": "Я посетила Saved Souls в 2024 году. Любовь и терпение, которые они дарят каждой инвалидной собаке, незабываемы. Теперь я спонсирую две инвалидные коляски.",
     "testimonialAuthor": "— Анна, волонтёр из Нидерландов",
     "menuOpen": "Открыть меню",

@@ -125,7 +125,15 @@
     "siteSearchCancel": "Annuleren",
     "recentDonations": "Laatste donaties",
     "footerRegistration": "Op 9 oktober 2017 zijn we officieel geregistreerd als Thaise non-profit organisatie onder de naam Saved Souls Foundation (registratienummer 1/2560).",
-    "footerRegistrationShort": "Officieel non-profit organisatie Thailand · Registratienummer 1/2560"
+    "footerRegistrationShort": "Officieel non-profit organisatie Thailand · Registratienummer 1/2560",
+    "footerShortDesc": "Sinds 2010 geven wij gebroken zielen een tweede kans — in Khon Kaen, Thailand.",
+    "footerColOrganisation": "Organisatie",
+    "footerColGetInvolved": "Doe mee",
+    "footerColInfo": "Informatie",
+    "footerColActions": "Acties",
+    "clinicAction": "Kliniek actie",
+    "footerClinicAction": "⭐ Kliniek actie!",
+    "carAction": "🚗 Auto actie"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -807,6 +815,9 @@
     "contactSend": "Verstuur bericht",
     "contactFooterText": "Adres en kaart? ",
     "contactFooterLink": "Bekijk onze contactpagina →",
+    "contactCtaHeading": "Vragen of contact?",
+    "contactCtaSubtext": "We horen graag van je.",
+    "contactCtaButton": "Stuur ons een bericht →",
     "testimonialQuote": "Ik bezocht Saved Souls in 2024. De liefde en het geduld dat ze elke gehandicapte hond geven is onvergetelijk. Ik sponsor nu twee rolstoelen.",
     "testimonialAuthor": "— Anne, vrijwilliger uit Nederland",
     "menuOpen": "Menu openen",

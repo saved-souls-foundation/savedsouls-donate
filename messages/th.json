@@ -125,7 +125,15 @@
     "findOutMore": "ดูเพิ่มเติม",
     "recentDonations": "บริจาคล่าสุด",
     "footerRegistration": "เมื่อวันที่ 9 ตุลาคม 2560 เราได้รับการจดทะเบียนอย่างเป็นทางการเป็นองค์กรไม่แสวงหาผลกำไรในประเทศไทยภายใต้ชื่อ Saved Souls Foundation (เลขทะเบียน 1/2560)",
-    "footerRegistrationShort": "องค์กรไม่แสวงหาผลกำไรอย่างเป็นทางการ Thailand · เลขทะเบียน 1/2560"
+    "footerRegistrationShort": "องค์กรไม่แสวงหาผลกำไรอย่างเป็นทางการ Thailand · เลขทะเบียน 1/2560",
+    "footerShortDesc": "ตั้งแต่ปี 2010 เราให้โอกาสที่สองแก่จิตวิญญาณที่แตกสลาย — ที่ขอนแก่น ประเทศไทย",
+    "footerColOrganisation": "องค์กร",
+    "footerColGetInvolved": "มีส่วนร่วม",
+    "footerColInfo": "ข้อมูล",
+    "footerColActions": "แอคชั่น",
+    "clinicAction": "แอคชั่นคลินิก",
+    "footerClinicAction": "⭐ แอคชั่นคลินิก!",
+    "carAction": "🚗 บริจาครถ"
   },
   "blog": {
     "metaTitle": "Blog – Saved Souls Foundation",
@@ -787,6 +795,9 @@
     "contactSend": "ส่งข้อความ",
     "contactFooterText": "ที่อยู่และแผนที่? ",
     "contactFooterLink": "ดูหน้าติดต่อของเรา →",
+    "contactCtaHeading": "มีคำถามหรือต้องการติดต่อ?",
+    "contactCtaSubtext": "เรายินดีรับฟังคุณเสมอ",
+    "contactCtaButton": "ส่งข้อความถึงเรา →",
     "testimonialQuote": "ฉันไปเยี่ยม Saved Souls ในปี 2024 ความรักและความอดทนที่พวกเขาให้กับสุนัขพิการแต่ละตัวนั้นยากจะลืม ตอนนี้ฉันสนับสนุนรถเข็นสองคัน",
     "testimonialAuthor": "— แอนน์ อาสาสมัครจากเนเธอร์แลนด์",
     "menuOpen": "เปิดเมนู",

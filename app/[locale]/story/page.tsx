@@ -262,49 +262,6 @@ export default function StoryPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="px-4 py-16 md:py-24 bg-stone-50 border-t border-stone-200">
-          <div className="max-w-2xl mx-auto text-center">
-            <ScrollReveal>
-              <p className="text-stone-600 text-sm mb-4">{t("ctaEmail")}</p>
-              <p className="text-stone-500 text-sm mb-8">© 2026 Saved Souls Foundation — มูลนิธิเซฟต์ โซลส์</p>
-              <div className="flex flex-wrap justify-center gap-3">
-                <Link
-                  href="/adopt"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: ACCENT_GREEN }}
-                >
-                  {tCommon("adopt")}
-                </Link>
-                <DonateButton size="md" className="hover:scale-105 hover:shadow-lg">
-                  {tCommon("donate")}
-                </DonateButton>
-                <Link
-                  href="/volunteer"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: BTN_VOLUNTEER }}
-                >
-                  {tCommon("volunteer")}
-                </Link>
-                <Link
-                  href="/influencers"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: BTN_INFLUENCERS }}
-                >
-                  {tCommon("influencers")}
-                </Link>
-                <Link
-                  href="/about-us"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-all hover:scale-105"
-                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-                >
-                  {tCommon("aboutUs")}
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
-
         <Footer />
       </div>
     </ParallaxPage>
