@@ -4,11 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Heart } from "lucide-react";
+import { Heart, ChevronDown } from "lucide-react";
 import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
+import HeroFadeIn from "../components/HeroFadeIn";
 import SiteHeader from "../components/SiteHeader";
+import TrustStatsBar from "../components/TrustStatsBar";
 import IdealDonate from "../components/IdealDonate";
 import BankTransferSection from "../components/BankTransferSection";
 import RecentDonations from "../components/RecentDonationsFooter";
@@ -160,12 +162,21 @@ function getThemeFromTime(): "light" | "dark" {
 }
 
 export default function DonatePage() {
-  const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [useAutoTheme, setUseAutoTheme] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const miraclesRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => setScrollY(el.scrollTop);
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -193,29 +204,19 @@ export default function DonatePage() {
     if (!useAutoTheme) localStorage.setItem(THEME_KEY, theme);
   }, [theme, useAutoTheme]);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => setScrollY(el.scrollTop);
-    onScroll();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
-
   const t = useTranslations("common");
   const tHome = useTranslations("home");
 
   return (
     <div className={`h-screen text-stone-800 dark:text-stone-200 relative overflow-hidden ${theme}`}>
-      {/* Parallax achtergrond */}
+      {/* Statische achtergrond – geen parallax (fixes iOS Safari, betere performance) */}
       <div
-        className="fixed inset-0 z-0 bg-stone-200 dark:bg-stone-900"
+        className="fixed inset-0 z-0 bg-stone-200 dark:bg-stone-900 opacity-[0.04]"
         aria-hidden
         style={{
           backgroundImage: "url('/savedsoul-logo-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          transform: `translateY(${scrollY * 0.35}px)`,
         }}
       />
       <div className="fixed inset-0 z-[1] bg-white/85 dark:bg-stone-950/90 pointer-events-none" />
@@ -226,6 +227,7 @@ export default function DonatePage() {
       >
       <SiteHeader
         scrollToSection={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+        scrollY={scrollY}
       />
 
       {/* Kliniek actie – opvallende geanimeerde button */}
@@ -239,96 +241,113 @@ export default function DonatePage() {
         <span className="text-base md:text-lg">{tHome("clinicActionCta")}</span>
       </Link>
 
-      {/* Hero – banner met foto-strip */}
-      <header className="px-4 py-8 md:py-12">
-        <div className="max-w-5xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-xl border-2 border-white/80 dark:border-stone-700/80 mb-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5 bg-stone-900">
-              {[
-                { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },
-                { src: "/team-thankyou.webp", alt: "Team at the entrance of Saved Souls Foundation" },
-                { src: "/volunteers-with-dogs.png", alt: "Volunteers with rescued dogs" },
-                { src: "/woman-dog-wheelchair.webp", alt: "Dog with wheelchair at Saved Souls" },
-              ].map((img, i) => (
-                <div key={i} className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 25vw, 280px"
-                    priority={i < 2}
-                    style={{ filter: "brightness(1.15) contrast(1.04) saturate(1.03)" }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/25 via-transparent to-transparent" />
-                </div>
-              ))}
-            </div>
-            <div
-              className="relative px-6 py-5 md:py-6 text-center"
-              style={{
-                background: "linear-gradient(180deg, rgba(42,163,72,0.08) 0%, rgba(255,255,255,0.95) 40%)",
-              }}
-            >
-              <p className="text-lg md:text-xl font-bold text-stone-800 dark:text-stone-100 mb-0.5">
-                {tHome("foundation")}
-              </p>
-              <p className="text-sm md:text-base font-bold mb-4" style={{ color: ACCENT_GREEN }}>
-                {tHome("location")}
-              </p>
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-4 text-stone-800 dark:text-stone-100">
-                {tHome("headline")}
-              </h1>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button
-                  type="button"
-                  onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base md:text-lg shadow-lg hover:scale-105 transition-all"
-                  style={{ backgroundColor: BTN_DONATE }}
-                >
-                  <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
-                  {t("donate")}
-                </button>
-                <Link
-                  href="/soul-saver"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90 text-center"
-                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-                >
-                  {tHome("cta")}
-                </Link>
-              </div>
+      {/* Hero – static fullscreen, desktop AND mobile, scroll-triggered fade-in */}
+      <header>
+        <HeroFadeIn className="relative flex min-h-[100svh] md:min-h-[100vh] flex-col items-center justify-center text-center px-6">
+          {/* Static background image – no parallax, no fixed attachment */}
+          <div className="absolute inset-0">
+            <Image
+              src="/woman-dog-wheelchair.webp"
+              alt="Volunteer with wheelchair dog at Saved Souls Foundation sanctuary in Khon Kaen, Thailand"
+              fill
+              className="object-cover object-[60%_center] md:object-center"
+              sizes="100vw"
+              priority
+              fetchPriority="high"
+              loading="eager"
+            />
+          </div>
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/65"
+            aria-hidden
+          />
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <p className="hero-animate-location text-sm font-semibold text-white/90 mb-4">
+              {tHome("location")}
+            </p>
+            <h1 className="hero-animate-headline font-bold text-white leading-tight mb-6" style={{ fontSize: "clamp(1.8rem, 5vw, 3.5rem)" }}>
+              {tHome("headline")}
+            </h1>
+            <p className="hero-animate-subtitle text-base md:text-lg lg:text-xl text-white/90 font-medium max-w-[600px] mx-auto text-center mb-8 leading-relaxed">
+              {tHome("heroSubtitle")}
+            </p>
+            <div className="hero-animate-ctas flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <button
+                type="button"
+                onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-white text-base shadow-lg hover:scale-105 transition-all w-full sm:w-auto"
+                style={{ backgroundColor: "#E53E3E" }}
+              >
+                <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
+                {t("donate")}
+              </button>
+              <Link
+                href="/soul-saver"
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold border-2 border-white text-white hover:bg-white hover:text-stone-900 transition-all text-center w-full sm:w-auto"
+              >
+                {tHome("cta")}
+              </Link>
             </div>
           </div>
+          <a
+            href="#hero-photos"
+            className="hero-animate-scroll absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 hover:text-white transition-colors md:bottom-8"
+            aria-label="Scroll to next section"
+          >
+            <ChevronDown className="w-7 h-7 md:w-8 md:h-8" strokeWidth={2} />
+          </a>
+        </HeroFadeIn>
 
-          <div className="max-w-2xl mx-auto mb-10">
-            <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed mb-6">
-              {tHome("intro1")}
-            </p>
-            <p className="text-stone-700 dark:text-stone-300 text-base md:text-lg text-center font-medium leading-relaxed mb-6">
-              {tHome("intro2")}
-            </p>
-            <p className="text-sm font-medium text-stone-500 dark:text-stone-400 text-center mb-4">{tHome("quickLinksTitle")}</p>
-            <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
-              {t("adopt")}
-            </Link>
-            <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
-              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-              {t("donate")}
-            </button>
-            <button type="button" onClick={() => document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: "#0891b2" }}>
-              {t("sponsor")}
-            </button>
-            <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
-              {t("volunteer")}
-            </Link>
+        {/* Photo strip – below hero */}
+        <div id="hero-photos" className="grid grid-cols-4 h-[200px] w-full">
+          {[
+            { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },
+            { src: "/team-thankyou.webp", alt: "Team at the entrance of Saved Souls Foundation" },
+            { src: "/volunteers-with-dogs.png", alt: "Volunteers with rescued dogs" },
+            { src: "/woman-dog-wheelchair.webp", alt: "Dog with wheelchair at Saved Souls" },
+          ].map((img, i) => (
+            <div key={i} className="relative overflow-hidden">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className="object-cover"
+                sizes="25vw"
+                loading="lazy"
+              />
             </div>
-            <Link href="/adopt" className="block mt-6 text-center text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors">
-              {tHome("adoptDiversityText")} →
-            </Link>
-          </div>
+          ))}
         </div>
       </header>
+
+      {/* Trust / stats bar – below hero */}
+      <TrustStatsBar />
+
+      {/* Intro + 4 action buttons – below hero (both mobile and desktop) */}
+      <div className="max-w-2xl mx-auto px-4 pb-10 md:pt-4">
+        <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed mb-6">
+          {tHome("intro1")}
+        </p>
+        <p className="text-sm font-medium text-stone-500 dark:text-stone-400 text-center mb-4">{tHome("quickLinksTitle")}</p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
+            {t("adopt")}
+          </Link>
+          <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
+            <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+            {t("donate")}
+          </button>
+          <button type="button" onClick={() => document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: "#0891b2" }}>
+            {t("sponsor")}
+          </button>
+          <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
+            {t("volunteer")}
+          </Link>
+        </div>
+        <Link href="/adopt" className="block mt-6 text-center text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors">
+          {tHome("adoptDiversityText")} →
+        </Link>
+      </div>
 
       {/* Content sections – headline + text + one CTA per section */}
       <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
@@ -531,7 +550,7 @@ export default function DonatePage() {
           </div>
           <div>
             <AnimatedStat prefix={tHome("statsPrefixSince")} target={2010} from={1999} duration={2500} startOnView />
-            <p className="text-stone-600 dark:text-stone-400">{tHome("statsSince")}</p>
+            <p className="text-stone-600 dark:text-stone-400">{tHome("statsTimeline")}</p>
           </div>
         </div>
       </section>

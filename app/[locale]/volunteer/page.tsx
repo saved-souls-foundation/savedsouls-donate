@@ -116,6 +116,17 @@ export default async function VolunteerPage() {
                   <p className="text-stone-600 dark:text-stone-400 text-base font-medium mt-1">{t("story3Author")}</p>
                 </div>
               </div>
+              <div className="flex gap-3 items-start">
+                <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 border-stone-200 dark:border-stone-600 shadow flex items-center justify-center bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40" style={{ color: ACCENT_GREEN }}>
+                  <Heart className="h-7 w-7 md:h-8 md:w-8 fill-current" strokeWidth={2} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <blockquote className="pl-4 border-l-4 py-2 text-stone-700 dark:text-stone-300 italic" style={{ borderColor: ACCENT_GREEN }}>
+                    {t("story4Quote")}
+                  </blockquote>
+                  <p className="text-stone-600 dark:text-stone-400 text-base font-medium mt-1">{t("story4Author")}</p>
+                </div>
+              </div>
             </div>
           </div>
 

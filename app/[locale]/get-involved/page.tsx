@@ -162,7 +162,7 @@ export default async function GetInvolvedPage() {
           </section>
 
           {/* Gidsen & informatie – link naar aparte pagina */}
-          <section className="rounded-2xl bg-white dark:bg-stone-800/80 border-2 border-stone-200 dark:border-stone-600 shadow-xl p-8 md:p-10 mb-6">
+          <section id="info" className="rounded-2xl bg-white dark:bg-stone-800/80 border-2 border-stone-200 dark:border-stone-600 shadow-xl p-8 md:p-10 mb-6 scroll-mt-24">
             <Link
               href="/gidsen"
               className="group flex items-center justify-between gap-4 p-6 rounded-xl bg-stone-50 dark:bg-stone-700/50 hover:bg-[#2aa348]/10 dark:hover:bg-[#2aa348]/20 border-2 border-transparent hover:border-[#2aa348]/40 transition-all duration-200"

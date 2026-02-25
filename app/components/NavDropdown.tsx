@@ -2,37 +2,26 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
-import {
-  ChevronDown,
-  BookOpen,
-  HandHeart,
-  HeartHandshake,
-  Megaphone,
-  ShoppingBag,
-  Baby,
-  LayoutGrid,
-  Dog,
-  Cat,
-  Mail,
-  type LucideIcon,
-} from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ChevronDown, ChevronRight, Heart, type LucideIcon } from "lucide-react";
 
 export type NavDropdownItem = {
   href: string;
   label: string;
+  description?: string;
+  icon?: LucideIcon;
+  /** Override icon background (default: #f0faf0 green) */
+  iconBg?: string;
+  /** Highlight as featured (e.g. Influencers with purple styling) */
+  highlight?: boolean;
 };
 
-const ITEM_ICONS: Record<string, LucideIcon> = {
-  "/get-involved": HandHeart,
-  "/gidsen": BookOpen,
-  "/volunteer": HeartHandshake,
-  "/influencers": Megaphone,
-  "/shop": ShoppingBag,
-  "/kids": Baby,
-  "/adopt": LayoutGrid,
-  "/adopt?type=dog": Dog,
-  "/adopt?type=cat": Cat,
-  "/adopt-inquiry": Mail,
+type BottomCta = {
+  href: string;
+  label: string;
+  subtext: string;
+  /** When provided, renders as button with onClick instead of Link */
+  onClick?: () => void;
 };
 
 type NavDropdownProps = {
@@ -41,9 +30,17 @@ type NavDropdownProps = {
   buttonClassName: string;
   buttonStyle?: React.CSSProperties;
   onItemClick?: () => void;
-  /** right = uitlijnen rechts (voorkomt overlap met dropdown links ervan) */
   align?: "left" | "right";
+  /** Layout: "adopt" = 2-col grid cards, "involved" = single column list */
+  layout?: "adopt" | "involved";
+  /** Optional CTA block at bottom (e.g. Donate) */
+  bottomCta?: BottomCta;
 };
+
+const ICON_GREEN = "#2d7a3a";
+const ICON_PURPLE = "#7c3aed";
+const CHEVRON_GRAY = "#d1d5db";
+const ICON_BG = "#f0faf0";
 
 export default function NavDropdown({
   label,
@@ -52,7 +49,10 @@ export default function NavDropdown({
   buttonStyle,
   onItemClick,
   align = "left",
+  layout = "involved",
+  bottomCta,
 }: NavDropdownProps) {
+  const t = useTranslations("common");
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +65,15 @@ export default function NavDropdown({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const closeAndNotify = () => {
+    setOpen(false);
+    onItemClick?.();
+  };
+
+  const dropdownClass = `absolute top-full mt-2 min-w-[280px] rounded-2xl bg-white p-3 shadow-xl shadow-black/10 border border-[#f0f0f0] z-[120] animate-dropdown-open origin-top ${
+    align === "right" ? "right-0" : "left-0"
+  }`;
 
   return (
     <div ref={containerRef} className="relative group">
@@ -81,27 +90,114 @@ export default function NavDropdown({
         <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} aria-hidden />
       </button>
       {open && (
-        <div
-          className={`absolute top-full mt-1.5 py-1.5 min-w-[200px] rounded-lg bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-lg z-[120] ${align === "right" ? "right-0" : "left-0"}`}
-          onMouseLeave={() => setOpen(false)}
-        >
-          {items.map((item) => {
-            const Icon = ITEM_ICONS[item.href];
-            return (
-              <Link
-                key={item.href + item.label}
-                href={item.href}
-                onClick={() => {
-                  setOpen(false);
-                  onItemClick?.();
-                }}
-                className="nav-dropdown-item flex items-center gap-3 px-3 py-2.5 text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700/80 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-              >
-                {Icon && <Icon className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />}
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+        <div className={dropdownClass} onMouseLeave={() => setOpen(false)}>
+          {layout === "adopt" ? (
+            /* ADOPT: 2-column grid of mini-cards */
+            <div className="grid grid-cols-2 gap-3">
+              {items.slice(0, 2).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href + item.label}
+                    href={item.href}
+                    onClick={closeAndNotify}
+                    className="rounded-2xl border border-gray-100 shadow-sm bg-white p-4 flex flex-col items-center gap-2 hover:shadow-md hover:scale-[1.02] transition-all duration-200"
+                  >
+                    <div
+                      className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: item.iconBg ?? "#fff7ed" }}
+                    >
+                      {Icon && <Icon size={28} color={ICON_GREEN} aria-hidden />}
+                    </div>
+                    <span className="font-semibold text-sm text-gray-800 text-center">{item.label}</span>
+                    <span className="text-xs text-gray-400 text-center">{item.description ?? ""}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            /* INVOLVED: Single column list with icon + title + subtitle */
+            <div className="flex flex-col gap-0.5">
+              {items.map((item) => {
+                const Icon = item.icon;
+                const isHighlight = item.highlight ?? item.href === "/influencers";
+                return (
+                  <Link
+                    key={item.href + item.label}
+                    href={item.href}
+                    onClick={closeAndNotify}
+                    className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
+                      isHighlight
+                        ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
+                        : "px-3 py-2.5 hover:bg-gray-50"
+                    }`}
+                  >
+                    {isHighlight && (
+                      <span className="absolute top-2 right-3 bg-purple-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-medium">
+                        {t("menuNewBadge")}
+                      </span>
+                    )}
+                    {Icon && (
+                      <div
+                        className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                          isHighlight ? "bg-purple-100" : "bg-green-50"
+                        }`}
+                      >
+                        <Icon size={16} color={isHighlight ? ICON_PURPLE : ICON_GREEN} aria-hidden />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0 pr-8">
+                      <div
+                        className={`font-medium text-sm ${isHighlight ? "text-[#6d28d9]" : "text-gray-800"}`}
+                        style={isHighlight ? { fontWeight: 600 } : undefined}
+                      >
+                        {item.label}
+                      </div>
+                      {item.description && (
+                        <div className={`text-xs ${isHighlight ? "text-purple-400" : "text-gray-400"}`}>
+                          {item.description}
+                        </div>
+                      )}
+                    </div>
+                    <ChevronRight size={14} className="text-gray-300 shrink-0" aria-hidden />
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
+          {bottomCta && (
+            <div className="border-t border-gray-100 mt-2 pt-2">
+              {bottomCta.onClick ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    bottomCta.onClick?.();
+                    setOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-red-50 hover:bg-red-100/80 transition-colors duration-100 text-left"
+                >
+                  <Heart size={16} fill="#E53E3E" color="#E53E3E" aria-hidden />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm text-red-600">{bottomCta.label}</div>
+                    <div className="text-xs text-red-400">{bottomCta.subtext}</div>
+                  </div>
+                </button>
+              ) : (
+                <Link
+                  href={bottomCta.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-red-50 hover:bg-red-100/80 transition-colors duration-100"
+                >
+                  <Heart size={16} fill="#E53E3E" color="#E53E3E" aria-hidden />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm text-red-600">{bottomCta.label}</div>
+                    <div className="text-xs text-red-400">{bottomCta.subtext}</div>
+                  </div>
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -310,6 +310,134 @@ body {
 .animate-money-float-3 { animation: money-float-3 4.5s ease-in-out infinite; animation-delay: 1s; }
 .animate-money-float-4 { animation: money-float-4 5.5s ease-in-out infinite; animation-delay: 0.3s; }
 
+/* Hero fade-in animations – scroll-triggered via Intersection Observer */
+.hero-animate-location {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 600ms ease-out 0ms, transform 600ms ease-out 0ms;
+}
+.hero-animate-headline {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 700ms ease-out 150ms, transform 700ms ease-out 150ms;
+}
+.hero-animate-subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms;
+}
+.hero-animate-ctas {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 600ms ease-out 450ms, transform 600ms ease-out 450ms;
+}
+.hero-animate-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 600ms ease-out 800ms, transform 600ms ease-out 800ms;
+}
+
+@media (max-width: 767px) {
+  .hero-animate-location,
+  .hero-animate-headline,
+  .hero-animate-subtitle,
+  .hero-animate-ctas,
+  .hero-animate-scroll {
+    transform: translateY(12px);
+  }
+}
+
+[data-hero-visible] .hero-animate-location,
+[data-hero-visible] .hero-animate-headline,
+[data-hero-visible] .hero-animate-subtitle,
+[data-hero-visible] .hero-animate-ctas,
+[data-hero-visible] .hero-animate-scroll {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll indicator: fade in, then bounce */
+[data-hero-visible] .hero-animate-scroll {
+  animation: hero-bounce-after 2s ease-in-out 1.4s infinite;
+}
+
+@keyframes hero-bounce-after {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-animate-location,
+  .hero-animate-headline,
+  .hero-animate-subtitle,
+  .hero-animate-ctas,
+  .hero-animate-scroll {
+    transform: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-hero-visible] .hero-animate-scroll {
+    animation: none !important;
+  }
+}
+
+/* Desktop dropdown: fade-in + slide down */
+@keyframes dropdown-open {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dropdown-open {
+  animation: dropdown-open 150ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dropdown-open {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Mobile menu stagger fade-in */
+@keyframes menu-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: menu-fade-in 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .trust-stat-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Print styles for course materials */
 @media print {
   .print\:hidden {

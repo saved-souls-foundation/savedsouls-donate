@@ -113,9 +113,6 @@ export default function PreviewHeroPage() {
             <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg mb-2 max-w-2xl mx-auto text-center font-bold">
               {tHome("intro1")}
             </p>
-            <p className="text-stone-700 dark:text-stone-300 text-base md:text-lg font-bold max-w-2xl mx-auto text-center">
-              {tHome("intro2")}
-            </p>
           </div>
         </header>
 

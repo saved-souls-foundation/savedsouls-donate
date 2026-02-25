@@ -5,39 +5,35 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
   ChevronDown,
+  ChevronRight,
   BookOpen,
-  HandHeart,
   Heart,
-  HeartHandshake,
-  Megaphone,
   ShoppingBag,
-  Baby,
-  LayoutGrid,
+  Mail,
+  Home,
+  MapPin,
+  Star,
+  Sun,
   Dog,
   Cat,
-  Mail,
+  Megaphone,
+  Smile,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import NavDropdown from "./NavDropdown";
 import SiteSearch from "./SiteSearch";
 
-const ACCENT_GREEN = "#2aa348";
-const BTN_ADOPT = "#059669";
-const BTN_SPONSOR = "#0891b2";
-const BTN_VOLUNTEER = "#ea580c";
-const BTN_DONATE = "#dc2626";
-const BTN_INFLUENCERS = "#8b5cf6";
-
 type SiteHeaderProps = {
-  /** Op homepage: scroll naar sectie. Anders: link naar /#sponsor en /#donate */
   scrollToSection?: (id: string) => void;
+  scrollY?: number;
 };
 
-export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
+const ICON_GREEN = "#2d7a3a";
+const CHEVRON_GRAY = "#d1d5db";
+
+export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileAdoptOpen, setMobileAdoptOpen] = useState(false);
-  const [mobileGetInvolvedOpen, setMobileGetInvolvedOpen] = useState(false);
   const t = useTranslations("common");
   const tHome = useTranslations("home");
 
@@ -69,19 +65,30 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
   };
 
   const isHomePage = !!scrollToSection;
+  const isOverlay = isHomePage && scrollY < 80;
+
+  const textOverlay = "text-white hover:text-white/90";
+  const textScrolled = "text-[#1a1a1a] dark:text-stone-100 hover:text-stone-600 dark:hover:text-stone-300";
+
+  const navBg = isOverlay
+    ? "bg-transparent border-transparent shadow-none"
+    : "bg-white dark:bg-stone-900 border-stone-200/80 dark:border-stone-700/80 shadow-[0_2px_12px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)]";
 
   return (
     <>
-      <nav className="sticky top-0 z-[110] flex items-center justify-between gap-4 px-4 md:px-6 py-3 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-700/80">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out ${navBg}`}
+      >
+        {/* Left: Logo + Saved Souls */}
         <Link
           href="/"
-          className="flex items-center gap-3 hover:opacity-90 transition-opacity min-w-0"
+          className="flex items-center gap-2.5 shrink-0 hover:opacity-90 transition-opacity"
         >
-          <div className="shrink-0 rounded-lg overflow-hidden" style={{ width: 48, height: 48 }}>
+          <div className="shrink-0 rounded-full overflow-hidden w-11 h-11">
             <video
               src="/savedsouls-foundation-logo.mp4"
-              width={48}
-              height={48}
+              width={44}
+              height={44}
               className="block w-full h-full object-cover"
               autoPlay
               muted
@@ -90,231 +97,366 @@ export default function SiteHeader({ scrollToSection }: SiteHeaderProps) {
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="hidden sm:block text-sm font-semibold text-stone-800 dark:text-stone-100 truncate">Saved Souls</span>
+          <span className={`text-xl font-semibold whitespace-nowrap ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`}>
+            Saved Souls
+          </span>
         </Link>
 
-        {/* Desktop nav – strakker: links + 2 primaire knoppen */}
-        <div className="hidden md:flex items-center gap-1 lg:gap-2">
-          <SiteSearch />
-          <Link href="/about-us" className={navLinkClass("/about-us")}>
-            {t("aboutUs")}
-          </Link>
-          <Link href="/story" className={navLinkClass("/story")}>
+        {/* Center: Nav links (desktop only) */}
+        <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0">
+          <Link
+            href="/story"
+            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
+          >
             {t("ourStory")}
           </Link>
-          <Link href="/contact" className={navLinkClass("/contact")}>
-            {t("contact")}
+          <Link
+            href="/about-us"
+            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
+          >
+            {t("aboutUs")}
           </Link>
-          <NavDropdown
-            label={t("getInvolved")}
-            items={[
-              { href: "/get-involved", label: t("getInvolved") },
-              { href: "/gidsen", label: t("gidsen") },
-              { href: "/volunteer", label: t("volunteer") },
-              { href: "/influencers", label: t("influencers") },
-              { href: "/shop", label: t("shop") },
-              { href: "/kids", label: t("kids") },
-            ]}
-            buttonClassName="px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-          />
           <NavDropdown
             label={t("adopt")}
+            layout="adopt"
             items={[
-              { href: "/adopt", label: t("adoptOverview") },
-              { href: "/adopt?type=dog", label: t("adoptDogs") },
-              { href: "/adopt?type=cat", label: t("adoptCats") },
-              { href: "/adopt-inquiry", label: t("adoptInquiryNav") },
+              { href: "/adopt", label: t("menuAdoptMain"), description: t("menuAdoptDogSubtext"), icon: Home, iconBg: "#fff7ed" },
+              { href: "/adopt?type=cat", label: t("menuAdoptCat"), description: t("menuAdoptCatSubtext"), icon: Cat, iconBg: "#f0f7ff" },
             ]}
-            buttonClassName="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            buttonStyle={{ backgroundColor: BTN_ADOPT }}
-            align="right"
+            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            align="left"
           />
-          {isHomePage ? (
-            <a href="#sponsor" onClick={(e) => { e.preventDefault(); scrollToSection!("sponsor"); }} className="px-3 py-2 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
-              {t("sponsor")}
-            </a>
-          ) : (
-            <Link href="/#sponsor" className={navLinkClass("/sponsor")}>
-              {t("sponsor")}
-            </Link>
-          )}
-          <Link href="/volunteer" className={navLinkClass("/volunteer")}>
-            {t("volunteer")}
-          </Link>
-          {isHomePage ? (
-            <a href="#donate" onClick={(e) => { e.preventDefault(); scrollToSection!("donate"); }} className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
-              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-              {t("donate")}
-            </a>
-          ) : (
-            <Link href="/#donate" className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
-              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-              {t("donate")}
-            </Link>
-          )}
-          <div className="flex-shrink-0 ml-1">
-            <LanguageSwitcher />
-          </div>
+          <NavDropdown
+            label={t("getInvolved")}
+            layout="involved"
+            items={[
+              { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
+              { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
+              { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
+              { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
+              { href: "/gidsen", label: t("gidsen"), description: t("menuGidsenSubtext"), icon: BookOpen },
+              { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
+              { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
+              { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
+            ]}
+            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            align="right"
+            bottomCta={
+              isHomePage
+                ? { href: "#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext"), onClick: handleDonate }
+                : { href: "/#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }
+            }
+          />
         </div>
 
-        {/* Mobile: zoek + taal + hamburger (zoals Apple) */}
-        <div className="flex md:hidden items-center gap-2">
-          <SiteSearch mobileIcon />
-          <div className="flex-shrink-0">
-            <LanguageSwitcher compact />
+        {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) */}
+        <div className="flex items-center gap-3 md:gap-6 shrink-0">
+          {/* Desktop: search, language, donate */}
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            <SiteSearch desktopIconOnly overlay={isOverlay} />
+            <LanguageSwitcher minimal overlay={isOverlay} />
+            {isHomePage ? (
+              <a
+                href="#donate"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection!("donate");
+                }}
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
+                style={{ backgroundColor: "#E53E3E" }}
+                title={t("donateTooltip")}
+              >
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+                {t("donate")}
+              </a>
+            ) : (
+              <Link
+                href="/#donate"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
+                style={{ backgroundColor: "#E53E3E" }}
+                title={t("donateTooltip")}
+              >
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+                {t("donate")}
+              </Link>
+            )}
           </div>
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((o) => !o)}
-            className="p-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"
-            aria-label={mobileMenuOpen ? tHome("menuClose") : tHome("menuOpen")}
-            aria-expanded={mobileMenuOpen}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          {/* Mobile: search, language, hamburger (no donate in header) */}
+          <div className="flex md:hidden items-center gap-2">
+            <SiteSearch mobileIcon overlay={isOverlay} />
+            <LanguageSwitcher compact overlay={isOverlay} />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((o) => !o)}
+              className={`p-2 rounded-lg border transition-colors duration-300 ${
+                isOverlay
+                  ? "border-white/60 bg-white/10 text-white"
+                  : "border-stone-300 dark:border-stone-600 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"
+              }`}
+              aria-label={mobileMenuOpen ? tHome("menuClose") : tHome("menuOpen")}
+              aria-expanded={mobileMenuOpen}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile menu backdrop – onder nav, boven pagina-inhoud */}
+      {/* Mobile menu backdrop */}
       <button
         type="button"
         onClick={closeMobileMenu}
-        className={`md:hidden fixed inset-0 top-[57px] z-[105] bg-black/40 backdrop-blur-sm transition-opacity duration-200 ${
+        className={`md:hidden fixed inset-0 top-14 z-[45] bg-black/40 backdrop-blur-sm transition-opacity duration-200 ${
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden
       />
 
-      {/* Mobile dropdown menu – boven backdrop, leesbaar */}
+      {/* Mobile dropdown menu – category cards */}
       <div
-        className={`md:hidden fixed inset-x-0 top-[57px] z-[106] max-h-[calc(100vh-57px)] overflow-y-auto bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 shadow-xl transition-all duration-200 ease-out ${
-          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none max-h-0"
+        className={`md:hidden fixed inset-x-0 top-14 z-[46] max-h-[calc(100vh-56px)] overflow-y-auto bg-white transition-opacity duration-300 ease-out ${
+          mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
       >
-        <div className="px-4 py-6 flex flex-col gap-2">
-          {/* Zoek staat nu altijd in header als icoon */}
-          {/* Navigatielinks */}
-          <div className="flex flex-col gap-1">
-            <Link href="/about-us" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/about-us", true)}`}>
-              {t("aboutUs")}
-            </Link>
-            <Link href="/story" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/story", true)}`}>
-              {t("ourStory")}
-            </Link>
-            <Link href="/contact" onClick={closeMobileMenu} className={`font-medium ${navLinkClass("/contact", true)}`}>
-              {t("contact")}
-            </Link>
-            {/* Doe mee + uitklapper */}
-            <div>
-              <button
-                type="button"
-                onClick={() => setMobileGetInvolvedOpen((o) => !o)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium"
+        {mobileMenuOpen && (
+        <div className="px-5 py-6 flex flex-col">
+          {/* Section 1 – ONTDEK */}
+          <div className="animate-fade-in" style={{ animationDelay: "0ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
+              {t("menuSectionDiscover")}
+            </p>
+            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
+              <Link
+                href="/story"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
               >
-                {t("getInvolved")}
-                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${mobileGetInvolvedOpen ? "rotate-180" : ""}`} />
-              </button>
-              {mobileGetInvolvedOpen && (
-                <div className="pl-4 pb-2 flex flex-col gap-0.5">
-                  <Link href="/get-involved" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <HandHeart className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("getInvolved")}
-                  </Link>
-                  <Link href="/gidsen" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <BookOpen className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("gidsen")}
-                  </Link>
-                  <Link href="/volunteer" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <HeartHandshake className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("volunteer")}
-                  </Link>
-                  <Link href="/influencers" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <Megaphone className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("influencers")}
-                  </Link>
-                  <Link href="/kids" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <Baby className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("kids")}
-                  </Link>
-                </div>
-              )}
+                <BookOpen size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("ourStory")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/about-us"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <Heart size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("aboutUs")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/contact"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
+              >
+                <Mail size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("contact")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
             </div>
-            <Link href="/shop" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-              {t("shop")}
-            </Link>
-            <Link href="/street-dogs-thailand" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-              {t("streetDogsThailand")}
-            </Link>
-            <Link href="/thank-you" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 font-medium">
-              {t("thankYou")}
-            </Link>
           </div>
 
-          {/* Actieknoppen – gegroepeerd onderaan */}
-          <div className="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700 flex flex-col gap-2">
-            {/* Adopt + uitklapper */}
-            <div>
+          {/* Section 2 – DOE MEE */}
+          <div className="mt-6 animate-fade-in" style={{ animationDelay: "50ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
+              {t("menuSectionGetInvolved")}
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Card 1 – Adopteer een hond */}
+              <Link
+                href="/adopt"
+                onClick={closeMobileMenu}
+                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+              >
+                <span className="absolute top-2 right-2 text-base" aria-hidden>🐕</span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100 shrink-0">
+                  <Dog size={26} color="#c2410c" aria-hidden />
+                </div>
+                <span className="font-semibold text-sm text-gray-800">{t("menuAdoptMain")}</span>
+                <span className="text-xs text-gray-400 mt-1">{t("menuAdoptDogCardSubtext")}</span>
+              </Link>
+              {/* Card 2 – Adopteer een kat */}
+              <Link
+                href="/adopt?type=cat"
+                onClick={closeMobileMenu}
+                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+              >
+                <span className="absolute top-2 right-2 text-base" aria-hidden>🐱</span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-blue-50 to-sky-100 shrink-0">
+                  <Cat size={26} color="#0369a1" aria-hidden />
+                </div>
+                <span className="font-semibold text-sm text-gray-800">{t("menuAdoptCat")}</span>
+                <span className="text-xs text-gray-400 mt-1">{t("menuAdoptCatSubtext")}</span>
+              </Link>
+              {/* Card 3 – Sponsor */}
+              {isHomePage ? (
+                <button
+                  type="button"
+                  onClick={handleSponsor}
+                  className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                >
+                  <span className="absolute top-2 right-2 text-base" aria-hidden>❤️</span>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-red-50 to-rose-100 shrink-0">
+                    <Heart size={26} color="#e11d48" aria-hidden />
+                  </div>
+                  <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
+                  <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
+                </button>
+              ) : (
+                <Link
+                  href="/#sponsor"
+                  onClick={closeMobileMenu}
+                  className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                >
+                  <span className="absolute top-2 right-2 text-base" aria-hidden>❤️</span>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-red-50 to-rose-100 shrink-0">
+                    <Heart size={26} color="#e11d48" aria-hidden />
+                  </div>
+                  <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
+                  <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
+                </Link>
+              )}
+              {/* Card 4 – Vrijwilliger */}
+              <Link
+                href="/volunteer"
+                onClick={closeMobileMenu}
+                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+              >
+                <span className="absolute top-2 right-2 text-base" aria-hidden>🌟</span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100 shrink-0">
+                  <Sun size={26} color="#059669" aria-hidden />
+                </div>
+                <span className="font-semibold text-sm text-gray-800">{t("volunteer")}</span>
+                <span className="text-xs text-gray-400 mt-1">{t("menuVolunteerSubtext")}</span>
+              </Link>
+              {/* Card 5 – Influencers */}
+              <Link
+                href="/influencers"
+                onClick={closeMobileMenu}
+                className="relative rounded-2xl border border-[#e9d5ff] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:shadow-[0_4px_14px_rgba(147,51,234,0.2)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+              >
+                <span className="absolute top-2 right-2 bg-purple-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                  {t("menuExclusiefBadge")}
+                </span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-purple-100 to-violet-200 shrink-0">
+                  <Megaphone size={26} color="#7c3aed" aria-hidden />
+                </div>
+                <span className="font-bold text-sm text-[#6d28d9]">{t("influencers")}</span>
+                <span className="text-xs text-purple-400 mt-1">{t("menuInfluencersSubtext")}</span>
+              </Link>
+              {/* Card 6 – Shop */}
+              <Link
+                href="/shop"
+                onClick={closeMobileMenu}
+                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+              >
+                <span className="absolute top-2 right-2 text-base" aria-hidden>🛍️</span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-yellow-50 to-amber-100 shrink-0">
+                  <ShoppingBag size={26} color="#d97706" aria-hidden />
+                </div>
+                <span className="font-semibold text-sm text-gray-800">{t("shop")}</span>
+                <span className="text-xs text-gray-400 mt-1">{t("menuShopSubtext")}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Section 3 – MEER */}
+          <div className="mt-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
+              {t("menuSectionMore")}
+            </p>
+            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
+              <Link
+                href="/shop"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <ShoppingBag size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("shop")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/street-dogs-thailand"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <MapPin size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("streetDogsThailand")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/gidsen"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <BookOpen size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("gidsen")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/influencers"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <Megaphone size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("influencers")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/kids"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+              >
+                <Smile size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("kids")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/thank-you"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
+              >
+                <Star size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("thankYou")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+            </div>
+          </div>
+
+          {/* Bottom CTA – Doneren */}
+          <div className="mt-8 pb-[env(safe-area-inset-bottom)] animate-fade-in" style={{ animationDelay: "150ms" }}>
+            {isHomePage ? (
               <button
                 type="button"
-                onClick={() => setMobileAdoptOpen((o) => !o)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90"
-                style={{ backgroundColor: BTN_ADOPT }}
+                onClick={handleDonate}
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg shadow-red-200 active:scale-[0.98] transition-transform"
+                style={{ backgroundColor: "#E53E3E" }}
+                title={t("donateTooltip")}
               >
-                {t("adopt")}
-                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${mobileAdoptOpen ? "rotate-180" : ""}`} />
-              </button>
-              {mobileAdoptOpen && (
-                <div className="mt-2 flex flex-col gap-0.5 pl-2">
-                  <Link href="/adopt" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <LayoutGrid className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("adoptOverview")}
-                  </Link>
-                  <Link href="/adopt?type=dog" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <Dog className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("adoptDogs")}
-                  </Link>
-                  <Link href="/adopt?type=cat" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <Cat className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("adoptCats")}
-                  </Link>
-                  <Link href="/adopt-inquiry" onClick={closeMobileMenu} className="nav-dropdown-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
-                    <Mail className="w-4 h-4 shrink-0 text-stone-400 dark:text-stone-500" aria-hidden />
-                    {t("adoptInquiryNav")}
-                  </Link>
-                </div>
-              )}
-            </div>
-            {isHomePage ? (
-              <button type="button" onClick={handleSponsor} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_SPONSOR }}>
-                {t("sponsor")}
-              </button>
-            ) : (
-              <Link href="/#sponsor" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_SPONSOR }}>
-                {t("sponsor")}
-              </Link>
-            )}
-            <Link href="/volunteer" onClick={closeMobileMenu} className="px-4 py-3 rounded-lg text-center font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
-              {t("volunteer")}
-            </Link>
-            {isHomePage ? (
-              <button type="button" onClick={handleDonate} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-white hover:opacity-90 w-full" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
-                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+                <Heart size={18} fill="white" color="white" aria-hidden />
                 {t("donate")}
               </button>
             ) : (
-              <Link href="/#donate" onClick={closeMobileMenu} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }} title={t("donateTooltip")}>
-                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+              <Link
+                href="/#donate"
+                onClick={closeMobileMenu}
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg shadow-red-200 active:scale-[0.98] transition-transform"
+                style={{ backgroundColor: "#E53E3E" }}
+                title={t("donateTooltip")}
+              >
+                <Heart size={18} fill="white" color="white" aria-hidden />
                 {t("donate")}
               </Link>
             )}
           </div>
         </div>
+        )}
       </div>
     </>
   );
