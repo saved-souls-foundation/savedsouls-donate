@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Heart, ChevronDown } from "lucide-react";
-import { AnimatedStat } from "../components/AnimatedStat";
 import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
 import HeroFadeIn from "../components/HeroFadeIn";
@@ -299,14 +298,14 @@ export default function DonatePage() {
         </HeroFadeIn>
 
         {/* Photo strip – below hero */}
-        <div id="hero-photos" className="grid grid-cols-4 h-[200px] w-full">
+        <div id="hero-photos" className="relative grid grid-cols-4 gap-1 h-[160px] md:h-[200px] w-full">
           {[
             { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },
             { src: "/team-thankyou.webp", alt: "Team at the entrance of Saved Souls Foundation" },
             { src: "/volunteers-with-dogs.png", alt: "Volunteers with rescued dogs" },
             { src: "/woman-dog-wheelchair.webp", alt: "Dog with wheelchair at Saved Souls" },
           ].map((img, i) => (
-            <div key={i} className="relative overflow-hidden">
+            <div key={i} className="relative overflow-hidden rounded-lg">
               <Image
                 src={img.src}
                 alt={img.alt}
@@ -317,36 +316,18 @@ export default function DonatePage() {
               />
             </div>
           ))}
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" aria-hidden />
         </div>
       </header>
 
       {/* Trust / stats bar – below hero */}
       <TrustStatsBar />
 
-      {/* Intro + 4 action buttons – below hero (both mobile and desktop) */}
+      {/* Intro – below hero (both mobile and desktop) */}
       <div className="max-w-2xl mx-auto px-4 pb-10 md:pt-4">
-        <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed mb-6">
+        <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed">
           {tHome("intro1")}
         </p>
-        <p className="text-sm font-medium text-stone-500 dark:text-stone-400 text-center mb-4">{tHome("quickLinksTitle")}</p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/adopt" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
-            {t("adopt")}
-          </Link>
-          <button type="button" onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_DONATE }}>
-            <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-            {t("donate")}
-          </button>
-          <button type="button" onClick={() => document.getElementById("sponsor")?.scrollIntoView({ behavior: "smooth" })} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: "#0891b2" }}>
-            {t("sponsor")}
-          </button>
-          <Link href="/volunteer" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90" style={{ backgroundColor: BTN_VOLUNTEER }}>
-            {t("volunteer")}
-          </Link>
-        </div>
-        <Link href="/adopt" className="block mt-6 text-center text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors">
-          {tHome("adoptDiversityText")} →
-        </Link>
       </div>
 
       {/* Content sections – headline + text + one CTA per section */}
@@ -355,7 +336,7 @@ export default function DonatePage() {
           <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
             <div className="flex-shrink-0 w-full md:w-80 lg:w-96 relative aspect-square">
               <Image
-                src="/dog-grass-walking.webp"
+                src="/woman-dog-wheelchair.webp"
                 alt="Saved Souls Foundation caring for a rescued dog at our shelter in Khon Kaen"
                 fill
                 className="rounded-2xl object-cover shadow-lg"
@@ -373,8 +354,7 @@ export default function DonatePage() {
               </p>
               <Link
                 href="/find-out-more"
-                className="inline-block px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
-                style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+                className="inline-block text-green-700 dark:text-green-500 font-semibold hover:underline"
               >
                 {tHome("findOutMoreCta")}
               </Link>
@@ -533,24 +513,6 @@ export default function DonatePage() {
             >
               {tHome("monthlySoulSaver")}
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats – geanimeerde tellers */}
-      <section className="py-12 bg-white dark:bg-stone-900 border-y border-stone-200 dark:border-stone-700">
-        <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div>
-            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={2500} duration={2200} startOnView />
-            <p className="text-stone-600 dark:text-stone-400">{tHome("statsRescued")}</p>
-          </div>
-          <div>
-            <AnimatedStat prefix={tHome("statsPrefixMoreThan")} target={39} duration={1800} startOnView />
-            <p className="text-stone-600 dark:text-stone-400">{tHome("statsWheelchairs")}</p>
-          </div>
-          <div>
-            <AnimatedStat prefix={tHome("statsPrefixSince")} target={2010} from={1999} duration={2500} startOnView />
-            <p className="text-stone-600 dark:text-stone-400">{tHome("statsTimeline")}</p>
           </div>
         </div>
       </section>
