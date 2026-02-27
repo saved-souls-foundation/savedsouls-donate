@@ -12,7 +12,9 @@
     "generate-banners": "node scripts/generate-banner-images.mjs",
     "fetch-shelter-logos": "node scripts/fetch-shelter-logos.mjs",
     "export-shelter-emails": "node scripts/export-shelter-emails.mjs",
-    "sync-facebook-blog": "node scripts/sync-facebook-blog.mjs"
+    "sync-facebook-blog": "node scripts/sync-facebook-blog.mjs",
+    "gsc": "node scripts/google-search-console-setup.mjs",
+    "gsc:submit-sitemap": "node scripts/google-search-console-submit-sitemap.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.4.0",
@@ -33,6 +35,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "googleapis": "^144.0.0",
     "puppeteer": "^24.37.3",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",

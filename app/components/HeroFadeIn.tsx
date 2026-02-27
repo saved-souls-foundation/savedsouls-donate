@@ -9,11 +9,11 @@ type HeroFadeInProps = {
 
 /**
  * Wrapper that triggers fade-in animations when the hero enters the viewport.
- * Uses Intersection Observer – no scroll listeners, no parallax.
+ * Start with inView=true so above-the-fold content is visible immediately (betere LCP).
  */
 export default function HeroFadeIn({ children, className = "" }: HeroFadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;

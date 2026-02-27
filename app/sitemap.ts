@@ -130,12 +130,26 @@ async function getSponsorAnimalIds(): Promise<{ dogs: string[]; cats: string[] }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [{ dogs, cats }, { dogs: sponsorDogs, cats: sponsorCats }] = await Promise.all([
-    getAnimalIds(),
-    getSponsorAnimalIds(),
-  ]);
-  const blogPosts = getAllBlogPosts();
   const now = new Date();
+  let dogs: string[] = [];
+  let cats: string[] = [];
+  let sponsorDogs: string[] = [];
+  let sponsorCats: string[] = [];
+  let blogPosts: { slug: string }[] = [];
+
+  try {
+    const [animalIds, sponsorIds] = await Promise.all([
+      getAnimalIds(),
+      getSponsorAnimalIds(),
+    ]);
+    dogs = animalIds.dogs;
+    cats = animalIds.cats;
+    sponsorDogs = sponsorIds.dogs;
+    sponsorCats = sponsorIds.cats;
+    blogPosts = getAllBlogPosts();
+  } catch {
+    // Bij API/build-fouten toch een bruikbare sitemap leveren (alleen statische paden)
+  }
 
   const MAIN_PATHS = new Set([
     "",
