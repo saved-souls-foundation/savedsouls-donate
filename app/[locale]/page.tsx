@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Heart, ChevronDown, Mail } from "lucide-react";
-import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
 import HeroFadeIn from "../components/HeroFadeIn";
 import SiteHeader from "../components/SiteHeader";
@@ -20,6 +19,19 @@ const SpotlightSection = dynamic(() => import("../components/SpotlightSection"),
   ssr: false,
   loading: () => <div className="max-w-4xl mx-auto px-4 py-8 md:py-10 min-h-[120px]" aria-hidden />,
 });
+
+const CookieConsent = dynamic(() => import("../components/CookieConsent"), { ssr: false });
+
+/** Toont cookiebanner pas na LCP-window (2,5s) zodat deze niet concurreert met hero. */
+function DeferredCookieConsent() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 2500);
+    return () => clearTimeout(t);
+  }, []);
+  if (!show) return null;
+  return <CookieConsent />;
+}
 
 const ACCENT_GREEN = "#2aa348";
 const BTN_DONATE = "#dc2626";
@@ -131,6 +143,8 @@ export default function DonatePage() {
                 src="/woman-dog-wheelchair-mobile.webp"
                 alt="Volunteer with wheelchair dog at Saved Souls Foundation sanctuary in Khon Kaen, Thailand"
                 className="absolute inset-0 w-full h-full object-cover object-[60%_center] md:object-center"
+                width={768}
+                height={1024}
                 fetchPriority="high"
                 loading="eager"
                 decoding="async"
@@ -618,7 +632,7 @@ export default function DonatePage() {
       <div className="pb-[env(safe-area-inset-bottom,0)]">
         <Footer />
       </div>
-      <CookieConsent />
+      <DeferredCookieConsent />
       </div>
     </div>
   );
