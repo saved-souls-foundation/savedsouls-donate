@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     images: ["/savedsoul-logo.webp"],
   },
   robots: "index, follow",
-  metadataBase: new URL("https://savedsouls-foundation.org"),
+  metadataBase: new URL("https://www.savedsouls-foundation.com"),
 };
 
 const jsonLd = {
@@ -39,7 +39,7 @@ const jsonLd = {
   "@type": "NGO",
   name: "Saved Souls Foundation",
   description: "Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
-  url: "https://savedsouls-foundation.org",
+  url: "https://www.savedsouls-foundation.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Ban Khok Ngam, Ban Fang",
