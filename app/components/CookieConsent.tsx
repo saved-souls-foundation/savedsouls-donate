@@ -3,19 +3,39 @@
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
 
-const CONSENT_KEY = "savedsouls-cookie-consent";
+const CONSENT_KEY = "cookie-consent";
+type ConsentStatus = "granted" | "denied";
+
+function updateGtagConsent(analyticsStorage: ConsentStatus): void {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  window.gtag("consent", "update", {
+    analytics_storage: analyticsStorage,
+    ad_storage: analyticsStorage,
+  });
+}
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const accepted = localStorage.getItem(CONSENT_KEY);
-    if (!accepted) setVisible(true);
+    const stored = localStorage.getItem(CONSENT_KEY) as ConsentStatus | null;
+    if (stored != null) {
+      if (stored === "granted") updateGtagConsent("granted");
+      return;
+    }
+    setVisible(true);
   }, []);
 
   const accept = () => {
-    localStorage.setItem(CONSENT_KEY, "accepted");
+    updateGtagConsent("granted");
+    localStorage.setItem(CONSENT_KEY, "granted");
+    setVisible(false);
+  };
+
+  const deny = () => {
+    updateGtagConsent("denied");
+    localStorage.setItem(CONSENT_KEY, "denied");
     setVisible(false);
   };
 
@@ -29,19 +49,32 @@ export default function CookieConsent() {
     >
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center gap-4">
         <p className="text-sm text-stone-600 dark:text-stone-400 flex-1">
-          We use cookies to improve your experience and for essential site functionality. By continuing you agree to our use of cookies.{" "}
-          <Link href="/disclaimer" className="underline hover:no-underline font-medium text-stone-800 dark:text-stone-200">
+          We use cookies to improve your experience and for essential site functionality. By
+          continuing you agree to our use of cookies.{" "}
+          <Link
+            href="/disclaimer"
+            className="underline hover:no-underline font-medium text-stone-800 dark:text-stone-200"
+          >
             Disclaimer
           </Link>
         </p>
-        <button
-          type="button"
-          onClick={accept}
-          className="flex-shrink-0 px-5 py-2.5 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: "#2aa348" }}
-        >
-          Accept
-        </button>
+        <div className="flex flex-shrink-0 gap-3">
+          <button
+            type="button"
+            onClick={deny}
+            className="px-5 py-2.5 rounded-lg font-semibold text-stone-700 dark:text-stone-300 border border-stone-300 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+          >
+            Weigeren
+          </button>
+          <button
+            type="button"
+            onClick={accept}
+            className="px-5 py-2.5 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: "#2aa348" }}
+          >
+            Accepteren
+          </button>
+        </div>
       </div>
     </div>
   );

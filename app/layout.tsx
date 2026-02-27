@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { DeferredStyles } from "./DeferredStyles";
+import { GoogleAnalytics } from "./GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -128,7 +129,21 @@ export default async function RootLayout({
         )}
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
+        {/* Consent Mode v2: default denied vóór GA4 – AVG/GDPR compliant */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied'
+              });
+            `,
+          }}
+        />
         <DeferredStyles />
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
