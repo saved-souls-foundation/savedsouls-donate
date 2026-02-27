@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Home, Rabbit, Luggage, HeartHandshake, Quote, CalendarClock, Users, Heart, AlertTriangle, PawPrint, Camera, ClipboardList, Dog, Cat } from "lucide-react";
+import TpwgtWidget from "@/app/components/TpwgtWidget";
 import DonateButton from "@/app/components/DonateButton";
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
@@ -561,6 +562,8 @@ export default async function VolunteerPage() {
               </Link>
             </div>
           </div>
+
+          <TpwgtWidget />
 
           <GoogleReviewsSection titleKey="volunteers" />
           <DonationCtaBlock />
