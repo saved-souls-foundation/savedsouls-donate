@@ -127,6 +127,25 @@ export default async function RootLayout({
         {googleSiteVerification && (
           <meta name="google-site-verification" content={googleSiteVerification} />
         )}
+        {/* Travelpayouts – laadt na window.load om laadsnelheid niet te beïnvloeden */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+(function () {
+  function load() {
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = "https://tpembars.com/NTAzMDQ0.js?t=503044";
+    document.head.appendChild(script);
+  }
+  if (typeof window !== "undefined") {
+    if (document.readyState === "complete") load();
+    else window.addEventListener("load", load);
+  }
+})();
+            `.trim(),
+          }}
+        />
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
         {/* Consent Mode v2: default denied vóór GA4 – AVG/GDPR compliant */}
