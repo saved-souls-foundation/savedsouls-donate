@@ -2,7 +2,7 @@
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -21,7 +21,9 @@ import {
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import NavDropdown from "./NavDropdown";
+import type { NavDropdownItem } from "./NavDropdown";
 import SiteSearch from "./SiteSearch";
+import { showSponsor } from "@/lib/features";
 
 type SiteHeaderProps = {
   scrollToSection?: (id: string) => void;
@@ -36,6 +38,20 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = useTranslations("common");
   const tHome = useTranslations("home");
+
+  const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
+    const all: NavDropdownItem[] = [
+      { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
+      { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
+      { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
+      { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
+      { href: "/gidsen", label: t("gidsen"), description: t("menuGidsenSubtext"), icon: BookOpen },
+      { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
+      { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
+      { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
+    ];
+    return showSponsor ? all : all.filter((i) => i.href !== "/#sponsor");
+  }, [showSponsor, t]);
 
   const navLinkClass = (path: string, mobile = false) => {
     const isActive = pathname === path || (path !== "/" && pathname.startsWith(path));
@@ -77,7 +93,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out ${navBg}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out overflow-visible ${navBg}`}
       >
         {/* Left: Logo + Saved Souls */}
         <Link
@@ -102,8 +118,8 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           </span>
         </Link>
 
-        {/* Center: Nav links (desktop only) */}
-        <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0">
+        {/* Center: Nav links (desktop only) – overflow-visible zodat dropdowns niet worden afgeknipt */}
+        <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0 overflow-visible">
           <Link
             href="/story"
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
@@ -129,16 +145,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           <NavDropdown
             label={t("getInvolved")}
             layout="involved"
-            items={[
-              { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
-              { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
-              { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
-              { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
-              { href: "/gidsen", label: t("gidsen"), description: t("menuGidsenSubtext"), icon: BookOpen },
-              { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
-              { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
-              { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
-            ]}
+            items={getInvolvedItems}
             buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="right"
             bottomCta={
@@ -294,8 +301,8 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <span className="font-semibold text-sm text-gray-800">{t("menuAdoptCat")}</span>
                 <span className="text-xs text-gray-400 mt-1">{t("menuAdoptCatSubtext")}</span>
               </Link>
-              {/* Card 3 – Sponsor */}
-              {isHomePage ? (
+              {/* Card 3 – Sponsor (verborgen zolang geen betaalplatform) */}
+              {showSponsor && (isHomePage ? (
                 <button
                   type="button"
                   onClick={handleSponsor}
@@ -321,7 +328,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
                   <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
                 </Link>
-              )}
+              ))}
               {/* Card 4 – Vrijwilliger */}
               <Link
                 href="/volunteer"

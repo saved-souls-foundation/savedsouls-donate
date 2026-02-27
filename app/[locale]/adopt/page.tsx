@@ -6,6 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
 import SiteHeader from "../../components/SiteHeader";
+import DashboardLoginBanner from "../../components/DashboardLoginBanner";
+import { getISOWeekNumber, getSpotlightDogIndex, getSpotlightCatIndex } from "@/lib/spotlight";
+import { showSponsor } from "@/lib/features";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -81,6 +84,7 @@ const PER_PAGE = 24;
 
 export default function AdoptPage() {
   const t = useTranslations("adoptPage");
+  const tHome = useTranslations("home");
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type");
   const initialType = typeParam === "dog" || typeParam === "cat" ? typeParam : "all";
@@ -130,6 +134,12 @@ export default function AdoptPage() {
       .catch(() => setLoading(false));
   }, []);
 
+  const dogs = useMemo(() => animals.filter((a) => a.type === "dog"), [animals]);
+  const cats = useMemo(() => animals.filter((a) => a.type === "cat"), [animals]);
+  const week = getISOWeekNumber();
+  const spotlightDog = dogs.length > 0 ? dogs[getSpotlightDogIndex(week, dogs.length)] : null;
+  const spotlightCat = cats.length > 0 ? cats[getSpotlightCatIndex(week, cats.length)] : null;
+
   const filteredAnimals = useMemo(() => {
     return animals.filter((a) => {
       if (type !== "all" && a.type !== type) return false;
@@ -148,7 +158,7 @@ export default function AdoptPage() {
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
       <SiteHeader />
-      <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+      <main className="max-w-6xl mx-auto px-4 pt-20 md:pt-24 pb-8 md:pb-12">
         <header className="text-center mb-10 md:mb-14">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2">
             Adopt a Dog or Cat
@@ -223,9 +233,11 @@ export default function AdoptPage() {
             <a href="#animals" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
               {t("happyFacesAdopt")}
             </a>
-            <Link href="/sponsor" className="px-5 py-2.5 rounded-xl font-semibold border-2 hover:opacity-90" style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}>
-              {t("happyFacesSponsor")}
-            </Link>
+            {showSponsor && (
+              <Link href="/sponsor" className="px-5 py-2.5 rounded-xl font-semibold border-2 hover:opacity-90" style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}>
+                {t("happyFacesSponsor")}
+              </Link>
+            )}
             <Link href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
               {t("happyFacesDonate")}
             </Link>
@@ -234,6 +246,36 @@ export default function AdoptPage() {
             </Link>
           </div>
         </section>
+
+        <div className="mb-6">
+          <DashboardLoginBanner />
+        </div>
+
+        {/* Spotlight deze week – hond links, kat rechts; op mobiel onder elkaar */}
+        {(spotlightDog || spotlightCat) && (
+          <section className="mb-10" aria-labelledby="adopt-spotlight-title">
+            <div className="spotlight-banner text-center mb-6 rounded-2xl py-6 px-4">
+              <p className="inline-block text-center text-xl md:text-2xl font-bold mb-2 animate-spotlight-tagline bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent bg-[length:200%_auto]">
+                {tHome("spotlightTagline")}
+              </p>
+              <h2 id="adopt-spotlight-title" className="text-center text-sm font-medium text-amber-700/90 dark:text-amber-300/90 animate-spotlight-subtitle">
+                {t("spotlightTitle")}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {spotlightDog && (
+                <div className="w-full">
+                  <AnimalCard animal={spotlightDog} imageSrc={spotlightDog.image || FALLBACK_IMAGE} />
+                </div>
+              )}
+              {spotlightCat && (
+                <div className="w-full">
+                  <AnimalCard animal={spotlightCat} imageSrc={spotlightCat.image || FALLBACK_IMAGE} />
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
           {(["all", "dog", "cat"] as const).map((t) => (

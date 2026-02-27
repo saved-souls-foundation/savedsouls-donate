@@ -53,7 +53,9 @@ export default function ParallaxPage({
       )}
       <div ref={scrollRef} className="relative z-10 h-full overflow-y-auto overscroll-contain">
         <SiteHeader />
-        {children}
+        <div className="pt-16 md:pt-20">
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -3,8 +3,12 @@
 import { Link } from "@/i18n/navigation";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import type { AdoptionApplication, VolunteerApplication, SponsorRecord } from "@/app/api/admin/applications/route";
 
 const ACCENT_GREEN = "#2aa348";
+
+const ADOPT_STEPS = ["Aanvraag", "Intro call", "Documenten", "Vlucht", "Aankomst"];
+const VOLUNTEER_STEPS = ["Aanmelding", "Documenten", "Bevestiging", "Vertrek"];
 
 type AnimalRecord = {
   id: string;
@@ -18,10 +22,19 @@ type AnimalRecord = {
   type?: string;
 };
 
+type ApplicationsData = {
+  adopt: AdoptionApplication[];
+  volunteer: VolunteerApplication[];
+  sponsor: SponsorRecord[];
+  _meta?: { source: string; message?: string };
+};
+
 export default function AdminPage() {
   const t = useTranslations("common");
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [animals, setAnimals] = useState<{ dogs: AnimalRecord[]; cats: AnimalRecord[] } | null>(null);
+  const [applications, setApplications] = useState<ApplicationsData | null>(null);
+  const [applicationsTab, setApplicationsTab] = useState<"adopt" | "volunteer" | "sponsor">("adopt");
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<AnimalRecord | null>(null);
   const [editImageUrl, setEditImageUrl] = useState("");
@@ -30,19 +43,23 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
 
+  const fetchApplications = () => {
+    fetch("/api/admin/applications")
+      .then((r) => r.json())
+      .then((data) => setApplications(data))
+      .catch(() => setApplications({ adopt: [], volunteer: [], sponsor: [] }));
+  };
+
   useEffect(() => {
     fetch("/api/auth/check")
       .then((r) => r.json())
       .then((data) => {
         setAuthenticated(data.authenticated === true);
         if (data.authenticated) {
-          return fetch("/api/animals").then((r) => r.json());
-        }
-        return null;
-      })
-      .then((data) => {
-        if (data) {
-          setAnimals({ dogs: data.dogs, cats: data.cats });
+          fetch("/api/animals")
+            .then((r) => r.json())
+            .then((animalsData) => setAnimals({ dogs: animalsData.dogs, cats: animalsData.cats }));
+          fetchApplications();
         }
         setLoading(false);
       })
@@ -64,7 +81,10 @@ export default function AdminPage() {
         setAuthenticated(true);
         setLoginUsername("");
         setLoginPassword("");
-        const animalsRes = await fetch("/api/animals");
+        const [animalsRes] = await Promise.all([
+          fetch("/api/animals"),
+          fetch("/api/admin/applications").then((r) => r.json()).then(setApplications),
+        ]);
         const animalsData = await animalsRes.json();
         setAnimals({ dogs: animalsData.dogs, cats: animalsData.cats });
       } else {
@@ -193,10 +213,131 @@ export default function AdminPage() {
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">CMS – Dieren beheren</h1>
+        <h1 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">CMS – Saved Souls Administrator</h1>
         <p className="text-sm text-stone-500 dark:text-stone-400 mb-8">
-          Voeg afbeeldings-URLs toe. Bewerk <code className="bg-stone-200 dark:bg-stone-700 px-1 rounded">data/animals.json</code> voor meer dieren of velden.
+          Dieren beheren en aanvragen overzicht. Bewerk <code className="bg-stone-200 dark:bg-stone-700 px-1 rounded">data/animals.json</code> voor meer dieren of velden.
         </p>
+
+        {/* Aanvragen & voortgang */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100" style={{ color: ACCENT_GREEN }}>
+              Aanvragen & voortgang
+            </h2>
+            <button
+              type="button"
+              onClick={fetchApplications}
+              className="text-sm px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800"
+            >
+              Ververs
+            </button>
+          </div>
+          <div className="flex gap-2 mb-4">
+            {(["adopt", "volunteer", "sponsor"] as const).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setApplicationsTab(tab)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  applicationsTab === tab
+                    ? "text-white"
+                    : "text-stone-600 dark:text-stone-400 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600"
+                }`}
+                style={applicationsTab === tab ? { backgroundColor: ACCENT_GREEN } : {}}
+              >
+                {tab === "adopt" && `Adoptie (${applications?.adopt?.length ?? 0})`}
+                {tab === "volunteer" && `Vrijwilliger (${applications?.volunteer?.length ?? 0})`}
+                {tab === "sponsor" && `Sponsor (${applications?.sponsor?.length ?? 0})`}
+              </button>
+            ))}
+          </div>
+          {applications?._meta?.source === "none" && (
+            <p className="text-sm text-amber-600 dark:text-amber-400 mb-4">
+              Aanvragen komen binnen per e-mail. Configureer Supabase (SUPABASE_SERVICE_ROLE_KEY) en maak de tabellen <code className="bg-stone-200 dark:bg-stone-700 px-1 rounded">adoption_applications</code> en <code className="bg-stone-200 dark:bg-stone-700 px-1 rounded">volunteer_applications</code> aan om ze hier te tonen. Zie docs/LOGIN-PROGRESS-PLAN.md.
+            </p>
+          )}
+          {applicationsTab === "adopt" && (
+            <div className="space-y-3">
+              {(applications?.adopt?.length ?? 0) === 0 ? (
+                <p className="text-sm text-stone-500 dark:text-stone-400">Geen adoptie-aanvragen.</p>
+              ) : (
+                applications?.adopt?.map((a) => (
+                  <div
+                    key={a.id}
+                    className="p-4 bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className="font-medium text-stone-800 dark:text-stone-100">{a.name}</span>
+                      <span className="text-xs text-stone-500">
+                        Stap {a.step}: {ADOPT_STEPS[a.step - 1] ?? a.step}
+                      </span>
+                    </div>
+                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                      {a.email} · {a.city}, {a.country}
+                      {a.animal_name ? ` · Dier: ${a.animal_name}` : ""}
+                    </p>
+                    <p className="text-xs text-stone-500 dark:text-stone-500 mt-1 line-clamp-2">{a.about}</p>
+                    <p className="text-xs text-stone-400 mt-1">
+                      {new Date(a.created_at).toLocaleDateString("nl-NL", { dateStyle: "medium" })}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+          {applicationsTab === "volunteer" && (
+            <div className="space-y-3">
+              {(applications?.volunteer?.length ?? 0) === 0 ? (
+                <p className="text-sm text-stone-500 dark:text-stone-400">Geen vrijwilliger-aanmeldingen.</p>
+              ) : (
+                applications?.volunteer?.map((v) => (
+                  <div
+                    key={v.id}
+                    className="p-4 bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className="font-medium text-stone-800 dark:text-stone-100">{v.name}</span>
+                      <span className="text-xs text-stone-500">
+                        Stap {v.step}: {VOLUNTEER_STEPS[v.step - 1] ?? v.step}
+                      </span>
+                    </div>
+                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                      {v.email} · {v.city}, {v.country}
+                      {v.dates ? ` · ${v.dates}` : ""}
+                    </p>
+                    <p className="text-xs text-stone-500 dark:text-stone-500 mt-1 line-clamp-2">{v.motivation}</p>
+                    <p className="text-xs text-stone-400 mt-1">
+                      {new Date(v.created_at).toLocaleDateString("nl-NL", { dateStyle: "medium" })}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+          {applicationsTab === "sponsor" && (
+            <div className="space-y-3">
+              {(applications?.sponsor?.length ?? 0) === 0 ? (
+                <p className="text-sm text-stone-500 dark:text-stone-400">Geen sponsor-gegevens.</p>
+              ) : (
+                applications?.sponsor?.map((s) => (
+                  <div
+                    key={s.id}
+                    className="p-4 bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-700"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-stone-600 dark:text-stone-400">
+                        € {((s.total_amount_cents ?? 0) / 100).toFixed(2)} totaal
+                      </span>
+                      <span className="text-xs text-stone-400">
+                        {new Date(s.updated_at).toLocaleDateString("nl-NL", { dateStyle: "medium" })}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </section>
 
         <section className="mb-12">
           <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>Honden ({animals?.dogs.length ?? 0})</h2>

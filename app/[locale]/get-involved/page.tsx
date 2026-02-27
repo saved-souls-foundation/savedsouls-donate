@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
+import { showSponsor } from "@/lib/features";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -33,14 +34,18 @@ export default async function GetInvolvedPage() {
       color: ACCENT_GREEN,
       icon: "❤️",
     },
-    {
-      href: "/sponsor",
-      img: "/dog-care.webp",
-      label: t("sponsor"),
-      tagline: t("sponsorTagline"),
-      color: WARM_CORAL,
-      icon: "🐾",
-    },
+    ...(showSponsor
+      ? [
+          {
+            href: "/sponsor",
+            img: "/dog-care.webp",
+            label: t("sponsor"),
+            tagline: t("sponsorTagline"),
+            color: WARM_CORAL,
+            icon: "🐾",
+          },
+        ]
+      : []),
     {
       href: "/volunteer",
       img: "/volunteer-hero.png",
@@ -66,7 +71,7 @@ export default async function GetInvolvedPage() {
     { href: "/car-action", label: t("carAction") },
     { href: "/donate#bank-transfer", label: t("donateBankTransfer") },
     { href: "/contact", label: t("visitSanctuary") },
-    { href: "/sponsor", label: t("sponsor") },
+    ...(showSponsor ? [{ href: "/sponsor", label: t("sponsor") }] : []),
     { href: "/adopt", label: t("adoptTitle") },
     { href: "/luchtbrug", label: t("luchtbrug") },
     { href: "/shop", label: tCommon("shop") },

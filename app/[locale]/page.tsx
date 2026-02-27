@@ -13,6 +13,8 @@ import TrustStatsBar from "../components/TrustStatsBar";
 import IdealDonate from "../components/IdealDonate";
 import BankTransferSection from "../components/BankTransferSection";
 import RecentDonations from "../components/RecentDonationsFooter";
+import SpotlightSection from "../components/SpotlightSection";
+import { showSponsor } from "@/lib/features";
 
 const ACCENT_GREEN = "#2aa348";
 const BTN_DONATE = "#dc2626";
@@ -195,6 +197,9 @@ export default function DonatePage() {
       {/* Trust / stats bar – below hero */}
       <TrustStatsBar />
 
+      {/* Spotlight deze week – boven eerste alinea */}
+      <SpotlightSection />
+
       {/* Intro – below hero (both mobile and desktop) */}
       <div className="max-w-2xl mx-auto px-4 pb-10 md:pt-4">
         <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed">
@@ -346,15 +351,17 @@ export default function DonatePage() {
               </Link>
             ))}
           </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/sponsor"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
-              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-            >
-              {tHome("miraclesSponsorCta")}
-            </Link>
-          </div>
+          {showSponsor && (
+            <div className="text-center mt-8">
+              <Link
+                href="/sponsor"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
+                style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+              >
+                {tHome("miraclesSponsorCta")}
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -423,34 +430,36 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Sponsor Hero */}
-      <section id="sponsor" className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
-            {tHome("sponsorTitle")}
-          </h2>
-          <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
-            {tHome("sponsorText")}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/sponsor"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: BUTTON_ORANGE }}
-            >
-              {tHome("sponsorDog")}
-            </Link>
-            <button
-              type="button"
-              onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
-              className="px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
-              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-            >
-              {tHome("donateMonthly")}
-            </button>
+      {/* Sponsor Hero – verborgen zolang geen betaalplatform */}
+      {showSponsor && (
+        <section id="sponsor" className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
+              {tHome("sponsorTitle")}
+            </h2>
+            <p className="text-stone-600 dark:text-stone-400 text-lg mb-8">
+              {tHome("sponsorText")}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/sponsor"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
+                style={{ backgroundColor: BUTTON_ORANGE }}
+              >
+                {tHome("sponsorDog")}
+              </Link>
+              <button
+                type="button"
+                onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
+                className="px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
+                style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+              >
+                {tHome("donateMonthly")}
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Volunteer Hero – grote gele geanimeerde knop */}
       <section id="volunteer" className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
@@ -553,11 +562,13 @@ export default function DonatePage() {
             {tHome("donateBreakdown")}
           </p>
 
-          <div className="text-center mb-8">
-            <Link href="/sponsor" className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
-              {tHome("becomeMonthly")} →
-            </Link>
-          </div>
+          {showSponsor && (
+            <div className="text-center mb-8">
+              <Link href="/sponsor" className="text-sm font-medium" style={{ color: ACCENT_GREEN }}>
+                {tHome("becomeMonthly")} →
+              </Link>
+            </div>
+          )}
 
           {/* Bankoverschrijving – uitklapbaar */}
           <div id="bank-transfer">

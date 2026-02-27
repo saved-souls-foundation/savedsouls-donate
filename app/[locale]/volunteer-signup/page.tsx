@@ -157,7 +157,7 @@ function VolunteerSignupForm() {
                 const experience = (form.querySelector("#experience") as HTMLTextAreaElement)?.value;
                 const motivation = (form.querySelector("#motivation") as HTMLTextAreaElement)?.value;
                 try {
-                  const res = await fetch("/api/volunteer-signup", {
+                  const res = await fetch("/api/volunteer", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -165,6 +165,7 @@ function VolunteerSignupForm() {
                       email,
                       city,
                       country,
+                      availability: dates || undefined,
                       dates: dates || undefined,
                       experience,
                       motivation,

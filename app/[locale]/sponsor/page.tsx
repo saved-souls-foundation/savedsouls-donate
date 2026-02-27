@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
 import ParallaxPage from "../../components/ParallaxPage";
+import DashboardLoginBanner from "../../components/DashboardLoginBanner";
 
 const ACCENT_GREEN = "#2aa348";
 const FALLBACK_IMAGE = "/savedsoul-logo.webp";
@@ -155,7 +156,7 @@ export default function SponsorPage() {
     <ParallaxPage>
       <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
         <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
-          <header className="text-center mb-10 md:mb-14">
+          <header className="text-center mb-10 md:mb-14 scroll-mt-24" id="sponsor-heading">
             <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2">
               {t("title")}
             </h1>
@@ -172,6 +173,10 @@ export default function SponsorPage() {
               </Link>
             </div>
           </header>
+
+          <div className="mb-6 max-w-2xl mx-auto">
+            <DashboardLoginBanner />
+          </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
             {(["all", "dog", "cat"] as const).map((filterType) => (

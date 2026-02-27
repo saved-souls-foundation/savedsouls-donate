@@ -6,14 +6,9 @@ import { useTranslations, useLocale } from "next-intl";
 
 const ACCENT_GREEN = "#2aa348";
 
-/** Maandelijkse bedragen in THB – minimum 300 */
-const THB_AMOUNTS = [300, 500, 750, 1000, 1500, 2000, 3000, 5000];
-
-/** Thai website: 100 tot 1.000.000 baht */
-const THB_AMOUNTS_EXTENDED = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
-
-/** Geschatte THB → EUR (voor Mollie, ~40 THB = 1 EUR) */
-const THB_TO_EUR = 1 / 38;
+/** Standaard bedrag THB – echte bedrag kies je bij de betaling (checkout) */
+const DEFAULT_THB = 300;
+const DEFAULT_THB_THAI = 1000;
 
 const STORAGE_KEY = "sponsor_checkout";
 
@@ -28,11 +23,9 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
   const locale = useLocale();
   const router = useRouter();
   const isThai = locale === "th";
-  const thbAmounts = isThai ? THB_AMOUNTS_EXTENDED : THB_AMOUNTS;
-  const minThb = isThai ? 100 : 300;
+  const defaultThb = isThai ? DEFAULT_THB_THAI : DEFAULT_THB;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [amountThb, setAmountThb] = useState(isThai ? 1000 : 300);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -44,17 +37,12 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
       setError(t("requiredFields"));
       return;
     }
-    const amountEur = Math.round(amountThb * THB_TO_EUR * 100) / 100;
-    if (amountThb < minThb || amountEur < 1) {
-      setError(t("minAmount", { amount: minThb }));
-      return;
-    }
     setLoading(true);
     try {
       const checkoutData = {
         name: name.trim(),
         email: email.trim().toLowerCase(),
-        amountThb,
+        amountThb: defaultThb,
         message: message.trim().slice(0, 500) || undefined,
         animalId,
         animalName,
@@ -98,24 +86,6 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
           className="w-full px-4 py-2.5 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
           placeholder={t("emailPlaceholder")}
         />
-      </div>
-      <div>
-        <label htmlFor="sponsor-amount" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
-          {t("monthlyAmount")} *
-        </label>
-        <select
-          id="sponsor-amount"
-          required
-          value={amountThb}
-          onChange={(e) => setAmountThb(Number(e.target.value))}
-          className="w-full px-4 py-2.5 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-        >
-          {thbAmounts.map((a) => (
-            <option key={a} value={a}>
-              {isThai ? `${a.toLocaleString("th-TH")} บาท` : `${a} THB (~$${Math.round(a / 35)})`}
-            </option>
-          ))}
-        </select>
       </div>
       <div>
         <label htmlFor="sponsor-message" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">

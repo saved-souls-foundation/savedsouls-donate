@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 const TO_PRIMARY = "info@savedsouls-foundation.org";
 const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
@@ -94,6 +95,25 @@ export async function POST(req: NextRequest) {
     });
     if (!autoRes.ok) {
       console.error("Auto-reply failed:", await autoRes.text());
+    }
+
+    if (isSupabaseAdminConfigured()) {
+      try {
+        const supabase = createAdminClient();
+        await supabase.from("adoption_applications").insert({
+          email,
+          name,
+          city,
+          country,
+          experience,
+          about,
+          animal_name: animalName || null,
+          animal_id: animalId || null,
+          step: 1,
+        });
+      } catch (e) {
+        console.error("Supabase adoption_applications insert failed:", e);
+      }
     }
 
     return NextResponse.json({ success: true });

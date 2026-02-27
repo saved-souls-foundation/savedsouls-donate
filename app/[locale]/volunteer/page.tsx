@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import ClinicActionButton from "../../components/ClinicActionButton";
+import DashboardLoginBanner from "../../components/DashboardLoginBanner";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -71,6 +72,9 @@ export default async function VolunteerPage() {
               <span>{t("idealistCta")}</span>
               <span className="text-xl" aria-hidden>✨</span>
             </a>
+          </div>
+          <div className="max-w-2xl mx-auto">
+            <DashboardLoginBanner />
           </div>
         </header>
 

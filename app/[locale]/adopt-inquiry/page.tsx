@@ -166,7 +166,7 @@ function AdoptInquiryForm() {
                 const experience = (form.querySelector("#experience") as HTMLTextAreaElement)?.value;
                 const about = (form.querySelector("#about") as HTMLTextAreaElement)?.value;
                 try {
-                  const res = await fetch("/api/adopt-inquiry", {
+                  const res = await fetch("/api/adopt", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -174,6 +174,8 @@ function AdoptInquiryForm() {
                       email,
                       city,
                       country,
+                      dogPreference: animalName || undefined,
+                      motivation: about,
                       experience,
                       about,
                       animalName: animalName || undefined,

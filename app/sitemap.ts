@@ -4,7 +4,7 @@ import { fetchAnimalsFromApi } from "@/lib/animals-api";
 import { fetchSponsorAnimalsFromApi } from "@/lib/sponsor-api";
 import { getAllBlogPosts } from "@/lib/blog-posts";
 
-const BASE_URL = "https://savedsouls-foundation.org";
+const BASE_URL = "https://www.savedsouls-foundation.com";
 
 const STATIC_PATHS = [
   "",
@@ -137,17 +137,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogPosts = getAllBlogPosts();
   const now = new Date();
 
+  const MAIN_PATHS = new Set([
+    "",
+    "/donate",
+    "/adopt",
+    "/sponsor",
+    "/about-us",
+    "/contact",
+    "/volunteer",
+    "/get-involved",
+    "/support",
+    "/blog",
+    "/story",
+    "/gallery",
+  ]);
+
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of routing.locales) {
     const localePrefix = `/${locale}`;
 
     for (const p of STATIC_PATHS) {
+      const path = p || "";
+      const fullPath = p || "";
+      const priority = fullPath === "" ? 1 : MAIN_PATHS.has(fullPath) ? 0.8 : 0.6;
       entries.push({
-        url: `${BASE_URL}${localePrefix}${p || ""}`,
+        url: `${BASE_URL}${localePrefix}${path}`,
         lastModified: now,
-        changeFrequency: p === "" || p === "/donate" ? "weekly" : "monthly",
-        priority: p === "" ? 1 : p === "/donate" ? 0.9 : 0.8,
+        changeFrequency: "weekly",
+        priority,
       });
     }
 
@@ -165,7 +183,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE_URL}${localePrefix}/adopt/dog/${id}`,
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.6,
       });
     }
 
@@ -174,7 +192,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE_URL}${localePrefix}/adopt/cat/${id}`,
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.6,
       });
     }
 

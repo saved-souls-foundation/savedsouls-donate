@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS } from "@/lib/sendMail";
 
-const SUBJECT = "💌 New contact message - Saved Souls Foundation";
+const SUBJECT = "💛 New donation inquiry - Saved Souls Foundation";
 const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
 
-const CONFIRMATION_SUBJECT = "We received your message – Saved Souls Foundation";
+const CONFIRMATION_SUBJECT = "We received your donation inquiry – Saved Souls Foundation";
 const CONFIRMATION_TEXT = `Dear friend,
 
-Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you as soon as possible, usually within 48 hours.
+Thank you for your interest in supporting Saved Souls Foundation. We have received your message and our team will get back to you within 48 hours.
 
-If your inquiry is urgent, you can also reach us directly at info@savedsouls-foundation.org.
+Every contribution helps us care for rescued dogs and cats in Thailand.
 
 With gratitude,
 The Saved Souls Team
@@ -21,20 +21,25 @@ export async function POST(req: NextRequest) {
     const b = await req.json();
     const name = b.name?.trim();
     const email = b.email?.trim();
-    const subject = b.subject?.trim() || "";
-    const message = b.message?.trim();
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
+    const amount = b.amount?.trim() ?? b.amount;
+    const message = b.message?.trim() || "";
+
+    if (!name || !email) {
+      return NextResponse.json(
+        { error: "Name and email are required." },
+        { status: 400 }
+      );
     }
 
-    const text =
-      "Name: " +
-      name +
-      "\nEmail: " +
-      email +
-      (subject ? "\nSubject: " + subject : "") +
-      "\n\n" +
-      message;
+    const amountStr = amount !== undefined && amount !== null && amount !== "" ? String(amount) : "(not specified)";
+    const text = [
+      "Name: " + name,
+      "Email: " + email,
+      "Amount / interest: " + amountStr,
+      message ? "\nMessage:\n" + message : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
 
     const notif = await sendMail({
       to: [...NOTIFICATION_EMAILS],
@@ -55,7 +60,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (e) {
-    console.error("Contact API error:", e);
+    console.error("Donate API error:", e);
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
   }
 }

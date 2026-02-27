@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Link } from "@/i18n/navigation";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ChevronDown, ChevronRight, Heart, type LucideIcon } from "lucide-react";
 
@@ -35,12 +35,27 @@ type NavDropdownProps = {
   layout?: "adopt" | "involved";
   /** Optional CTA block at bottom (e.g. Donate) */
   bottomCta?: BottomCta;
+  /** Controlled open (parent ensures only one dropdown open) */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const ICON_GREEN = "#2d7a3a";
 const ICON_PURPLE = "#7c3aed";
 const CHEVRON_GRAY = "#d1d5db";
 const ICON_BG = "#f0faf0";
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+  return isMobile;
+}
 
 export default function NavDropdown({
   label,
@@ -51,10 +66,24 @@ export default function NavDropdown({
   align = "left",
   layout = "involved",
   bottomCta,
+  open: controlledOpen,
+  onOpenChange,
 }: NavDropdownProps) {
   const t = useTranslations("common");
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = useCallback(
+    (value: boolean) => {
+      if (isControlled) onOpenChange?.(value);
+      else setInternalOpen(value);
+    },
+    [isControlled, onOpenChange]
+  );
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -64,11 +93,31 @@ export default function NavDropdown({
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [setOpen]);
 
-  const closeAndNotify = () => {
+  const handleTriggerMouseEnter = useCallback(() => {
+    if (isMobile) return;
+    setOpen(true);
+  }, [isMobile, setOpen]);
+
+  const handlePanelMouseLeave = useCallback(() => {
+    if (isMobile) return;
     setOpen(false);
+  }, [isMobile, setOpen]);
+
+  const handleTriggerClick = useCallback(() => {
+    if (isMobile) {
+      setOpen(!open);
+    } else {
+      setOpen(false);
+    }
+  }, [isMobile, open, setOpen]);
+
+  const handleItemClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
     onItemClick?.();
+    setOpen(false);
+    router.push(href);
   };
 
   const dropdownClass = `absolute top-full mt-2 min-w-[280px] rounded-2xl bg-white p-3 shadow-xl shadow-black/10 border border-[#f0f0f0] z-[120] animate-dropdown-open origin-top ${
@@ -79,8 +128,8 @@ export default function NavDropdown({
     <div ref={containerRef} className="relative group">
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
-        onMouseEnter={() => setOpen(true)}
+        onClick={handleTriggerClick}
+        onMouseEnter={handleTriggerMouseEnter}
         className={`flex items-center gap-1 ${buttonClassName}`}
         style={buttonStyle}
         aria-expanded={open}
@@ -90,7 +139,10 @@ export default function NavDropdown({
         <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} aria-hidden />
       </button>
       {open && (
-        <div className={dropdownClass} onMouseLeave={() => setOpen(false)}>
+        <div
+          className={dropdownClass}
+          onMouseLeave={handlePanelMouseLeave}
+        >
           {layout === "adopt" ? (
             /* ADOPT: 2-column grid of mini-cards */
             <div className="grid grid-cols-2 gap-3">
@@ -100,7 +152,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={closeAndNotify}
+                    onClick={(e) => handleItemClick(e, item.href)}
                     className="rounded-2xl border border-gray-100 shadow-sm bg-white p-4 flex flex-col items-center gap-2 hover:shadow-md hover:scale-[1.02] transition-all duration-200"
                   >
                     <div
@@ -125,7 +177,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={closeAndNotify}
+                    onClick={(e) => handleItemClick(e, item.href)}
                     className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
@@ -186,7 +238,7 @@ export default function NavDropdown({
               ) : (
                 <Link
                   href={bottomCta.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => handleItemClick(e, bottomCta.href)}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-red-50 hover:bg-red-100/80 transition-colors duration-100"
                 >
                   <Heart size={16} fill="#E53E3E" color="#E53E3E" aria-hidden />

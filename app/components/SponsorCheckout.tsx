@@ -10,6 +10,9 @@ import SiteHeader from "./SiteHeader";
 const ACCENT_GREEN = "#2aa348";
 const FALLBACK_IMAGE = "/savedsoul-logo.webp";
 
+const THB_AMOUNTS = [300, 500, 750, 1000, 1500, 2000, 3000, 5000];
+const THB_AMOUNTS_THAI = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
+
 export type SponsorCheckoutData = {
   name: string;
   email: string;
@@ -60,10 +63,13 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
   const locale = useLocale();
   const router = useRouter();
   const [data, setData] = useState<SponsorCheckoutData | null>(null);
+  const [amountThb, setAmountThb] = useState(300);
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState("");
+  const isThai = locale === "th";
+  const thbAmounts = isThai ? THB_AMOUNTS_THAI : THB_AMOUNTS;
 
   useEffect(() => {
     const stored = getStoredCheckoutData();
@@ -72,6 +78,7 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
       return;
     }
     setData(stored);
+    setAmountThb(stored.amountThb);
 
     async function fetchAnimal() {
       try {
@@ -94,7 +101,7 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
     if (!data) return;
     setError("");
     setPaying(true);
-    const amountEur = Math.round(data.amountThb * (1 / 38) * 100) / 100;
+    const amountEur = Math.round(amountThb * (1 / 38) * 100) / 100;
     try {
       const res = await fetch("/api/payments/sponsor-create", {
         method: "POST",
@@ -109,14 +116,14 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
           animalId: data.animalId,
           animalName: data.animalName,
           animalType: data.animalType,
-          amountThb: data.amountThb,
+          amountThb,
         }),
       });
       const result = (await res.json().catch(() => ({}))) as { checkoutUrl?: string; error?: string };
       if (!res.ok) {
         if (res.status === 503) {
-          const amountThb = Math.max(100, data.amountThb);
-          window.location.href = `https://paypal.me/savedsoulsfoundation/${amountThb}?currencyCode=THB`;
+          const payAmount = Math.max(100, amountThb);
+          window.location.href = `https://paypal.me/savedsoulsfoundation/${payAmount}?currencyCode=THB`;
           return;
         }
         setError(result.error || t("paymentError"));
@@ -224,10 +231,20 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
                     {data.email}
                   </dd>
                 </div>
-                <div className="flex justify-between">
-                  <dt className="text-stone-500 dark:text-stone-400">{t("monthlyAmount")}</dt>
-                  <dd className="font-bold text-stone-800 dark:text-stone-100">
-                    {data.amountThb} THB <span className="font-normal text-stone-500">/ maand</span>
+                <div>
+                  <dt className="text-stone-500 dark:text-stone-400 text-sm mb-2">{t("monthlyAmount")}</dt>
+                  <dd>
+                    <select
+                      value={amountThb}
+                      onChange={(e) => setAmountThb(Number(e.target.value))}
+                      className="w-full px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-medium focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
+                    >
+                      {thbAmounts.map((a) => (
+                        <option key={a} value={a}>
+                          {isThai ? `${a.toLocaleString("th-TH")} บาท/เดือน` : `${a} THB / maand`}
+                        </option>
+                      ))}
+                    </select>
                   </dd>
                 </div>
                 {data.message && (

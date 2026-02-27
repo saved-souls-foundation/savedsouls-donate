@@ -37,7 +37,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
       {children}
       <CarActionButton />
     </NextIntlClientProvider>

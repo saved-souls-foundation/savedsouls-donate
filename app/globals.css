@@ -202,6 +202,78 @@ body {
   animation: banner-heart-pulse 2.5s ease-in-out infinite;
 }
 
+/* Spotlight: gouden gloed op tagline + subtiele shimmer */
+@keyframes spotlight-gold-glow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(217, 119, 6, 0.4), 0 0 40px rgba(245, 158, 11, 0.2);
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow: 0 0 28px rgba(217, 119, 6, 0.6), 0 0 56px rgba(245, 158, 11, 0.35);
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes spotlight-subtitle-shine {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+@keyframes spotlight-gradient-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-spotlight-gold-glow {
+  animation: spotlight-gold-glow 2.8s ease-in-out infinite;
+}
+
+.animate-spotlight-tagline {
+  animation: spotlight-gold-glow 2.8s ease-in-out infinite, spotlight-gradient-shimmer 4s ease-in-out infinite;
+}
+
+.animate-spotlight-subtitle {
+  animation: spotlight-subtitle-shine 2.5s ease-in-out infinite;
+}
+
+/* Shimmer: gouden gloed die over de spotlight-banner loopt */
+@keyframes spotlight-shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.spotlight-banner {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spotlight-banner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.spotlight-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.15) 25%,
+    rgba(252, 211, 77, 0.4) 50%,
+    rgba(251, 191, 36, 0.15) 75%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  animation: spotlight-shimmer-sweep 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
 @keyframes placeholder-heart {
   0% { transform: translateX(0); opacity: 0; }
   5% { opacity: 1; }
