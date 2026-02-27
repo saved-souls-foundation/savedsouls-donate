@@ -121,8 +121,9 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        {/* LCP: hero image op homepage – vroeg starten met laden */}
-        <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" />
+        {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
+        <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
+        <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
         {googleSiteVerification && (
           <meta name="google-site-verification" content={googleSiteVerification} />
         )}

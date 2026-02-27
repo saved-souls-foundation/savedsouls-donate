@@ -117,17 +117,29 @@ export default function DonatePage() {
       {/* Hero – static fullscreen, desktop AND mobile, scroll-triggered fade-in */}
       <header>
         <HeroFadeIn className="relative flex min-h-[100svh] md:min-h-[100vh] flex-col items-center justify-center text-center px-6">
-          {/* Static background image – no parallax, no fixed attachment */}
+          {/* Static background image – desktop: oude hero, mobiel: lichtere variant voor snellere LCP */}
           <div className="absolute inset-0">
             <Image
               src="/woman-dog-wheelchair.webp"
               alt="Volunteer with wheelchair dog at Saved Souls Foundation sanctuary in Khon Kaen, Thailand"
               fill
-              className="object-cover object-[60%_center] md:object-center"
-              sizes="(max-width: 768px) 100vw, (max-width: 1920px) 100vw, 1920px"
+              className="object-cover object-center hidden md:block"
+              sizes="(max-width: 1920px) 100vw, 1920px"
               priority
               fetchPriority="high"
               loading="eager"
+              decoding="async"
+            />
+            <Image
+              src="/woman-dog-wheelchair-mobile.webp"
+              alt="Volunteer with wheelchair dog at Saved Souls Foundation sanctuary in Khon Kaen, Thailand"
+              fill
+              className="object-cover object-[60%_center] block md:hidden"
+              sizes="100vw"
+              priority
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
             />
           </div>
           <div

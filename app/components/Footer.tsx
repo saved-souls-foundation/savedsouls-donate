@@ -158,6 +158,17 @@ export default function Footer() {
         <p className="text-center text-white/40 text-xs">
           © {new Date().getFullYear()} Saved Souls Foundation
         </p>
+        <p className="text-center text-white/40 text-xs mt-2">
+          Webdesign:{" "}
+          <a
+            href="https://allesis.nl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/50 hover:text-white/70 transition-colors underline underline-offset-2"
+          >
+            allesis.nl
+          </a>
+        </p>
       </div>
     </footer>
   );
