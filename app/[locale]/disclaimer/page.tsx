@@ -82,7 +82,7 @@ export default async function DisclaimerPage() {
             <p>{t("externalLinksText")}</p>
           </div>
 
-          <div>
+          <div id="cookies">
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
               {t("cookiesTitle")}
             </h2>

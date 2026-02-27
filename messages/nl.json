@@ -1,4 +1,11 @@
 {
+  "cookieConsent": {
+    "message": "We gebruiken cookies om Google Analytics te laden en jouw ervaring te verbeteren. Kies hieronder jouw voorkeur.",
+    "accept": "Accepteren",
+    "deny": "Weigeren",
+    "disclaimer": "Disclaimer",
+    "ariaLabel": "Cookie consent"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",
@@ -3828,7 +3835,7 @@
     "externalLinksTitle": "Externe links",
     "externalLinksText": "Deze site kan links naar externe websites bevatten. Wij hebben geen controle over hun inhoud of privacybeleid en zijn daar niet verantwoordelijk voor. Het opnemen van een link impliceert geen goedkeuring door de Stichting.",
     "cookiesTitle": "Cookies",
-    "cookiesText": "Deze website kan cookies gebruiken voor essentiële functionaliteit en om je ervaring te verbeteren. Door de site te gebruiken en ons cookiebericht te accepteren, ga je hiermee akkoord. Je kunt je browserinstellingen aanpassen om cookies te beperken of te blokkeren.",
+    "cookiesText": "Deze website gebruikt cookies voor Google Analytics en om je ervaring te verbeteren. Je kunt hieronder op de cookiebanner actief kiezen voor Accepteren of Weigeren. Je kunt ook je browserinstellingen aanpassen om cookies te beperken of te blokkeren.",
     "contactTitle": "Contact",
     "contactText": "Voor vragen over deze disclaimer of de Stichting kun je contact met ons opnemen via ",
     "contactEmail": "info@savedsouls-foundation.org",

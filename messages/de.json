@@ -1,4 +1,11 @@
 {
+  "cookieConsent": {
+    "message": "Wir verwenden Cookies, um Google Analytics zu laden und deine Nutzererfahrung zu verbessern. Wähle unten deine Präferenz.",
+    "accept": "Akzeptieren",
+    "deny": "Ablehnen",
+    "disclaimer": "Impressum",
+    "ariaLabel": "Cookie-Einwilligung"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",
@@ -3808,7 +3815,7 @@
     "externalLinksTitle": "Externe Links",
     "externalLinksText": "Diese Seite kann Links zu externen Websites enthalten. Wir haben keine Kontrolle über deren Inhalte oder Datenschutzpraktiken und sind dafür nicht verantwortlich. Die Aufnahme eines Links bedeutet keine Billigung durch die Stiftung.",
     "cookiesTitle": "Cookies",
-    "cookiesText": "Diese Website kann Cookies für wesentliche Funktionen und zur Verbesserung Ihrer Nutzung verwenden. Durch die Nutzung der Seite und die Annahme unseres Cookie-Hinweises stimmen Sie dem zu. Sie können Ihre Browsereinstellungen anpassen, um Cookies zu begrenzen oder zu blockieren.",
+    "cookiesText": "Diese Website verwendet Cookies für Google Analytics und zur Verbesserung Ihrer Nutzererfahrung. Sie können in der Cookie-Leiste aktiv „Akzeptieren“ oder „Ablehnen“ wählen. Sie können auch Ihre Browsereinstellungen anpassen, um Cookies zu begrenzen oder zu blockieren.",
     "contactTitle": "Kontakt",
     "contactText": "Bei Fragen zu diesem Disclaimer oder der Stiftung kontaktieren Sie uns bitte unter ",
     "contactEmail": "info@savedsouls-foundation.org",

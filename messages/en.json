@@ -1,4 +1,11 @@
 {
+  "cookieConsent": {
+    "message": "We use cookies to load Google Analytics and improve your experience. Choose your preference below.",
+    "accept": "Accept",
+    "deny": "Decline",
+    "disclaimer": "Disclaimer",
+    "ariaLabel": "Cookie consent"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",
@@ -3829,7 +3836,7 @@
     "externalLinksTitle": "External links",
     "externalLinksText": "This site may contain links to external websites. We have no control over their content or privacy practices and are not responsible for them. The inclusion of any link does not imply endorsement by the Foundation.",
     "cookiesTitle": "Cookies",
-    "cookiesText": "This website may use cookies for essential functionality and to improve your experience. By using the site and accepting our cookie notice, you agree to such use. You can change browser settings to limit or block cookies.",
+    "cookiesText": "This website uses cookies for Google Analytics and to improve your experience. You can actively choose Accept or Decline in the cookie banner below. You can also change your browser settings to limit or block cookies.",
     "contactTitle": "Contact",
     "contactText": "For questions about this disclaimer or the Foundation, please contact us at ",
     "contactEmail": "info@savedsouls-foundation.org",
