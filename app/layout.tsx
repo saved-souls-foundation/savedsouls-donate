@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import Script from "next/script";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { DeferredStyles } from "./DeferredStyles";
-
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-YT9LXHPDZT";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -132,18 +129,6 @@ export default async function RootLayout({
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
         <DeferredStyles />
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
