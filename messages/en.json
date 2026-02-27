@@ -977,6 +977,53 @@
     "ctaText": "All proceeds go to our 430 dogs and 91 cats. Shop hoodies, calendars, tote bags and more.",
     "ctaButton": "Go to shop"
   },
+  "affiliate": {
+    "metaTitle": "Support Our Rescue Animals — Shop & Help | Saved Souls Foundation",
+    "metaDescription": "Buy pet products through our affiliate links. Every purchase supports our rescue shelter in Thailand at no extra cost to you.",
+    "title": "Support Our Rescue Animals — Shop & Help",
+    "intro": "When you shop through the links below, we earn a small commission that goes directly to our shelter in Thailand—at no extra cost to you. Every purchase helps us feed, care for, and rehome rescued dogs and cats. Thank you for your support.",
+    "headerPlaceholder": "Header image — to be replaced",
+    "headerAlt": "Hands holding a glowing Earth — care and protection",
+    "sectionDogs": "Dogs",
+    "sectionCats": "Cats",
+    "shopNow": "Shop Now",
+    "disclaimer": "This page contains affiliate links. When you purchase through these links, we earn a small commission that goes directly to our rescue shelter in Thailand. Thank you for your support 🐾",
+    "shops": {
+      "shopee": "Shopee Thailand",
+      "lazada": "Lazada Thailand",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "Pet food", "description": "Quality nutrition for your dog. Every bowl helps our rescue dogs too." },
+      "dogCarrier": { "name": "Carrier", "description": "Safe and comfortable travel carriers for dogs of all sizes." },
+      "dogFlea": { "name": "Flea treatment", "description": "Effective flea and tick prevention to keep your dog healthy." },
+      "dogCollarLeash": { "name": "Collar & leash", "description": "Durable collars and leashes for safe walks and identification." },
+      "dogBed": { "name": "Pet bed", "description": "Cozy beds for rest and recovery—just like our shelter dogs love." },
+      "dogToys": { "name": "Toys", "description": "Fun and durable toys to keep your dog happy and active." },
+      "catFood": { "name": "Pet food", "description": "Nutritious food for your cat. Supports our rescue cats as well." },
+      "catCarrier": { "name": "Carrier", "description": "Secure carriers for vet visits and travel with your cat." },
+      "catFlea": { "name": "Flea treatment", "description": "Gentle flea control to protect your cat and your home." },
+      "catCollarLeash": { "name": "Collar & leash", "description": "Safe collars and leashes for outdoor adventures with your cat." },
+      "catBed": { "name": "Pet bed", "description": "Comfortable beds and hideaways for your cat to relax." },
+      "catToys": { "name": "Toys", "description": "Engaging toys for play and mental stimulation." }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "What volunteers say about us",
+    "titleSupport": "Why people support us",
+    "ratingOutOf": "out of 5",
+    "basedOnReviews": "Based on 49 Google reviews",
+    "readAllReviews": "Read all reviews on Google",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "Loved what you read? Help us continue.",
+    "subtext": "300+ rescued animals rely on your support. No amount is too small. 🐾",
+    "buttonText": "♥ Donate Now"
+  },
   "luchtbrug": {
     "metaTitle": "Dog air bridge to Europe",
     "metaDescription": "Adopt a dog or cat from Thailand. Worldwide adoption: primarily Europe and the USA, also Southern Europe, England and the rest of the world. Detailed adoption process. Just one flight away from your new best friend.",

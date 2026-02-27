@@ -956,6 +956,53 @@
     "ctaText": "Alle Einnahmen gehen an unsere 430 Hunde und 91 Katzen. Hoodies, Kalender, Taschen und mehr.",
     "ctaButton": "Zum Shop"
   },
+  "affiliate": {
+    "metaTitle": "Untere Tierheimtiere unterstützen — Einkaufen & Helfen | Saved Souls Foundation",
+    "metaDescription": "Kaufen Sie Tierprodukte über unsere Affiliate-Links. Jeder Einkauf unterstützt unser Tierheim in Thailand ohne Mehrkosten für Sie.",
+    "title": "Untere Tierheimtiere unterstützen — Einkaufen & Helfen",
+    "intro": "Wenn Sie über die folgenden Links einkaufen, erhalten wir eine kleine Provision, die direkt an unser Tierheim in Thailand geht—ohne Mehrkosten für Sie. Jeder Einkauf hilft uns, gerettete Hunde und Katzen zu füttern, zu pflegen und zu vermitteln. Vielen Dank für Ihre Unterstützung.",
+    "headerPlaceholder": "Headerbild — noch zu ersetzen",
+    "headerAlt": "Hände halten eine leuchtende Erde — Fürsorge und Schutz",
+    "sectionDogs": "Hunde",
+    "sectionCats": "Katzen",
+    "shopNow": "Jetzt einkaufen",
+    "disclaimer": "Diese Seite enthält Affiliate-Links. Wenn Sie über diese Links kaufen, erhalten wir eine kleine Provision, die direkt an unser Tierheim in Thailand geht. Vielen Dank für Ihre Unterstützung 🐾",
+    "shops": {
+      "shopee": "Shopee Thailand",
+      "lazada": "Lazada Thailand",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "Hundefutter", "description": "Qualitätsnahrung für Ihren Hund. Jede Schüssel hilft auch unseren Tierheimhunden." },
+      "dogCarrier": { "name": "Transportbox", "description": "Sichere und bequeme Transportboxen für Hunde aller Größen." },
+      "dogFlea": { "name": "Flohbehandlung", "description": "Wirksamer Floh- und Zeckenschutz für einen gesunden Hund." },
+      "dogCollarLeash": { "name": "Halsband & Leine", "description": "Robuste Halsbänder und Leinen für sichere Spaziergänge und Kennzeichnung." },
+      "dogBed": { "name": "Hundebett", "description": "Gemütliche Betten zum Ausruhen—genau wie unsere Tierheimhunde sie lieben." },
+      "dogToys": { "name": "Spielzeug", "description": "Spaßiges und robustes Spielzeug für einen glücklichen, aktiven Hund." },
+      "catFood": { "name": "Katzenfutter", "description": "Nahrhaftes Futter für Ihre Katze. Unterstützt auch unsere Tierheimkatzen." },
+      "catCarrier": { "name": "Transportbox", "description": "Sichere Transportboxen für Tierarztbesuche und Reisen mit Ihrer Katze." },
+      "catFlea": { "name": "Flohbehandlung", "description": "Sanfte Flohbekämpfung zum Schutz von Katze und Zuhause." },
+      "catCollarLeash": { "name": "Halsband & Leine", "description": "Sichere Halsbänder und Leinen für Abenteuer mit Ihrer Katze." },
+      "catBed": { "name": "Katzenbett", "description": "Bequeme Betten und Verstecke zum Entspannen." },
+      "catToys": { "name": "Spielzeug", "description": "Anregendes Spielzeug für Spiel und geistige Förderung." }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "Was Freiwillige über uns sagen",
+    "titleSupport": "Warum Menschen uns unterstützen",
+    "ratingOutOf": "von 5",
+    "basedOnReviews": "Basierend auf 49 Google-Bewertungen",
+    "readAllReviews": "Alle Bewertungen auf Google lesen",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "Bewegt von dem was du gelesen hast? Hilf uns weiter.",
+    "subtext": "300+ gerettete Tiere brauchen deine Hilfe. Kein Betrag ist zu klein. 🐾",
+    "buttonText": "♥ Jetzt Spenden"
+  },
   "luchtbrug": {
     "metaTitle": "Hundeluftbrücke nach Europa",
     "metaDescription": "Adoptiere einen Hund oder eine Katze aus Thailand. Weltweite Adoption: primär Europa und die USA, auch Südeuropa, England und der Rest der Welt. Ausführlicher Adoptionsablauf. Nur ein Flug entfernt von deinem neuen Gefährten.",

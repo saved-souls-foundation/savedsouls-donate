@@ -956,6 +956,53 @@
     "ctaText": "Весь доход идёт нашим 430 собакам и 91 кошке. Худи, календари, сумки и другое.",
     "ctaButton": "В магазин"
   },
+  "affiliate": {
+    "metaTitle": "Поддержите наших спасённых животных — Покупайте и помогайте | Saved Souls Foundation",
+    "metaDescription": "Покупайте товары для питомцев по нашим партнёрским ссылкам. Каждая покупка поддерживает наш приют в Таиланде без дополнительных затрат для вас.",
+    "title": "Поддержите наших спасённых животных — Покупайте и помогайте",
+    "intro": "Когда вы покупаете по ссылкам ниже, мы получаем небольшую комиссию, которая идёт напрямую в наш приют в Таиланде—без дополнительных затрат для вас. Каждая покупка помогает нам кормить, лечить и пристраивать спасённых собак и кошек. Спасибо за вашу поддержку.",
+    "headerPlaceholder": "Изображение заголовка — будет заменено",
+    "headerAlt": "Руки, держащие светящуюся Землю — забота и защита",
+    "sectionDogs": "Собаки",
+    "sectionCats": "Коты",
+    "shopNow": "Купить",
+    "disclaimer": "На этой странице есть партнёрские ссылки. Когда вы покупаете по этим ссылкам, мы получаем небольшую комиссию, которая идёт напрямую в наш приют в Таиланде. Спасибо за вашу поддержку 🐾",
+    "shops": {
+      "shopee": "Shopee Таиланд",
+      "lazada": "Lazada Таиланд",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "Корм для собак", "description": "Качественное питание для вашей собаки. Каждая миска помогает и нашим приютским собакам." },
+      "dogCarrier": { "name": "Переноска", "description": "Безопасные и удобные переноски для собак любого размера." },
+      "dogFlea": { "name": "Средство от блох", "description": "Эффективная защита от блох и клещей для здоровой собаки." },
+      "dogCollarLeash": { "name": "Ошейник и поводок", "description": "Надёжные ошейники и поводки для безопасных прогулок и идентификации." },
+      "dogBed": { "name": "Лежанка", "description": "Уютные лежанки для отдыха—как любят наши приютские собаки." },
+      "dogToys": { "name": "Игрушки", "description": "Весёлые и прочные игрушки для активной и счастливой собаки." },
+      "catFood": { "name": "Корм для кошек", "description": "Питательный корм для вашей кошки. Поддерживает и наших приютских кошек." },
+      "catCarrier": { "name": "Переноска", "description": "Безопасные переноски для походов к ветеринару и путешествий с кошкой." },
+      "catFlea": { "name": "Средство от блох", "description": "Мягкое средство от блох для защиты кошки и дома." },
+      "catCollarLeash": { "name": "Ошейник и поводок", "description": "Безопасные ошейники и поводки для прогулок с кошкой." },
+      "catBed": { "name": "Лежанка", "description": "Уютные лежанки и домики для отдыха кошки." },
+      "catToys": { "name": "Игрушки", "description": "Увлекательные игрушки для игры и умственной стимуляции." }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "Что говорят о нас волонтёры",
+    "titleSupport": "Почему нас поддерживают",
+    "ratingOutOf": "из 5",
+    "basedOnReviews": "На основе 49 отзывов в Google",
+    "readAllReviews": "Читать все отзывы в Google",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "Тронуты прочитанным? Помогите нам продолжать.",
+    "subtext": "300+ спасённых животных полагаются на вашу поддержку. Любая сумма важна. 🐾",
+    "buttonText": "♥ Пожертвовать"
+  },
   "luchtbrug": {
     "metaTitle": "Воздушный мост собак в Европу",
     "metaDescription": "Усыновите собаку или кошку из Таиланда. Усыновление по всему миру: в первую очередь Европа и США, также Южная Европа, Россия, Англия. Подробный процесс усыновления. Всего один рейс до нового друга.",

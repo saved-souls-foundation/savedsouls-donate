@@ -976,6 +976,53 @@
     "ctaText": "Alle opbrengsten gaan naar onze 430 honden en 91 katten. Shop hoodies, kalenders, tassen en meer.",
     "ctaButton": "Naar de shop"
   },
+  "affiliate": {
+    "metaTitle": "Steun onze opvangdieren — Shop & help | Saved Souls Foundation",
+    "metaDescription": "Koop producten voor je huisdier via onze affiliatelinks. Elke aankoop steunt ons opvangcentrum in Thailand zonder extra kosten voor jou.",
+    "title": "Steun onze opvangdieren — Shop & help",
+    "intro": "Als je via de onderstaande links koopt, ontvangen wij een kleine commissie die direct naar ons opvangcentrum in Thailand gaat—zonder extra kosten voor jou. Elke aankoop helpt ons om geredde honden en katten te voeren, verzorgen en herplaatsen. Bedankt voor je steun.",
+    "headerPlaceholder": "Headerafbeelding — nog te vervangen",
+    "headerAlt": "Handen die een stralende aarde vasthouden — zorg en bescherming",
+    "sectionDogs": "Honden",
+    "sectionCats": "Katten",
+    "shopNow": "Shop nu",
+    "disclaimer": "Deze pagina bevat affiliatelinks. Als je via deze links koopt, ontvangen wij een kleine commissie die direct naar ons opvangcentrum in Thailand gaat. Bedankt voor je steun 🐾",
+    "shops": {
+      "shopee": "Shopee Thailand",
+      "lazada": "Lazada Thailand",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "Hondenvoer", "description": "Kwaliteitsvoeding voor je hond. Elke bak ondersteunt ook onze opvanghonden." },
+      "dogCarrier": { "name": "Reismand", "description": "Veilige en comfortabele reismanden voor honden van alle formaten." },
+      "dogFlea": { "name": "Vlooienbehandeling", "description": "Effectieve bescherming tegen vlooien en teken voor een gezonde hond." },
+      "dogCollarLeash": { "name": "Halsband & riem", "description": "Sterke halsbanden en riemen voor veilige wandelingen en identificatie." },
+      "dogBed": { "name": "Hondenmand", "description": "Gezellige manden om uit te rusten—net zoals onze opvanghonden ze liefhebben." },
+      "dogToys": { "name": "Speelgoed", "description": "Leuk en stevig speelgoed om je hond actief en gelukkig te houden." },
+      "catFood": { "name": "Kattenvoer", "description": "Voedzame voeding voor je kat. Ondersteunt ook onze opvangkatten." },
+      "catCarrier": { "name": "Reismand", "description": "Veilige reismanden voor bezoeken aan de dierenarts en reizen met je kat." },
+      "catFlea": { "name": "Vlooienbehandeling", "description": "Zachte vlooienbestrijding om je kat en huis te beschermen." },
+      "catCollarLeash": { "name": "Halsband & riem", "description": "Veilige halsbanden en riemen voor buitenavonturen met je kat." },
+      "catBed": { "name": "Kattenmand", "description": "Comfortabele manden en schuilplekken om te ontspannen." },
+      "catToys": { "name": "Speelgoed", "description": "Uitdagend speelgoed voor spel en mentale stimulatie." }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "Wat vrijwilligers over ons zeggen",
+    "titleSupport": "Waarom mensen ons steunen",
+    "ratingOutOf": "van 5",
+    "basedOnReviews": "Gebaseerd op 49 Google reviews",
+    "readAllReviews": "Bekijk alle reviews op Google",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "Geraakt door wat je las? Help ons verder.",
+    "subtext": "300+ geredde dieren rekenen op jouw steun. Geen bedrag is te klein. 🐾",
+    "buttonText": "♥ Doneer Nu"
+  },
   "luchtbrug": {
     "metaTitle": "Hondenluchtbrug naar Europa",
     "metaDescription": "Adopteer een hond of kat uit Thailand. Wereldwijde adoptie: primair Europa en de VS, ook Zuid-Europa, Engeland en de rest van de wereld. Uitgebreide uitleg van het adoptieproces. Slechts één vlucht verwijderd van je nieuwe maatje.",

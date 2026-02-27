@@ -956,6 +956,53 @@
     "ctaText": "All proceeds go to our 430 dogs and 91 cats. Shop hoodies, calendars, tote bags and more.",
     "ctaButton": "Go to shop"
   },
+  "affiliate": {
+    "metaTitle": "Apoya a nuestros animales rescatados — Compra y ayuda | Saved Souls Foundation",
+    "metaDescription": "Compra productos para mascotas a través de nuestros enlaces de afiliados. Cada compra apoya nuestro refugio en Tailandia sin coste adicional para ti.",
+    "title": "Apoya a nuestros animales rescatados — Compra y ayuda",
+    "intro": "Cuando compras a través de los enlaces de abajo, recibimos una pequeña comisión que va directamente a nuestro refugio en Tailandia—sin coste adicional para ti. Cada compra nos ayuda a alimentar, cuidar y reubicar a perros y gatos rescatados. Gracias por tu apoyo.",
+    "headerPlaceholder": "Imagen de cabecera — por reemplazar",
+    "headerAlt": "Manos sosteniendo la Tierra brillante — cuidado y protección",
+    "sectionDogs": "Perros",
+    "sectionCats": "Gatos",
+    "shopNow": "Comprar ahora",
+    "disclaimer": "Esta página contiene enlaces de afiliados. Cuando compras a través de estos enlaces, recibimos una pequeña comisión que va directamente a nuestro refugio en Tailandia. Gracias por tu apoyo 🐾",
+    "shops": {
+      "shopee": "Shopee Tailandia",
+      "lazada": "Lazada Tailandia",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "Comida para perros", "description": "Nutrición de calidad para tu perro. Cada bol también ayuda a nuestros perros rescatados." },
+      "dogCarrier": { "name": "Transportín", "description": "Transportines seguros y cómodos para perros de todos los tamaños." },
+      "dogFlea": { "name": "Tratamiento antipulgas", "description": "Protección eficaz contra pulgas y garrapatas para un perro sano." },
+      "dogCollarLeash": { "name": "Collar y correa", "description": "Collares y correas resistentes para paseos seguros e identificación." },
+      "dogBed": { "name": "Cama para perros", "description": "Camas cómodas para descansar—como les encantan a nuestros perros del refugio." },
+      "dogToys": { "name": "Juguetes", "description": "Juguetes divertidos y resistentes para mantener a tu perro feliz y activo." },
+      "catFood": { "name": "Comida para gatos", "description": "Alimentación nutritiva para tu gato. También apoya a nuestros gatos rescatados." },
+      "catCarrier": { "name": "Transportín", "description": "Transportines seguros para visitas al veterinario y viajes con tu gato." },
+      "catFlea": { "name": "Tratamiento antipulgas", "description": "Control suave de pulgas para proteger a tu gato y tu hogar." },
+      "catCollarLeash": { "name": "Collar y correa", "description": "Collares y correas seguros para aventuras al aire libre con tu gato." },
+      "catBed": { "name": "Cama para gatos", "description": "Camas y escondites cómodos para que tu gato descanse." },
+      "catToys": { "name": "Juguetes", "description": "Juguetes entretenidos para juego y estimulación mental." }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "Lo que dicen nuestros voluntarios",
+    "titleSupport": "Por qué la gente nos apoya",
+    "ratingOutOf": "de 5",
+    "basedOnReviews": "Basado en 49 reseñas de Google",
+    "readAllReviews": "Leer todas las reseñas en Google",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "¿Te llegó al corazón? Ayúdanos a continuar.",
+    "subtext": "300+ animales rescatados necesitan tu apoyo. Ninguna cantidad es demasiado pequeña. 🐾",
+    "buttonText": "♥ Donar Ahora"
+  },
   "luchtbrug": {
     "metaTitle": "Dog air bridge to Europe",
     "metaDescription": "Adopt a dog or cat from Thailand. Worldwide adoption: primarily Europe and the USA, also Southern Europe, England and the rest of the world. Detailed adoption process. Just one flight away from your new best friend.",

@@ -44,6 +44,7 @@ const STATIC_PATHS = [
   "/clinic-renovation",
   "/car-action",
   "/shop",
+  "/affiliate",
   "/find-out-more",
   "/soul-saver",
   "/disclaimer",

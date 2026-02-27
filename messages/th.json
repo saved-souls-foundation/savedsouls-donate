@@ -956,6 +956,53 @@
     "ctaText": "รายได้ทั้งหมดไปที่สุนัข 430 ตัวและแมว 91 ตัวของเรา ซื้อเสื้อฮู้ด ปฏิทิน ถุง และอื่นๆ",
     "ctaButton": "ไปที่ร้านค้า"
   },
+  "affiliate": {
+    "metaTitle": "สนับสนุนสัตว์ rescue ของเรา — ช้อปและช่วย | Saved Souls Foundation",
+    "metaDescription": "ซื้อสินค้าสัตว์เลี้ยงผ่านลิงก์พันธมิตรของเรา ทุกการซื้อสนับสนุนศูนย์พักพิงในประเทศไทยโดยไม่มีค่าใช้จ่ายเพิ่มสำหรับคุณ",
+    "title": "สนับสนุนสัตว์ rescue ของเรา — ช้อปและช่วย",
+    "intro": "เมื่อคุณซื้อผ่านลิงก์ด้านล่าง เราจะได้รับคอมมิชชันเล็กน้อยที่ไปตรงถึงศูนย์พักพิงของเราในประเทศไทย—โดยไม่มีค่าใช้จ่ายเพิ่มสำหรับคุณ ทุกการซื้อช่วยเราเลี้ยงดูและหาบ้านให้สุนัขและแมวที่ได้รับการช่วยเหลือ ขอบคุณสำหรับการสนับสนุนของคุณ",
+    "headerPlaceholder": "รูปหัวข้อ — จะแทนที่ภายหลัง",
+    "headerAlt": "มือประคองโลกเรืองแสง — การดูแลและปกป้อง",
+    "sectionDogs": "สุนัข",
+    "sectionCats": "แมว",
+    "shopNow": "ช้อปเลย",
+    "disclaimer": "หน้านี้มีลิงก์พันธมิตร เมื่อคุณซื้อผ่านลิงก์เหล่านี้ เราจะได้รับคอมมิชชันเล็กน้อยที่ไปตรงถึงศูนย์พักพิงของเราในประเทศไทย ขอบคุณสำหรับการสนับสนุนของคุณ 🐾",
+    "shops": {
+      "shopee": "Shopee ประเทศไทย",
+      "lazada": "Lazada ประเทศไทย",
+      "aliexpress": "AliExpress"
+    },
+    "products": {
+      "dogFood": { "name": "อาหารสุนัข", "description": "โภชนาการคุณภาพสำหรับสุนัขของคุณ ทุกมื้อช่วยสุนัขในศูนย์พักพิงของเราด้วย" },
+      "dogCarrier": { "name": "กระเป๋า/กล่องพาสุนัข", "description": "กระเป๋าเดินทางที่ปลอดภัยและสบายสำหรับสุนัขทุกขนาด" },
+      "dogFlea": { "name": "ยาฆ่าเห็บหมัด", "description": "ป้องกันเห็บหมัดที่มีประสิทธิภาพเพื่อให้สุนัขแข็งแรง" },
+      "dogCollarLeash": { "name": "ปลอกคอและสายจูง", "description": "ปลอกคอและสายจูงทนทานสำหรับการเดินและระบุตัวตน" },
+      "dogBed": { "name": "ที่นอนสุนัข", "description": "ที่นอนนุ่มสบายสำหรับพักผ่อน—เหมือนที่สุนัขในศูนย์เราชอบ" },
+      "dogToys": { "name": "ของเล่น", "description": "ของเล่นสนุกและทนทานเพื่อให้สุนัขมีความสุขและกระตือรือร้น" },
+      "catFood": { "name": "อาหารแมว", "description": "อาหารมีคุณค่าสำหรับแมวของคุณ สนับสนุนแมวในศูนย์พักพิงของเราด้วย" },
+      "catCarrier": { "name": "กระเป๋า/กล่องพาแมว", "description": "กระเป๋าปลอดภัยสำหรับพาไปหาหมอและเดินทางกับแมว" },
+      "catFlea": { "name": "ยาฆ่าเห็บหมัด", "description": "ยาควบคุมเห็บหมัดอ่อนโยนเพื่อปกป้องแมวและบ้านของคุณ" },
+      "catCollarLeash": { "name": "ปลอกคอและสายจูง", "description": "ปลอกคอและสายจูงปลอดภัยสำหรับพาแมวออกไปนอกบ้าน" },
+      "catBed": { "name": "ที่นอนแมว", "description": "ที่นอนและที่ซ่อนที่สบายให้แมวพักผ่อน" },
+      "catToys": { "name": "ของเล่น", "description": "ของเล่นที่น่าสนใจสำหรับการเล่นและกระตุ้นจิตใจ" }
+    }
+  },
+  "googleReviews": {
+    "titleVolunteers": "สิ่งที่อาสาสมัครพูดถึงเรา",
+    "titleSupport": "ทำไมผู้คนถึงสนับสนุนเรา",
+    "ratingOutOf": "จาก 5",
+    "basedOnReviews": "จาก 49 รีวิวใน Google",
+    "readAllReviews": "อ่านรีวิวทั้งหมดบน Google",
+    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
+    "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
+    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+  },
+  "donationCta": {
+    "headline": "感動了嗎？幫助我們繼續前行",
+    "subtext": "สัตว์กว่า 300 ตัวต้องการความช่วยเหลือของคุณ ไม่มีจำนวนน้อยเกินไป 🐾",
+    "buttonText": "♥ บริจาคเลย"
+  },
   "luchtbrug": {
     "metaTitle": "สะพานอากาศสุนัขไปยุโรป",
     "metaDescription": "รับเลี้ยงสุนัขหรือแมวจากประเทศไทย การรับเลี้ยงทั่วโลก: หลักๆ ยุโรปและสหรัฐอเมริกา รวมถึงยุโรปใต้ อังกฤษและส่วนอื่นของโลก กระบวนการรับเลี้ยงโดยละเอียด เพียงเที่ยวบินเดียวจากเพื่อนใหม่ของคุณ",

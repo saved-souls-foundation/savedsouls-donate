@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Home, Rabbit, Luggage, HeartHandshake, Quote, CalendarClock, Users, Heart, AlertTriangle, PawPrint, Camera, ClipboardList, Dog, Cat } from "lucide-react";
 import DonateButton from "@/app/components/DonateButton";
@@ -8,6 +9,9 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import ClinicActionButton from "../../components/ClinicActionButton";
 import DashboardLoginBanner from "../../components/DashboardLoginBanner";
+
+const GoogleReviewsSection = dynamic(() => import("@/app/components/GoogleReviewsSection"), { ssr: true });
+const DonationCtaBlock = dynamic(() => import("@/app/components/DonationCtaBlock"), { ssr: true });
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -557,6 +561,9 @@ export default async function VolunteerPage() {
               </Link>
             </div>
           </div>
+
+          <GoogleReviewsSection titleKey="volunteers" />
+          <DonationCtaBlock />
         </section>
       </main>
 
