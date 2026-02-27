@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -20,24 +21,41 @@ type SpotlightData = {
   cat: SpotlightAnimal | null;
 };
 
-/**
- * Homepage: boven de eerste alinea. Tagline + 2 dieren (hond links, kat rechts). Wekelijkse rotatie.
- */
+/** Buiten viewport: geen fetch/images. Binnen viewport: pas dan laden – voorkomt concurrentie met LCP. */
 export default function SpotlightSection() {
   const t = useTranslations("home");
   const [data, setData] = useState<SpotlightData | null>(null);
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { rootMargin: "200px", threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
     fetch("/api/spotlight")
       .then((r) => r.json())
       .then(setData)
       .catch(() => setData({ week: 0, dog: null, cat: null }));
-  }, []);
+  }, [inView]);
 
-  if (!data || (!data.dog && !data.cat)) return null;
+  const hasContent = data && (data.dog || data.cat);
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-8 md:py-10" aria-labelledby="spotlight-title">
+    <section ref={ref} className="max-w-4xl mx-auto px-4 py-8 md:py-10" aria-labelledby={hasContent ? "spotlight-title" : undefined}>
+      {!hasContent && <span className="sr-only">{t("spotlightTitle")}</span>}
+      {!hasContent ? null : (
+        <>
       <div className="spotlight-banner text-center mb-6 rounded-2xl py-6 px-4">
         <p
           className="inline-block text-center text-xl md:text-2xl font-bold mb-2 animate-spotlight-tagline bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent bg-[length:200%_auto]"
@@ -56,6 +74,8 @@ export default function SpotlightSection() {
           <SpotlightCard animal={data.cat} />
         )}
       </div>
+        </>
+      )}
     </section>
   );
 }
@@ -63,6 +83,7 @@ export default function SpotlightSection() {
 function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
   const t = useTranslations("home");
   const href = animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`;
+  const imgSrc = animal.image || FALLBACK_IMAGE;
 
   return (
     <Link
@@ -70,16 +91,18 @@ function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
       className="group block rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 shadow-lg hover:shadow-xl hover:border-[#2aa348]/40 transition-all"
     >
       <div className="relative aspect-[3/4] overflow-hidden">
-        <img
-          src={animal.image || FALLBACK_IMAGE}
+        <Image
+          src={imgSrc}
           alt={`${animal.name} – in de spotlight deze week`}
-          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          fill
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 50vw, 400px"
           loading="lazy"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             if (!target.dataset.fallback) {
               target.dataset.fallback = "1";
-              target.src = FALLBACK_IMAGE;
+              (target as HTMLImageElement).src = FALLBACK_IMAGE;
             }
           }}
         />

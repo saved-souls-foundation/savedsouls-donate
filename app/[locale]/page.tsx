@@ -13,8 +13,13 @@ import TrustStatsBar from "../components/TrustStatsBar";
 import IdealDonate from "../components/IdealDonate";
 import BankTransferSection from "../components/BankTransferSection";
 import RecentDonations from "../components/RecentDonationsFooter";
-import SpotlightSection from "../components/SpotlightSection";
+import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
+
+const SpotlightSection = dynamic(() => import("../components/SpotlightSection"), {
+  ssr: false,
+  loading: () => <div className="max-w-4xl mx-auto px-4 py-8 md:py-10 min-h-[120px]" aria-hidden />,
+});
 
 const ACCENT_GREEN = "#2aa348";
 const BTN_DONATE = "#dc2626";

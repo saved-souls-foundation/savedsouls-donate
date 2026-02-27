@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import { DeferredStyles } from "./DeferredStyles";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -119,8 +120,6 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
@@ -129,6 +128,7 @@ export default async function RootLayout({
         )}
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
+        <DeferredStyles />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
