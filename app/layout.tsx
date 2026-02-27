@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import "./globals.css";
 import { DeferredStyles } from "./DeferredStyles";
-
-/** Inline critical CSS voor first paint / LCP – hoofdbundle CSS laadt async via DeferredStyles */
-const CRITICAL_CSS = `:root{--background:#fff;--foreground:#171717}body{background:var(--background);color:var(--foreground);font-family:var(--font-geist-sans),system-ui,sans-serif}.relative{position:relative}.absolute{position:absolute}.inset-0{inset:0}.w-full{width:100%}.h-full{height:100%}.object-cover{object-fit:cover}.flex{display:flex}.min-h-\\[100svh\\]{min-height:100svh}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.text-center{text-align:center}.z-10{z-index:10}.max-w-3xl{max-width:48rem}.mx-auto{margin-left:auto;margin-right:auto}.hero-animate-location,.hero-animate-headline,.hero-animate-subtitle,.hero-animate-ctas,.hero-animate-scroll{opacity:0;transform:translateY(20px)}[data-hero-visible] .hero-animate-location,[data-hero-visible] .hero-animate-headline,[data-hero-visible] .hero-animate-subtitle,[data-hero-visible] .hero-animate-ctas,[data-hero-visible] .hero-animate-scroll{opacity:1;transform:translateY(0)}`;
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -122,7 +120,6 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <head>
-        <style dangerouslySetInnerHTML={{ __html: CRITICAL_CSS }} />
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />

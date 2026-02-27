@@ -3,12 +3,10 @@
 import { useEffect } from "react";
 
 /**
- * Laadt hoofdbundle-CSS en animaties na first paint zodat ze niet render-blocking zijn (Lighthouse).
- * Critical CSS staat inline in de layout voor directe LCP.
+ * Laadt niet-kritieke animatie-CSS na first paint (Lighthouse). Hoofdbundle blijft blocking voor stabiele CLS.
  */
 export function DeferredStyles() {
   useEffect(() => {
-    import("./globals.css");
     import("./animations.css");
   }, []);
   return null;
