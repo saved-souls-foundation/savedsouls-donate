@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -112,14 +114,20 @@ export default async function RootLayout({
   const headersList = await headers();
   const locale = headersList.get("x-next-intl-locale") || "nl";
   const lang = LOCALE_TO_LANG[locale] || locale;
+  const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
 
   return (
     <html lang={lang}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* LCP: hero image op homepage – vroeg starten met laden */}
+        <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" />
+        {googleSiteVerification && (
+          <meta name="google-site-verification" content={googleSiteVerification} />
+        )}
       </head>
-      <body className="antialiased">
+      <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

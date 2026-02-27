@@ -112,8 +112,8 @@ export default function Footer() {
             </p>
             <ul className="space-y-3">
               <li><Link href="/story" className="text-sm text-white/70 hover:text-white transition-colors">{t("ourStory")}</Link></li>
-              <li><Link href="/about-us" className="text-sm text-white/70 hover:text-white transition-colors">{t("aboutUs")}</Link></li>
               <li><Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors">{t("contact")}</Link></li>
+              <li><Link href="/about-us" className="text-sm text-white/70 hover:text-white transition-colors">{t("aboutUs")}</Link></li>
               <li><Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors">{t("blog")}</Link></li>
               <li><Link href="/faq" className="text-sm text-white/70 hover:text-white transition-colors">{t("faq")}</Link></li>
               <li><Link href="/disclaimer" className="text-sm text-white/70 hover:text-white transition-colors">{t("disclaimer")}</Link></li>

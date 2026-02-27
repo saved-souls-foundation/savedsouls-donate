@@ -110,6 +110,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               muted
               loop
               playsInline
+              preload="metadata"
               title="Saved Souls Foundation logo"
             />
           </div>

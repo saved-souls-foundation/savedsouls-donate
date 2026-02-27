@@ -124,7 +124,7 @@ export default function DonatePage() {
               alt="Volunteer with wheelchair dog at Saved Souls Foundation sanctuary in Khon Kaen, Thailand"
               fill
               className="object-cover object-[60%_center] md:object-center"
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1920px) 100vw, 1920px"
               priority
               fetchPriority="high"
               loading="eager"
@@ -539,8 +539,8 @@ export default function DonatePage() {
       <section id="donate" className="py-16 md:py-24 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
         <div className="max-w-lg mx-auto px-4">
           <div className="text-center mb-8">
-            <div className="w-40 h-40 mx-auto mb-4 rounded-2xl overflow-hidden border-4 shadow-lg" style={{ borderColor: ACCENT_GREEN }}>
-              <img src="/donatie-thanks.webp" alt={tHome("donateThanksImageAlt")} className="w-full h-full object-cover" />
+            <div className="w-40 h-40 mx-auto mb-4 rounded-2xl overflow-hidden border-4 shadow-lg relative" style={{ borderColor: ACCENT_GREEN }}>
+              <Image src="/donatie-thanks.webp" alt={tHome("donateThanksImageAlt")} fill className="object-cover" sizes="160px" />
             </div>
             <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-2 flex items-center justify-center gap-2">
               <img src="/icons/paw.svg" alt="" className="w-6 h-6" aria-hidden />
