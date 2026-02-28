@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "next-intl";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -9,9 +10,13 @@ type ContactFormProps = {
   idPrefix?: string;
   showTitle?: boolean;
   className?: string;
+  /** Locale van de pagina (bv. uit URL); heeft voorrang op useLocale() voor de auto-reply taal. */
+  locale?: string;
 };
 
-export default function ContactForm({ idPrefix = "contact", showTitle = true, className = "" }: ContactFormProps) {
+export default function ContactForm({ idPrefix = "contact", showTitle = true, className = "", locale: localeProp }: ContactFormProps) {
+  const localeFromContext = useLocale();
+  const locale = (localeProp && localeProp.trim()) || localeFromContext || "en";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -28,7 +33,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({ name, email, subject, message, locale: locale.slice(0, 2).toLowerCase() }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {

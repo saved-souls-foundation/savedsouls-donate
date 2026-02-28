@@ -14,7 +14,10 @@ export const metadata: Metadata = {
   description: "Contact Saved Souls Foundation in Khon Kaen, Thailand. Email, phone, address and opening hours.",
 };
 
-export default async function ContactPage() {
+type Props = { params: Promise<{ locale: string }> };
+
+export default async function ContactPage({ params }: Props) {
+  const { locale } = await params;
   const t = await getTranslations("common");
   return (
     <ParallaxPage>
@@ -194,7 +197,7 @@ export default async function ContactPage() {
           <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
             Fill out the form below and we&apos;ll get back to you as soon as possible.
           </p>
-          <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" />
+          <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
         </div>
       </main>
       <Footer />
