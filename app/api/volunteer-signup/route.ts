@@ -63,6 +63,23 @@ export async function POST(req: NextRequest) {
 
     const subjectLine = "[Volunteer Sign-up] " + name;
 
+    const autoRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: [email],
+        replyTo: REPLY_TO,
+        subject: AUTO_REPLY_SUBJECT,
+        text: AUTO_REPLY_TEXT,
+      }),
+    });
+    if (!autoRes.ok) {
+      const err = await autoRes.text();
+      console.error("[Resend] volunteer-signup auto-reply error:", autoRes.status, err);
+      return NextResponse.json({ error: "Failed to send confirmation." }, { status: 502 });
+    }
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
@@ -78,21 +95,6 @@ export async function POST(req: NextRequest) {
       const err = await res.text();
       console.error("[Resend] volunteer-signup send error:", res.status, err);
       return NextResponse.json({ error: "Failed to send application." }, { status: 502 });
-    }
-
-    const autoRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: [email],
-        replyTo: REPLY_TO,
-        subject: AUTO_REPLY_SUBJECT,
-        text: AUTO_REPLY_TEXT,
-      }),
-    });
-    if (!autoRes.ok) {
-      console.error("Auto-reply failed:", await autoRes.text());
     }
 
     if (isSupabaseAdminConfigured()) {

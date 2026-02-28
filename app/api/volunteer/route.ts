@@ -51,6 +51,16 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join("\n");
 
+    const autoReply = await sendMail({
+      to: email,
+      subject: CONFIRMATION_SUBJECT,
+      text: CONFIRMATION_TEXT,
+      replyTo: REPLY_TO,
+    });
+    if (!autoReply.success) {
+      return NextResponse.json({ error: autoReply.error || "Failed to send confirmation." }, { status: 502 });
+    }
+
     for (const to of NOTIFICATION_EMAILS) {
       const notif = await sendMail({
         to,
@@ -62,13 +72,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
       }
     }
-
-    await sendMail({
-      to: email,
-      subject: CONFIRMATION_SUBJECT,
-      text: CONFIRMATION_TEXT,
-      replyTo: REPLY_TO,
-    });
 
     return NextResponse.json({ success: true });
   } catch (e) {

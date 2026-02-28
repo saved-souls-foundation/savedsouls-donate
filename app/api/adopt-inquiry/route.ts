@@ -64,7 +64,25 @@ export async function POST(req: NextRequest) {
 
     const subjectLine = "[Adoption Inquiry] " + name + (animalName ? " – " + animalName : "");
 
-    // 1. Send notification to BOTH addresses
+    // 1. Eerst auto-reply naar bezoeker
+    const autoRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: [email],
+        replyTo: REPLY_TO,
+        subject: AUTO_REPLY_SUBJECT,
+        text: AUTO_REPLY_TEXT,
+      }),
+    });
+    if (!autoRes.ok) {
+      const err = await autoRes.text();
+      console.error("[Resend] adopt-inquiry auto-reply error:", autoRes.status, err);
+      return NextResponse.json({ error: "Failed to send confirmation." }, { status: 502 });
+    }
+
+    // 2. Daarna notificatie naar team
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
@@ -80,22 +98,6 @@ export async function POST(req: NextRequest) {
       const err = await res.text();
       console.error("[Resend] adopt-inquiry send error:", res.status, err);
       return NextResponse.json({ error: "Failed to send inquiry." }, { status: 502 });
-    }
-
-    // 2. Send auto-reply to the person who submitted
-    const autoRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: [email],
-        replyTo: REPLY_TO,
-        subject: AUTO_REPLY_SUBJECT,
-        text: AUTO_REPLY_TEXT,
-      }),
-    });
-    if (!autoRes.ok) {
-      console.error("[Resend] adopt-inquiry auto-reply failed:", autoRes.status, await autoRes.text());
     }
 
     if (isSupabaseAdminConfigured()) {

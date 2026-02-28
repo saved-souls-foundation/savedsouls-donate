@@ -36,7 +36,18 @@ export async function POST(req: NextRequest) {
       "\n\n" +
       message;
 
-    // Stuur aparte mails per ontvanger voor betrouwbaardere levering (o.a. forwarders)
+    // Eerst auto-reply naar bezoeker, zodat die altijd bevestiging krijgt
+    const autoReply = await sendMail({
+      to: email,
+      subject: CONFIRMATION_SUBJECT,
+      text: CONFIRMATION_TEXT,
+      replyTo: REPLY_TO,
+    });
+    if (!autoReply.success) {
+      return NextResponse.json({ error: autoReply.error || "Failed to send confirmation." }, { status: 502 });
+    }
+
+    // Daarna notificatie naar info@ (apart per ontvanger)
     for (const to of NOTIFICATION_EMAILS) {
       const notif = await sendMail({
         to,
@@ -48,13 +59,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
       }
     }
-
-    await sendMail({
-      to: email,
-      subject: CONFIRMATION_SUBJECT,
-      text: CONFIRMATION_TEXT,
-      replyTo: REPLY_TO,
-    });
 
     return NextResponse.json({ success: true });
   } catch (e) {
