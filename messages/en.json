@@ -39,6 +39,7 @@
     "thankYou": "Thank you",
     "streetDogsThailand": "Street dogs Thailand",
     "schoolProject": "School project",
+    "usefulLinks": "Useful links",
     "kids": "Kids – Help animals",
     "nutrition": "Nutrition",
     "health": "Health",
@@ -86,6 +87,7 @@
     "faq": "FAQ",
     "shelters": "Other shelters",
     "shop": "Shop",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "Financial overview",
     "blog": "Blog",
     "followUsOnFacebook": "Follow us on Facebook",
@@ -984,9 +986,22 @@
     "intro": "When you shop through the links below, we earn a small commission that goes directly to our shelter in Thailand—at no extra cost to you. Every purchase helps us feed, care for, and rehome rescued dogs and cats. Thank you for your support.",
     "headerPlaceholder": "Header image — to be replaced",
     "headerAlt": "Hands holding a glowing Earth — care and protection",
+    "topRecommendationsTitle": "Top On Sale Product Recommendations!",
+    "categoryHomeAppliance": "Home appliance",
+    "categoryToysGifts": "Toys & collectibles",
+    "categoryDogProducts": "Dog products",
+    "categoryCatProducts": "Cat products",
+    "categoryDogWheelchairs": "Support products dogs / cats",
+    "categoryHoliday": "More and for the holidays!",
+    "comingSoonProducts": "More deals coming soon",
+    "pageLabel": "Page {current} of {total}",
+    "previousPage": "Previous",
+    "nextPage": "Next",
     "sectionDogs": "Dogs",
     "sectionCats": "Cats",
     "shopNow": "Shop Now",
+    "clickAndBuy": "View on AliExpress",
+    "linkGoesToStore": "Link goes to AliExpress",
     "disclaimer": "This page contains affiliate links. When you purchase through these links, we earn a small commission that goes directly to our rescue shelter in Thailand. Thank you for your support 🐾",
     "shops": {
       "shopee": "Shopee Thailand",
@@ -1006,6 +1021,18 @@
       "catCollarLeash": { "name": "Collar & leash", "description": "Safe collars and leashes for outdoor adventures with your cat." },
       "catBed": { "name": "Pet bed", "description": "Comfortable beds and hideaways for your cat to relax." },
       "catToys": { "name": "Toys", "description": "Engaging toys for play and mental stimulation." }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "Price Now: THB 538.27",
+      "imageAlt": "POP MART Hirono Road Journal Series plush doll pendants"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, Electric Hot fryer Oven Oilless Cooker with Touch Control & Nonstick Basket & Visible Window, Miui-Cyclone Tech",
+      "priceNow": "Price Now: THB 2,729.81",
+      "priceOriginal": "Original: THB 6,728.40, 59% off",
+      "codeLabel": "Code: 3HEHP30PPVM2 (THB 32.04 off), valid until Mar 2026",
+      "imageAlt": "ROUNY 5L air fryer with visible window and recipe book"
     }
   },
   "googleReviews": {
@@ -3863,6 +3890,18 @@
     "ctaTitle": "More about health",
     "ctaText": "View our health guide for more information.",
     "ctaButton": "To health guide"
+  },
+  "links": {
+    "metaTitle": "Useful links – Animal organisations & pet shops | Saved Souls Foundation",
+    "metaDescription": "Overview of animal organisations in the Netherlands and Thailand, pet food and pet shops. Useful links for animal lovers.",
+    "title": "Useful links",
+    "intro": "An overview of animal organisations, sanctuaries in Thailand, pet food information and pet shops. For anyone who wants to do more for animals or is looking for reliable information.",
+    "sectionNl": "Animal organisations Netherlands",
+    "sectionThailand": "Animal organisations Thailand",
+    "sectionPetFood": "Pet food & information",
+    "sectionPetShops": "Pet shops Netherlands",
+    "visitLink": "→",
+    "disclaimer": "We are not responsible for the content of external sites. Have a link to suggest? Let us know."
   },
   "disclaimer": {
     "metaTitle": "Disclaimer | Saved Souls Foundation",

@@ -39,6 +39,7 @@
     "thankYou": "Dank jullie wel",
     "streetDogsThailand": "Zwerfhonden Thailand",
     "schoolProject": "Schoolproject",
+    "usefulLinks": "Handige links",
     "kids": "Kids – Help dieren",
     "nutrition": "Voeding",
     "health": "Gezondheid",
@@ -86,6 +87,7 @@
     "faq": "FAQ",
     "shelters": "Andere asielen",
     "shop": "Shop",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "Financiële verantwoording",
     "blog": "Blog",
     "followUsOnFacebook": "Volg ons op Facebook",
@@ -983,9 +985,22 @@
     "intro": "Als je via de onderstaande links koopt, ontvangen wij een kleine commissie die direct naar ons opvangcentrum in Thailand gaat—zonder extra kosten voor jou. Elke aankoop helpt ons om geredde honden en katten te voeren, verzorgen en herplaatsen. Bedankt voor je steun.",
     "headerPlaceholder": "Headerafbeelding — nog te vervangen",
     "headerAlt": "Handen die een stralende aarde vasthouden — zorg en bescherming",
+    "topRecommendationsTitle": "Top aanbiedingen – aanbevolen producten!",
+    "categoryHomeAppliance": "Huishoudelijke apparaten",
+    "categoryToysGifts": "Speelgoed & verzamelen",
+    "categoryDogProducts": "Honden spullen",
+    "categoryCatProducts": "Katten spullen",
+    "categoryDogWheelchairs": "Ondersteunende artikelen honden / katten",
+    "categoryHoliday": "Meer en voor de feestdagen !",
+    "comingSoonProducts": "Binnenkort meer aanbiedingen",
+    "pageLabel": "Pagina {current} van {total}",
+    "previousPage": "Vorige",
+    "nextPage": "Volgende",
     "sectionDogs": "Honden",
     "sectionCats": "Katten",
     "shopNow": "Shop nu",
+    "clickAndBuy": "Bekijk op AliExpress",
+    "linkGoesToStore": "Link gaat naar AliExpress",
     "disclaimer": "Deze pagina bevat affiliatelinks. Als je via deze links koopt, ontvangen wij een kleine commissie die direct naar ons opvangcentrum in Thailand gaat. Bedankt voor je steun 🐾",
     "shops": {
       "shopee": "Shopee Thailand",
@@ -1005,6 +1020,18 @@
       "catCollarLeash": { "name": "Halsband & riem", "description": "Veilige halsbanden en riemen voor buitenavonturen met je kat." },
       "catBed": { "name": "Kattenmand", "description": "Comfortabele manden en schuilplekken om te ontspannen." },
       "catToys": { "name": "Speelgoed", "description": "Uitdagend speelgoed voor spel en mentale stimulatie." }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "Prijs nu: THB 538,27",
+      "imageAlt": "POP MART Hirono Road Journal Series pluche poppetjes"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, elektrische hot fryer oven zonder olie met touch control, antiaanbakbodem en zichtvenster, Miui-Cyclone Tech",
+      "priceNow": "Prijs nu: THB 2.729,81",
+      "priceOriginal": "Origineel: THB 6.728,40, 59% korting",
+      "codeLabel": "Code: 3HEHP30PPVM2 (THB 32,04 korting), geldig t/m mrt 2026",
+      "imageAlt": "ROUNY 5L airfryer met zichtvenster en receptenboek"
     }
   },
   "googleReviews": {
@@ -3862,6 +3889,18 @@
     "ctaTitle": "Meer over gezondheid",
     "ctaText": "Bekijk onze gezondheidsgids voor meer informatie.",
     "ctaButton": "Naar gezondheidsgids"
+  },
+  "links": {
+    "metaTitle": "Handige links – Dierenorganisaties & dierwinkels | Saved Souls Foundation",
+    "metaDescription": "Overzicht van dierenorganisaties in Nederland en Thailand, diervoer en dierenwinkels. Handige links voor dierenvrienden.",
+    "title": "Handige links",
+    "intro": "Een overzicht van dierenorganisaties, opvangcentra in Thailand, informatie over diervoer en dierenwinkels. Handig voor wie meer wil doen voor dieren of betrouwbare informatie zoekt.",
+    "sectionNl": "Dierenorganisaties Nederland",
+    "sectionThailand": "Dierenorganisaties Thailand",
+    "sectionPetFood": "Diervoer & informatie",
+    "sectionPetShops": "Dierenwinkels Nederland",
+    "visitLink": "→",
+    "disclaimer": "We zijn niet verantwoordelijk voor de inhoud van externe sites. Heb je een suggestie voor een link? Laat het ons weten."
   },
   "disclaimer": {
     "metaTitle": "Disclaimer | Saved Souls Foundation",

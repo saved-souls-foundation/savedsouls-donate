@@ -31,6 +31,7 @@ const STATIC_PATHS = [
   "/street-dogs-thailand",
   "/get-involved",
   "/gidsen",
+  "/links",
   "/kids",
   "/school-project",
   "/school-project/materials",

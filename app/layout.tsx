@@ -38,14 +38,16 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "NGO",
+  "@type": ["NGO", "AnimalShelter"],
   name: "Saved Souls Foundation",
   description: "Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
   url: "https://www.savedsouls-foundation.com",
   address: {
     "@type": "PostalAddress",
+    streetAddress: "133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand",
     addressLocality: "Ban Khok Ngam, Ban Fang",
     addressRegion: "Khon Kaen",
+    postalCode: "40270",
     addressCountry: "TH",
   },
   geo: {
@@ -53,6 +55,7 @@ const jsonLd = {
     latitude: 16.4322,
     longitude: 102.8236,
   },
+  openingHours: "Mo-Su 13:30-15:30",
   contactPoint: {
     "@type": "ContactPoint",
     email: "info@savedsouls-foundation.org",

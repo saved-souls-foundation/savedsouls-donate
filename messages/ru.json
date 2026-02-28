@@ -39,6 +39,7 @@
     "thankYou": "Спасибо",
     "streetDogsThailand": "Бездомные собаки Таиланд",
     "schoolProject": "Школьный проект",
+    "usefulLinks": "Полезные ссылки",
     "kids": "Kids – Помоги животным",
     "nutrition": "Питание",
     "health": "Здоровье",
@@ -86,6 +87,7 @@
     "faq": "FAQ",
     "shelters": "Другие приюты",
     "shop": "Магазин",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "Финансовый обзор",
     "blog": "Блог",
     "followUsOnFacebook": "Подпишитесь на нас в Facebook",
@@ -963,9 +965,22 @@
     "intro": "Когда вы покупаете по ссылкам ниже, мы получаем небольшую комиссию, которая идёт напрямую в наш приют в Таиланде—без дополнительных затрат для вас. Каждая покупка помогает нам кормить, лечить и пристраивать спасённых собак и кошек. Спасибо за вашу поддержку.",
     "headerPlaceholder": "Изображение заголовка — будет заменено",
     "headerAlt": "Руки, держащие светящуюся Землю — забота и защита",
+    "topRecommendationsTitle": "Рекомендуемые товары по акции!",
+    "categoryHomeAppliance": "Бытовая техника",
+    "categoryToysGifts": "Игрушки и коллекции",
+    "categoryDogProducts": "Товары для собак",
+    "categoryCatProducts": "Товары для кошек",
+    "categoryDogWheelchairs": "Вспомогательные товары для собак / кошек",
+    "categoryHoliday": "Больше и к праздникам!",
+    "comingSoonProducts": "Скоро больше предложений",
+    "pageLabel": "Страница {current} из {total}",
+    "previousPage": "Назад",
+    "nextPage": "Вперёд",
     "sectionDogs": "Собаки",
     "sectionCats": "Коты",
     "shopNow": "Купить",
+    "clickAndBuy": "Смотреть на AliExpress",
+    "linkGoesToStore": "Ссылка ведёт на AliExpress",
     "disclaimer": "На этой странице есть партнёрские ссылки. Когда вы покупаете по этим ссылкам, мы получаем небольшую комиссию, которая идёт напрямую в наш приют в Таиланде. Спасибо за вашу поддержку 🐾",
     "shops": {
       "shopee": "Shopee Таиланд",
@@ -985,6 +1000,18 @@
       "catCollarLeash": { "name": "Ошейник и поводок", "description": "Безопасные ошейники и поводки для прогулок с кошкой." },
       "catBed": { "name": "Лежанка", "description": "Уютные лежанки и домики для отдыха кошки." },
       "catToys": { "name": "Игрушки", "description": "Увлекательные игрушки для игры и умственной стимуляции." }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "Цена: THB 538,27",
+      "imageAlt": "POP MART Hirono Road Journal Series плюшевые куклы"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, Electric Hot fryer Oven Oilless Cooker with Touch Control & Nonstick Basket & Visible Window, Miui-Cyclone Tech",
+      "priceNow": "Цена: THB 2 729,81",
+      "priceOriginal": "Было: THB 6 728,40, скидка 59 %",
+      "codeLabel": "Код: 3HEHP30PPVM2 (THB 32,04 скидка), действителен до мар 2026",
+      "imageAlt": "Аэрогриль ROUNY 5L с прозрачным окном"
     }
   },
   "googleReviews": {
@@ -3906,6 +3933,18 @@
     "ctaTitle": "Больше о здоровье",
     "ctaText": "Смотрите наш гид по здоровью для дополнительной информации.",
     "ctaButton": "К гиду по здоровью"
+  },
+  "links": {
+    "metaTitle": "Полезные ссылки – Организации и зоомагазины | Saved Souls Foundation",
+    "metaDescription": "Ссылки на зоозащитные организации в Нидерландах и Таиланде, корма и зоомагазины.",
+    "title": "Полезные ссылки",
+    "intro": "Обзор зоозащитных организаций, приютов в Таиланде, информации о кормах и зоомагазинах.",
+    "sectionNl": "Организации Нидерланды",
+    "sectionThailand": "Организации Таиланд",
+    "sectionPetFood": "Корма и информация",
+    "sectionPetShops": "Зоомагазины Нидерланды",
+    "visitLink": "→",
+    "disclaimer": "Мы не отвечаем за содержание внешних сайтов. Есть предложение? Напишите нам."
   },
   "disclaimer": {
     "metaTitle": "Отказ от ответственности | Saved Souls Foundation",

@@ -14,7 +14,8 @@
     "export-shelter-emails": "node scripts/export-shelter-emails.mjs",
     "sync-facebook-blog": "node scripts/sync-facebook-blog.mjs",
     "gsc": "node scripts/google-search-console-setup.mjs",
-    "gsc:submit-sitemap": "node scripts/google-search-console-submit-sitemap.mjs"
+    "gsc:submit-sitemap": "node scripts/google-search-console-submit-sitemap.mjs",
+    "sync-affiliate-products": "node scripts/sync-affiliate-dog-products.mjs"
   },
   "dependencies": {
     "@mollie/api-client": "^4.4.0",
@@ -39,6 +40,7 @@
     "puppeteer": "^24.37.3",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "xlsx": "^0.18.5"
   }
 }

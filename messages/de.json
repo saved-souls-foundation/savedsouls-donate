@@ -39,6 +39,7 @@
     "thankYou": "Danke",
     "streetDogsThailand": "Straßenhunde Thailand",
     "schoolProject": "Schulprojekt",
+    "usefulLinks": "Nützliche Links",
     "kids": "Kids – Hilf Tieren",
     "nutrition": "Ernährung",
     "health": "Gesundheit",
@@ -86,6 +87,7 @@
     "faq": "FAQ",
     "shelters": "Andere Tierheime",
     "shop": "Shop",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "Finanzielle Übersicht",
     "blog": "Blog",
     "followUsOnFacebook": "Folge uns auf Facebook",
@@ -963,9 +965,22 @@
     "intro": "Wenn Sie über die folgenden Links einkaufen, erhalten wir eine kleine Provision, die direkt an unser Tierheim in Thailand geht—ohne Mehrkosten für Sie. Jeder Einkauf hilft uns, gerettete Hunde und Katzen zu füttern, zu pflegen und zu vermitteln. Vielen Dank für Ihre Unterstützung.",
     "headerPlaceholder": "Headerbild — noch zu ersetzen",
     "headerAlt": "Hände halten eine leuchtende Erde — Fürsorge und Schutz",
+    "topRecommendationsTitle": "Top-Angebote – Empfohlene Produkte!",
+    "categoryHomeAppliance": "Haushaltsgeräte",
+    "categoryToysGifts": "Spielzeug & Sammeln",
+    "categoryDogProducts": "Hundeartikel",
+    "categoryCatProducts": "Katzenartikel",
+    "categoryDogWheelchairs": "Unterstützende Artikel Hunde / Katten",
+    "categoryHoliday": "Mehr und für die Feiertage!",
+    "comingSoonProducts": "Weitere Angebote demnächst",
+    "pageLabel": "Seite {current} von {total}",
+    "previousPage": "Zurück",
+    "nextPage": "Weiter",
     "sectionDogs": "Hunde",
     "sectionCats": "Katzen",
     "shopNow": "Jetzt einkaufen",
+    "clickAndBuy": "Auf AliExpress ansehen",
+    "linkGoesToStore": "Link führt zu AliExpress",
     "disclaimer": "Diese Seite enthält Affiliate-Links. Wenn Sie über diese Links kaufen, erhalten wir eine kleine Provision, die direkt an unser Tierheim in Thailand geht. Vielen Dank für Ihre Unterstützung 🐾",
     "shops": {
       "shopee": "Shopee Thailand",
@@ -985,6 +1000,18 @@
       "catCollarLeash": { "name": "Halsband & Leine", "description": "Sichere Halsbänder und Leinen für Abenteuer mit Ihrer Katze." },
       "catBed": { "name": "Katzenbett", "description": "Bequeme Betten und Verstecke zum Entspannen." },
       "catToys": { "name": "Spielzeug", "description": "Anregendes Spielzeug für Spiel und geistige Förderung." }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "Preis: THB 538,27",
+      "imageAlt": "POP MART Hirono Road Journal Series Plüsch-Puppen"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, Electric Hot fryer Oven Oilless Cooker with Touch Control & Nonstick Basket & Visible Window, Miui-Cyclone Tech",
+      "priceNow": "Preis: THB 2.729,81",
+      "priceOriginal": "Ursprünglich: THB 6.728,40, 59 % Rabatt",
+      "codeLabel": "Code: 3HEHP30PPVM2 (THB 32,04 Rabatt), gültig bis März 2026",
+      "imageAlt": "ROUNY 5L Heißluftfritteuse mit Sichtfenster"
     }
   },
   "googleReviews": {
@@ -3867,5 +3894,17 @@
     "contactText": "Bei Fragen zu diesem Disclaimer oder der Stiftung kontaktieren Sie uns bitte unter ",
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Hund mit Brille liest ein Gesetzbuch"
+  },
+  "links": {
+    "metaTitle": "Nützliche Links – Tierschutz & Zoofachhandel | Saved Souls Foundation",
+    "metaDescription": "Überblick über Tierschutzorganisationen in den Niederlanden und Thailand, Tierfutter und Zoofachhandel.",
+    "title": "Nützliche Links",
+    "intro": "Überblick über Tierschutzorganisationen, Auffangstationen in Thailand, Tierfutter-Informationen und Zoofachhandel.",
+    "sectionNl": "Tierschutzorganisationen Niederlande",
+    "sectionThailand": "Tierschutzorganisationen Thailand",
+    "sectionPetFood": "Tierfutter & Information",
+    "sectionPetShops": "Zoofachhandel Niederlande",
+    "visitLink": "→",
+    "disclaimer": "Wir sind nicht verantwortlich für den Inhalt externer Seiten. Link-Vorschlag? Melden Sie sich."
   }
 }

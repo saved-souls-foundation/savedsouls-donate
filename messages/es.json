@@ -39,6 +39,7 @@
     "thankYou": "Gracias",
     "streetDogsThailand": "Perros callejeros Tailandia",
     "schoolProject": "Proyecto escolar",
+    "usefulLinks": "Enlaces útiles",
     "kids": "Kids – Ayuda a los animales",
     "nutrition": "Nutrición",
     "health": "Salud",
@@ -86,6 +87,7 @@
     "faq": "FAQ",
     "shelters": "Otros refugios",
     "shop": "Tienda",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "Resumen financiero",
     "blog": "Blog",
     "followUsOnFacebook": "Síguenos en Facebook",
@@ -963,9 +965,22 @@
     "intro": "Cuando compras a través de los enlaces de abajo, recibimos una pequeña comisión que va directamente a nuestro refugio en Tailandia—sin coste adicional para ti. Cada compra nos ayuda a alimentar, cuidar y reubicar a perros y gatos rescatados. Gracias por tu apoyo.",
     "headerPlaceholder": "Imagen de cabecera — por reemplazar",
     "headerAlt": "Manos sosteniendo la Tierra brillante — cuidado y protección",
+    "topRecommendationsTitle": "¡Recomendaciones de productos en oferta!",
+    "categoryHomeAppliance": "Electrodomésticos",
+    "categoryToysGifts": "Juguetes y coleccionables",
+    "categoryDogProducts": "Productos para perros",
+    "categoryCatProducts": "Productos para gatos",
+    "categoryDogWheelchairs": "Artículos de apoyo perros / gatos",
+    "categoryHoliday": "¡Más y para las fiestas!",
+    "comingSoonProducts": "Más ofertas próximamente",
+    "pageLabel": "Página {current} de {total}",
+    "previousPage": "Anterior",
+    "nextPage": "Siguiente",
     "sectionDogs": "Perros",
     "sectionCats": "Gatos",
     "shopNow": "Comprar ahora",
+    "clickAndBuy": "Ver en AliExpress",
+    "linkGoesToStore": "El enlace lleva a AliExpress",
     "disclaimer": "Esta página contiene enlaces de afiliados. Cuando compras a través de estos enlaces, recibimos una pequeña comisión que va directamente a nuestro refugio en Tailandia. Gracias por tu apoyo 🐾",
     "shops": {
       "shopee": "Shopee Tailandia",
@@ -985,6 +1000,18 @@
       "catCollarLeash": { "name": "Collar y correa", "description": "Collares y correas seguros para aventuras al aire libre con tu gato." },
       "catBed": { "name": "Cama para gatos", "description": "Camas y escondites cómodos para que tu gato descanse." },
       "catToys": { "name": "Juguetes", "description": "Juguetes entretenidos para juego y estimulación mental." }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "Precio: THB 538,27",
+      "imageAlt": "POP MART Hirono Road Journal Series muñecos de peluche"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, Electric Hot fryer Oven Oilless Cooker with Touch Control & Nonstick Basket & Visible Window, Miui-Cyclone Tech",
+      "priceNow": "Precio: THB 2.729,81",
+      "priceOriginal": "Original: THB 6.728,40, 59 % off",
+      "codeLabel": "Código: 3HEHP30PPVM2 (THB 32,04 off), válido hasta mar 2026",
+      "imageAlt": "Freidora de aire ROUNY 5L con ventana visible"
     }
   },
   "googleReviews": {
@@ -3842,6 +3869,18 @@
     "ctaTitle": "More about health",
     "ctaText": "View our health guide for more information.",
     "ctaButton": "To health guide"
+  },
+  "links": {
+    "metaTitle": "Enlaces útiles – Organizaciones y tiendas | Saved Souls Foundation",
+    "metaDescription": "Enlaces a organizaciones de animales en Países Bajos y Tailandia, alimentación y tiendas.",
+    "title": "Enlaces útiles",
+    "intro": "Un resumen de organizaciones de protección animal, santuarios en Tailandia, información sobre alimentación y tiendas.",
+    "sectionNl": "Organizaciones Países Bajos",
+    "sectionThailand": "Organizaciones Tailandia",
+    "sectionPetFood": "Alimentación e información",
+    "sectionPetShops": "Tiendas de mascotas Países Bajos",
+    "visitLink": "→",
+    "disclaimer": "No nos hacemos responsables del contenido de sitios externos. ¿Sugerencia? Contáctanos."
   },
   "disclaimer": {
     "metaTitle": "Disclaimer | Saved Souls Foundation",

@@ -127,6 +127,7 @@ export default function Footer() {
               <li><Link href="/get-involved" className="text-sm text-white/70 hover:text-white transition-colors">{t("getInvolved")}</Link></li>
               <li><Link href="/dashboard" className="text-sm text-white/70 hover:text-white transition-colors">{t("myProgress")}</Link></li>
               <li><Link href="/shop" className="text-sm text-white/70 hover:text-white transition-colors">{t("shop")}</Link></li>
+              <li><Link href="/affiliate" className="text-sm text-white/70 hover:text-white transition-colors">{t("helpAndShop")}</Link></li>
               <li><Link href="/partners" className="text-sm text-white/70 hover:text-white transition-colors">{t("partners")}</Link></li>
               <li><Link href="/shelters" className="text-sm text-white/70 hover:text-white transition-colors">{t("shelters")}</Link></li>
               <li><Link href="/thank-you" className="text-sm text-white/70 hover:text-white transition-colors">{t("thankYou")}</Link></li>
@@ -138,6 +139,7 @@ export default function Footer() {
             </p>
             <ul className="space-y-3">
               <li><Link href="/gidsen" className="text-sm text-white/70 hover:text-white transition-colors">{t("gidsen")}</Link></li>
+              <li><Link href="/links" className="text-sm text-white/70 hover:text-white transition-colors">{t("usefulLinks")}</Link></li>
               <li><Link href="/street-dogs-thailand" className="text-sm text-white/70 hover:text-white transition-colors">{t("streetDogsThailand")}</Link></li>
               <li><Link href="/school-project" className="text-sm text-white/70 hover:text-white transition-colors">{t("schoolProject")}</Link></li>
             </ul>

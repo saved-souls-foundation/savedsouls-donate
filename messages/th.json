@@ -39,6 +39,7 @@
     "thankYou": "ขอบคุณ",
     "streetDogsThailand": "สุนัขจรจัด ไทย",
     "schoolProject": "โครงการโรงเรียน",
+    "usefulLinks": "ลิงก์ที่เป็นประโยชน์",
     "kids": "Kids – ช่วยสัตว์",
     "nutrition": "โภชนาการ",
     "health": "สุขภาพ",
@@ -86,6 +87,7 @@
     "faq": "คำถามที่พบบ่อย",
     "shelters": "สถานพักพิงอื่นๆ",
     "shop": "ร้านค้า",
+    "helpAndShop": "Help & Shop",
     "financialOverview": "ภาพรวมทางการเงิน",
     "blog": "บล็อก",
     "followUsOnFacebook": "ติดตามเราบน Facebook",
@@ -963,9 +965,22 @@
     "intro": "เมื่อคุณซื้อผ่านลิงก์ด้านล่าง เราจะได้รับคอมมิชชันเล็กน้อยที่ไปตรงถึงศูนย์พักพิงของเราในประเทศไทย—โดยไม่มีค่าใช้จ่ายเพิ่มสำหรับคุณ ทุกการซื้อช่วยเราเลี้ยงดูและหาบ้านให้สุนัขและแมวที่ได้รับการช่วยเหลือ ขอบคุณสำหรับการสนับสนุนของคุณ",
     "headerPlaceholder": "รูปหัวข้อ — จะแทนที่ภายหลัง",
     "headerAlt": "มือประคองโลกเรืองแสง — การดูแลและปกป้อง",
+    "topRecommendationsTitle": "สินค้าแนะนำยอดนิยม!",
+    "categoryHomeAppliance": "เครื่องใช้ในบ้าน",
+    "categoryToysGifts": "ของเล่นและของสะสม",
+    "categoryDogProducts": "ของใช้สำหรับสุนัข",
+    "categoryCatProducts": "ของใช้สำหรับแมว",
+    "categoryDogWheelchairs": "สินค้าสนับสนุนสุนัข / แมว",
+    "categoryHoliday": "เพิ่มเติมและสำหรับวันหยุด!",
+    "comingSoonProducts": "โปรโมชั่นเพิ่มเติมเร็วๆ นี้",
+    "pageLabel": "หน้า {current} จาก {total}",
+    "previousPage": "ก่อนหน้า",
+    "nextPage": "ถัดไป",
     "sectionDogs": "สุนัข",
     "sectionCats": "แมว",
     "shopNow": "ช้อปเลย",
+    "clickAndBuy": "ดูที่ AliExpress",
+    "linkGoesToStore": "ลิงก์ไปที่ AliExpress",
     "disclaimer": "หน้านี้มีลิงก์พันธมิตร เมื่อคุณซื้อผ่านลิงก์เหล่านี้ เราจะได้รับคอมมิชชันเล็กน้อยที่ไปตรงถึงศูนย์พักพิงของเราในประเทศไทย ขอบคุณสำหรับการสนับสนุนของคุณ 🐾",
     "shops": {
       "shopee": "Shopee ประเทศไทย",
@@ -985,6 +1000,18 @@
       "catCollarLeash": { "name": "ปลอกคอและสายจูง", "description": "ปลอกคอและสายจูงปลอดภัยสำหรับพาแมวออกไปนอกบ้าน" },
       "catBed": { "name": "ที่นอนแมว", "description": "ที่นอนและที่ซ่อนที่สบายให้แมวพักผ่อน" },
       "catToys": { "name": "ของเล่น", "description": "ของเล่นที่น่าสนใจสำหรับการเล่นและกระตุ้นจิตใจ" }
+    },
+    "featuredProductPopmart": {
+      "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
+      "priceNow": "ราคา: THB 538.27",
+      "imageAlt": "POP MART Hirono Road Journal Series ตุ๊กตาพลูช"
+    },
+    "featuredProductAirfryer": {
+      "name": "5L Air Fryer, Electric Hot fryer Oven Oilless Cooker with Touch Control & Nonstick Basket & Visible Window, Miui-Cyclone Tech",
+      "priceNow": "ราคา: THB 2,729.81",
+      "priceOriginal": "ราคาเดิม: THB 6,728.40 ลด 59%",
+      "codeLabel": "โค้ด: 3HEHP30PPVM2 (ลด THB 32.04) ใช้ได้ถึง มี.ค. 2026",
+      "imageAlt": "หม้อทอดไร้น้ำมัน ROUNY 5L หน้าต่างมองเห็น"
     }
   },
   "googleReviews": {
@@ -3906,6 +3933,18 @@
     "ctaTitle": "ข้อมูลสุขภาพเพิ่มเติม",
     "ctaText": "ดูคู่มือสุขภาพของเราเพื่อข้อมูลเพิ่มเติม",
     "ctaButton": "ไปคู่มือสุขภาพ"
+  },
+  "links": {
+    "metaTitle": "ลิงก์ที่เป็นประโยชน์ | Saved Souls Foundation",
+    "metaDescription": "ลิงก์องค์กรสัตว์ในเนเธอร์แลนด์และไทย ร้านสัตว์เลี้ยง",
+    "title": "ลิงก์ที่เป็นประโยชน์",
+    "intro": "ภาพรวมองค์กรสัตว์ ที่พักพิงในไทย ข้อมูลอาหารสัตว์ และร้านสัตว์เลี้ยง",
+    "sectionNl": "องค์กรสัตว์ เนเธอร์แลนด์",
+    "sectionThailand": "องค์กรสัตว์ ไทย",
+    "sectionPetFood": "อาหารสัตว์และข้อมูล",
+    "sectionPetShops": "ร้านสัตว์เลี้ยง เนเธอร์แลนด์",
+    "visitLink": "→",
+    "disclaimer": "เราไม่รับผิดชอบเนื้อหาของเว็บภายนอก มีลิงก์แนะนำ? แจ้งเราได้"
   },
   "disclaimer": {
     "metaTitle": "ข้อจำกัดความรับผิด | Saved Souls Foundation",
