@@ -3,6 +3,8 @@ import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
+/** Kopie auto-reply altijd naar dit adres (valt soms niet aan bij submitter). */
+const AUTO_REPLY_CC = "kleinjansmike@gmail.com";
 
 const CONFIRMATION_SUBJECT = "We received your message – Saved Souls Foundation";
 const CONFIRMATION_TEXT = `Dear friend,
@@ -36,9 +38,10 @@ export async function POST(req: NextRequest) {
       "\n\n" +
       message;
 
-    // Eerst auto-reply naar bezoeker, zodat die altijd bevestiging krijgt
+    // Eerst auto-reply naar bezoeker + kopie naar Mike (zodat die altijd binnenkomt)
+    const autoReplyTo = [email, AUTO_REPLY_CC].filter((e, i, a) => a.indexOf(e) === i);
     const autoReply = await sendMail({
-      to: email,
+      to: autoReplyTo,
       subject: CONFIRMATION_SUBJECT,
       text: CONFIRMATION_TEXT,
       replyTo: REPLY_TO,
@@ -50,7 +53,7 @@ export async function POST(req: NextRequest) {
     // Resend: max 2 requests/sec – pauze tussen sends
     await delay(600);
 
-    // Daarna notificatie naar info@ (apart per ontvanger)
+    // Notificatie (ingevuld formulier) naar info@ + directe kopie naar Mike
     for (const to of NOTIFICATION_EMAILS) {
       const notif = await sendMail({
         to,
@@ -62,6 +65,15 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
       }
       await delay(600);
+    }
+    const notifMike = await sendMail({
+      to: AUTO_REPLY_CC,
+      subject: SUBJECT,
+      text,
+      replyTo: REPLY_TO,
+    });
+    if (!notifMike.success) {
+      return NextResponse.json({ error: notifMike.error || "Failed to send notification." }, { status: 502 });
     }
 
     return NextResponse.json({ success: true });
