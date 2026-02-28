@@ -6,20 +6,119 @@ const REPLY_TO = "info@savedsouls-foundation.com";
 /** Kopie auto-reply altijd naar dit adres (valt soms niet aan bij submitter). */
 const AUTO_REPLY_CC = "kleinjansmike@gmail.com";
 
-const CONFIRMATION_SUBJECT = "We received your message – Saved Souls Foundation";
-const CONFIRMATION_TEXT = `Dear friend,
-
-Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you as soon as possible, usually within 48 hours.
-
-If your inquiry is urgent, you can also reach us directly at info@savedsouls-foundation.org.
-
-With gratitude,
-The Saved Souls Team
-Khon Kaen, Thailand
-https://savedsouls-foundation.com`;
-
 const ACCENT_GREEN = "#2aa348";
-const DONATE_URL = "https://www.savedsouls-foundation.com/en/donate";
+const BASE_URL = "https://www.savedsouls-foundation.com";
+const CONTACT_EMAIL = "info@savedsouls-foundation.org";
+const FOOTER_BG = "#1a3d2b";
+
+/** Compacte footer: 4 hoofdsocials (optie B). */
+const FOOTER_SOCIALS = [
+  { name: "Facebook", href: "https://www.facebook.com/SavedSoulsFoundation/" },
+  { name: "Instagram", href: "https://www.instagram.com/savedsoulsfoundation" },
+  { name: "YouTube", href: "https://www.youtube.com/@savedsoulsfoundation" },
+  { name: "TikTok", href: "https://www.tiktok.com/@savedsoulsfoundation" },
+];
+
+type AutoReplyContent = {
+  subject: string;
+  title: string;
+  greeting: string;
+  body1: string;
+  body2: string;
+  buttonText: string;
+  signature: string;
+  /** Korte regel: "Voor adres en openingstijden: [link]" */
+  contactPageHint: string;
+  footerMission: string;
+};
+
+const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
+  en: {
+    subject: "We received your message – Saved Souls Foundation",
+    title: "We received your message",
+    greeting: "Dear friend,",
+    body1: "Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you within 48 hours.",
+    body2: "If your inquiry is urgent, you can also reach us at info@savedsouls-foundation.org.",
+    buttonText: "Support our work – Donate",
+    signature: "With gratitude, The Saved Souls Team, Khon Kaen, Thailand",
+    contactPageHint: "For address, opening hours and phone:",
+    footerMission: "Since 2010 we give broken souls a second chance — in Khon Kaen, Thailand.",
+  },
+  nl: {
+    subject: "We hebben je bericht ontvangen – Saved Souls Foundation",
+    title: "We hebben je bericht ontvangen",
+    greeting: "Beste vriend/vriendin,",
+    body1: "Bedankt voor je bericht aan Saved Souls Foundation. We hebben het ontvangen en nemen binnen 48 uur contact met je op.",
+    body2: "Bij spoed kun je ons ook bereiken op info@savedsouls-foundation.org.",
+    buttonText: "Steun ons werk – Doneer",
+    signature: "Met dank, Het Saved Souls Team, Khon Kaen, Thailand",
+    contactPageHint: "Voor adres, openingstijden en telefoon:",
+    footerMission: "Sinds 2010 geven wij gebroken zielen een tweede kans — in Khon Kaen, Thailand.",
+  },
+  de: {
+    subject: "Wir haben Ihre Nachricht erhalten – Saved Souls Foundation",
+    title: "Wir haben Ihre Nachricht erhalten",
+    greeting: "Liebe/r Freund/in,",
+    body1: "Vielen Dank für Ihre Kontaktaufnahme mit der Saved Souls Foundation. Wir haben Ihre Nachricht erhalten und melden uns innerhalb von 48 Stunden.",
+    body2: "Bei Dringlichkeit erreichen Sie uns auch unter info@savedsouls-foundation.org.",
+    buttonText: "Unser Projekt unterstützen – Spenden",
+    signature: "Mit Dank, Das Saved Souls Team, Khon Kaen, Thailand",
+    contactPageHint: "Adresse, Öffnungszeiten und Telefon:",
+    footerMission: "Seit 2010 geben wir gebrochenen Seelen eine zweite Chance — in Khon Kaen, Thailand.",
+  },
+  es: {
+    subject: "Hemos recibido tu mensaje – Saved Souls Foundation",
+    title: "Hemos recibido tu mensaje",
+    greeting: "Estimado/a amigo/a,",
+    body1: "Gracias por contactar con Saved Souls Foundation. Hemos recibido tu mensaje y te responderemos en 48 horas.",
+    body2: "Si es urgente, también puedes escribirnos a info@savedsouls-foundation.org.",
+    buttonText: "Apoya nuestro trabajo – Donar",
+    signature: "Con gratitud, El equipo de Saved Souls, Khon Kaen, Tailandia",
+    contactPageHint: "Dirección, horario y teléfono:",
+    footerMission: "Desde 2010 damos una segunda oportunidad a almas rotas — en Khon Kaen, Tailandia.",
+  },
+  th: {
+    subject: "เราได้รับข้อความของคุณแล้ว – Saved Souls Foundation",
+    title: "เราได้รับข้อความของคุณแล้ว",
+    greeting: "สวัสดีครับ/ค่ะ",
+    body1: "ขอบคุณที่ติดต่อ Saved Souls Foundation เราได้รับข้อความแล้วและจะติดต่อกลับภายใน 48 ชั่วโมง",
+    body2: "หากเร่งด่วน สามารถติดต่อเราได้ที่ info@savedsouls-foundation.org",
+    buttonText: "สนับสนุนเรา – บริจาค",
+    signature: "ด้วยความขอบคุณ, ทีม Saved Souls, ขอนแก่น ประเทศไทย",
+    contactPageHint: "ที่อยู่ เวลาเปิด และโทร:",
+    footerMission: "ตั้งแต่ปี 2010 เราให้โอกาสที่สองกับดวงวิญญาณที่บาดเจ็บ — ที่ขอนแก่น ประเทศไทย",
+  },
+  ru: {
+    subject: "Мы получили ваше сообщение – Saved Souls Foundation",
+    title: "Мы получили ваше сообщение",
+    greeting: "Дорогой друг,",
+    body1: "Спасибо за обращение в Saved Souls Foundation. Мы получили ваше сообщение и ответим в течение 48 часов.",
+    body2: "В срочных случаях пишите на info@savedsouls-foundation.org.",
+    buttonText: "Поддержать нас – Пожертвовать",
+    signature: "С благодарностью, команда Saved Souls, Кхонкэн, Таиланд",
+    contactPageHint: "Адрес, часы работы и телефон:",
+    footerMission: "С 2010 года мы даём сломанным душам второй шанс — в Кхонкэне, Таиланд.",
+  },
+};
+
+function getAutoReplyContent(locale: string): AutoReplyContent {
+  const lang = (locale || "en").slice(0, 2).toLowerCase();
+  return AUTO_REPLY_I18N[lang] ?? AUTO_REPLY_I18N.en;
+}
+
+function getDonateUrl(locale: string): string {
+  const lang = (locale || "en").slice(0, 2).toLowerCase();
+  const supported = ["en", "nl", "de", "es", "th", "ru"];
+  const seg = supported.includes(lang) ? lang : "en";
+  return `${BASE_URL}/${seg}/donate`;
+}
+
+function getContactPageUrl(locale: string): string {
+  const lang = (locale || "en").slice(0, 2).toLowerCase();
+  const supported = ["en", "nl", "de", "es", "th", "ru"];
+  const seg = supported.includes(lang) ? lang : "en";
+  return `${BASE_URL}/${seg}/contact`;
+}
 
 function escapeHtml(s: string): string {
   return s
@@ -52,24 +151,67 @@ function buildNotificationHtml(name: string, email: string, subject: string, mes
 </div></body></html>`;
 }
 
-function buildAutoReplyHtml(includeDonateButton: boolean): string {
+function buildAutoReplyText(content: AutoReplyContent, locale: string): string {
+  const contactPageUrl = getContactPageUrl(locale);
+  const socialLine = FOOTER_SOCIALS.map((s) => `${s.name}: ${s.href}`).join(" · ");
+  return `${content.greeting}
+
+${content.body1}
+
+${content.body2}
+
+${content.signature}
+
+---
+${content.contactPageHint} ${contactPageUrl}
+
+---
+Saved Souls Foundation
+${content.footerMission}
+${BASE_URL}
+Follow us: ${socialLine}`;
+}
+
+function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): string {
+  const c = getAutoReplyContent(locale);
+  const donateUrl = getDonateUrl(locale);
+  const contactPageUrl = getContactPageUrl(locale);
+  const contactLink = `<a href="mailto:${escapeHtml(CONTACT_EMAIL)}" style="color:${ACCENT_GREEN};">${escapeHtml(CONTACT_EMAIL)}</a>`;
+  const body2Html = escapeHtml(c.body2).replace(escapeHtml(CONTACT_EMAIL), contactLink);
   const buttonBlock = includeDonateButton
-    ? `<p style="margin:0 0 24px;">If your inquiry is urgent, you can also reach us at <a href="mailto:info@savedsouls-foundation.org" style="color:${ACCENT_GREEN};">info@savedsouls-foundation.org</a>.</p>
-    <a href="${DONATE_URL}" style="display:inline-block;background:${ACCENT_GREEN};color:#fff;text-decoration:none;padding:14px 28px;border-radius:8px;font-weight:600;">Support our work – Donate</a>`
-    : `<p style="margin:0 0 24px;">If your inquiry is urgent, you can also reach us at <a href="mailto:info@savedsouls-foundation.org" style="color:${ACCENT_GREEN};">info@savedsouls-foundation.org</a>.</p>`;
+    ? `<p style="margin:0 0 24px;">${body2Html}</p>
+    <a href="${donateUrl}" style="display:inline-block;background:${ACCENT_GREEN};color:#fff;text-decoration:none;padding:14px 28px;border-radius:8px;font-weight:600;">${escapeHtml(c.buttonText)}</a>`
+    : `<p style="margin:0 0 24px;">${body2Html}</p>`;
+  const sigHtml = escapeHtml(c.signature).replace(/, /g, "<br>");
+  const contactPageLinkHtml = `<a href="${escapeHtml(contactPageUrl)}" style="color:${ACCENT_GREEN};">${escapeHtml(contactPageUrl)}</a>`;
+  const contactHintHtml = `${escapeHtml(c.contactPageHint)} ${contactPageLinkHtml}`;
+  const socialLinksHtml = FOOTER_SOCIALS.map(
+    (s) => `<a href="${escapeHtml(s.href)}" style="color:#fff;text-decoration:none;font-size:13px;opacity:0.9;">${escapeHtml(s.name)}</a>`
+  ).join(" &nbsp;·&nbsp; ");
+  const footerMissionHtml = escapeHtml(c.footerMission);
+  const websiteLinkHtml = `<a href="${BASE_URL}" style="color:#fff;text-decoration:underline;opacity:0.95;">${escapeHtml(BASE_URL)}</a>`;
   return `<!DOCTYPE html><html><body style="margin:0;font-family:sans-serif;background:#f5f5f5;padding:24px;">
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
   <div style="background:${ACCENT_GREEN};color:#fff;padding:24px;">
-    <h1 style="margin:0;font-size:22px;font-weight:600;">We received your message</h1>
+    <h1 style="margin:0;font-size:22px;font-weight:600;">${escapeHtml(c.title)}</h1>
     <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">Saved Souls Foundation</p>
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
-    <p style="margin:0 0 16px;">Dear friend,</p>
-    <p style="margin:0 0 16px;">Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you within 48 hours.</p>
+    <p style="margin:0 0 16px;">${escapeHtml(c.greeting)}</p>
+    <p style="margin:0 0 16px;">${escapeHtml(c.body1)}</p>
     ${buttonBlock}
   </div>
   <div style="padding:16px 24px;background:#f9f9f9;font-size:13px;color:#666;">
-    With gratitude,<br>The Saved Souls Team<br>Khon Kaen, Thailand
+    ${sigHtml}
+  </div>
+  <div style="padding:12px 24px;border-top:1px solid #eee;font-size:13px;color:#555;">
+    ${contactHintHtml}
+  </div>
+  <div style="background:${FOOTER_BG};color:#fff;padding:20px 24px;text-align:center;font-size:13px;">
+    <p style="margin:0 0 4px;font-weight:600;">Saved Souls Foundation</p>
+    <p style="margin:0 0 10px;opacity:0.85;line-height:1.4;">${footerMissionHtml}</p>
+    <p style="margin:0 0 12px;font-size:12px;">${websiteLinkHtml}</p>
+    <p style="margin:0;font-size:12px;">${socialLinksHtml}</p>
   </div>
 </div></body></html>`;
 }
@@ -81,9 +223,13 @@ export async function POST(req: NextRequest) {
     const email = b.email?.trim();
     const subject = b.subject?.trim() || "";
     const message = b.message?.trim();
+    const locale = typeof b.locale === "string" ? b.locale : "en";
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
     }
+
+    const autoReplyContent = getAutoReplyContent(locale);
+    const confirmationText = buildAutoReplyText(autoReplyContent, locale);
 
     const text =
       "Name: " +
@@ -94,12 +240,12 @@ export async function POST(req: NextRequest) {
       "\n\n" +
       message;
 
-    // Auto-reply: bezoeker krijgt versie mét donatieknop, organisatie (Mike) kopie zónder knop
+    // Auto-reply in gekozen taal: bezoeker mét donatieknop, organisatie (Mike) zónder knop
     const autoReplyVisitor = await sendMail({
       to: email,
-      subject: CONFIRMATION_SUBJECT,
-      text: CONFIRMATION_TEXT,
-      html: buildAutoReplyHtml(true),
+      subject: autoReplyContent.subject,
+      text: confirmationText,
+      html: buildAutoReplyHtml(locale, true),
       replyTo: REPLY_TO,
     });
     if (!autoReplyVisitor.success) {
@@ -109,9 +255,9 @@ export async function POST(req: NextRequest) {
       await delay(600);
       const autoReplyMike = await sendMail({
         to: AUTO_REPLY_CC,
-        subject: CONFIRMATION_SUBJECT,
-        text: CONFIRMATION_TEXT,
-        html: buildAutoReplyHtml(false),
+        subject: autoReplyContent.subject,
+        text: confirmationText,
+        html: buildAutoReplyHtml(locale, false),
         replyTo: REPLY_TO,
       });
       if (!autoReplyMike.success) {
