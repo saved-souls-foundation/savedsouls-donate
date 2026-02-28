@@ -8,6 +8,15 @@ import { GoogleAnalytics } from "./GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
   description:
     "Saved Souls Foundation in Khon Kaen, Thailand: the only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs. Donate since 2010.",
   keywords: ["Saved Souls Foundation", "Thailand", "Khon Kaen", "disabled dogs", "rescued dogs", "stray dogs", "wheelchair dogs", "paralyzed dogs", "dog rescue Thailand", "animal shelter Thailand", "donate", "adopt dog", "sponsor dog"],
@@ -124,6 +133,12 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <head>
+        {/* Favicons & PWA icons (bestanden in public/) */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />

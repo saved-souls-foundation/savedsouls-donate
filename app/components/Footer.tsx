@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -53,9 +52,7 @@ function SocialIcon({ icon, className }: { icon: string; className?: string }) {
 }
 
 export default function Footer() {
-  const [mounted, setMounted] = useState(false);
   const t = useTranslations("common");
-  useEffect(() => setMounted(true), []);
   return (
     <footer
       className="py-8 md:py-10 text-white"
@@ -103,70 +100,59 @@ export default function Footer() {
 
         <div className="border-t border-white/10 my-6" />
 
-        {/* 4-column links: alleen na mount i.v.m. hydration (locale/next-intl) */}
+        {/* 4-column links: Organisatie | Doe mee | Informatie | Acties */}
         <nav
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
           aria-label="Footer navigation"
           style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }}
         >
-          {mounted ? (
-            <>
-              <div>
-                <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
-                  {t("footerColOrganisation")}
-                </p>
-                <ul className="space-y-3">
-                  <li><Link href="/story" className="text-sm text-white/70 hover:text-white transition-colors">{t("ourStory")}</Link></li>
-                  <li><Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors">{t("contact")}</Link></li>
-                  <li><Link href="/about-us" className="text-sm text-white/70 hover:text-white transition-colors">{t("aboutUs")}</Link></li>
-                  <li><Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors">{t("blog")}</Link></li>
-                  <li><Link href="/faq" className="text-sm text-white/70 hover:text-white transition-colors">{t("faq")}</Link></li>
-                  <li><Link href="/disclaimer" className="text-sm text-white/70 hover:text-white transition-colors">{t("disclaimer")}</Link></li>
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
-                  {t("footerColGetInvolved")}
-                </p>
-                <ul className="space-y-3">
-                  <li><Link href="/get-involved" className="text-sm text-white/70 hover:text-white transition-colors">{t("getInvolved")}</Link></li>
-                  <li><Link href="/dashboard" className="text-sm text-white/70 hover:text-white transition-colors">{t("myProgress")}</Link></li>
-                  <li><Link href="/shop" className="text-sm text-white/70 hover:text-white transition-colors">{t("shop")}</Link></li>
-                  <li><Link href="/affiliate" className="text-sm text-white/70 hover:text-white transition-colors">{t("helpAndShop")}</Link></li>
-                  <li><Link href="/partners" className="text-sm text-white/70 hover:text-white transition-colors">{t("partners")}</Link></li>
-                  <li><Link href="/shelters" className="text-sm text-white/70 hover:text-white transition-colors">{t("shelters")}</Link></li>
-                  <li><Link href="/thank-you" className="text-sm text-white/70 hover:text-white transition-colors">{t("thankYou")}</Link></li>
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
-                  {t("footerColInfo")}
-                </p>
-                <ul className="space-y-3">
-                  <li><Link href="/gidsen" className="text-sm text-white/70 hover:text-white transition-colors">{t("gidsen")}</Link></li>
-                  <li><Link href="/links" className="text-sm text-white/70 hover:text-white transition-colors">{t("usefulLinks")}</Link></li>
-                  <li><Link href="/street-dogs-thailand" className="text-sm text-white/70 hover:text-white transition-colors">{t("streetDogsThailand")}</Link></li>
-                  <li><Link href="/school-project" className="text-sm text-white/70 hover:text-white transition-colors">{t("schoolProject")}</Link></li>
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
-                  {t("footerColActions")}
-                </p>
-                <ul className="space-y-3">
-                  <li><Link href="/car-action" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("carAction")}</Link></li>
-                  <li><Link href="/clinic-renovation" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("footerClinicAction")}</Link></li>
-                </ul>
-              </div>
-            </>
-          ) : (
-            <>
-              <div><div className="h-8 mb-4 bg-white/10 rounded w-24" /><ul className="space-y-3">{[1,2,3,4,5,6].map((i) => <li key={i}><span className="block h-4 w-20 bg-white/10 rounded" /></li>)}</ul></div>
-              <div><div className="h-8 mb-4 bg-white/10 rounded w-24" /><ul className="space-y-3">{[1,2,3,4,5,6,7].map((i) => <li key={i}><span className="block h-4 w-20 bg-white/10 rounded" /></li>)}</ul></div>
-              <div><div className="h-8 mb-4 bg-white/10 rounded w-24" /><ul className="space-y-3">{[1,2,3,4].map((i) => <li key={i}><span className="block h-4 w-20 bg-white/10 rounded" /></li>)}</ul></div>
-              <div><div className="h-8 mb-4 bg-white/10 rounded w-24" /><ul className="space-y-3">{[1,2].map((i) => <li key={i}><span className="block h-4 w-24 bg-white/10 rounded" /></li>)}</ul></div>
-            </>
-          )}
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColOrganisation")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/story" className="text-sm text-white/70 hover:text-white transition-colors">{t("ourStory")}</Link></li>
+              <li><Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors">{t("contact")}</Link></li>
+              <li><Link href="/about-us" className="text-sm text-white/70 hover:text-white transition-colors">{t("aboutUs")}</Link></li>
+              <li><Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors">{t("blog")}</Link></li>
+              <li><Link href="/faq" className="text-sm text-white/70 hover:text-white transition-colors">{t("faq")}</Link></li>
+              <li><Link href="/disclaimer" className="text-sm text-white/70 hover:text-white transition-colors">{t("disclaimer")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColGetInvolved")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/get-involved" className="text-sm text-white/70 hover:text-white transition-colors">{t("getInvolved")}</Link></li>
+              <li><Link href="/dashboard" className="text-sm text-white/70 hover:text-white transition-colors">{t("myProgress")}</Link></li>
+              <li><Link href="/shop" className="text-sm text-white/70 hover:text-white transition-colors">{t("shop")}</Link></li>
+              <li><Link href="/affiliate" className="text-sm text-white/70 hover:text-white transition-colors">{t("helpAndShop")}</Link></li>
+              <li><Link href="/partners" className="text-sm text-white/70 hover:text-white transition-colors">{t("partners")}</Link></li>
+              <li><Link href="/shelters" className="text-sm text-white/70 hover:text-white transition-colors">{t("shelters")}</Link></li>
+              <li><Link href="/thank-you" className="text-sm text-white/70 hover:text-white transition-colors">{t("thankYou")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColInfo")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/gidsen" className="text-sm text-white/70 hover:text-white transition-colors">{t("gidsen")}</Link></li>
+              <li><Link href="/links" className="text-sm text-white/70 hover:text-white transition-colors">{t("usefulLinks")}</Link></li>
+              <li><Link href="/street-dogs-thailand" className="text-sm text-white/70 hover:text-white transition-colors">{t("streetDogsThailand")}</Link></li>
+              <li><Link href="/school-project" className="text-sm text-white/70 hover:text-white transition-colors">{t("schoolProject")}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
+              {t("footerColActions")}
+            </p>
+            <ul className="space-y-3">
+              <li><Link href="/car-action" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("carAction")}</Link></li>
+              <li><Link href="/clinic-renovation" className="text-sm font-medium text-white/90 hover:text-white transition-colors">{t("footerClinicAction")}</Link></li>
+            </ul>
+          </div>
         </nav>
 
         <div className="border-t border-white/10 my-6" />
