@@ -41,11 +41,12 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
 
   const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
     const all: NavDropdownItem[] = [
+      { href: "/get-involved", label: t("getInvolved"), description: t("menuGetInvolvedOverview"), icon: Home },
       { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
       { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
       { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
       { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
-      { href: "/gidsen", label: t("gidsen"), description: t("menuGidsenSubtext"), icon: BookOpen },
+      { href: "/gidsen", label: t("menuGidsenLabel"), description: t("menuGidsenSubtext"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
       { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
       { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
       { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
@@ -275,6 +276,17 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
               {t("menuSectionGetInvolved")}
             </p>
+            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden mb-3">
+              <Link
+                href="/get-involved"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
+              >
+                <Home size={18} color={ICON_GREEN} aria-hidden />
+                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("getInvolved")}</span>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               {/* Card 1 – Adopteer een hond */}
               <Link
@@ -401,10 +413,15 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               <Link
                 href="/gidsen"
                 onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 bg-amber-50 hover:bg-amber-100/80 active:bg-amber-100 transition-colors"
               >
-                <BookOpen size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("gidsen")}</span>
+                <span className="absolute top-2 right-3 bg-amber-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
+                  {t("menuInformativeBadge")}
+                </span>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100 shrink-0">
+                  <BookOpen size={16} color="#b45309" aria-hidden />
+                </div>
+                <span className="font-medium text-[15px] text-amber-900 flex-1">{t("menuGidsenLabel")}</span>
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
               </Link>
               <Link

@@ -14,6 +14,10 @@ export type NavDropdownItem = {
   iconBg?: string;
   /** Highlight as featured (e.g. Influencers with purple styling) */
   highlight?: boolean;
+  /** Gele button-stijl + badge (e.g. Gidsen met "Informatief") */
+  highlightYellow?: boolean;
+  /** Badge-tekst (bijv. "Nieuw" of "Informatief") */
+  badgeLabel?: string;
 };
 
 type BottomCta = {
@@ -168,11 +172,14 @@ export default function NavDropdown({
               })}
             </div>
           ) : (
-            /* INVOLVED: Single column list with icon + title + subtitle */
+            /* INVOLVED: Single column list with icon + title + subtitle; eerste item (Doe mee → /get-involved) als overzicht benadrukt */
             <div className="flex flex-col gap-0.5">
               {items.map((item) => {
                 const Icon = item.icon;
                 const isHighlight = item.highlight ?? item.href === "/influencers";
+                const isOverview = item.href === "/get-involved";
+                const isYellow = item.highlightYellow ?? item.href === "/gidsen";
+                const badge = item.badgeLabel ?? (isHighlight ? t("menuNewBadge") : isYellow ? t("menuInformativeBadge") : null);
                 return (
                   <Link
                     key={item.href + item.label}
@@ -181,32 +188,40 @@ export default function NavDropdown({
                     className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
-                        : "px-3 py-2.5 hover:bg-gray-50"
+                        : isYellow
+                          ? "min-h-[56px] px-3 py-2.5 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-xl"
+                          : isOverview
+                            ? "px-3 py-2.5 bg-green-50/70 hover:bg-green-50 border border-green-100/80"
+                            : "px-3 py-2.5 hover:bg-gray-50"
                     }`}
                   >
-                    {isHighlight && (
-                      <span className="absolute top-2 right-3 bg-purple-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-medium">
-                        {t("menuNewBadge")}
+                    {badge && (
+                      <span
+                        className={`absolute top-2 right-3 text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                          isHighlight ? "bg-purple-500 text-white" : isYellow ? "bg-amber-500 text-white" : ""
+                        }`}
+                      >
+                        {badge}
                       </span>
                     )}
                     {Icon && (
                       <div
                         className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-                          isHighlight ? "bg-purple-100" : "bg-green-50"
+                          isHighlight ? "bg-purple-100" : isYellow ? "bg-amber-100" : "bg-green-50"
                         }`}
                       >
-                        <Icon size={16} color={isHighlight ? ICON_PURPLE : ICON_GREEN} aria-hidden />
+                        <Icon size={16} color={isHighlight ? ICON_PURPLE : isYellow ? "#b45309" : ICON_GREEN} aria-hidden />
                       </div>
                     )}
                     <div className="flex-1 min-w-0 pr-8">
                       <div
-                        className={`font-medium text-sm ${isHighlight ? "text-[#6d28d9]" : "text-gray-800"}`}
+                        className={`font-medium text-sm ${isHighlight ? "text-[#6d28d9]" : isYellow ? "text-amber-900" : "text-gray-800"}`}
                         style={isHighlight ? { fontWeight: 600 } : undefined}
                       >
                         {item.label}
                       </div>
                       {item.description && (
-                        <div className={`text-xs ${isHighlight ? "text-purple-400" : "text-gray-400"}`}>
+                        <div className={`text-xs ${isHighlight ? "text-purple-400" : isYellow ? "text-amber-700" : "text-gray-400"}`}>
                           {item.description}
                         </div>
                       )}
