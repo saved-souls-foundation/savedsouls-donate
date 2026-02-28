@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendMail, NOTIFICATION_EMAILS } from "@/lib/sendMail";
+import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
-const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
+const REPLY_TO = "info@savedsouls-foundation.com";
 
 const CONFIRMATION_SUBJECT = "We received your message – Saved Souls Foundation";
 const CONFIRMATION_TEXT = `Dear friend,
@@ -47,6 +47,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: autoReply.error || "Failed to send confirmation." }, { status: 502 });
     }
 
+    // Resend: max 2 requests/sec – pauze tussen sends
+    await delay(600);
+
     // Daarna notificatie naar info@ (apart per ontvanger)
     for (const to of NOTIFICATION_EMAILS) {
       const notif = await sendMail({
@@ -58,6 +61,7 @@ export async function POST(req: NextRequest) {
       if (!notif.success) {
         return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
       }
+      await delay(600);
     }
 
     return NextResponse.json({ success: true });

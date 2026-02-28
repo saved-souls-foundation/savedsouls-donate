@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { delay } from "@/lib/sendMail";
 
 const TO_VOLUNTEER = "volunteer@savedsouls-foundation.org";
 const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
 // From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
 const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
-const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
+const REPLY_TO = "info@savedsouls-foundation.com";
 
 const AUTO_REPLY_SUBJECT = "We received your volunteer application – Saved Souls Foundation";
 const AUTO_REPLY_TEXT = `Dear friend,
@@ -80,6 +81,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to send confirmation." }, { status: 502 });
     }
 
+    await delay(600);
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },

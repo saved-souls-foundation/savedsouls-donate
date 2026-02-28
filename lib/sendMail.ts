@@ -52,6 +52,11 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
   }
 }
 
+/** Resend rate limit: max 2 requests/sec. Pauze tussen meerdere sends. */
+export function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /** Both notification recipients for form submissions. */
 export const NOTIFICATION_EMAILS = [
   "info@savedsouls-foundation.com",
