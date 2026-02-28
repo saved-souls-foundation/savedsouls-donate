@@ -120,6 +120,21 @@ function getContactPageUrl(locale: string): string {
   return `${BASE_URL}/${seg}/contact`;
 }
 
+const SUPPORTED_LOCALES = ["en", "nl", "de", "es", "th", "ru"] as const;
+
+/** Bepaalt taal uit Referer-URL (bv. …/de/contact → "de") als fallback als body geen geldige locale stuurt. */
+function getLocaleFromReferer(referer: string | null): string | null {
+  if (!referer || typeof referer !== "string") return null;
+  try {
+    const url = new URL(referer);
+    const path = url.pathname;
+    const match = path.match(/^\/(en|nl|de|es|th|ru)(?:\/|$)/);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -223,7 +238,12 @@ export async function POST(req: NextRequest) {
     const email = b.email?.trim();
     const subject = b.subject?.trim() || "";
     const message = b.message?.trim();
-    const locale = typeof b.locale === "string" ? b.locale : "en";
+    const fromBody = typeof b.locale === "string" ? b.locale.trim().slice(0, 2).toLowerCase() : "";
+    const fromReferer = getLocaleFromReferer(req.headers.get("referer") ?? null);
+    const locale =
+      fromBody && SUPPORTED_LOCALES.includes(fromBody as (typeof SUPPORTED_LOCALES)[number])
+        ? fromBody
+        : fromReferer ?? "en";
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
     }
