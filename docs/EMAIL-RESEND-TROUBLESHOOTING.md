@@ -50,6 +50,18 @@ Als de **auto-reply** wél aankomt bij de bezoeker maar de **notificatiemail** (
 
 Porkbun-docs: Email Forwarding en MX-records voor het domein. Zodra MX naar de juiste ontvangende server wijst en de forwarder aan staat, zou de notificatiemail bij de forwarder binnen moeten komen.
 
+## DMARC (aanbevolen voor betere levering)
+
+In Porkbun: DNS voor savedsouls-foundation.com → TXT-record voor host `_dmarc` aanpassen.
+
+**Aanbevolen waarde (quarantine i.p.v. none):**
+```text
+v=DMARC1; p=quarantine; rua=mailto:info@savedsouls-foundation.com
+```
+
+- `p=quarantine` – mail die DMARC faalt komt in spam/quarantine (beter voor reputatie dan `p=none`).
+- `rua=` – rapporten gaan naar info@.com.
+
 ## Environment variables (Vercel)
 
 - **RESEND_API_KEY** – verplicht; moet in **Production** (en eventueel Preview) staan.

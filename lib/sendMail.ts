@@ -17,6 +17,7 @@ export type SendMailOptions = {
   to: string | string[];
   subject: string;
   text: string;
+  html?: string;
   replyTo?: string;
 };
 
@@ -38,6 +39,7 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
       replyTo: options.replyTo,
       subject: options.subject,
       text: options.text,
+      ...(options.html && { html: options.html }),
     });
     const { data, error } = result;
     if (error) {
