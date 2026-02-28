@@ -179,7 +179,8 @@ export default function NavDropdown({
                 const isHighlight = item.highlight ?? item.href === "/influencers";
                 const isOverview = item.href === "/get-involved";
                 const isYellow = item.highlightYellow ?? item.href === "/gidsen";
-                const badge = item.badgeLabel ?? (isHighlight ? t("menuNewBadge") : isYellow ? t("menuInformativeBadge") : null);
+                const badgeText = isHighlight ? (item.badgeLabel || t("menuNewBadge")) : isYellow ? (item.badgeLabel || t("menuInformativeBadge")) : item.badgeLabel || null;
+                const badge = badgeText ? String(badgeText).trim() : null;
                 return (
                   <Link
                     key={item.href + item.label}
@@ -189,7 +190,7 @@ export default function NavDropdown({
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
                         : isYellow
-                          ? "min-h-[56px] px-3 py-2.5 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-xl"
+                          ? "min-h-[56px] px-3 py-2.5 bg-amber-100 hover:bg-amber-200/60 border border-amber-300 rounded-xl"
                           : isOverview
                             ? "px-3 py-2.5 bg-green-50/70 hover:bg-green-50 border border-green-100/80"
                             : "px-3 py-2.5 hover:bg-gray-50"

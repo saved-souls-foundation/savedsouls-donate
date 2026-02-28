@@ -413,9 +413,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               <Link
                 href="/gidsen"
                 onClick={closeMobileMenu}
-                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 bg-amber-50 hover:bg-amber-100/80 active:bg-amber-100 transition-colors"
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-amber-200/80 bg-amber-100 hover:bg-amber-200/60 active:bg-amber-200 transition-colors"
               >
-                <span className="absolute top-2 right-3 bg-amber-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-3 bg-amber-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
                   {t("menuInformativeBadge")}
                 </span>
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100 shrink-0">

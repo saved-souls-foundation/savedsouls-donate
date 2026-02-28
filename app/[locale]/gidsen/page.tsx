@@ -4,6 +4,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import { GIDSEN_GROUPS } from "@/lib/gidsen-data";
 import GidsenHub from "./GidsenHub";
+import GidsenAccordion from "./GidsenAccordion";
 import AnimalWelfareOrgsSection from "./AnimalWelfareOrgsSection";
 
 export default async function GidsenPage() {
@@ -31,6 +32,14 @@ export default async function GidsenPage() {
           {/* Search + Category cards */}
           <section className="py-8">
             <GidsenHub groups={GIDSEN_GROUPS} />
+          </section>
+
+          {/* Alle gidsen per categorie (klik op kaart gaat hier naartoe met anker) */}
+          <section className="max-w-5xl mx-auto px-6 py-8" aria-labelledby="gidsen-accordion-heading">
+            <h2 id="gidsen-accordion-heading" className="text-xl font-bold text-stone-900 dark:text-stone-100 mb-4">
+              {t("allGuidesByCategory")}
+            </h2>
+            <GidsenAccordion groups={GIDSEN_GROUPS} accentGreen="#2aa348" />
           </section>
 
           {/* Partner organisations */}

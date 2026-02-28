@@ -1150,6 +1150,7 @@
     "categoryDescCats": "คู่มือแมวเฉพาะ",
     "categoryDescTravel": "เดินทางกับสัตว์เลี้ยงและพันธมิตรของเรา",
     "guidesCount": "{count} คู่มือ",
+    "allGuidesByCategory": "คู่มือทั้งหมดตามหมวดหมู่",
     "badgeSpecialty": "ความเชี่ยวชาญของเรา ⭐",
     "moreGuides": "+ {count} เพิ่มเติม",
     "animalWelfareOrgs": {

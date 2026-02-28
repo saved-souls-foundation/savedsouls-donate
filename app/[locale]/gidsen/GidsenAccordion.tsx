@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { GuideGroup } from "@/lib/gidsen-data";
@@ -23,15 +24,34 @@ type Props = {
 export default function GidsenAccordion({ groups, accentGreen }: Props) {
   const tCommon = useTranslations("common");
   const tGetInvolved = useTranslations("getInvolved");
+  const refs = useRef<Record<string, HTMLDetailsElement | null>>({});
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  const applyHash = () => {
+    const hash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+    if (hash && groups.some((g) => g.placeholderKey === hash)) {
+      setOpenId(hash);
+      const el = refs.current[hash];
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  };
+
+  useEffect(() => {
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, [groups]);
 
   return (
     <div className="divide-y divide-stone-200 dark:divide-stone-700">
       {groups.map((group, index) => (
         <details
           key={group.placeholderKey}
+          id={group.placeholderKey}
+          ref={(r) => { refs.current[group.placeholderKey] = r; }}
           className="group transition-colors"
           style={{ borderLeft: `4px solid ${CATEGORY_ACCENTS[index % CATEGORY_ACCENTS.length]}` }}
-          open={index === 0}
+          open={openId ? openId === group.placeholderKey : index === 0}
         >
           <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none select-none hover:bg-stone-50/80 dark:hover:bg-stone-800/50 transition-colors">
             <span className="font-medium text-stone-900 dark:text-stone-100" style={{ color: accentGreen }}>

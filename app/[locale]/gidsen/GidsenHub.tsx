@@ -135,13 +135,13 @@ export default function GidsenHub({ groups }: { groups: GuideGroup[] }) {
               tabIndex={0}
               onClick={(e) => {
                 if ((e.target as HTMLElement).closest("a")) return;
-                router.push(group.links[0]?.href ?? "/gidsen");
+                router.push(`/gidsen#${group.placeholderKey}`);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   if (!(e.target as HTMLElement).closest("a")) {
-                    router.push(group.links[0]?.href ?? "/gidsen");
+                    router.push(`/gidsen#${group.placeholderKey}`);
                   }
                 }
               }}
@@ -178,7 +178,7 @@ export default function GidsenHub({ groups }: { groups: GuideGroup[] }) {
                 )}
               </div>
               <Link
-                href={group.links[0]?.href ?? "/gidsen"}
+                href={`/gidsen#${group.placeholderKey}`}
                 className="text-sm font-medium mt-4 block hover:underline"
                 style={{ color: config.accent }}
               >

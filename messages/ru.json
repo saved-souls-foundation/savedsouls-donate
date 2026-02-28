@@ -1150,6 +1150,7 @@
     "categoryDescCats": "Специальные руководства по кошкам",
     "categoryDescTravel": "Путешествия с питомцем и наши партнёры",
     "guidesCount": "{count} руководств",
+    "allGuidesByCategory": "Все руководства по категориям",
     "badgeSpecialty": "Наша специализация ⭐",
     "moreGuides": "+ {count} ещё",
     "animalWelfareOrgs": {
