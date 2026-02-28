@@ -100,11 +100,12 @@ export default function Footer() {
 
         <div className="border-t border-white/10 my-6" />
 
-        {/* 4-column links: Organisatie | Doe mee | Informatie | Acties */}
+        {/* 4-column links: Organisatie | Doe mee | Informatie | Acties – suppressHydrationWarning i.v.m. locale/href-mismatch server vs client */}
         <nav
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
           aria-label="Footer navigation"
           style={{ paddingBottom: "max(4rem, env(safe-area-inset-bottom, 1rem))" }}
+          suppressHydrationWarning
         >
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mb-4">
