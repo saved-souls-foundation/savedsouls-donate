@@ -3,7 +3,8 @@ import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/adm
 
 const TO_VOLUNTEER = "volunteer@savedsouls-foundation.org";
 const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
-const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <onboarding@resend.dev>";
+// From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
+const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
 const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
 
 const AUTO_REPLY_SUBJECT = "We received your volunteer application – Saved Souls Foundation";
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
     });
     if (!res.ok) {
       const err = await res.text();
-      console.error("Resend error:", err);
+      console.error("[Resend] volunteer-signup send error:", res.status, err);
       return NextResponse.json({ error: "Failed to send application." }, { status: 502 });
     }
 

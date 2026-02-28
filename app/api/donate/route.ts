@@ -41,14 +41,16 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join("\n");
 
-    const notif = await sendMail({
-      to: [...NOTIFICATION_EMAILS],
-      subject: SUBJECT,
-      text,
-      replyTo: REPLY_TO,
-    });
-    if (!notif.success) {
-      return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
+    for (const to of NOTIFICATION_EMAILS) {
+      const notif = await sendMail({
+        to,
+        subject: SUBJECT,
+        text,
+        replyTo: REPLY_TO,
+      });
+      if (!notif.success) {
+        return NextResponse.json({ error: notif.error || "Failed to send email." }, { status: 502 });
+      }
     }
 
     await sendMail({

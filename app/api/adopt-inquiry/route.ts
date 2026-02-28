@@ -3,7 +3,8 @@ import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/adm
 
 const TO_PRIMARY = "info@savedsouls-foundation.org";
 const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
-const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <onboarding@resend.dev>";
+// From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
+const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
 const REPLY_TO = "savedsoulsfoundationreply@gmail.com";
 
 const AUTO_REPLY_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
     });
     if (!res.ok) {
       const err = await res.text();
-      console.error("Resend error:", err);
+      console.error("[Resend] adopt-inquiry send error:", res.status, err);
       return NextResponse.json({ error: "Failed to send inquiry." }, { status: 502 });
     }
 
@@ -94,7 +95,7 @@ export async function POST(req: NextRequest) {
       }),
     });
     if (!autoRes.ok) {
-      console.error("Auto-reply failed:", await autoRes.text());
+      console.error("[Resend] adopt-inquiry auto-reply failed:", autoRes.status, await autoRes.text());
     }
 
     if (isSupabaseAdminConfigured()) {
