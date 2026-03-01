@@ -28,6 +28,7 @@ export default function PortalAdoptantPage() {
   const [loading, setLoading] = useState(true);
   const [adoptedAnimalImage, setAdoptedAnimalImage] = useState<string | null>(null);
   const [animalImages, setAnimalImages] = useState<Record<string, string[]>>({});
+  const [animalTypes, setAnimalTypes] = useState<Record<string, "dog" | "cat">>({});
 
   const hasSupabase = isSupabaseConfigured();
 
@@ -43,16 +44,19 @@ export default function PortalAdoptantPage() {
         router.replace("/dashboard/login");
         return;
       }
-      supabase
-        .from("profiles")
-        .select("voornaam, huidige_stap")
-        .eq("id", user.id)
-        .single()
+      void Promise.resolve(
+        supabase
+          .from("profiles")
+          .select("voornaam, huidige_stap")
+          .eq("id", user.id)
+          .single()
+      )
         .then(({ data }) => {
           setVoornaam(data?.voornaam ?? null);
           setCurrentStep(Math.max(1, Number(data?.huidige_stap) || 1));
         })
-        .finally(() => setLoading(false));
+        .catch(() => {})
+        .then(() => setLoading(false));
       // Adoptieaanvragen ophalen (RLS: alleen eigen aanvragen via e-mail)
       supabase
         .from("adoption_applications")
@@ -84,8 +88,13 @@ export default function PortalAdoptantPage() {
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
         if (!data?.dogs && !data?.cats) return;
-        const all = [...(data.dogs || []), ...(data.cats || [])];
+        const dogs = data.dogs || [];
+        const cats = data.cats || [];
+        const all = [...dogs, ...cats];
         const map: Record<string, string[]> = {};
+        const types: Record<string, "dog" | "cat"> = {};
+        dogs.forEach((a: { id: string }) => { types[String(a.id)] = "dog"; });
+        cats.forEach((a: { id: string }) => { types[String(a.id)] = "cat"; });
         ids.forEach((id) => {
           const animal = all.find((a: { id: string }) => String(a.id) === id) as { image?: string; images?: string[] } | undefined;
           const raws = animal?.images?.length ? animal.images : (animal?.image ? [animal.image] : []);
@@ -95,6 +104,7 @@ export default function PortalAdoptantPage() {
           if (urls.length) map[id] = urls;
         });
         setAnimalImages((prev) => ({ ...prev, ...map }));
+        setAnimalTypes((prev) => ({ ...prev, ...types }));
         const firstId = ids[0];
         if (firstId && map[firstId]?.[0]) setAdoptedAnimalImage(map[firstId][0]);
       })
@@ -138,12 +148,12 @@ export default function PortalAdoptantPage() {
   return (
     <div className="min-h-screen overflow-hidden bg-stone-50 dark:bg-stone-900 relative" data-portal="adoptant-v2">
       <SiteHeader />
-      {/* Paspoort-afbeelding als grote achtergrond achter de tekst, stopt ruim boven footer */}
-      <div className="absolute right-0 top-0 bottom-[260px] w-[min(58%,520px)] pointer-events-none z-0 flex justify-end items-start pt-20 md:pt-24" aria-hidden>
+      {/* Paspoort-afbeelding achter de tekst, iets groter, stopt bij laatste witte regel (niet in footer) */}
+      <div className="absolute right-0 top-0 bottom-[180px] w-[min(48%,380px)] pointer-events-none z-0 flex justify-end items-start pt-20 md:pt-24" aria-hidden>
         <img
           src="/paspoort1.webp"
           alt=""
-          className="h-[min(55vh,420px)] w-auto max-w-full object-contain object-right opacity-50"
+          className="h-[min(48vh,340px)] w-auto max-w-full object-contain object-right opacity-50"
           onError={(e) => {
             const el = e.target as HTMLImageElement;
             el.onerror = null;
@@ -284,23 +294,34 @@ export default function PortalAdoptantPage() {
                   >
                     {(app.animal_id || app.animal_name) && (
                       <div className="flex-shrink-0 flex gap-2">
-                        {[0, 1, 2].map((i) => (
-                          <div
-                            key={i}
-                            className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 bg-stone-100 dark:bg-stone-700 flex-shrink-0"
-                          >
-                            <img
-                              src={threeUrls[i]}
-                              alt={app.animal_name ? `${app.animal_name} ${i + 1}` : ""}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                const el = e.target as HTMLImageElement;
-                                el.onerror = null;
-                                el.src = PLACEHOLDER_ANIMAL;
-                              }}
-                            />
-                          </div>
-                        ))}
+                        {[0, 1, 2].map((i) => {
+                          const animalId = primaryId;
+                          const type = animalId ? (animalTypes[animalId] ?? "dog") : "dog";
+                          const href = animalId ? `/adopt/${type}/${animalId}` : null;
+                          const box = (
+                            <div
+                              className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 bg-stone-100 dark:bg-stone-700 flex-shrink-0"
+                            >
+                              <img
+                                src={threeUrls[i]}
+                                alt={app.animal_name ? `${app.animal_name} ${i + 1}` : ""}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  const el = e.target as HTMLImageElement;
+                                  el.onerror = null;
+                                  el.src = PLACEHOLDER_ANIMAL;
+                                }}
+                              />
+                            </div>
+                          );
+                          return href ? (
+                            <Link key={i} href={href} className="block focus:ring-2 focus:ring-offset-2 rounded-xl focus:ring-stone-400" aria-label={app.animal_name ? `${app.animal_name} – overzicht bekijken` : "Dier overzicht"}>
+                              {box}
+                            </Link>
+                          ) : (
+                            <div key={i}>{box}</div>
+                          );
+                        })}
                       </div>
                     )}
                     <div className="min-w-0 flex-1">

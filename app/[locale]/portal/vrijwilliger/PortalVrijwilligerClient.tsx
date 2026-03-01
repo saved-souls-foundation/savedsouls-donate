@@ -94,12 +94,12 @@ export default function PortalVrijwilligerClient() {
   return (
     <div className="min-h-screen overflow-hidden bg-stone-50 dark:bg-stone-900 relative" data-portal="vrijwilliger-v2">
       <SiteHeader />
-      {/* Paspoort-afbeelding als grote achtergrond achter de tekst, stopt ruim boven footer */}
-      <div className="absolute right-0 top-0 bottom-[260px] w-[min(58%,520px)] pointer-events-none z-0 flex justify-end items-start pt-20 md:pt-24" aria-hidden>
+      {/* Paspoort-afbeelding achter de tekst, iets groter, stopt bij laatste witte regel (niet in footer) */}
+      <div className="absolute right-0 top-0 bottom-[180px] w-[min(48%,380px)] pointer-events-none z-0 flex justify-end items-start pt-20 md:pt-24" aria-hidden>
         <img
           src="/paspoort1.webp"
           alt=""
-          className="h-[min(55vh,420px)] w-auto max-w-full object-contain object-right opacity-50"
+          className="h-[min(48vh,340px)] w-auto max-w-full object-contain object-right opacity-50"
           onError={(e) => {
             const el = e.target as HTMLImageElement;
             el.onerror = null;
