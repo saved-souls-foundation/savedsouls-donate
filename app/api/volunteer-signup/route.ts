@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { delay } from "@/lib/sendMail";
+import { verifyTurnstile } from "@/lib/verifyTurnstile";
 
-const TO_VOLUNTEER = "volunteer@savedsouls-foundation.org";
-const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
+const TO_VOLUNTEER = "info@savedsouls-foundation.org";
+const TO_MIKE_MONITOR = "mike@savedsouls-foundation.org";
 // From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
 const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -23,6 +24,10 @@ https://savedsouls-foundation.org`;
 export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
+    const valid = await verifyTurnstile(b.turnstileToken);
+    if (!valid) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
     const name = b.name;
     const email = b.email;
     const city = b.city;
@@ -87,7 +92,7 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
       body: JSON.stringify({
         from: FROM_EMAIL,
-        to: [TO_VOLUNTEER, TO_REPLY],
+        to: [TO_VOLUNTEER, TO_MIKE_MONITOR],
         replyTo: REPLY_TO,
         subject: subjectLine,
         text,

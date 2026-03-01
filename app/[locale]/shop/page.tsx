@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 
@@ -21,6 +20,7 @@ const PRODUCTS = [
 export default function ShopPage() {
   const t = useTranslations("shop");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
@@ -83,7 +83,7 @@ export default function ShopPage() {
             <p className="text-lg text-stone-600 dark:text-stone-400 mb-8 max-w-xl mx-auto">
               {t("ctaText")}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4" suppressHydrationWarning>
+            <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href={SHOP_URL}
               target="_blank"
@@ -91,15 +91,15 @@ export default function ShopPage() {
               className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-lg text-white transition-all hover:scale-105 hover:shadow-lg shrink-0"
               style={{ backgroundColor: ACCENT_GREEN }}
             >
-              {t("ctaButton")} →
+              <span suppressHydrationWarning>{t("ctaButton")} →</span>
             </a>
-            <Link
-              href="/affiliate"
+            <a
+              href={`/${locale}/affiliate`}
               className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-lg text-white transition-all hover:scale-105 hover:shadow-lg shrink-0"
               style={{ backgroundColor: "#e62e04" }}
             >
-              🐾 {tCommon("helpAndShop")}
-            </Link>
+              <span suppressHydrationWarning>🐾 {tCommon("helpAndShop")}</span>
+            </a>
             </div>
           </div>
         </section>

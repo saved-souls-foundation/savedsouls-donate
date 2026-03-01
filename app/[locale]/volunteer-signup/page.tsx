@@ -5,6 +5,7 @@ import { useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import Footer from "../../components/Footer";
 import SiteHeader from "../../components/SiteHeader";
+import TurnstileWidget from "../../components/TurnstileWidget";
 import { COUNTRIES } from "@/lib/countries";
 
 const ACCENT_GREEN = "#2aa348";
@@ -16,6 +17,7 @@ function VolunteerSignupForm() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -146,6 +148,10 @@ function VolunteerSignupForm() {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
+                if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+                  setError(t("errorGeneric"));
+                  return;
+                }
                 setError("");
                 setSending(true);
                 const form = e.currentTarget;
@@ -169,6 +175,7 @@ function VolunteerSignupForm() {
                       dates: dates || undefined,
                       experience,
                       motivation,
+                      turnstileToken: turnstileToken ?? undefined,
                     }),
                   });
                   const data = await res.json().catch(() => ({}));
@@ -287,11 +294,21 @@ function VolunteerSignupForm() {
                 />
               </div>
 
+              {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                <div className="space-y-2">
+                  <p className="text-sm text-stone-500 dark:text-stone-400">Security check</p>
+                  <TurnstileWidget
+                    size="flexible"
+                    onVerify={setTurnstileToken}
+                    onExpire={() => setTurnstileToken(null)}
+                  />
+                </div>
+              )}
               {error && <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>}
 
               <button
                 type="submit"
-                disabled={sending}
+                disabled={sending || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
                 className="w-full py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70"
                 style={{
                   background: `linear-gradient(135deg, ${ACCENT_GREEN}, #1e7a38)`,

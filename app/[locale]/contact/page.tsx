@@ -100,8 +100,18 @@ export default async function ContactPage({ params }: Props) {
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
               Phone
             </h2>
-            <p className="font-medium">+66 62 369 8246 <span className="text-stone-500 dark:text-stone-400 text-sm">(Thai)</span></p>
-            <p className="font-medium mt-1">+98 000 5406 <span className="text-stone-500 dark:text-stone-400 text-sm">(English)</span></p>
+            <p className="font-medium">
+              <a href="tel:+66623698246" className="inline-block py-2 pr-1 -ml-1 min-h-[44px] min-w-[44px] hover:underline underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded" style={{ color: "inherit" }}>
+                +66 62 369 8246
+              </a>
+              <span className="text-stone-500 dark:text-stone-400 text-sm"> (Thai)</span>
+            </p>
+            <p className="font-medium mt-1">
+              <a href="tel:+980005406" className="inline-block py-2 pr-1 -ml-1 min-h-[44px] min-w-[44px] hover:underline underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded" style={{ color: "inherit" }}>
+                +98 000 5406
+              </a>
+              <span className="text-stone-500 dark:text-stone-400 text-sm"> (English)</span>
+            </p>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-2">
               Office hours: 8:00 AM – 4:00 PM
             </p>

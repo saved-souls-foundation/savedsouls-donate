@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
+import { verifyTurnstile } from "@/lib/verifyTurnstile";
 
 const SUBJECT = "🌟 New volunteer signup - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -19,6 +20,10 @@ https://savedsouls-foundation.com`;
 export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
+    const valid = await verifyTurnstile(b.turnstileToken);
+    if (!valid) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
     const name = b.name?.trim();
     const email = b.email?.trim();
     const phone = b.phone?.trim() || "";

@@ -1,28 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { delay } from "@/lib/sendMail";
+import { verifyTurnstile } from "@/lib/verifyTurnstile";
+import { getAdoptConfirmationHtml, getAdoptConfirmationText } from "@/lib/emailAdoptConfirmation";
+import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
 
 const TO_PRIMARY = "info@savedsouls-foundation.org";
-const TO_REPLY = "savedsoulsfoundationreply@gmail.com";
+const TO_MIKE_MONITOR = "mike@savedsouls-foundation.org";
 // From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
 const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
 const REPLY_TO = "info@savedsouls-foundation.com";
 
 const AUTO_REPLY_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
-const AUTO_REPLY_TEXT = `Dear friend,
-
-Thank you for your interest in adopting from Saved Souls Foundation. We have received your adoption inquiry and our team will get back to you within 48 hours.
-
-We look forward to helping you find your new companion!
-
-With gratitude,
-The Saved Souls Team
-Khon Kaen, Thailand
-https://savedsouls-foundation.org`;
 
 export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
+    const valid = await verifyTurnstile(b.turnstileToken);
+    if (!valid) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
     const name = b.name;
     const email = b.email;
     const city = b.city;
@@ -65,7 +62,8 @@ export async function POST(req: NextRequest) {
 
     const subjectLine = "[Adoption Inquiry] " + name + (animalName ? " – " + animalName : "");
 
-    // 1. Eerst auto-reply naar bezoeker
+    // 1. Eerst auto-reply naar bezoeker (HTML met footer, kleuren, donatieknop, naam + dier)
+    const confirmParams = { recipientName: name, animalName: animalName || undefined };
     const autoRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
@@ -74,7 +72,8 @@ export async function POST(req: NextRequest) {
         to: [email],
         replyTo: REPLY_TO,
         subject: AUTO_REPLY_SUBJECT,
-        text: AUTO_REPLY_TEXT,
+        text: getAdoptConfirmationText(confirmParams),
+        html: getAdoptConfirmationHtml(confirmParams),
       }),
     });
     if (!autoRes.ok) {
@@ -84,16 +83,27 @@ export async function POST(req: NextRequest) {
     }
 
     await delay(600);
-    // 2. Daarna notificatie naar team
+    const notifHtml = getAdoptNotificationHtml({
+      name,
+      email,
+      city,
+      country,
+      animalName: animalName || undefined,
+      animalId: animalId || undefined,
+      motivation: [experience, about].filter(Boolean).join("\n\n"),
+    });
+
+    // 2. Daarna notificatie naar team (zakelijke HTML-mail)
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },
       body: JSON.stringify({
         from: FROM_EMAIL,
-        to: [TO_PRIMARY, TO_REPLY],
+        to: [TO_PRIMARY, TO_MIKE_MONITOR],
         replyTo: REPLY_TO,
         subject: subjectLine,
         text,
+        html: notifHtml,
       }),
     });
     if (!res.ok) {

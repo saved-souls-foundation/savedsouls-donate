@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Footer from "../../../../components/Footer";
+import AdoptInquiryForm from "../../../../components/AdoptInquiryForm";
 
 const ACCENT_GREEN = "#2aa348";
 const FALLBACK_IMAGE = "/animals/cat-1.jpg";
@@ -152,20 +153,19 @@ export default function CatDetailPage() {
               </section>
             )}
 
-            <section>
+            <section id="adopt-form">
               <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
                 Adoption Inquiry
               </h2>
               <p className="text-base text-stone-500 dark:text-stone-500 mb-4">
-                Interested in adopting {cat.name}? Fill out our adoption inquiry form and we&apos;ll get back to you within 48 hours.
+                Interested in adopting {cat.name}? Fill out the form below and we&apos;ll get back to you within 48 hours.
               </p>
-              <Link
-                href={`/adopt-inquiry?animal=${encodeURIComponent(cat.name)}&id=${encodeURIComponent(cat.id)}`}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                style={{ backgroundColor: ACCENT_GREEN }}
-              >
-                Submit Adoption Inquiry →
-              </Link>
+              <AdoptInquiryForm
+                animalName={cat.name}
+                animalId={String(cat.id)}
+                idPrefix="adopt-cat"
+                embedded
+              />
             </section>
           </div>
         </div>

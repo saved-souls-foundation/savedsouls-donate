@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
+import { verifyTurnstile } from "@/lib/verifyTurnstile";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -10,6 +11,8 @@ const ACCENT_GREEN = "#2aa348";
 const BASE_URL = "https://www.savedsouls-foundation.com";
 const CONTACT_EMAIL = "info@savedsouls-foundation.org";
 const FOOTER_BG = "#1a3d2b";
+/** Organisatienaam altijd in het Engels in de mail (nooit vertalen). */
+const ORG_NAME = "Saved Souls Foundation";
 
 /** Compacte footer: 4 hoofdsocials (optie B). */
 const FOOTER_SOCIALS = [
@@ -181,7 +184,7 @@ ${content.signature}
 ${content.contactPageHint} ${contactPageUrl}
 
 ---
-Saved Souls Foundation
+${ORG_NAME}
 ${content.footerMission}
 ${BASE_URL}
 Follow us: ${socialLine}`;
@@ -209,7 +212,7 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): strin
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
   <div style="background:${ACCENT_GREEN};color:#fff;padding:24px;">
     <h1 style="margin:0;font-size:22px;font-weight:600;">${escapeHtml(c.title)}</h1>
-    <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">Saved Souls Foundation</p>
+    <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">${escapeHtml(ORG_NAME)}</p>
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
     <p style="margin:0 0 16px;">${escapeHtml(c.greeting)}</p>
@@ -223,7 +226,7 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): strin
     ${contactHintHtml}
   </div>
   <div style="background:${FOOTER_BG};color:#fff;padding:20px 24px;text-align:center;font-size:13px;">
-    <p style="margin:0 0 4px;font-weight:600;">Saved Souls Foundation</p>
+    <p style="margin:0 0 4px;font-weight:600;">${escapeHtml(ORG_NAME)}</p>
     <p style="margin:0 0 10px;opacity:0.85;line-height:1.4;">${footerMissionHtml}</p>
     <p style="margin:0 0 12px;font-size:12px;">${websiteLinkHtml}</p>
     <p style="margin:0;font-size:12px;">${socialLinksHtml}</p>
@@ -234,16 +237,19 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): strin
 export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
+    const valid = await verifyTurnstile(b.turnstileToken);
+    if (!valid) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
     const name = b.name?.trim();
     const email = b.email?.trim();
     const subject = b.subject?.trim() || "";
     const message = b.message?.trim();
     const fromBody = typeof b.locale === "string" ? b.locale.trim().slice(0, 2).toLowerCase() : "";
     const fromReferer = getLocaleFromReferer(req.headers.get("referer") ?? null);
-    const locale =
-      fromBody && SUPPORTED_LOCALES.includes(fromBody as (typeof SUPPORTED_LOCALES)[number])
-        ? fromBody
-        : fromReferer ?? "en";
+    const validBody = fromBody && SUPPORTED_LOCALES.includes(fromBody as (typeof SUPPORTED_LOCALES)[number]);
+    const validReferer = fromReferer && SUPPORTED_LOCALES.includes(fromReferer as (typeof SUPPORTED_LOCALES)[number]);
+    const locale = validReferer ? fromReferer : validBody ? fromBody : fromReferer ?? fromBody ?? "en";
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
     }

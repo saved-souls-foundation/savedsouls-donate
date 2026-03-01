@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import ParallaxPage, { useScrollProgress } from "../../components/ParallaxPage";
+import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
@@ -66,7 +66,6 @@ function ProductCard({
 
 export default function AffiliatePage() {
   const t = useTranslations("affiliate");
-  const { progress } = useScrollProgress();
   const [mounted, setMounted] = useState(false);
   type TabId = "dogs" | "cats" | "dogs-wheelchairs" | "holiday";
   const [activeTab, setActiveTab] = useState<TabId>("dogs");
@@ -106,14 +105,12 @@ export default function AffiliatePage() {
 
   return (
     <ParallaxPage parallax={false} noOverlay trackScrollProgress>
-      {/* Groene zijlijn – oplicht bij scroll */}
+      {/* Groene zijlijn – suppressHydrationWarning i.v.m. mogelijke style/order-mismatch */}
       <div
-        className="fixed left-0 top-0 z-20 w-1 bottom-0 pointer-events-none transition-opacity duration-300"
-        style={{
-          backgroundColor: "#2aa348",
-          opacity: mounted ? 0.35 + progress * 0.65 : 0.35,
-        }}
+        className="fixed left-0 top-0 z-20 w-1 bottom-0 pointer-events-none"
+        style={{ backgroundColor: "#2aa348", opacity: 0.35 }}
         aria-hidden
+        suppressHydrationWarning
       />
       {/* Header foto */}
       <div className="affiliate-header-image relative w-full h-[380px] sm:h-[420px] md:h-[460px] overflow-hidden mb-10 md:mb-14">

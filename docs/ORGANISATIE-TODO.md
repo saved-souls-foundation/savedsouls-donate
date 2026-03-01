@@ -40,7 +40,7 @@ Overzicht van wat de organisatie moet regelen om de website volledig te laten we
 
 ## 3. E-mail – formulieren & auto-reply koppelen aan savedsouls-foundation.org
 
-**Status:** Formulieren gebruiken Resend. Nu gaat alles naar `savedsoulsfoundationreply@gmail.com` en `info@savedsouls-foundation.org`.
+**Status:** Formulieren gebruiken Resend. Notificaties gaan naar info@savedsouls-foundation.com, info@savedsouls-foundation.org en mike@savedsouls-foundation.org (monitor).
 
 | Wat | Huidige situatie | Toegang nodig |
 |-----|------------------|---------------|
@@ -52,13 +52,16 @@ Overzicht van wat de organisatie moet regelen om de website volledig te laten we
 **Formulieren die e-mail sturen:**
 - Contactformulier → `info@savedsouls-foundation.org` + auto-reply naar bezoeker
 - Adoptie-aanvraag → `info@savedsouls-foundation.org` + auto-reply
-- Vrijwilliger aanmelding → `volunteer@savedsouls-foundation.org` + auto-reply
+- Vrijwilliger aanmelding → `info@savedsouls-foundation.org` + auto-reply
+
+**Waarom komt mail niet aan (wel zichtbaar in Resend)?**  
+Met het testdomein `onboarding@resend.dev` accepteert Resend de mail (je ziet hem in het dashboard), maar **levert alleen naar het e-mailadres dat in je Resend-account geverifieerd is**. Andere ontvangers (info@, volunteer@, formulier-indieners) krijgen niets. Oplossing: eigen domein verifiëren en `RESEND_FROM` zetten.
 
 **Actie:**
 1. Resend-account aanmaken (of bestaande gebruiken)
 2. Domein `savedsouls-foundation.org` toevoegen in Resend
-3. DNS-records instellen (Resend geeft instructies)
-4. `RESEND_API_KEY` en `RESEND_FROM` in Vercel zetten
+3. DNS-records instellen (Resend geeft instructies: TXT/SPF/DKIM)
+4. In Vercel: `RESEND_API_KEY` en `RESEND_FROM` zetten, bijv. `RESEND_FROM=Saved Souls Website <noreply@savedsouls-foundation.org>`
 
 ---
 

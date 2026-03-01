@@ -1,24 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
+import { verifyTurnstile } from "@/lib/verifyTurnstile";
+import { getAdoptConfirmationHtml, getAdoptConfirmationText } from "@/lib/emailAdoptConfirmation";
+import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
 
 const SUBJECT = "🐾 New adoption request - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
 
 const CONFIRMATION_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
-const CONFIRMATION_TEXT = `Dear friend,
-
-Thank you for your interest in adopting from Saved Souls Foundation. We have received your adoption inquiry and our team will get back to you within 48 hours.
-
-We look forward to helping you find your new companion!
-
-With gratitude,
-The Saved Souls Team
-Khon Kaen, Thailand
-https://savedsouls-foundation.com`;
 
 export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
+    const valid = await verifyTurnstile(b.turnstileToken);
+    if (!valid) {
+      return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
+    }
     const name = b.name?.trim();
     const email = b.email?.trim();
     const phone = b.phone?.trim() || "";
@@ -60,15 +57,28 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join("\n");
 
+    const confirmParams = { recipientName: name, animalName: dogPreference || undefined };
     const autoReply = await sendMail({
       to: email,
       subject: CONFIRMATION_SUBJECT,
-      text: CONFIRMATION_TEXT,
+      text: getAdoptConfirmationText(confirmParams),
+      html: getAdoptConfirmationHtml(confirmParams),
       replyTo: REPLY_TO,
     });
     if (!autoReply.success) {
       return NextResponse.json({ error: autoReply.error || "Failed to send confirmation." }, { status: 502 });
     }
+
+    const notifHtml = getAdoptNotificationHtml({
+      name,
+      email,
+      phone: phone || undefined,
+      city: city || undefined,
+      country,
+      animalName: dogPreference || undefined,
+      animalId: animalId || undefined,
+      motivation: motivationText,
+    });
 
     await delay(600);
     for (const to of NOTIFICATION_EMAILS) {
@@ -76,6 +86,7 @@ export async function POST(req: NextRequest) {
         to,
         subject: SUBJECT,
         text,
+        html: notifHtml,
         replyTo: REPLY_TO,
       });
       if (!notif.success) {

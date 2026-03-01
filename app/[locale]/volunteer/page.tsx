@@ -496,7 +496,7 @@ export default async function VolunteerPage() {
             <div className="space-y-4 mb-8 font-bold">
               <p>
                 <a
-                  href="mailto:volunteer@savedsouls-foundation.org"
+                  href="mailto:info@savedsouls-foundation.org"
                   className="font-semibold text-stone-800 dark:text-stone-100 hover:underline"
                   style={{ color: ACCENT_GREEN }}
                 >
@@ -538,7 +538,7 @@ export default async function VolunteerPage() {
                 {tCommon("volunteerSignUp")}
               </Link>
               <a
-                href="mailto:volunteer@savedsouls-foundation.org"
+                href="mailto:info@savedsouls-foundation.org"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105 hover:shadow-lg"
                 style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
               >

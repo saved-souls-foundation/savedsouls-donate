@@ -76,6 +76,8 @@ Daarmee zijn de tabellen en trigger aangemaakt (o.a. `profiles`, `adoption_appli
 
 Daarna kunnen gebruikers zich registreren en inloggen met e-mail + wachtwoord op `/dashboard/login`.
 
+**Wachtwoord vergeten (klant/dashboard):** Op de inlogpagina staat een link "Wachtwoord vergeten?". Na het invullen van het e-mailadres stuurt Supabase een herstellink. Zorg dat in Supabase **Authentication → URL Configuration → Redirect URLs** je productie-URL staat, bijv. `https://jouwdomein.com` of `https://jouwdomein.com/*/dashboard/update-password`, zodat de link naar de pagina "Nieuw wachtwoord instellen" werkt.
+
 ---
 
 ## Stap 6: Lokaal testen

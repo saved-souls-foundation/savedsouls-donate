@@ -240,7 +240,15 @@ export default function AboutUsPage() {
                 {t("visit3")}
               </p>
               <p className="text-stone-700 leading-relaxed mb-4">
-                {t("visit4")} <strong>+66 62 369 8246</strong> {t("visit5")} <strong>+98 000 5406</strong> {t("visit6")}
+                {t("visit4")}{" "}
+                <a href="tel:+66623698246" className="font-semibold underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded">
+                  +66 62 369 8246
+                </a>{" "}
+                {t("visit5")}{" "}
+                <a href="tel:+980005406" className="font-semibold underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded">
+                  +98 000 5406
+                </a>{" "}
+                {t("visit6")}
               </p>
               <p className="text-stone-700 leading-relaxed mb-4">{t("visit7")}</p>
               <p className="text-stone-700 leading-relaxed mb-6">{t("visit8")}</p>

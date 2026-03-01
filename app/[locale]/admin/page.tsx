@@ -185,6 +185,16 @@ export default function AdminPage() {
               >
                 {loginLoading ? "..." : t("adminLoginButton")}
               </button>
+              <p className="text-center text-sm text-stone-500 dark:text-stone-400 mt-3">
+                {t("adminForgotPassword")}{" "}
+                <span className="block mt-1 text-xs">{t("adminForgotPasswordHint")}</span>
+                <a
+                  href="mailto:info@savedsouls-foundation.org"
+                  className="text-green-600 dark:text-green-400 hover:underline font-medium"
+                >
+                  info@savedsouls-foundation.org
+                </a>
+              </p>
             </form>
           </div>
           <p className="text-center mt-6">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLocale } from "next-intl";
+import TurnstileWidget from "./TurnstileWidget";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -21,19 +22,31 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError("Please complete the security check.");
+      return;
+    }
     setError("");
     setSending(true);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message, locale: locale.slice(0, 2).toLowerCase() }),
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message,
+          locale: locale.slice(0, 2).toLowerCase(),
+          turnstileToken: turnstileToken ?? undefined,
+        }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -45,6 +58,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       setEmail("");
       setSubject("");
       setMessage("");
+      setTurnstileToken(null);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -131,12 +145,22 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 placeholder="Write your message..."
               />
             </div>
+            {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+              <div className="space-y-2">
+                <p className="text-sm text-stone-500 dark:text-stone-400">Security check</p>
+                <TurnstileWidget
+                  size="flexible"
+                  onVerify={setTurnstileToken}
+                  onExpire={() => setTurnstileToken(null)}
+                />
+              </div>
+            )}
             {error && (
               <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
             )}
             <button
               type="submit"
-              disabled={sending}
+              disabled={sending || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
               className="w-full py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
