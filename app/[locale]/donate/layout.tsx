@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const BASE_URL = "https://savedsouls-foundation.org";
+const BASE_URL = "https://www.savedsouls-foundation.com";
 
 const donateActionSchema = {
   "@context": "https://schema.org",

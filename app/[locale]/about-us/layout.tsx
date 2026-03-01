@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { alternatesForPath } from "@/lib/metadata";
 
-const BASE_URL = "https://savedsouls-foundation.org";
+const BASE_URL = "https://www.savedsouls-foundation.com";
 
 type Props = {
   children: React.ReactNode;

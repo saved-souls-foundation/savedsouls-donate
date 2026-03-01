@@ -91,10 +91,8 @@ export const VRIJWILLIGER_STEPS: ThermometerStep[] = [
 ];
 
 export const ADOPTANT_STEPS: ThermometerStep[] = [
-  { label: "Aanmelding ontvangen", description: "We hebben je adoptieaanvraag ontvangen." },
-  { label: "Intakegesprek gepland", description: "Er is een intakegesprek met je gepland." },
-  { label: "Huisbezoek ingepland", description: "Er is een huisbezoek ingepland." },
-  { label: "Huisbezoek afgerond", description: "Het huisbezoek is afgerond. We zoeken een match." },
-  { label: "Match gevonden 🐾", description: "We hebben een match voor je gevonden!" },
-  { label: "✅ Adoptie afgerond", description: "De adoptie is afgerond. Welkom in de familie!" },
+  { label: "Aanmelding ontvangen", description: "We hebben je adoptieaanvraag ontvangen en nemen binnen 48 uur contact op." },
+  { label: "Intake & huisbezoek of video call", description: "Eén gesprek: intake en huisbezoek of video call. Daarna zoeken we een match voor je." },
+  { label: "Match gevonden – documenten", description: "Match gevonden! Upload je documenten (ID, PDF's) net als bij vrijwilligers." },
+  { label: "✅ Adoptie afgerond", description: "De adoptie is afgerond. Welkom in de familie! ♥" },
 ];

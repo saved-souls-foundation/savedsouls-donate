@@ -8,9 +8,9 @@ Overzicht van alle ontvangers bij formulierinzendingen en notificaties.
 
 | Adres | Gebruikt bij | Opmerking |
 |-------|--------------|-----------|
-| **info@savedsouls-foundation.com** | Contact, Adopt, Volunteer, Donate | Via `NOTIFICATION_EMAILS` in `lib/sendMail.ts` |
-| **info@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate | Zelfde + `TO_PRIMARY` (adopt-inquiry), `TO_VOLUNTEER` (volunteer-signup) |
-| **mike@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate | Monitor; via `NOTIFICATION_EMAILS` en `TO_MIKE_MONITOR` |
+| **info@savedsouls-foundation.com** | Contact, Adopt, Volunteer, Donate, Portal vrijwilliger stap 4 | Via `NOTIFICATION_EMAILS` in `lib/sendMail.ts` |
+| **info@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate, Portal vrijwilliger stap 4 | Zelfde + `TO_PRIMARY` (adopt-inquiry), `TO_VOLUNTEER` (volunteer-signup) |
+| **mike@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate, Portal vrijwilliger stap 4 | Monitor; via `NOTIFICATION_EMAILS` en `TO_MIKE_MONITOR` |
 | **kleinjansmike@gmail.com** | Alleen **Contactformulier** | `AUTO_REPLY_CC` in `app/api/contact/route.ts`: krijgt kopie van de auto-reply naar bezoeker + kopie van de contact-notificatie (ingevuld formulier) |
 
 ---
@@ -24,6 +24,7 @@ Overzicht van alle ontvangers bij formulierinzendingen en notificaties.
 | **Adopt-inquiry** (`/api/adopt-inquiry`) | info@.org, mike@.org | Ja |
 | **Volunteer** (`/api/volunteer`) | info@.com, info@.org, mike@.org | Ja |
 | **Volunteer-signup** (`/api/volunteer-signup`) | info@.org, mike@.org | Ja |
+| **Portal vrijwilliger stap 4** (`/api/portal/welcome-complete`) | info@.com, info@.org, mike@.org (teammail met formuliergegevens) | Ja (welkomstmail naar vrijwilliger) |
 | **Donate** | info@.com, info@.org, mike@.org | Ja |
 
 ---

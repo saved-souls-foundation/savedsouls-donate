@@ -42,6 +42,9 @@ export default function PortalOnboardingPage() {
           router.replace("/portal/adoptant");
           return;
         }
+        supabase.from("adoption_applications").select("*", { count: "exact", head: true }).then(({ count }) => {
+          if ((count ?? 0) > 0) setRole("adoptant");
+        });
       });
     });
   }, [hasSupabase, router]);
@@ -68,7 +71,14 @@ export default function PortalOnboardingPage() {
         })
         .eq("id", user.id);
       if (updateError) {
-        setError(updateError.message);
+        const msg = updateError.message;
+        if (msg.includes("huidige_stap") || msg.includes("schema cache")) {
+          setError(
+            "De database is nog niet bijgewerkt. Voer in Supabase SQL Editor de migratie uit uit supabase/migrations/20250301_profiles_portal.sql (zie docs/PORTAL-SETUP.md). Daarna eventueel Settings → API → Reload schema cache."
+          );
+        } else {
+          setError(msg);
+        }
         setLoading(false);
         return;
       }
@@ -100,6 +110,11 @@ export default function PortalOnboardingPage() {
         <p className="text-stone-600 dark:text-stone-400 text-sm mb-8">
           {t("portalOnboardingSubtitle")}
         </p>
+        {role === "adoptant" && (
+          <p className="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-3 mb-6">
+            {t("onboardingAdoptantHint")}
+          </p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">

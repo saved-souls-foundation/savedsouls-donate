@@ -50,9 +50,9 @@ Expliciete canonical per pagina via hreflang-helper.
 
 ### 6. Google Search Console
 - Ga naar [search.google.com/search-console](https://search.google.com/search-console)
-- Voeg savedsouls-foundation.org toe
+- Voeg savedsouls-foundation.com toe
 - Verifieer via DNS of HTML
-- Stuur sitemap in: `https://savedsouls-foundation.org/sitemap.xml`
+- Stuur sitemap in: `https://savedsouls-foundation.com/sitemap.xml`
 
 ### 7. Bing Webmaster Tools
 - Ga naar [bing.com/webmasters](https://www.bing.com/webmasters)

@@ -19,7 +19,7 @@ We look forward to welcoming you to our sanctuary in Khon Kaen, Thailand!
 With gratitude,
 The Saved Souls Team
 Khon Kaen, Thailand
-https://savedsouls-foundation.org`;
+https://www.savedsouls-foundation.com`;
 
 export async function POST(req: NextRequest) {
   try {

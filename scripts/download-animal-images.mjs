@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Download animal images from savedsouls-foundation.org
+ * Download animal images from savedsouls-foundation.com
  * Run: node scripts/download-animal-images.mjs
  * Reads IDs from data/animals.json and saves to public/animals/
  */
@@ -11,7 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BASE = "https://savedsouls-foundation.org";
+const BASE = "https://www.savedsouls-foundation.com";
 const DELAY_MS = 600;
 
 function sleep(ms) {

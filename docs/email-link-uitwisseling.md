@@ -1,6 +1,6 @@
 # E-mailtemplate: Link-uitwisseling met andere asielen
 
-Gebruik deze e-mail om contact op te nemen met de asielen op onze [shelters-pagina](https://savedsouls-foundation.org/shelters). Pas de **[NAAM]** en **[E-MAIL]** aan per ontvanger.
+Gebruik deze e-mail om contact op te nemen met de asielen op onze [shelters-pagina](https://www.savedsouls-foundation.com/shelters). Pas de **[NAAM]** en **[E-MAIL]** aan per ontvanger.
 
 ---
 
@@ -18,15 +18,15 @@ Wij zijn Saved Souls Foundation, een dierenopvang in Khon Kaen, Thailand. Sinds 
 Wij zijn van plan een pagina op onze website te maken met links naar andere goede honden- en kattenasielen in Thailand en Europa. Jullie organisatie staat daar graag bij!
 
 **Ons voorstel:**
-- Wij plaatsen een link naar jullie website op: https://savedsouls-foundation.org/shelters
-- Zouden jullie ook een link naar Saved Souls Foundation willen plaatsen op jullie website? (https://savedsouls-foundation.org)
+- Wij plaatsen een link naar jullie website op: https://www.savedsouls-foundation.com/shelters
+- Zouden jullie ook een link naar Saved Souls Foundation willen plaatsen op jullie website? (https://www.savedsouls-foundation.com)
 
 Samen bereiken we meer mensen en kunnen we meer dieren helpen. Laat het ons weten of dit jullie aanspreekt!
 
 Met vriendelijke groet,
 
 Het team van Saved Souls Foundation  
-https://savedsouls-foundation.org  
+https://www.savedsouls-foundation.com  
 info@savedsouls-foundation.org
 
 ---
@@ -40,15 +40,15 @@ We are Saved Souls Foundation, an animal sanctuary in Khon Kaen, Thailand. Since
 We plan to add a page on our website with links to other good dog and cat shelters in Thailand and Europe. We would love to include your organization!
 
 **Our proposal:**
-- We will add a link to your website at: https://savedsouls-foundation.org/shelters
-- Would you also like to add a link to Saved Souls Foundation on your website? (https://savedsouls-foundation.org)
+- We will add a link to your website at: https://www.savedsouls-foundation.com/shelters
+- Would you also like to add a link to Saved Souls Foundation on your website? (https://www.savedsouls-foundation.com)
 
 Together we can reach more people and help more animals. Let us know if this interests you!
 
 Kind regards,
 
 The Saved Souls Foundation team  
-https://savedsouls-foundation.org  
+https://www.savedsouls-foundation.com  
 info@savedsouls-foundation.org
 
 ---

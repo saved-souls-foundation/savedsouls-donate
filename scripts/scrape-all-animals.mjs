@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Scrape all dogs and cats from savedsouls-foundation.org
+ * Scrape all dogs and cats from savedsouls-foundation.com
  * Run: node scripts/scrape-all-animals.mjs
  * - Fetches all list pages to get IDs
  * - For each animal, fetches detail page for name, story, image
@@ -14,7 +14,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BASE = "https://savedsouls-foundation.org";
+const BASE = "https://www.savedsouls-foundation.com";
 const DELAY_MS = 800;
 
 function sleep(ms) {

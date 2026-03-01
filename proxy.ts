@@ -8,9 +8,37 @@ const intlMiddleware = createMiddleware(routing);
 export default async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  const localeMatch = pathname.match(/^\/(nl|en|de|es|th|ru)(\/|$)/);
+  const locale = localeMatch?.[1] ?? "nl";
+
   const portalMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/portal(\/|$)/);
   const adminDashboardMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/admin\/dashboard/);
   const isProtected = portalMatch || adminDashboardMatch;
+
+  // Nieuwe admin-routes (dashboard, vrijwilligers, adoptanten, documenten): eigen login
+  const adminSubRouteMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/admin\/(dashboard|vrijwilligers|adoptanten|documenten)(\/|$)/);
+  const isAdminSubRoute = Boolean(adminSubRouteMatch);
+
+  if (isAdminSubRoute && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll() {},
+        },
+      }
+    );
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      const loginUrl = new URL(request.url);
+      loginUrl.pathname = `/${locale}/admin/login`;
+      return NextResponse.redirect(loginUrl);
+    }
+  }
 
   if (isProtected && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     const supabase = createServerClient(
@@ -27,7 +55,6 @@ export default async function proxy(request: NextRequest) {
     );
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      const locale = portalMatch?.[1] ?? adminDashboardMatch?.[1] ?? "nl";
       const loginUrl = new URL(request.url);
       loginUrl.pathname = `/${locale}/dashboard/login`;
       loginUrl.searchParams.set("next", pathname);

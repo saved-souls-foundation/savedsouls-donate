@@ -1,6 +1,7 @@
 /**
  * Fetches sponsor dogs and cats from the Saved Souls database API.
  * Used by /api/sponsor-animals.
+ * API's blijven op de oude .org site (db.savedsouls-foundation.org).
  */
 
 const DOGS_API = "https://db.savedsouls-foundation.org/api/website_sponsor_dogs.php";

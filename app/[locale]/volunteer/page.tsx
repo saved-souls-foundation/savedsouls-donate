@@ -505,7 +505,7 @@ export default async function VolunteerPage() {
               </p>
               <p className="text-stone-600 dark:text-stone-400">
                 <a
-                  href="https://savedsouls-foundation.org/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
+                  href="https://www.savedsouls-foundation.com/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold underline hover:no-underline"
@@ -545,7 +545,7 @@ export default async function VolunteerPage() {
                 {t("emailButton")}
               </a>
               <a
-                href="https://savedsouls-foundation.org/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
+                href="https://www.savedsouls-foundation.com/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105 hover:shadow-lg"

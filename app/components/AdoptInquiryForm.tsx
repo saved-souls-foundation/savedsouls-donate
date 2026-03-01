@@ -35,6 +35,10 @@ export default function AdoptInquiryForm({
   const countryId = `${idPrefix}-country`;
   const experienceId = `${idPrefix}-experience`;
   const aboutId = `${idPrefix}-about`;
+  const animal2NameId = `${idPrefix}-animal2Name`;
+  const animal2IdId = `${idPrefix}-animal2Id`;
+  const animal3NameId = `${idPrefix}-animal3Name`;
+  const animal3IdId = `${idPrefix}-animal3Id`;
 
   return (
     <div
@@ -92,11 +96,6 @@ export default function AdoptInquiryForm({
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
-              setError("Please complete the security check above first.");
-              securityRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-              return;
-            }
             setError("");
             setSending(true);
             const form = e.currentTarget;
@@ -106,6 +105,10 @@ export default function AdoptInquiryForm({
             const country = (form.querySelector(`#${countryId}`) as HTMLSelectElement)?.value;
             const experience = (form.querySelector(`#${experienceId}`) as HTMLTextAreaElement)?.value;
             const about = (form.querySelector(`#${aboutId}`) as HTMLTextAreaElement)?.value;
+            const animal2Name = (form.querySelector(`#${animal2NameId}`) as HTMLInputElement)?.value?.trim?.();
+            const animal2Id = (form.querySelector(`#${animal2IdId}`) as HTMLInputElement)?.value?.trim?.();
+            const animal3Name = (form.querySelector(`#${animal3NameId}`) as HTMLInputElement)?.value?.trim?.();
+            const animal3Id = (form.querySelector(`#${animal3IdId}`) as HTMLInputElement)?.value?.trim?.();
             try {
               const res = await fetch("/api/adopt", {
                 method: "POST",
@@ -121,6 +124,8 @@ export default function AdoptInquiryForm({
                   about,
                   animalName: animalName || undefined,
                   animalId: animalId || undefined,
+                  ...(animal2Name || animal2Id ? { animalName2: animal2Name, animalId2: animal2Id } : {}),
+                  ...(animal3Name || animal3Id ? { animalName3: animal3Name, animalId3: animal3Id } : {}),
                   turnstileToken: turnstileToken ?? undefined,
                 }),
               });
@@ -232,6 +237,56 @@ export default function AdoptInquiryForm({
             />
           </div>
 
+          <div className="rounded-xl border-2 border-dashed border-stone-200 dark:border-stone-600 p-4 space-y-4" style={{ borderColor: `${ACCENT_GREEN}40` }}>
+            <p className="text-sm font-semibold text-stone-600 dark:text-stone-400">
+              {t("alsoInterestedIn")}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor={animal2NameId} className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">{t("secondAnimal")}</label>
+                <input
+                  id={animal2NameId}
+                  name="animal2Name"
+                  type="text"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+                  placeholder={t("animalNamePlaceholder")}
+                />
+              </div>
+              <div>
+                <label htmlFor={animal2IdId} className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">ID</label>
+                <input
+                  id={animal2IdId}
+                  name="animal2Id"
+                  type="text"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+                  placeholder={t("animalIdPlaceholder")}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor={animal3NameId} className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">{t("thirdAnimal")}</label>
+                <input
+                  id={animal3NameId}
+                  name="animal3Name"
+                  type="text"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+                  placeholder={t("animalNamePlaceholder")}
+                />
+              </div>
+              <div>
+                <label htmlFor={animal3IdId} className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">ID</label>
+                <input
+                  id={animal3IdId}
+                  name="animal3Id"
+                  type="text"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+                  placeholder={t("animalIdPlaceholder")}
+                />
+              </div>
+            </div>
+          </div>
+
           {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
             <div ref={securityRef} className="space-y-2 scroll-mt-4">
               <p className="text-sm text-stone-500 dark:text-stone-400">Security check</p>
@@ -250,7 +305,7 @@ export default function AdoptInquiryForm({
 
           <button
             type="submit"
-            disabled={sending || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
+            disabled={sending}
             className="w-full py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed min-h-[52px]"
             style={{
               background: `linear-gradient(135deg, ${ACCENT_GREEN}, #1e7a38)`,
@@ -260,9 +315,9 @@ export default function AdoptInquiryForm({
             {sending ? "Sending…" : "Submit Adoption Inquiry"}
             <span className="text-white/90">♥</span>
           </button>
-          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken && !sending && (
-            <p className="text-center text-sm text-amber-600 dark:text-amber-400 mt-1">
-              Please complete the security check above before submitting.
+          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+            <p className="text-center text-sm text-stone-500 dark:text-stone-400 mt-1">
+              {t("securityOptional")}
             </p>
           )}
         </form>

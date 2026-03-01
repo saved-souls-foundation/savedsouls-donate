@@ -16,6 +16,23 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Instructie: lokaal op poort 3000
+
+1. **Dependencies installeren** (eenmalig):
+   ```bash
+   npm install
+   ```
+2. **Dev-server starten** (standaard poort 3000):
+   ```bash
+   npm run dev
+   ```
+3. **Site openen:** [http://localhost:3000](http://localhost:3000)
+4. **Stoppen:** `Ctrl+C` in de terminal.
+
+Optioneel: `.env.local` vullen met o.a. Supabase- en Resend-variabelen voor login, e-mail en dieren-API.
+
+---
+
 Voorbeeld op poort 3002:
 ```bash
 npm run dev:3002

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Saved Souls Foundation in Khon Kaen, Thailand: the only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs. Donate since 2010.",
   keywords: ["Saved Souls Foundation", "Thailand", "Khon Kaen", "disabled dogs", "rescued dogs", "stray dogs", "wheelchair dogs", "paralyzed dogs", "dog rescue Thailand", "animal shelter Thailand", "donate", "adopt dog", "sponsor dog"],
-  authors: [{ name: "Saved Souls Foundation", url: "https://savedsouls-foundation.org" }],
+  authors: [{ name: "Saved Souls Foundation", url: "https://www.savedsouls-foundation.com" }],
   openGraph: {
     title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs",
     description:

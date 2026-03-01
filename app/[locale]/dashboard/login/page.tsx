@@ -9,8 +9,15 @@ import SiteHeader from "@/app/components/SiteHeader";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const BRAND_GREEN = "#2d5a27";
+const ROLE_STORAGE_KEY = "savedsouls_login_role";
 
 type PortalRole = "vrijwilliger" | "adoptant";
+
+function getStoredRole(): PortalRole | null {
+  if (typeof window === "undefined") return null;
+  const v = sessionStorage.getItem(ROLE_STORAGE_KEY);
+  return v === "adoptant" || v === "vrijwilliger" ? v : null;
+}
 
 export default function DashboardLoginPage() {
   const t = useTranslations("dashboard");
@@ -24,7 +31,17 @@ export default function DashboardLoginPage() {
 
   useEffect(() => {
     if (searchParams.get("register") === "1") setIsRegister(true);
-  }, [searchParams]);
+    if (searchParams.get("reset_expired") === "1") setError(t("updatePasswordLinkExpired"));
+  }, [searchParams, t]);
+
+  // Rol-keuze in sessionStorage zetten zodat die niet verloren gaat bij submit
+  const setRole = (role: PortalRole | null) => {
+    setSelectedRole(role);
+    if (typeof window !== "undefined") {
+      if (role) sessionStorage.setItem(ROLE_STORAGE_KEY, role);
+      else sessionStorage.removeItem(ROLE_STORAGE_KEY);
+    }
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,17 +50,28 @@ export default function DashboardLoginPage() {
 
   const hasSupabase = isSupabaseConfigured();
 
-  async function redirectByProfile(supabase: ReturnType<typeof createClient>) {
+  // Redirect: admin altijd naar admin; anders naar de gekozen rol zodat Adoptant/Vrijwilliger-keuze telt.
+  async function redirectAfterLogin(supabase: ReturnType<typeof createClient>, chosenRole: PortalRole | null) {
+    const role = chosenRole ?? getStoredRole();
+    if (typeof window !== "undefined") sessionStorage.removeItem(ROLE_STORAGE_KEY);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data: profile } = await supabase
       .from("profiles")
-      .select("role")
+      .select("role, is_admin")
       .eq("id", user.id)
       .single();
-    const role = profile?.role as string | null;
-    if (role === "admin") {
+    const profileRole = profile?.role as string | null;
+    const isAdmin = profile?.is_admin === true || profileRole === "admin";
+
+    if (isAdmin) {
       router.push("/admin/dashboard");
+      router.refresh();
+      return;
+    }
+    // Gebruik de keuze van de gebruiker op de loginpagina (Adoptant of Vrijwilliger)
+    if (role === "adoptant") {
+      router.push("/portal/adoptant");
       router.refresh();
       return;
     }
@@ -52,8 +80,14 @@ export default function DashboardLoginPage() {
       router.refresh();
       return;
     }
-    if (role === "adoptant") {
+    // Fallback: profielrol als er geen keuze was (bijv. directe link)
+    if (profileRole === "adoptant") {
       router.push("/portal/adoptant");
+      router.refresh();
+      return;
+    }
+    if (profileRole === "vrijwilliger") {
+      router.push("/portal/vrijwilliger");
       router.refresh();
       return;
     }
@@ -72,9 +106,17 @@ export default function DashboardLoginPage() {
     }
     try {
       const supabase = createClient();
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      // Base URL moet EXACT overeenkomen met Supabase Redirect URLs (anders gaat Supabase naar homepage).
+      // Zet in Vercel: NEXT_PUBLIC_SITE_URL=https://savedsouls-foundation.com (zonder trailing slash)
+      const base =
+        typeof process.env.NEXT_PUBLIC_SITE_URL === "string" && process.env.NEXT_PUBLIC_SITE_URL
+          ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+          : typeof window !== "undefined"
+            ? window.location.origin
+            : "";
+      const redirectTo = `${base}/${locale}/dashboard/update-password`;
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${origin}/${locale}/dashboard/update-password`,
+        redirectTo,
       });
       if (resetError) {
         setError(resetError.message);
@@ -124,12 +166,12 @@ export default function DashboardLoginPage() {
           );
         }
         if (data.session) {
-          await redirectByProfile(supabase);
+          await redirectAfterLogin(supabase, selectedRole ?? getStoredRole());
           return;
         }
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
         if (!signInError && data.user) {
-          await redirectByProfile(supabase);
+          await redirectAfterLogin(supabase, selectedRole ?? getStoredRole());
           return;
         }
         if (signInError?.message?.toLowerCase().includes("email") && signInError?.message?.toLowerCase().includes("confirm")) {
@@ -154,7 +196,7 @@ export default function DashboardLoginPage() {
         setLoading(false);
         return;
       }
-      await redirectByProfile(supabase);
+      await redirectAfterLogin(supabase, selectedRole ?? getStoredRole());
     } catch (err) {
       const message = err instanceof Error ? err.message : t("loginError");
       setError(message);
@@ -179,6 +221,12 @@ export default function DashboardLoginPage() {
 
         {!showForm && !resetLinkSent && (
           <>
+            {error && (
+              <div className="mb-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700">
+                <p className="text-sm text-amber-800 dark:text-amber-200">{error}</p>
+                <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">Kies hieronder hoe je wilt inloggen en vraag eventueel een nieuwe wachtwoordherstel-link aan.</p>
+              </div>
+            )}
             <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-2">
               {t("loginTitle")}
             </h1>
@@ -189,7 +237,7 @@ export default function DashboardLoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedRole("vrijwilliger");
+                  setRole("vrijwilliger");
                   if (searchParams.get("register") === "1") setIsRegister(true);
                 }}
                 className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:border-[#2d5a27] hover:shadow-lg transition-all text-stone-900 dark:text-stone-100"
@@ -200,13 +248,14 @@ export default function DashboardLoginPage() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedRole("adoptant");
+                  setRole("adoptant");
                   if (searchParams.get("register") === "1") setIsRegister(true);
                 }}
-                className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:border-[#2d5a27] hover:shadow-lg transition-all text-stone-900 dark:text-stone-100"
+                className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:border-[#2d5a27] hover:shadow-lg transition-all text-stone-900 dark:text-stone-100 text-left"
               >
                 <span className="text-3xl mb-2" aria-hidden>🏠</span>
                 <span className="font-semibold">{t("loginAsAdoptant")}</span>
+                <span className="text-xs text-stone-500 dark:text-stone-400 mt-2 text-center">{t("loginAsAdoptantHint")}</span>
               </button>
             </div>
           </>
@@ -308,7 +357,7 @@ export default function DashboardLoginPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedRole(null);
+                    setRole(null);
                     setIsForgotPassword(false);
                     setError(null);
                   }}

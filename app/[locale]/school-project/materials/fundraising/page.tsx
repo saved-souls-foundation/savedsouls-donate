@@ -61,7 +61,7 @@ export default async function FundraisingPage() {
           </section>
 
           <footer className="pt-6 border-t border-stone-200 dark:border-stone-600 text-center text-sm text-stone-500">
-            Saved Souls Foundation • Khon Kaen, Thailand • savedsouls-foundation.org
+            Saved Souls Foundation • Khon Kaen, Thailand • savedsouls-foundation.com
           </footer>
         </div>
 

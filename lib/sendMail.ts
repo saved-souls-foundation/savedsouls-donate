@@ -59,7 +59,7 @@ export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/** Notification recipients for form submissions (contact, volunteer, adopt, donate). Mike ontvangt voorlopig alles om te monitoren. */
+/** Notification recipients for form submissions (contact, volunteer, adopt, donate). Mike (@.org) ontvangt voorlopig alles om te monitoren; .org blijft zo. */
 export const NOTIFICATION_EMAILS = [
   "info@savedsouls-foundation.com",
   "info@savedsouls-foundation.org",
