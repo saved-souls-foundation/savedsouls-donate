@@ -41,16 +41,19 @@ export default function PortalVrijwilligerClient() {
         router.replace("/dashboard/login");
         return;
       }
-      supabase
-        .from("profiles")
-        .select("voornaam, huidige_stap")
-        .eq("id", user.id)
-        .single()
+      void Promise.resolve(
+        supabase
+          .from("profiles")
+          .select("voornaam, huidige_stap")
+          .eq("id", user.id)
+          .single()
+      )
         .then(({ data }) => {
           setVoornaam(data?.voornaam ?? null);
           setCurrentStep(Math.max(1, Number(data?.huidige_stap) || 1));
         })
-        .finally(() => setLoading(false));
+        .catch(() => {})
+        .then(() => setLoading(false));
       supabase
         .from("adoption_applications")
         .select("id, animal_name, animal_id, extra_animals, step, created_at")
