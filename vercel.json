@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/admin/sponsors/check-expiry",
+      "schedule": "0 8 * * 1"
+    }
+  ]
+}

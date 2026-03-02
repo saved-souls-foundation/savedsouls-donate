@@ -47,6 +47,7 @@ Overzicht van wat de organisatie moet regelen om de website volledig te laten we
 | **Resend-account** | API verstuurt e-mails | Account op [resend.com](https://resend.com) |
 | **RESEND_API_KEY** | Moet in Vercel staan | API key uit Resend-dashboard |
 | **RESEND_FROM** | Nu: `onboarding@resend.dev` (Resend test-domein) | Voor productie: `noreply@savedsouls-foundation.org` of `website@savedsouls-foundation.org` |
+| **ADMIN_EMAIL** | Optioneel (fallback: info@savedsouls-foundation.org) | E-mailadres voor Stripe-webhook-notificaties (betalingsprobleem, abonnement gestopt). Zet in `.env.local` / Vercel indien anders dan fallback. |
 | **Domeinverificatie** | Voor `@savedsouls-foundation.org` als afzender | DNS-toegang (TXT/SPF/DKIM records) |
 
 **Formulieren die e-mail sturen:**

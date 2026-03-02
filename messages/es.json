@@ -39,6 +39,11 @@
     "adminForgotPasswordHint": "Contacta al administrador para restablecer tu contraseña:",
     "disclaimer": "Aviso legal",
     "thankYou": "Gracias",
+    "unsubscribedMessage": "Te has dado de baja",
+    "unsubscribeLoading": "Dando de baja…",
+    "unsubscribeSuccess": "Te has dado de baja de nuestro boletín. ({email})",
+    "unsubscribeAlready": "Este correo ya estaba dado de baja o el enlace no es válido.",
+    "unsubscribeError": "Algo salió mal. Por favor, inténtalo más tarde.",
     "streetDogsThailand": "Perros callejeros Tailandia",
     "schoolProject": "Proyecto escolar",
     "usefulLinks": "Enlaces útiles",
@@ -3939,5 +3944,21 @@
     "contactText": "For questions about this disclaimer or the Foundation, please contact us at ",
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Dog with glasses reading a law book"
+  },
+  "newsletter": {
+    "title": "Mantente informado",
+    "subtitle": "Recibe noticias sobre nuestros animales y proyectos en Tailandia.",
+    "emailPlaceholder": "Tu correo electrónico",
+    "voornaamPlaceholder": "Nombre (opcional)",
+    "bedrijfsnaamPlaceholder": "Nombre de empresa",
+    "typePersoon": "Persona",
+    "typeBedrijf": "Empresa",
+    "subscribeButton": "Suscribirse",
+    "subscribing": "Por favor espera...",
+    "successTitle": "¡Suscrito!",
+    "successBody": "¡Gracias! Recibirás un correo de confirmación.",
+    "alreadySubscribed": "Este correo ya está suscrito.",
+    "errorMessage": "Algo salió mal. Por favor inténtalo de nuevo.",
+    "privacy": "Respetamos tu privacidad. Sin spam, solo noticias de SavedSouls Foundation."
   }
 }

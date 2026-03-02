@@ -48,11 +48,74 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     { icon: "✅", labelKey: "adoptionsComplete" as const, value: voltooideAdoptanten ?? 0 },
   ];
 
+  const now = new Date();
+  const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+  const in30Days = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+  const [
+    { count: activeMembersCount },
+    { count: newsletterSubscribersCount },
+    { data: donationsThisMonthData },
+    { data: recurringActiveData },
+    { count: activeSponsorsCount },
+    { count: pendingEmailsCount },
+    { data: sponsorsExpiringData },
+    { data: subscribersByLanguageData },
+  ] = await Promise.all([
+    supabase.from("members").select("*", { count: "exact", head: true }).eq("status", "actief"),
+    supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true),
+    supabase.from("donations").select("bedrag").gte("donatie_datum", firstDayThisMonth),
+    supabase.from("recurring_donations").select("bedrag").eq("status", "actief"),
+    supabase.from("sponsors").select("*", { count: "exact", head: true }).eq("status", "actief"),
+    supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"),
+    supabase.from("sponsors").select("id").gte("contract_eind", now.toISOString().slice(0, 10)).lte("contract_eind", in30Days),
+    supabase.from("newsletter_subscribers").select("language").eq("actief", true),
+  ]);
+
+  const donationsThisMonthSum = (donationsThisMonthData ?? []).reduce((acc: number, r: { bedrag: number | null }) => acc + Number(r.bedrag ?? 0), 0);
+  const monthlyRecurringSum = (recurringActiveData ?? []).reduce((acc: number, r: { bedrag: number | null }) => acc + Number(r.bedrag ?? 0), 0);
+  const sponsorsExpiringCount = (sponsorsExpiringData ?? []).length;
+
+  const languageOrder = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+  const subscribersByLanguage: Record<string, number> = {};
+  languageOrder.forEach((lang) => { subscribersByLanguage[lang] = 0; });
+  (subscribersByLanguageData ?? []).forEach((r: { language: string | null }) => {
+    const lang = (r.language ?? "nl").toLowerCase().slice(0, 2);
+    if (languageOrder.includes(lang as (typeof languageOrder)[number])) {
+      subscribersByLanguage[lang] = (subscribersByLanguage[lang] ?? 0) + 1;
+    } else {
+      subscribersByLanguage.nl = (subscribersByLanguage.nl ?? 0) + 1;
+    }
+  });
+
+  const cardsRow2 = [
+    { icon: "👥", labelKey: "dashboard.activeMembers" as const, value: activeMembersCount ?? 0, subtitle: null, isWarning: false },
+    { icon: "✉️", labelKey: "dashboard.newsletterSubscribers" as const, value: newsletterSubscribersCount ?? 0, subtitle: null, isWarning: false },
+    { icon: "€", labelKey: "dashboard.donationsThisMonth" as const, value: `€ ${donationsThisMonthSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: null, isWarning: false },
+    { icon: "🔄", labelKey: "dashboard.monthlyRecurring" as const, value: `€ ${monthlyRecurringSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: t("dashboard.perMonth"), isWarning: false },
+    { icon: "🏢", labelKey: "dashboard.activeSponsors" as const, value: activeSponsorsCount ?? 0, subtitle: null, isWarning: false },
+    { icon: "📥", labelKey: "dashboard.pendingEmails" as const, value: pendingEmailsCount ?? 0, subtitle: null, isWarning: true },
+  ];
+
   return (
     <div className="space-y-8">
       <p className="text-sm" style={{ color: ADM_MUTED }}>
         {t("dashboardWelcome")}
       </p>
+
+      {sponsorsExpiringCount > 0 && (
+        <div
+          className="rounded-xl border p-4 flex items-center justify-between flex-wrap gap-2"
+          style={{ background: "rgba(240,192,80,.15)", borderColor: ADM_YELLOW, color: ADM_TEXT }}
+        >
+          <p className="text-sm font-medium">
+            {t("dashboard.sponsorAlert", { count: sponsorsExpiringCount })}
+          </p>
+          <Link href="/admin/sponsoren" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
+            {t("dashboard.viewSponsors")}
+          </Link>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
@@ -68,6 +131,32 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
             <p className="text-sm mt-1" style={{ color: ADM_MUTED }}>
               {t(c.labelKey)}
             </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cardsRow2.map((c) => (
+          <div
+            key={c.labelKey}
+            className="rounded-xl border p-4"
+            style={{
+              background: c.isWarning ? "rgba(220,38,38,.08)" : ADM_CARD,
+              borderColor: c.isWarning ? "#dc2626" : ADM_BORDER,
+            }}
+          >
+            <span className="text-2xl">{c.icon}</span>
+            <p className="text-2xl font-bold mt-2" style={{ color: c.isWarning ? "#dc2626" : ADM_TEXT }}>
+              {c.value}
+            </p>
+            <p className="text-sm mt-1" style={{ color: ADM_MUTED }}>
+              {t(c.labelKey)}
+            </p>
+            {c.subtitle && (
+              <p className="text-xs mt-0.5" style={{ color: ADM_MUTED }}>
+                {c.subtitle}
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -100,13 +189,13 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
                 {(recentVrijwilligers ?? []).map((r: { user_id: string; voornaam: string | null; achternaam: string | null; email: string | null; city: string | null; step: number; created_at: string }) => (
                   <tr key={r.user_id} className="border-t" style={{ borderColor: ADM_BORDER }}>
                     <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || "—"}
+                      {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue")}
                     </td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {r.email ?? "—"}
+                      {r.email ?? t("noValue")}
                     </td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {r.city ?? "—"}
+                      {r.city ?? t("noValue")}
                     </td>
                     <td className="p-3">
                       <span
@@ -120,7 +209,7 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
                       </span>
                     </td>
                     <td className="p-3" style={{ color: ADM_MUTED }}>
-                      {r.created_at ? new Date(r.created_at).toLocaleDateString(dateLocale, { dateStyle: "short" }) : "—"}
+                      {r.created_at ? new Date(r.created_at).toLocaleDateString(dateLocale, { dateStyle: "short" }) : t("noValue")}
                     </td>
                   </tr>
                 ))}
@@ -154,7 +243,7 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
                 {(recentAdoptanten ?? []).map((p: { id: string; voornaam: string | null; achternaam: string | null; huidige_stap: number | null; aangemeld_op: string | null }) => (
                   <tr key={p.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
                     <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {[p.voornaam, p.achternaam].filter(Boolean).join(" ") || "—"}
+                      {[p.voornaam, p.achternaam].filter(Boolean).join(" ") || t("noValue")}
                     </td>
                     <td className="p-3">
                       <span
@@ -168,12 +257,33 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
                       </span>
                     </td>
                     <td className="p-3" style={{ color: ADM_MUTED }}>
-                      {p.aangemeld_op ? new Date(p.aangemeld_op).toLocaleDateString(dateLocale, { dateStyle: "short" }) : "—"}
+                      {p.aangemeld_op ? new Date(p.aangemeld_op).toLocaleDateString(dateLocale, { dateStyle: "short" }) : t("noValue")}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div
+          className="rounded-xl border overflow-hidden lg:col-span-2"
+          style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+        >
+          <div className="p-4 border-b" style={{ borderColor: ADM_BORDER }}>
+            <h2 className="font-semibold" style={{ color: ADM_TEXT }}>
+              {t("dashboard.subscribersByLanguage")}
+            </h2>
+          </div>
+          <div className="p-4">
+            <ul className="space-y-2 text-sm flex flex-wrap gap-x-8 gap-y-2">
+              {languageOrder.map((lang) => (
+                <li key={lang} className="flex justify-between items-center gap-4" style={{ color: ADM_TEXT }}>
+                  <span className="font-medium uppercase">{lang}</span>
+                  <span style={{ color: ADM_MUTED }}>{subscribersByLanguage[lang] ?? 0}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

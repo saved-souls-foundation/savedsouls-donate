@@ -4,7 +4,7 @@ import { Resend } from "resend";
 const DEFAULT_FROM = "Saved Souls Website <info@savedsouls-foundation.com>";
 
 function getFrom(): string {
-  return process.env.RESEND_FROM || DEFAULT_FROM;
+  return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || DEFAULT_FROM;
 }
 
 function getClient(): Resend | null {
@@ -19,6 +19,8 @@ export type SendMailOptions = {
   text: string;
   html?: string;
   replyTo?: string;
+  /** Override from address (e.g. RESEND_FROM_EMAIL). If not set, uses RESEND_FROM or DEFAULT_FROM. */
+  from?: string;
 };
 
 /**
@@ -30,7 +32,7 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
   if (!client) {
     return { success: false, error: "Email service is not configured." };
   }
-  const from = getFrom();
+  const from = options.from ?? getFrom();
   const to = Array.isArray(options.to) ? options.to : [options.to];
   try {
     const result = await client.emails.send({

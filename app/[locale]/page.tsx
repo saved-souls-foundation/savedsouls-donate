@@ -13,6 +13,7 @@ import TrustStatsBar from "../components/TrustStatsBar";
 import IdealDonate from "../components/IdealDonate";
 import BankTransferSection from "../components/BankTransferSection";
 import RecentDonations from "../components/RecentDonationsFooter";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
 
@@ -613,6 +614,10 @@ export default function DonatePage() {
             {tHome("contactCtaButton")}
           </Link>
         </div>
+      </section>
+
+      <section className="py-12 px-4 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
+        <NewsletterSignup variant="compact" />
       </section>
 
       <div className="pb-[env(safe-area-inset-bottom,0)]">

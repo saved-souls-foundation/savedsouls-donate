@@ -39,6 +39,11 @@
     "adminForgotPasswordHint": "Kontaktieren Sie den Administrator, um Ihr Passwort zurückzusetzen:",
     "disclaimer": "Impressum",
     "thankYou": "Danke",
+    "unsubscribedMessage": "Sie wurden abgemeldet",
+    "unsubscribeLoading": "Abmeldung läuft…",
+    "unsubscribeSuccess": "Sie wurden von unserem Newsletter abgemeldet. ({email})",
+    "unsubscribeAlready": "Diese E-Mail war bereits abgemeldet oder der Link ist ungültig.",
+    "unsubscribeError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
     "streetDogsThailand": "Straßenhunde Thailand",
     "schoolProject": "Schulprojekt",
     "usefulLinks": "Nützliche Links",
@@ -3939,5 +3944,21 @@
     "sectionPetShops": "Zoofachhandel Niederlande",
     "visitLink": "→",
     "disclaimer": "Wir sind nicht verantwortlich für den Inhalt externer Seiten. Link-Vorschlag? Melden Sie sich."
+  },
+  "newsletter": {
+    "title": "Bleib auf dem Laufenden",
+    "subtitle": "Erhalte Neuigkeiten über unsere Tiere und Projekte in Thailand.",
+    "emailPlaceholder": "Deine E-Mail-Adresse",
+    "voornaamPlaceholder": "Vorname (optional)",
+    "bedrijfsnaamPlaceholder": "Firmenname",
+    "typePersoon": "Person",
+    "typeBedrijf": "Unternehmen",
+    "subscribeButton": "Anmelden",
+    "subscribing": "Bitte warten...",
+    "successTitle": "Angemeldet!",
+    "successBody": "Danke! Du erhältst eine Bestätigungs-E-Mail.",
+    "alreadySubscribed": "Diese E-Mail-Adresse ist bereits angemeldet.",
+    "errorMessage": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "privacy": "Wir respektieren deine Privatsphäre. Kein Spam, nur Neuigkeiten von SavedSouls Foundation."
   }
 }

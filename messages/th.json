@@ -39,6 +39,11 @@
     "adminForgotPasswordHint": "ติดต่อผู้ดูแลระบบเพื่อรีเซ็ตรหัสผ่าน:",
     "disclaimer": "ข้อจำกัดความรับผิด",
     "thankYou": "ขอบคุณ",
+    "unsubscribedMessage": "คุณได้ยกเลิกการสมัครแล้ว",
+    "unsubscribeLoading": "กำลังยกเลิกการสมัคร…",
+    "unsubscribeSuccess": "คุณได้ยกเลิกการสมัครจากจดหมายข่าวของเราแล้ว ({email})",
+    "unsubscribeAlready": "อีเมลนี้ยกเลิกการสมัครแล้วหรือลิงก์ไม่ถูกต้อง",
+    "unsubscribeError": "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง",
     "streetDogsThailand": "สุนัขจรจัด ไทย",
     "schoolProject": "โครงการโรงเรียน",
     "usefulLinks": "ลิงก์ที่เป็นประโยชน์",
@@ -4003,5 +4008,21 @@
     "contactText": "สำหรับคำถามเกี่ยวกับข้อจำกัดความรับผิดนี้หรือมูลนิธิ กรุณาติดต่อเราที่ ",
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "สุนัขใส่แว่นอ่านหนังสือกฎหมาย"
+  },
+  "newsletter": {
+    "title": "ติดตามข่าวสาร",
+    "subtitle": "รับข่าวสารเกี่ยวกับสัตว์และโครงการของเราในประเทศไทย",
+    "emailPlaceholder": "อีเมลของคุณ",
+    "voornaamPlaceholder": "ชื่อ (ไม่บังคับ)",
+    "bedrijfsnaamPlaceholder": "ชื่อบริษัท",
+    "typePersoon": "บุคคล",
+    "typeBedrijf": "บริษัท",
+    "subscribeButton": "สมัครรับข่าวสาร",
+    "subscribing": "กรุณารอสักครู่...",
+    "successTitle": "สมัครสำเร็จ!",
+    "successBody": "ขอบคุณ! คุณจะได้รับอีเมลยืนยัน",
+    "alreadySubscribed": "อีเมลนี้สมัครรับข่าวสารแล้ว",
+    "errorMessage": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
+    "privacy": "เราเคารพความเป็นส่วนตัวของคุณ ไม่มีสแปม เพียงข่าวสารจาก SavedSouls Foundation"
   }
 }

@@ -39,6 +39,11 @@
     "adminForgotPasswordHint": "Свяжитесь с администратором для сброса пароля:",
     "disclaimer": "Отказ от ответственности",
     "thankYou": "Спасибо",
+    "unsubscribedMessage": "Вы отписаны от рассылки",
+    "unsubscribeLoading": "Отписка…",
+    "unsubscribeSuccess": "Вы отписаны от нашей рассылки. ({email})",
+    "unsubscribeAlready": "Этот адрес уже отписан или ссылка недействительна.",
+    "unsubscribeError": "Что-то пошло не так. Попробуйте позже.",
     "streetDogsThailand": "Бездомные собаки Таиланд",
     "schoolProject": "Школьный проект",
     "usefulLinks": "Полезные ссылки",
@@ -4003,5 +4008,21 @@
     "contactText": "По вопросам об этом отказе от ответственности или Фонде свяжитесь с нами: ",
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Собака в очках читает книгу законов"
+  },
+  "newsletter": {
+    "title": "Будьте в курсе",
+    "subtitle": "Получайте новости о наших животных и проектах в Таиланде.",
+    "emailPlaceholder": "Ваш адрес электронной почты",
+    "voornaamPlaceholder": "Имя (необязательно)",
+    "bedrijfsnaamPlaceholder": "Название компании",
+    "typePersoon": "Физическое лицо",
+    "typeBedrijf": "Компания",
+    "subscribeButton": "Подписаться",
+    "subscribing": "Пожалуйста, подождите...",
+    "successTitle": "Подписка оформлена!",
+    "successBody": "Спасибо! Вы получите письмо с подтверждением.",
+    "alreadySubscribed": "Этот адрес уже подписан.",
+    "errorMessage": "Что-то пошло не так. Попробуйте ещё раз.",
+    "privacy": "Мы уважаем вашу конфиденциальность. Никакого спама, только новости SavedSouls Foundation."
   }
 }

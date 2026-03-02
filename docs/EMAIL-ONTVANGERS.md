@@ -12,6 +12,7 @@ Overzicht van alle ontvangers bij formulierinzendingen en notificaties.
 | **info@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate, Portal vrijwilliger stap 4 | Zelfde + `TO_PRIMARY` (adopt-inquiry), `TO_VOLUNTEER` (volunteer-signup) |
 | **mike@savedsouls-foundation.org** | Contact, Adopt, Adopt-inquiry, Volunteer, Volunteer-signup, Donate, Portal vrijwilliger stap 4 | Monitor; via `NOTIFICATION_EMAILS` en `TO_MIKE_MONITOR` |
 | **kleinjansmike@gmail.com** | Alleen **Contactformulier** | `AUTO_REPLY_CC` in `app/api/contact/route.ts`: krijgt kopie van de auto-reply naar bezoeker + kopie van de contact-notificatie (ingevuld formulier) |
+| **ADMIN_EMAIL** (env) | **Stripe-webhook** (`/api/webhooks/stripe`) | Notificaties bij betalingsprobleem of gestopte abonnementen (recurring donations). Zet in `.env.local` / Vercel: `ADMIN_EMAIL=info@savedsouls-foundation.org`. Fallback in code: `info@savedsouls-foundation.org`. |
 
 ---
 

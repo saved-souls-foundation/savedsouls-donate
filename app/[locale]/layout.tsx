@@ -45,3 +45,4 @@ export default async function LocaleLayout({ children, params }: Props) {
     </NextIntlClientProvider>
   );
 }
+CHANGELOG-PORTAL.md

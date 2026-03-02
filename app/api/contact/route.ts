@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -252,6 +253,20 @@ export async function POST(req: NextRequest) {
     const locale = validReferer ? fromReferer : validBody ? fromBody : fromReferer ?? fromBody ?? "en";
     if (!name || !email || !message) {
       return NextResponse.json({ error: "Name, email and message are required." }, { status: 400 });
+    }
+
+    try {
+      const admin = createAdminClient();
+      await admin.from("incoming_emails").insert({
+        van_email: email,
+        van_naam: name,
+        onderwerp: subject || null,
+        inhoud: message,
+        bron: "contact_formulier",
+        status: "in_behandeling",
+      });
+    } catch (e) {
+      console.error("[contact] incoming_emails insert failed", e);
     }
 
     const autoReplyContent = getAutoReplyContent(locale);

@@ -5,6 +5,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 import ContactForm from "../../components/ContactForm";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#E67A4C";
@@ -209,6 +210,10 @@ export default async function ContactPage({ params }: Props) {
           </p>
           <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
         </div>
+
+        <section className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">
+          <NewsletterSignup variant="expanded" />
+        </section>
       </main>
       <Footer />
     </ParallaxPage>
