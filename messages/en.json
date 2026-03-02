@@ -458,6 +458,8 @@
       "totalActive": "{count} active subscribers",
       "unsubscribeConfirm": "Are you sure you want to unsubscribe this person?",
       "unsubscribeButton": "Unsubscribe",
+      "deleteButton": "Delete",
+      "deleteConfirm": "Are you sure you want to delete {name}?",
       "persoon": "Person",
       "bedrijf": "Company",
       "subject": "Subject",

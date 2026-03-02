@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 async function requireAdmin() {
   const serverSupabase = await createClient();
@@ -9,27 +9,21 @@ async function requireAdmin() {
   const { data: profile } = await serverSupabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
   const isAdmin = profile?.role === "admin" || profile?.is_admin === true;
   if (!isAdmin) return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }), supabase: null };
-  let supabase: Awaited<ReturnType<typeof createClient>>;
-  if (isSupabaseAdminConfigured()) {
-    try {
-      supabase = createAdminClient();
-    } catch {
-      supabase = serverSupabase;
-    }
-  } else {
-    supabase = serverSupabase;
-  }
-  return { error: null, supabase };
+  return { error: null, supabase: createAdminClient() };
 }
 
 export async function GET(request: NextRequest) {
   const { error, supabase } = await requireAdmin();
   if (error) return error;
 
-  const { count: rawCount, error: rawError } = await supabase
+  const { data, error: debugError, count } = await supabase
     .from("newsletter_subscribers")
-    .select("*", { count: "exact", head: true });
-  console.log("Abonnees raw:", { count: rawCount, error: rawError?.message ?? null });
+    .select("*", { count: "exact" });
+
+  console.log("=== NEWSLETTER DEBUG ===");
+  console.log("Count:", count);
+  console.log("Error:", debugError);
+  console.log("Data:", data);
 
   const { searchParams } = new URL(request.url);
   const search = searchParams.get("search")?.trim() ?? "";
@@ -106,15 +100,8 @@ export async function POST(request: NextRequest) {
   }
 
   const { sendNewsletterConfirmation } = await import("@/lib/newsletterConfirmation");
-  sendNewsletterConfirmation({
-    email,
-    language: language as "nl" | "en" | "es" | "ru" | "th" | "de" | "fr",
-    unsubscribeToken: unsubscribe_token,
-    voornaam,
-    achternaam,
-  }).catch((err) => {
-    console.error("[admin/newsletter] Confirmation email failed after manual add (subscriber was added):", err);
-  });
+  const naam = [voornaam, achternaam].filter(Boolean).join(" ").trim() || undefined;
+  sendNewsletterConfirmation({ email, naam });
 
   return NextResponse.json({ data: inserted, message: "Abonnee toegevoegd." }, { status: 201 });
 }

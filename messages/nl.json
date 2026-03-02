@@ -458,6 +458,8 @@
       "totalActive": "{count} actieve abonnees",
       "unsubscribeConfirm": "Weet je zeker dat je deze persoon wilt uitschrijven?",
       "unsubscribeButton": "Uitschrijven",
+      "deleteButton": "Verwijderen",
+      "deleteConfirm": "Weet je zeker dat je {name} wilt verwijderen?",
       "persoon": "Persoon",
       "bedrijf": "Bedrijf",
       "subject": "Onderwerp",

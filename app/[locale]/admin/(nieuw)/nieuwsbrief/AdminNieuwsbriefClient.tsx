@@ -43,6 +43,8 @@ export default function AdminNieuwsbriefClient() {
   const [loading, setLoading] = useState(true);
   const [unsubscribingId, setUnsubscribingId] = useState<string | null>(null);
   const [confirmUnsub, setConfirmUnsub] = useState<{ id: string; name: string } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addVoornaam, setAddVoornaam] = useState("");
   const [addAchternaam, setAddAchternaam] = useState("");
@@ -128,6 +130,17 @@ export default function AdminNieuwsbriefClient() {
     if (res.ok) {
       fetchSubscribers();
       if (activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
+    }
+  }
+
+  async function handleDelete(id: string, wasActief: boolean) {
+    setDeletingId(id);
+    const res = await fetch(`/api/admin/newsletter/${id}/delete`, { method: "DELETE" });
+    setDeletingId(null);
+    setConfirmDelete(null);
+    if (res.ok) {
+      fetchSubscribers();
+      if (wasActief && activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
     }
   }
 
@@ -299,7 +312,7 @@ export default function AdminNieuwsbriefClient() {
                     <td className="p-3" style={{ color: ADM_TEXT }}>
                       {r.actief ? t("actief") : t("inactief")}
                     </td>
-                    <td className="p-3">
+                    <td className="p-3 flex flex-wrap items-center gap-2">
                       {r.actief ? (
                         <button
                           type="button"
@@ -312,6 +325,15 @@ export default function AdminNieuwsbriefClient() {
                       ) : (
                         noVal
                       )}
+                      <button
+                        type="button"
+                        disabled={deletingId === r.id}
+                        onClick={() => setConfirmDelete({ id: r.id, name: name(r) })}
+                        className="text-sm text-stone-500 hover:text-red-600 disabled:opacity-50"
+                        title={t("deleteButton")}
+                      >
+                        {deletingId === r.id ? loadingStr : "🗑 " + t("deleteButton")}
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -376,6 +398,41 @@ export default function AdminNieuwsbriefClient() {
                 style={{ background: "#dc2626" }}
               >
                 {t("unsubscribeButton")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.4)" }}
+        >
+          <div className="rounded-xl border p-6 max-w-md w-full shadow-lg" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+              {t("deleteConfirm", { name: confirmDelete.name })}
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(null)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {tAdmin("members.cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const row = data.find((d) => d.id === confirmDelete.id);
+                  confirmDelete && handleDelete(confirmDelete.id, row?.actief ?? false);
+                }}
+                disabled={deletingId === confirmDelete.id}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: "#dc2626" }}
+              >
+                {deletingId === confirmDelete.id ? loadingStr : "🗑 " + t("deleteButton")}
               </button>
             </div>
           </div>
