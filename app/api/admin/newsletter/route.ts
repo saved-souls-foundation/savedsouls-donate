@@ -1,20 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 async function requireAdmin() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const serverSupabase = await createClient();
+  const { data: { user } } = await serverSupabase.auth.getUser();
   if (!user) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }), supabase: null };
-  const { data: profile } = await supabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
+  const { data: profile } = await serverSupabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
   const isAdmin = profile?.role === "admin" || profile?.is_admin === true;
   if (!isAdmin) return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }), supabase: null };
-  return { error: null, supabase: createAdminClient() };
+  let supabase: Awaited<ReturnType<typeof createClient>>;
+  if (isSupabaseAdminConfigured()) {
+    try {
+      supabase = createAdminClient();
+    } catch {
+      supabase = serverSupabase;
+    }
+  } else {
+    supabase = serverSupabase;
+  }
+  return { error: null, supabase };
 }
 
 export async function GET(request: NextRequest) {
   const { error, supabase } = await requireAdmin();
   if (error) return error;
+
+  const { count: rawCount, error: rawError } = await supabase
+    .from("newsletter_subscribers")
+    .select("*", { count: "exact", head: true });
+  console.log("Abonnees raw:", { count: rawCount, error: rawError?.message ?? null });
+
   const { searchParams } = new URL(request.url);
   const search = searchParams.get("search")?.trim() ?? "";
   const status = searchParams.get("status")?.trim() ?? "";
@@ -40,10 +56,10 @@ export async function GET(request: NextRequest) {
 
   q = q.order("aangemeld_op", { ascending: false }).range(from, from + limit - 1);
 
-  const { data, error: e, count } = await q;
-  console.log("[admin/newsletter] GET result:", { rowCount: data?.length ?? 0, total: count ?? 0, page, limit, error: e?.message ?? null });
+  const { data: listData, error: e, count } = await q;
+  console.log("[admin/newsletter] GET result:", { rowCount: listData?.length ?? 0, total: count ?? 0, page, limit, error: e?.message ?? null });
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ data: data ?? [], total: count ?? 0, page, limit });
+  return NextResponse.json({ data: listData ?? [], total: count ?? 0, page, limit });
 }
 
 export async function POST(request: NextRequest) {
