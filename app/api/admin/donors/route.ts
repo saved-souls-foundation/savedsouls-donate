@@ -21,16 +21,18 @@ export async function GET(request: NextRequest) {
   const dateFrom = searchParams.get("dateFrom")?.trim() ?? "";
   const dateTo = searchParams.get("dateTo")?.trim() ?? "";
   const status = searchParams.get("status")?.trim() ?? "";
+  const methode = searchParams.get("methode")?.trim().toLowerCase() ?? "";
   const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
   if (tab === "onetime") {
     let donorIdsFilter: string[] | null = null;
-    if (dateFrom || dateTo) {
+    if (dateFrom || dateTo || methode === "paypal" || methode === "bank" || methode === "other") {
       let dq = supabase!.from("donations").select("donor_id").eq("status", "voltooid");
       if (dateFrom) dq = dq.gte("donatie_datum", dateFrom);
       if (dateTo) dq = dq.lte("donatie_datum", dateTo + "T23:59:59.999Z");
+      if (methode === "paypal" || methode === "bank" || methode === "other") dq = dq.eq("methode", methode === "other" ? "overig" : methode);
       const { data: dons } = await dq;
       donorIdsFilter = [...new Set((dons ?? []).map((d: { donor_id: string }) => d.donor_id))];
       if (donorIdsFilter.length === 0) return NextResponse.json({ data: [], total: 0, page, limit, tab: "onetime" });
@@ -53,6 +55,7 @@ export async function GET(request: NextRequest) {
       let dq = supabase!.from("donations").select("donor_id, bedrag, donatie_datum").in("donor_id", ids).eq("status", "voltooid");
       if (dateFrom) dq = dq.gte("donatie_datum", dateFrom);
       if (dateTo) dq = dq.lte("donatie_datum", dateTo + "T23:59:59.999Z");
+      if (methode === "paypal" || methode === "bank" || methode === "other") dq = dq.eq("methode", methode === "other" ? "overig" : methode);
       const { data: dons } = await dq;
       (dons ?? []).forEach((d: { donor_id: string; bedrag: number; donatie_datum: string | null }) => {
         if (!agg[d.donor_id]) return;

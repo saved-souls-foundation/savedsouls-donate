@@ -40,6 +40,7 @@ export default function AdminDonateurDetail({ id }: { id: string }) {
   const [addRecurringOpen, setAddRecurringOpen] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [toast, setToast] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [donationMethodeFilter, setDonationMethodeFilter] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
@@ -62,7 +63,9 @@ export default function AdminDonateurDetail({ id }: { id: string }) {
   }, [id]);
 
   useEffect(() => {
-    if (searchParams.get("addDonation") === "1") setAddDonationOpen(true);
+    if (searchParams.get("addDonation") !== "1") return;
+    const id = setTimeout(() => setAddDonationOpen(true), 0);
+    return () => clearTimeout(id);
   }, [searchParams]);
 
   function formatDate(d: string | null) {
@@ -192,7 +195,15 @@ export default function AdminDonateurDetail({ id }: { id: string }) {
       )}
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <h3 className="p-4 border-b text-sm font-semibold" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("donationHistory")}</h3>
+        <div className="p-4 border-b flex flex-wrap items-center gap-3" style={{ borderColor: ADM_BORDER }}>
+          <h3 className="text-sm font-semibold" style={{ color: ADM_TEXT }}>{t("donationHistory")}</h3>
+          <select value={donationMethodeFilter} onChange={(e) => setDonationMethodeFilter(e.target.value)} className="px-3 py-1.5 rounded-lg border text-sm" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
+            <option value="">{t("filterMethodAll")}</option>
+            <option value="paypal">{t("filterMethodPaypal")}</option>
+            <option value="bank">{t("filterMethodBank")}</option>
+            <option value="other">{t("filterMethodOther")}</option>
+          </select>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -206,10 +217,10 @@ export default function AdminDonateurDetail({ id }: { id: string }) {
               </tr>
             </thead>
             <tbody>
-              {donations.length === 0 ? (
-                <tr><td colSpan={6} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noDonations")}</td></tr>
-              ) : (
-                donations.map((d) => (
+              {(() => {
+                const filtered = donationMethodeFilter === "paypal" ? donations.filter((d) => d.methode === "paypal") : donationMethodeFilter === "bank" ? donations.filter((d) => d.methode === "bank") : donationMethodeFilter === "other" ? donations.filter((d) => d.methode === "overig" || !d.methode) : donations;
+                if (filtered.length === 0) return <tr><td colSpan={6} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noDonations")}</td></tr>;
+                return filtered.map((d) => (
                   <tr key={d.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{formatDate(d.donatie_datum)}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{formatCurrency(d.bedrag, d.valuta)} {d.anoniem ? `(${t("anonymous")})` : ""}</td>
@@ -218,8 +229,8 @@ export default function AdminDonateurDetail({ id }: { id: string }) {
                     <td className="p-3" style={{ color: ADM_MUTED }}>{d.betalingskenmerk ?? t("noValue")}</td>
                     <td className="p-3" style={{ color: ADM_MUTED }}>{d.campagne ?? t("noValue")}</td>
                   </tr>
-                ))
-              )}
+                ));
+              })()}
             </tbody>
           </table>
         </div>

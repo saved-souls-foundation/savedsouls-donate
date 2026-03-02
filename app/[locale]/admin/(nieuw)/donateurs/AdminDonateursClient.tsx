@@ -51,6 +51,7 @@ export default function AdminDonateursClient() {
   const [country, setCountry] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [methodeFilter, setMethodeFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [onetimeData, setOnetimeData] = useState<OnetimeRow[]>([]);
@@ -68,6 +69,7 @@ export default function AdminDonateursClient() {
     if (country) params.set("country", country);
     if (dateFrom) params.set("dateFrom", dateFrom);
     if (dateTo) params.set("dateTo", dateTo);
+    if (methodeFilter === "paypal" || methodeFilter === "bank" || methodeFilter === "other") params.set("methode", methodeFilter);
     params.set("page", String(page));
     params.set("limit", String(PAGE_SIZE));
     const res = await fetch(`/api/admin/donors?${params}`);
@@ -81,7 +83,7 @@ export default function AdminDonateursClient() {
     setOnetimeData(json.data ?? []);
     setOnetimeTotal(json.total ?? 0);
     setLoading(false);
-  }, [search, country, dateFrom, dateTo, page]);
+  }, [search, country, dateFrom, dateTo, methodeFilter, page]);
 
   const fetchRecurring = useCallback(async () => {
     setLoading(true);
@@ -105,8 +107,12 @@ export default function AdminDonateursClient() {
   }, [search, statusFilter, page]);
 
   useEffect(() => {
-    if (tab === "onetime") fetchOnetime();
-    else fetchRecurring();
+    const run = () => {
+      if (tab === "onetime") fetchOnetime();
+      else fetchRecurring();
+    };
+    const id = setTimeout(run, 0);
+    return () => clearTimeout(id);
   }, [tab, fetchOnetime, fetchRecurring]);
 
   useEffect(() => {
@@ -193,6 +199,12 @@ export default function AdminDonateursClient() {
         <input type="search" placeholder={t("search")} value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
         {tab === "onetime" && (
           <>
+            <select value={methodeFilter} onChange={(e) => { setMethodeFilter(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} title={t("filterMethod")}>
+              <option value="">{t("filterMethodAll")}</option>
+              <option value="paypal">{t("filterMethodPaypal")}</option>
+              <option value="bank">{t("filterMethodBank")}</option>
+              <option value="other">{t("filterMethodOther")}</option>
+            </select>
             <select value={country} onChange={(e) => { setCountry(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
               <option value="">{t("filterCountry")}</option>
               {COUNTRY_OPTIONS.filter(Boolean).map((c) => (
