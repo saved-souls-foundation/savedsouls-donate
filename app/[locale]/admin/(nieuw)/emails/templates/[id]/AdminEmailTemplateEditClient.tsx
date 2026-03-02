@@ -316,7 +316,7 @@ export default function AdminEmailTemplateEditClient({ id }: { id: string }) {
                 className="px-2 py-1 rounded text-sm border"
                 style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
               >
-                [{{naam}}]
+                {"[{{naam}}]"}
               </button>
               <button
                 type="button"
@@ -324,7 +324,7 @@ export default function AdminEmailTemplateEditClient({ id }: { id: string }) {
                 className="px-2 py-1 rounded text-sm border"
                 style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
               >
-                [{{dier}}]
+                {"[{{dier}}]"}
               </button>
               <button
                 type="button"
@@ -332,7 +332,7 @@ export default function AdminEmailTemplateEditClient({ id }: { id: string }) {
                 className="px-2 py-1 rounded text-sm border"
                 style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
               >
-                [{{organisatie}}]
+                {"[{{organisatie}}]"}
               </button>
             </div>
 
@@ -386,7 +386,7 @@ export default function AdminEmailTemplateEditClient({ id }: { id: string }) {
             {t("livePreview")}
           </h3>
           <p className="text-xs mb-2" style={{ color: ADM_MUTED }}>
-            {activeTab.toUpperCase()} — {{naam}} → {PREVIEW_NAAM}, {{dier}} → {PREVIEW_DIER}, {{organisatie}} → {PREVIEW_ORG}
+            {activeTab.toUpperCase()} — {"{{naam}}"} → {PREVIEW_NAAM}, {"{{dier}}"} → {PREVIEW_DIER}, {"{{organisatie}}"} → {PREVIEW_ORG}
           </p>
           <div
             className="prose prose-sm max-w-none p-4 rounded-lg border min-h-[200px] overflow-auto"
