@@ -128,10 +128,12 @@ export function DashboardAutoRepliesNewsletterCards({
 
   const getTitle = (item: EmailTemplate | NewsletterTemplate) =>
     "naam" in item ? (item.naam ?? "—") : (item as NewsletterTemplate).titel;
-  const getDate = (item: EmailTemplate | NewsletterTemplate) =>
-    "created_at" in item && (item as EmailTemplate).created_at
-      ? new Date((item as EmailTemplate).created_at).toLocaleDateString("nl-NL")
-      : "—";
+  const getDate = (item: EmailTemplate | NewsletterTemplate) => {
+    if ("created_at" in item && (item as EmailTemplate).created_at) {
+      return new Date((item as EmailTemplate).created_at as string).toLocaleDateString("nl-NL");
+    }
+    return "—";
+  };
 
   const cards = [
     { type: "autoReplies" as const, icon: "🤖", label: labels.autoReplies, value: emailCount },
