@@ -24,9 +24,13 @@ type EmailRow = {
   ontvangen_op: string;
   ai_categorie: string | null;
   ai_confidence: number | null;
+  ai_suggestie_template_id: string | null;
+  ai_gegenereerd_antwoord: string | null;
   status: string;
   taal: string | null;
 };
+
+type TemplateInfo = { id: string; naam: string | null };
 
 type Stats = { pending: number; sentToday: number; ignored: number };
 
@@ -45,6 +49,8 @@ export default function AdminEmailsClient() {
   const [loading, setLoading] = useState(true);
   const [sendingId, setSendingId] = useState<string | null>(null);
   const [ignoringId, setIgnoringId] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<TemplateInfo[]>([]);
+  const [hoverTooltip, setHoverTooltip] = useState<{ row: EmailRow; x: number; y: number } | null>(null);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -78,6 +84,22 @@ export default function AdminEmailsClient() {
       .then((j) => j && setStats(j))
       .catch(() => setStats(null));
   }, []);
+
+  useEffect(() => {
+    fetch("/api/admin/email-templates")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setTemplates(Array.isArray(data) ? data.map((t: { id: string; naam: string | null }) => ({ id: t.id, naam: t.naam })) : []))
+      .catch(() => setTemplates([]));
+  }, []);
+
+  function stripHtml(html: string): string {
+    return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function templateNaam(templateId: string | null): string {
+    if (!templateId) return "";
+    return templates.find((t) => t.id === templateId)?.naam ?? templateId;
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -199,6 +221,7 @@ export default function AdminEmailsClient() {
                 <th className="text-left p-3">{t("received")}</th>
                 <th className="text-left p-3">{t("language")}</th>
                 <th className="text-left p-3">{t("aiCategory")}</th>
+                <th className="text-left p-3">{t("suggestedTemplate")}</th>
                 <th className="text-left p-3">{t("aiConfidence")}</th>
                 <th className="text-left p-3">{t("status")}</th>
                 <th className="text-left p-3">{t("actions")}</th>
@@ -206,9 +229,9 @@ export default function AdminEmailsClient() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
+                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
               ) : data.length === 0 ? (
-                <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
+                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
               ) : (
                 data.map((row) => (
                   <tr key={row.id} className="border-t hover:opacity-90" style={{ borderColor: ADM_BORDER }}>
@@ -219,6 +242,35 @@ export default function AdminEmailsClient() {
                     <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(row.ontvangen_op)}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{(row.taal ?? "").toUpperCase() || t("noValue")}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{row.ai_categorie ? (categoryKeys[row.ai_categorie] ?? row.ai_categorie) : t("noValue")}</td>
+                    <td className="p-3 relative">
+                      <div
+                        className="inline"
+                        onMouseEnter={(e) => {
+                          if (!row.ai_suggestie_template_id) return;
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setHoverTooltip({ row, x: rect.left, y: rect.bottom + 4 });
+                        }}
+                        onMouseLeave={() => setHoverTooltip(null)}
+                      >
+                        {row.ai_suggestie_template_id ? (
+                          <span className="cursor-help underline decoration-dotted" style={{ color: ADM_ACCENT }}>
+                            {templateNaam(row.ai_suggestie_template_id) || t("noValue")}
+                          </span>
+                        ) : (
+                          <span style={{ color: ADM_MUTED }}>{t("noValue")}</span>
+                        )}
+                        {hoverTooltip?.row?.id === row.id && (
+                          <div
+                            className="fixed z-50 max-w-sm rounded-lg border p-3 text-sm shadow-lg"
+                            style={{ left: hoverTooltip.x, top: hoverTooltip.y, background: ADM_CARD, borderColor: ADM_BORDER, color: ADM_TEXT }}
+                          >
+                            <p className="font-medium">{templateNaam(row.ai_suggestie_template_id)}</p>
+                            {row.ai_confidence != null && <p style={{ color: ADM_MUTED }}>{Math.round(Number(row.ai_confidence) * 100)}%</p>}
+                            {row.ai_gegenereerd_antwoord && <p className="mt-2 line-clamp-4" style={{ color: ADM_MUTED }}>{stripHtml(row.ai_gegenereerd_antwoord).slice(0, 200)}{stripHtml(row.ai_gegenereerd_antwoord).length > 200 ? "…" : ""}</p>}
+                          </div>
+                        )}
+                      </div>
+                    </td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{row.ai_confidence != null ? `${Math.round(Number(row.ai_confidence) * 100)}%` : t("noValue")}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{statusLabel(row.status)}</td>
                     <td className="p-3">

@@ -6,6 +6,12 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "turnstile": {
+    "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
+    "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
+    "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
+    "retryButton": "Retry security check"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Animal Rescue Thailand",
     "description": "We rescue dogs and cats in Thailand. Adopt, volunteer or donate. Over 550 animals saved from the dog meat trade and the streets."
@@ -4501,6 +4507,7 @@
     "successTitle": "Subscribed!",
     "successBody": "Thank you! You will receive a confirmation email.",
     "alreadySubscribed": "This email address is already subscribed.",
+    "validationEmail": "Please enter a valid email address.",
     "errorMessage": "Something went wrong. Please try again.",
     "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation."
   }

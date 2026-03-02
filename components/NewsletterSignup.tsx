@@ -29,13 +29,20 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedEmail = email.trim().toLowerCase();
+    // Validatie vóór fetch: bij leeg of ongeldig e-mailadres wordt géén API-request gedaan.
     if (!trimmedEmail) {
-      setErrorMessage(t("errorMessage"));
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[NewsletterSignup] Geen request: e-mail is leeg (validation)");
+      }
+      setErrorMessage(t("validationEmail"));
       setStatus("error");
       return;
     }
     if (!emailRegex.test(trimmedEmail)) {
-      setErrorMessage(t("errorMessage"));
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[NewsletterSignup] Geen request: ongeldig e-mailformaat (validation)", trimmedEmail);
+      }
+      setErrorMessage(t("validationEmail"));
       setStatus("error");
       return;
     }
@@ -57,9 +64,16 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      const data = await res.json().catch(() => ({}));
+      const text = await res.text();
+      const data = (() => {
+        try {
+          return JSON.parse(text) as { error?: string; message?: string };
+        } catch {
+          return {};
+        }
+      })();
       if (res.ok) {
-        if ((data as { message?: string }).message === "already subscribed") {
+        if (data.message === "already subscribed") {
           setStatus("already");
         } else {
           setStatus("success");
@@ -67,7 +81,10 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
         return;
       }
       setStatus("error");
-      setErrorMessage(t("errorMessage"));
+      const apiError = typeof data.error === "string" ? data.error : null;
+      setErrorMessage(apiError || t("errorMessage"));
+      // Altijd in console loggen zodat je de echte fout kunt terugvinden (Network-tab of serverlogs)
+      console.error("[newsletter subscribe]", res.status, apiError ?? (text.slice(0, 200) || "Geen response-body"));
     } catch {
       setStatus("error");
       setErrorMessage(t("errorMessage"));

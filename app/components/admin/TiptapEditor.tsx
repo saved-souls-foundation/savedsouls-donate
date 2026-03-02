@@ -9,13 +9,17 @@ import { useTranslations } from "next-intl";
 const ADM_BORDER = "#e2e8f0";
 const ADM_TEXT = "#1e293b";
 
+import type { Editor } from "@tiptap/react";
+
 type TiptapEditorProps = {
   value: string;
   onChange: (html: string) => void;
   placeholder?: string;
+  /** Callback when editor is ready; use to insert content at cursor (e.g. placeholder chips). */
+  onEditorReady?: (editor: Editor) => void;
 };
 
-export default function TiptapEditor({ value, onChange, placeholder }: TiptapEditorProps) {
+export default function TiptapEditor({ value, onChange, placeholder, onEditorReady }: TiptapEditorProps) {
   const t = useTranslations("admin.newsletter");
   const editor = useEditor({
     extensions: [
@@ -49,6 +53,10 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
       editor.commands.setContent(value || "", false);
     }
   }, [value, editor]);
+
+  useEffect(() => {
+    if (editor && onEditorReady) onEditorReady(editor);
+  }, [editor, onEditorReady]);
 
   if (!editor) return <div className="min-h-[200px] rounded-lg border p-2" style={{ borderColor: ADM_BORDER }}>{t("editorLoading")}</div>;
 

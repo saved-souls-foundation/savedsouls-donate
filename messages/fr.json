@@ -6,6 +6,11 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "turnstile": {
+    "errorBeforeEmail": "La vérification de sécurité n'a pas pu être chargée (Cloudflare). Réessayez, désactivez les bloqueurs de publicité ou contactez-nous à ",
+    "errorAfterEmail": ".",
+    "retryButton": "Réessayer la vérification de sécurité"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Sauvetage Animal Thaïlande",
     "description": "Nous sauvons des chiens et des chats en Thaïlande. Adoptez, faites du bénévolat ou faites un don. Plus de 550 animaux sauvés."
@@ -4297,6 +4302,7 @@
     "successTitle": "Inscrit!",
     "successBody": "Merci! Vous recevrez un e-mail de confirmation.",
     "alreadySubscribed": "Cette adresse e-mail est déjà inscrite.",
+    "validationEmail": "Veuillez entrer une adresse e-mail valide.",
     "errorMessage": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "privacy": "Nous respectons votre vie privée. Pas de spam, uniquement des nouvelles de SavedSouls Foundation."
   }

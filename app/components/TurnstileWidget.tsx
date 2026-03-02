@@ -1,7 +1,10 @@
 "use client";
 
 import Script from "next/script";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+const CONTACT_EMAIL = "info@savedsouls-foundation.org";
 
 const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
@@ -42,6 +45,7 @@ export default function TurnstileWidget({
   size = "flexible",
   theme = "light",
 }: TurnstileWidgetProps) {
+  const t = useTranslations("turnstile");
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [widgetError, setWidgetError] = useState(false);
@@ -69,7 +73,7 @@ export default function TurnstileWidget({
     setSiteKey(isLocalhost ? TURNSTILE_TEST_SITE_KEY : envSiteKey);
   }, [envSiteKey]);
 
-  // Render widget pas wanneer de container in beeld is (helpt op mobiel bij formulier onderaan).
+  // Start widget al wanneer het formulier bijna in beeld is (grotere rootMargin = sneller klaar wanneer gebruiker daar is).
   useEffect(() => {
     const el = containerRef.current;
     if (!el || typeof IntersectionObserver === "undefined") {
@@ -80,7 +84,7 @@ export default function TurnstileWidget({
       (entries) => {
         if (entries[0]?.isIntersecting) setContainerVisible(true);
       },
-      { rootMargin: "50px", threshold: 0.1 }
+      { rootMargin: "400px", threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -113,6 +117,7 @@ export default function TurnstileWidget({
   }, [loaded, siteKey, containerVisible, size, theme, retryKey]);
 
   const handleLoad = useCallback(() => setLoaded(true), []);
+  const handleScriptError = useCallback(() => setWidgetError(true), []);
 
   const handleRetry = () => {
     if (widgetIdRef.current != null && typeof window !== "undefined" && window.turnstile?.remove) {
@@ -120,6 +125,7 @@ export default function TurnstileWidget({
       widgetIdRef.current = null;
     }
     setWidgetError(false);
+    setLoaded(false);
     setRetryKey((k) => k + 1);
   };
 
@@ -127,7 +133,13 @@ export default function TurnstileWidget({
 
   return (
     <>
-      <Script src={TURNSTILE_SCRIPT} strategy="afterInteractive" onLoad={handleLoad} />
+      <Script
+        key={retryKey}
+        src={TURNSTILE_SCRIPT}
+        strategy="afterInteractive"
+        onLoad={handleLoad}
+        onError={handleScriptError}
+      />
       <div
         ref={containerRef}
         className="flex justify-center my-4 min-h-[65px] w-full min-w-[280px] sm:min-w-[300px] max-w-full overflow-visible"
@@ -135,15 +147,16 @@ export default function TurnstileWidget({
       {widgetError && (
         <div className="text-amber-600 dark:text-amber-400 text-sm mt-2 text-center space-y-2">
           <p>
-            The security check could not be loaded (Cloudflare). Please try again, disable ad blockers, or contact us at{" "}
-            <a href="mailto:info@savedsouls-foundation.org" className="underline font-medium">info@savedsouls-foundation.org</a>.
+            {t("errorBeforeEmail")}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">{CONTACT_EMAIL}</a>
+            {t("errorAfterEmail")}
           </p>
           <button
             type="button"
             onClick={handleRetry}
             className="px-4 py-2 rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 font-medium hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
           >
-            Retry security check
+            {t("retryButton")}
           </button>
         </div>
       )}

@@ -107,9 +107,10 @@ export default function PayPalDonate() {
               style={{ layout: "vertical" }}
               disabled={effectiveAmount <= 0}
               createOrder={createOrder}
-              onApprove={(data) => {
+              onApprove={(data): Promise<void> => {
                 console.log("PayPal one-time approved", data);
                 setSuccess(true);
+                return Promise.resolve();
               }}
               onError={(err) => console.error("PayPal error", err)}
             />
@@ -122,9 +123,10 @@ export default function PayPalDonate() {
                   application_context: { shipping_preference: "NO_SHIPPING" },
                 })
               }
-              onApprove={(data) => {
+              onApprove={(data): Promise<void> => {
                 console.log("PayPal subscription approved", data);
                 setSuccess(true);
+                return Promise.resolve();
               }}
               onError={(err) => console.error("PayPal error", err)}
             />

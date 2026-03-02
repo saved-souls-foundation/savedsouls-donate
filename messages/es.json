@@ -6,6 +6,11 @@
     "disclaimer": "Aviso legal",
     "ariaLabel": "Consentimiento de cookies"
   },
+  "turnstile": {
+    "errorBeforeEmail": "No se pudo cargar la comprobación de seguridad (Cloudflare). Inténtelo de nuevo, desactive los bloqueadores de anuncios o contáctenos en ",
+    "errorAfterEmail": ".",
+    "retryButton": "Reintentar comprobación de seguridad"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Rescate Animal Tailandia",
     "description": "Rescatamos perros y gatos en Tailandia. Adopta, haz voluntariado o dona. Más de 550 animales salvados."
@@ -3975,6 +3980,7 @@
     "successTitle": "¡Suscrito!",
     "successBody": "¡Gracias! Recibirás un correo de confirmación.",
     "alreadySubscribed": "Este correo ya está suscrito.",
+    "validationEmail": "Introduce una dirección de correo válida.",
     "errorMessage": "Algo salió mal. Por favor inténtalo de nuevo.",
     "privacy": "Respetamos tu privacidad. Sin spam, solo noticias de SavedSouls Foundation."
   }

@@ -6,6 +6,12 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "turnstile": {
+    "errorBeforeEmail": "De beveiligingscontrole kon niet worden geladen (Cloudflare). Dit kan komen door een probleem met challenges.cloudflare.com.",
+    "errorSteps": "Wat u kunt doen: probeer het later opnieuw (tijdelijke storing), schakel adblockers uit voor deze site, of neem contact op via ",
+    "errorAfterEmail": ". Vermeld bij contact de pagina waarop u deze fout zag.",
+    "retryButton": "Beveiligingscontrole opnieuw proberen"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Dierenopvang Thailand",
     "description": "Wij redden honden en katten in Thailand. Adopteer, vrijwillig of doneer. Meer dan 550 dieren gered uit de hondenvleeshandel en van straat."
@@ -4500,6 +4506,7 @@
     "successTitle": "Aangemeld!",
     "successBody": "Bedankt! Je ontvangt een bevestiging per e-mail.",
     "alreadySubscribed": "Dit e-mailadres is al aangemeld.",
+    "validationEmail": "Vul een geldig e-mailadres in.",
     "errorMessage": "Er ging iets mis. Probeer het opnieuw.",
     "privacy": "We respecteren je privacy. Geen spam, alleen nieuws over SavedSouls Foundation."
   }

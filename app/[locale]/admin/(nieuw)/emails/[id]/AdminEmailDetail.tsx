@@ -29,7 +29,18 @@ type Email = {
   status: string;
 };
 
-type Template = { id: string; naam: string | null };
+const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+type Template = {
+  id: string;
+  naam: string | null;
+  inhoud_nl?: string | null;
+  inhoud_en?: string | null;
+  inhoud_es?: string | null;
+  inhoud_ru?: string | null;
+  inhoud_th?: string | null;
+  inhoud_de?: string | null;
+  inhoud_fr?: string | null;
+};
 
 export default function AdminEmailDetail({ id }: { id: string }) {
   const t = useTranslations("admin.emails");
@@ -55,7 +66,10 @@ export default function AdminEmailDetail({ id }: { id: string }) {
       ]);
       if (cancelled) return;
       if (eRes.ok) setEmail(await eRes.json());
-      if (tRes.ok) setTemplates((await tRes.json()) ?? []);
+      if (tRes.ok) {
+        const raw = await tRes.json();
+        setTemplates(Array.isArray(raw) ? raw : []);
+      }
       setLoading(false);
     })();
     return () => { cancelled = true; };
@@ -148,6 +162,20 @@ export default function AdminEmailDetail({ id }: { id: string }) {
     algemeen: t("categories.algemeen"),
   };
 
+  function fillFromTemplate(tm: Template) {
+    const taal = (email?.taal ?? "nl").toLowerCase().slice(0, 2);
+    const lang = LANGS.includes(taal as (typeof LANGS)[number]) ? taal : "nl";
+    const inhoudKey = `inhoud_${lang}` as keyof Template;
+    let body = (tm[inhoudKey] as string) ?? (tm.inhoud_nl ?? "");
+    const naam = (email?.van_naam ?? "").split(/\s+/)[0] ?? "";
+    body = body
+      .replace(/\{\{naam\}\}/g, naam)
+      .replace(/\{\{dier\}\}/g, "")
+      .replace(/\{\{organisatie\}\}/g, "Saved Souls Foundation");
+    setEditReply(body);
+    setTemplateOverride(tm.id);
+  }
+
   if (loading || !email) {
     return (
       <div className="space-y-6">
@@ -209,13 +237,37 @@ export default function AdminEmailDetail({ id }: { id: string }) {
                     <>
                       <p className="text-sm font-medium mt-2" style={{ color: ADM_TEXT }}>{t("generatedReply")}</p>
                       <div className="mt-1 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: (showEdit ? editReply : email.ai_gegenereerd_antwoord).replace(/\n/g, "<br>") }} />
-                      <div className="mt-2">
-                        <select value={templateOverride} onChange={(e) => setTemplateOverride(e.target.value)} className="text-sm px-2 py-1 rounded border" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
-                          <option value="">{t("noTemplate")}</option>
-                          {templates.map((tm) => (
-                            <option key={tm.id} value={tm.id}>{tm.naam ?? tm.id}</option>
-                          ))}
-                        </select>
+                      <div className="mt-3">
+                        <p className="text-xs font-medium mb-2" style={{ color: ADM_MUTED }}>{t("templateOverride")}</p>
+                        <div className="max-h-48 overflow-y-auto space-y-2 pr-1" style={{ borderColor: ADM_BORDER }}>
+                          {templates.map((tm) => {
+                            const isSuggested = tm.id === email.ai_suggestie_template_id;
+                            const isSelected = tm.id === templateOverride;
+                            return (
+                              <button
+                                key={tm.id}
+                                type="button"
+                                onClick={() => fillFromTemplate(tm)}
+                                className="w-full text-left px-3 py-2 rounded-lg border text-sm transition-colors"
+                                style={{
+                                  borderColor: isSuggested ? ADM_ORANGE : ADM_BORDER,
+                                  background: isSelected ? "rgba(13,148,136,.1)" : isSuggested ? "rgba(234,88,12,.12)" : "transparent",
+                                  color: ADM_TEXT,
+                                }}
+                              >
+                                <span className="font-medium">{tm.naam ?? tm.id}</span>
+                                {isSuggested && confidence != null && (
+                                  <div className="mt-1 flex items-center gap-2">
+                                    <div className="flex-1 h-1.5 rounded-full overflow-hidden bg-gray-200">
+                                      <div className="h-full rounded-full" style={{ width: `${confidence * 100}%`, background: confidenceColor(confidence) }} />
+                                    </div>
+                                    <span className="text-xs" style={{ color: ADM_MUTED }}>{Math.round(confidence * 100)}%</span>
+                                  </div>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                       {!showEdit ? (
                         <div className="flex flex-wrap gap-2 mt-3">

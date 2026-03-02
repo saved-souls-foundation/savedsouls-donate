@@ -31,3 +31,8 @@ Zet voor productie altijd beide keys in Vercel (Environment Variables).
 2. Maak een widget aan (bijv. “Managed” of “Invisible”).
 3. Kopieer **Site Key** → `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
 4. Kopieer **Secret Key** → `TURNSTILE_SECRET_KEY` (alleen in Vercel, niet in de frontend).
+
+## Snellere check
+
+- **Widget mode (Cloudflare):** Kies **Non-interactive** of **Invisible** voor minder wachttijd. Bij "Managed" kan Cloudflare extra stappen tonen; bij Non-interactive is het vaak alleen een korte spinner.
+- De app start de check al wanneer het formulier bijna in beeld is (400px vooruit), zodat de verificatie vaak klaar is zodra de gebruiker het vakje ziet.

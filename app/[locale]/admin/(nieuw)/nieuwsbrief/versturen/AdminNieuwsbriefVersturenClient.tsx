@@ -17,6 +17,15 @@ const TiptapEditor = dynamic(() => import("@/app/components/admin/TiptapEditor")
 
 type Counts = { total: number; byLanguage: Record<string, number> };
 
+type NewsletterTemplate = {
+  id: string;
+  titel: string;
+  subject_nl: string;
+  subject_en: string;
+  body_nl: string;
+  body_en: string;
+};
+
 export default function AdminNieuwsbriefVersturenClient() {
   const t = useTranslations("admin.newsletter");
   const tAdmin = useTranslations("admin");
@@ -31,6 +40,8 @@ export default function AdminNieuwsbriefVersturenClient() {
   const [sendError, setSendError] = useState(false);
   const [confirmSend, setConfirmSend] = useState(false);
   const [previewLang, setPreviewLang] = useState<(typeof LANGUAGES)[number] | null>(null);
+  const [templates, setTemplates] = useState<NewsletterTemplate[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
 
   const fetchCounts = useCallback(async () => {
     const res = await fetch("/api/admin/newsletter/count");
@@ -45,6 +56,23 @@ export default function AdminNieuwsbriefVersturenClient() {
   useEffect(() => {
     fetchCounts();
   }, [fetchCounts]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/admin/newsletter/templates");
+      if (res.ok) {
+        const json = await res.json();
+        setTemplates(json.templates ?? []);
+      }
+    })();
+  }, []);
+
+  function loadTemplate(template: NewsletterTemplate) {
+    setSubject("nl", template.subject_nl);
+    setSubject("en", template.subject_en);
+    setBody("nl", template.body_nl);
+    setBody("en", template.body_en);
+  }
 
   const setSubject = (lang: string, v: string) => setSubjects((s) => ({ ...s, [lang]: v }));
   const setBody = (lang: string, v: string) => setBodies((b) => ({ ...b, [lang]: v }));
@@ -127,6 +155,32 @@ export default function AdminNieuwsbriefVersturenClient() {
       {sendError && (
         <div className="rounded-lg border px-4 py-3 text-sm border-red-300 bg-red-50 text-red-800">
           {t("sendError")}
+        </div>
+      )}
+
+      {templates.length > 0 && (
+        <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+          <label className="block text-sm font-medium mb-2" style={{ color: ADM_MUTED }}>
+            {t("loadSampleNewsletter")}
+          </label>
+          <select
+            value={selectedTemplateId}
+            onChange={(e) => {
+              const id = e.target.value;
+              setSelectedTemplateId(id);
+              const template = templates.find((t) => t.id === id);
+              if (template) loadTemplate(template);
+            }}
+            className="w-full max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          >
+            <option value="">— {t("loadSampleNewsletter")} …</option>
+            {templates.map((tm) => (
+              <option key={tm.id} value={tm.id}>
+                {tm.titel}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 

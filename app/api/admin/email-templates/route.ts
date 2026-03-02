@@ -14,9 +14,23 @@ async function requireAdmin() {
 export async function GET(_request: NextRequest) {
   const { error, supabase } = await requireAdmin();
   if (error) return error;
-  const { data, error: e } = await supabase!.from("email_templates").select("*").order("naam");
+  const { data: templates, error: e } = await supabase!.from("email_templates").select("*").order("naam");
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json(data ?? []);
+  const { data: usageRows } = await supabase!
+    .from("incoming_emails")
+    .select("ai_suggestie_template_id")
+    .eq("status", "verstuurd")
+    .not("ai_suggestie_template_id", "is", null);
+  const usageByTemplate: Record<string, number> = {};
+  for (const row of usageRows ?? []) {
+    const id = (row as { ai_suggestie_template_id: string | null }).ai_suggestie_template_id;
+    if (id) usageByTemplate[id] = (usageByTemplate[id] ?? 0) + 1;
+  }
+  const result = (templates ?? []).map((t: { id: string }) => ({
+    ...t,
+    usage_count: usageByTemplate[t.id] ?? 0,
+  }));
+  return NextResponse.json(result);
 }
 
 export async function POST(request: NextRequest) {
