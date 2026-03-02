@@ -39,7 +39,7 @@ export function generateRosterPdf(
   shifts: RosterShift[]
 ): void {
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const pageW = doc.getPageWidth();
+  const pageW = doc.internal.pageSize.getWidth();
 
   doc.setFontSize(14);
   doc.text("Weekrooster Saved Souls Foundation", 14, 16);
@@ -107,6 +107,6 @@ export function generateRosterPdf(
   });
   doc.setFontSize(8);
   doc.setTextColor(100, 100, 100);
-  doc.text(`Gegenereerd op ${generated}`, 14, doc.getPageHeight() - 10);
+  doc.text(`Gegenereerd op ${generated}`, 14, doc.internal.pageSize.getHeight() - 10);
   doc.save(`weekrooster-${weekStart}.pdf`);
 }
