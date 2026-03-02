@@ -152,6 +152,11 @@ export default function ShiftModal({
                 <option key={v.id} value={v.id}>{v.name}</option>
               ))}
             </select>
+            {volunteers.length === 0 && (
+              <p className="mt-1 text-xs" style={{ color: ADM_MUTED }}>
+                {t("noVolunteers")}. Voeg eerst vrijwilligers toe via het zijpaneel (knop «{t("addVolunteer")}»).
+              </p>
+            )}
           </div>
           <div>
             <label className="block text-xs font-medium mb-1" style={{ color: ADM_TEXT }}>{t("zone")}</label>

@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { sendMail } from "@/lib/sendMail";
 
 const VALID_TAAL = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 const BASE_URL = "https://www.savedsouls-foundation.com";
+const CONFIRM_SUBJECT = "✅ Je bent aangemeld voor de Saved Souls nieuwsbrief!";
+
+/** From-adres moet een verified domein zijn in Resend (resend.com → Domains). */
+const FROM_VERIFIED = "Saved Souls Foundation <info@savedsouls-foundation.com>";
 
 function escapeHtml(s: string): string {
   return s
@@ -44,13 +49,21 @@ async function handleSubscribe(request: NextRequest) {
   const taal = VALID_TAAL.includes(rawTaal as (typeof VALID_TAAL)[number]) ? rawTaal : "nl";
   const language = taal;
 
-  let supabase;
-  try {
-    supabase = createAdminClient();
-  } catch (e) {
-    console.error("[newsletter/subscribe] Supabase admin init failed:", e);
-    return NextResponse.json({ error: "Service temporarily unavailable. Please try again later." }, { status: 503 });
+  console.log("[newsletter/subscribe] Received:", { email, voornaam: voornaam ?? null, achternaam: achternaam ?? null, type, language });
+
+  let supabase: Awaited<ReturnType<typeof createClient>> | ReturnType<typeof createAdminClient>;
+  if (isSupabaseAdminConfigured()) {
+    try {
+      supabase = createAdminClient();
+    } catch (e) {
+      console.error("[newsletter/subscribe] Admin client failed, falling back to server client:", e);
+      supabase = await createClient();
+    }
+  } else {
+    supabase = await createClient();
   }
+  console.log("[newsletter/subscribe] Using table: newsletter_subscribers");
+
   const { data: existing } = await supabase
     .from("newsletter_subscribers")
     .select("id, actief, unsubscribe_token")
@@ -93,39 +106,49 @@ async function handleSubscribe(request: NextRequest) {
     .select("id")
     .single();
 
+  console.log("[newsletter/subscribe] Insert result:", inserted ? { id: inserted.id } : "none", insertErr ? { error: insertErr.message, code: insertErr.code } : "ok");
+
   if (insertErr) {
     return NextResponse.json({ error: insertErr.message }, { status: insertErr.code === "23505" ? 409 : 500 });
   }
 
+  const naam = [voornaam, achternaam].filter(Boolean).join(" ") || (taal === "nl" ? "aanmelder" : "subscriber");
   const unsubscribeUrl = `${BASE_URL}/${taal}/unsubscribe?token=${encodeURIComponent(unsubscribe_token)}`;
-
-  const { data: templateRow } = await supabase
-    .from("email_templates")
-    .select("onderwerp, inhoud_nl, inhoud_en")
-    .eq("categorie", "nieuwsbrief_bevestiging")
-    .eq("actief", true)
-    .maybeSingle();
-
-  const subject = templateRow?.onderwerp ?? "Nieuwsbrief aanmelding – Saved Souls Foundation";
   const useNl = taal === "nl";
-  const rawBody = useNl ? templateRow?.inhoud_nl : templateRow?.inhoud_en;
-  const bodyText = (rawBody ?? (useNl ? "Je bent aangemeld voor onze nieuwsbrief." : "You have been subscribed to our newsletter."))
-    .replace(/\{\{unsubscribe_url\}\}/g, unsubscribeUrl)
-    .replace(/\{\{email\}\}/g, email);
-  const bodyHtml = `<p>${bodyText.split(/\n/).map((line: string) => escapeHtml(line)).join("</p><p>")}</p><p style="font-size:12px;color:#666;"><a href="${escapeHtml(unsubscribeUrl)}">${useNl ? "Uitschrijven" : "Unsubscribe"}</a></p>`;
+  const html = useNl
+    ? `
+    <p>Beste ${escapeHtml(naam)},</p>
+    <p>Welkom! Je bent succesvol aangemeld voor onze nieuwsbrief.</p>
+    <p>Je ontvangt voortaan updates over onze dieren, vrijwilligers en activiteiten in Thailand.</p>
+    <p><a href="${escapeHtml(unsubscribeUrl)}">Uitschrijven</a> kan altijd via deze link.</p>
+    <p>Met warme groet,<br/>Het team van Saved Souls Foundation</p>
+  `.trim()
+    : `
+    <p>Dear ${escapeHtml(naam)},</p>
+    <p>Welcome! You have successfully subscribed to our newsletter.</p>
+    <p>You will receive updates about our animals, volunteers and activities in Thailand.</p>
+    <p>You can <a href="${escapeHtml(unsubscribeUrl)}">unsubscribe</a> at any time via this link.</p>
+    <p>Kind regards,<br/>The Saved Souls Foundation team</p>
+  `.trim();
+  const text = useNl
+    ? `Beste ${naam},\n\nWelkom! Je bent succesvol aangemeld voor onze nieuwsbrief.\n\nUitschrijven: ${unsubscribeUrl}\n\nMet warme groet,\nHet team van Saved Souls Foundation`
+    : `Dear ${naam},\n\nWelcome! You have successfully subscribed to our newsletter.\n\nUnsubscribe: ${unsubscribeUrl}\n\nKind regards,\nThe Saved Souls Foundation team`;
+
+  console.log("[newsletter/subscribe] Resend: API_KEY =", process.env.RESEND_API_KEY ? "set" : "missing", ", from =", FROM_VERIFIED);
+  console.log("[newsletter/subscribe] Sending confirmation to", email);
 
   const mailResult = await sendMail({
+    from: FROM_VERIFIED,
     to: email,
-    subject,
-    text: bodyText,
-    html: bodyHtml,
+    subject: CONFIRM_SUBJECT,
+    text,
+    html,
   });
+
+  console.log("[newsletter/subscribe] Mail result:", mailResult.success ? "sent" : mailResult.error);
   if (!mailResult.success) {
-    console.error("[newsletter/subscribe] Confirmation email failed:", mailResult.error);
-    return NextResponse.json(
-      { error: mailResult.error ?? "Bevestigingsmail kon niet worden verstuurd." },
-      { status: 500 }
-    );
+    console.error("[newsletter/subscribe] Confirmation email failed (subscription saved). Check Resend Domains: savedsouls-foundation.com must be Verified.", mailResult.error);
+    // Niet blokkeren: aanmelding is gelukt
   }
 
   return NextResponse.json({ message: "subscribed", id: inserted?.id }, { status: 201 });

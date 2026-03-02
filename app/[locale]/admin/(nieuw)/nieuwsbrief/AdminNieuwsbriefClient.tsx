@@ -43,6 +43,14 @@ export default function AdminNieuwsbriefClient() {
   const [loading, setLoading] = useState(true);
   const [unsubscribingId, setUnsubscribingId] = useState<string | null>(null);
   const [confirmUnsub, setConfirmUnsub] = useState<{ id: string; name: string } | null>(null);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [addVoornaam, setAddVoornaam] = useState("");
+  const [addAchternaam, setAddAchternaam] = useState("");
+  const [addEmail, setAddEmail] = useState("");
+  const [addLanguage, setAddLanguage] = useState<string>("nl");
+  const [addType, setAddType] = useState<string>("persoon");
+  const [addSaving, setAddSaving] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
 
   const fetchSubscribers = useCallback(async () => {
     setLoading(true);
@@ -123,6 +131,39 @@ export default function AdminNieuwsbriefClient() {
     }
   }
 
+  async function handleAddSubscriber() {
+    const email = addEmail.trim().toLowerCase();
+    if (!email) {
+      setAddError("E-mailadres is verplicht.");
+      return;
+    }
+    setAddSaving(true);
+    setAddError(null);
+    try {
+      const res = await fetch("/api/admin/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          voornaam: addVoornaam.trim() || null,
+          achternaam: addAchternaam.trim() || null,
+          language: addLanguage,
+          type: addType === "persoon" || addType === "bedrijf" ? addType : null,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setAddError(data?.error === "Dit e-mailadres staat al in de lijst." ? t("emailExistsError") : (data?.error ?? "Opslaan mislukt."));
+        return;
+      }
+      setAddModalOpen(false);
+      fetchSubscribers();
+      if (activeCount != null) setActiveCount((c) => (c ?? 0) + 1);
+    } finally {
+      setAddSaving(false);
+    }
+  }
+
   function name(row: SubscriberRow) {
     return [row.voornaam, row.achternaam].filter(Boolean).join(" ").trim() || noVal;
   }
@@ -133,13 +174,23 @@ export default function AdminNieuwsbriefClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <Link
-          href="/admin/nieuwsbrief/versturen"
-          className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white"
-          style={{ background: ADM_ACCENT }}
-        >
-          {t("compose")}
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => { setAddModalOpen(true); setAddError(null); setAddVoornaam(""); setAddAchternaam(""); setAddEmail(""); setAddLanguage("nl"); setAddType("persoon"); }}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_ACCENT, color: ADM_ACCENT }}
+          >
+            {t("addSubscriberButton")}
+          </button>
+          <Link
+            href="/admin/nieuwsbrief/versturen"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white"
+            style={{ background: ADM_ACCENT }}
+          >
+            {t("compose")}
+          </Link>
+        </div>
       </div>
 
       {activeCount != null && (
@@ -325,6 +376,99 @@ export default function AdminNieuwsbriefClient() {
                 style={{ background: "#dc2626" }}
               >
                 {t("unsubscribeButton")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {addModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.4)" }}
+        >
+          <div className="rounded-xl border p-6 max-w-md w-full shadow-lg space-y-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+            <h2 className="text-lg font-semibold" style={{ color: ADM_TEXT }}>
+              {t("addSubscriber")}
+            </h2>
+            {addError && (
+              <p className="text-sm" style={{ color: "#dc2626" }}>
+                {addError}
+              </p>
+            )}
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>{t("voornaam")}</label>
+              <input
+                type="text"
+                value={addVoornaam}
+                onChange={(e) => setAddVoornaam(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>{t("achternaam")}</label>
+              <input
+                type="text"
+                value={addAchternaam}
+                onChange={(e) => setAddAchternaam(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>{t("emailRequired")}</label>
+              <input
+                type="email"
+                value={addEmail}
+                onChange={(e) => setAddEmail(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                placeholder="naam@voorbeeld.nl"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>{t("language")}</label>
+              <select
+                value={addLanguage}
+                onChange={(e) => setAddLanguage(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {LANG_OPTIONS.filter((l) => l !== "all").map((l) => (
+                  <option key={l} value={l}>{langKeys[l] ?? l}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>{t("type")}</label>
+              <select
+                value={addType}
+                onChange={(e) => setAddType(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                <option value="persoon">{t("persoon")}</option>
+                <option value="bedrijf">{t("bedrijf")}</option>
+              </select>
+            </div>
+            <div className="flex gap-3 justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => { setAddModalOpen(false); setAddError(null); }}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {tAdmin("members.cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={handleAddSubscriber}
+                disabled={addSaving}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ACCENT }}
+              >
+                {addSaving ? loadingStr : tAdmin("members.save")}
               </button>
             </div>
           </div>

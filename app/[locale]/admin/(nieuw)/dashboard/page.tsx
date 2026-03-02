@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { DashboardAutoRepliesNewsletterCards } from "./DashboardAutoRepliesNewsletterCards";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -42,10 +43,10 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     .limit(5);
 
   const cards = [
-    { icon: "🤝", labelKey: "volunteersRegistered" as const, value: totalVrijwilligers ?? 0 },
-    { icon: "✈️", labelKey: "volunteersReady" as const, value: voltooideVrijwilligers ?? 0 },
-    { icon: "🐾", labelKey: "adoptantsRegistered" as const, value: totalAdoptanten ?? 0 },
-    { icon: "✅", labelKey: "adoptionsComplete" as const, value: voltooideAdoptanten ?? 0 },
+    { icon: "🤝", labelKey: "volunteersRegistered" as const, value: totalVrijwilligers ?? 0, href: "/admin/vrijwilligers" },
+    { icon: "✈️", labelKey: "volunteersReady" as const, value: voltooideVrijwilligers ?? 0, href: "/admin/vrijwilligers?stap=4" },
+    { icon: "🐾", labelKey: "adoptantsRegistered" as const, value: totalAdoptanten ?? 0, href: "/admin/adoptanten" },
+    { icon: "✅", labelKey: "adoptionsComplete" as const, value: voltooideAdoptanten ?? 0, href: "/admin/adoptanten?stap=4" },
   ];
 
   const now = new Date();
@@ -61,6 +62,8 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     { count: pendingEmailsCount },
     { data: sponsorsExpiringData },
     { data: subscribersByLanguageData },
+    { count: emailTemplatesCount },
+    { count: newsletterTemplatesCount },
   ] = await Promise.all([
     supabase.from("members").select("*", { count: "exact", head: true }).eq("status", "actief"),
     supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true),
@@ -70,6 +73,8 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"),
     supabase.from("sponsors").select("id").gte("contract_eind", now.toISOString().slice(0, 10)).lte("contract_eind", in30Days),
     supabase.from("newsletter_subscribers").select("language").eq("actief", true),
+    supabase.from("email_templates").select("*", { count: "exact", head: true }),
+    supabase.from("newsletter_templates").select("*", { count: "exact", head: true }),
   ]);
 
   const donationsThisMonthSum = (donationsThisMonthData ?? []).reduce((acc: number, r: { bedrag: number | null }) => acc + Number(r.bedrag ?? 0), 0);
@@ -89,12 +94,12 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
   });
 
   const cardsRow2 = [
-    { icon: "👥", labelKey: "dashboard.activeMembers" as const, value: activeMembersCount ?? 0, subtitle: null, isWarning: false },
-    { icon: "✉️", labelKey: "dashboard.newsletterSubscribers" as const, value: newsletterSubscribersCount ?? 0, subtitle: null, isWarning: false },
-    { icon: "€", labelKey: "dashboard.donationsThisMonth" as const, value: `€ ${donationsThisMonthSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: null, isWarning: false },
-    { icon: "🔄", labelKey: "dashboard.monthlyRecurring" as const, value: `€ ${monthlyRecurringSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: t("dashboard.perMonth"), isWarning: false },
-    { icon: "🏢", labelKey: "dashboard.activeSponsors" as const, value: activeSponsorsCount ?? 0, subtitle: null, isWarning: false },
-    { icon: "📥", labelKey: "dashboard.pendingEmails" as const, value: pendingEmailsCount ?? 0, subtitle: null, isWarning: true },
+    { icon: "👥", labelKey: "dashboard.activeMembers" as const, value: activeMembersCount ?? 0, subtitle: null, isWarning: false, href: "/admin/leden" },
+    { icon: "✉️", labelKey: "dashboard.newsletterSubscribers" as const, value: newsletterSubscribersCount ?? 0, subtitle: null, isWarning: false, href: "/admin/nieuwsbrief" },
+    { icon: "€", labelKey: "dashboard.donationsThisMonth" as const, value: `€ ${donationsThisMonthSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: null, isWarning: false, href: "/admin/donateurs" },
+    { icon: "🔄", labelKey: "dashboard.monthlyRecurring" as const, value: `€ ${monthlyRecurringSum.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, subtitle: t("dashboard.perMonth"), isWarning: false, href: "/admin/donateurs" },
+    { icon: "🏢", labelKey: "dashboard.activeSponsors" as const, value: activeSponsorsCount ?? 0, subtitle: null, isWarning: false, href: "/admin/sponsoren" },
+    { icon: "📥", labelKey: "dashboard.pendingEmails" as const, value: pendingEmailsCount ?? 0, subtitle: null, isWarning: true, href: "/admin/emails" },
   ];
 
   return (
@@ -119,9 +124,10 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
-          <div
+          <Link
             key={c.labelKey}
-            className="rounded-xl border p-4"
+            href={c.href}
+            className="rounded-xl border p-4 cursor-pointer hover:shadow-md transition block"
             style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
           >
             <span className="text-2xl">{c.icon}</span>
@@ -131,15 +137,16 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
             <p className="text-sm mt-1" style={{ color: ADM_MUTED }}>
               {t(c.labelKey)}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cardsRow2.map((c) => (
-          <div
+          <Link
             key={c.labelKey}
-            className="rounded-xl border p-4"
+            href={c.href}
+            className="rounded-xl border p-4 cursor-pointer hover:shadow-md transition block"
             style={{
               background: c.isWarning ? "rgba(220,38,38,.08)" : ADM_CARD,
               borderColor: c.isWarning ? "#dc2626" : ADM_BORDER,
@@ -157,8 +164,16 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
                 {c.subtitle}
               </p>
             )}
-          </div>
+          </Link>
         ))}
+        <DashboardAutoRepliesNewsletterCards
+          initialEmailCount={emailTemplatesCount ?? 0}
+          initialNewsletterCount={newsletterTemplatesCount ?? 0}
+          labels={{
+            autoReplies: t("dashboard.autoReplies"),
+            newsletterTemplates: t("dashboard.newsletterTemplates"),
+          }}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

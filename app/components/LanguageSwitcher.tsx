@@ -27,11 +27,16 @@ const LOCALE_SHORT: Record<string, string> = {
 };
 
 export default function LanguageSwitcher({ compact = false, minimal = false, overlay = false }: { compact?: boolean; minimal?: boolean; overlay?: boolean }) {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -52,12 +57,18 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
   const locales = routing.locales;
   const currentName = LOCALE_NAMES[locale] ?? locale;
 
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-1 text-xs" style={{ minWidth: "80px" }} aria-hidden />
+    );
+  }
+
   // Minimal: plain text "NL · EN · DE ..." – no dropdown, each clickable
   if (minimal) {
     return (
       <div className={`flex items-center gap-1 text-xs ${overlay ? "text-white" : "text-stone-500 dark:text-stone-400"}`} role="group" aria-label="Taal kiezen">
         {locales.map((loc) => (
-          <span key={loc} className="flex items-center gap-1" suppressHydrationWarning>
+          <span key={loc} className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => switchLocale(loc)}

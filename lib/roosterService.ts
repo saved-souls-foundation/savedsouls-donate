@@ -33,9 +33,16 @@ export async function getShifts(weekStart: string): Promise<RosterShiftRow[]> {
 
 export async function getVolunteers(): Promise<VolunteerRow[]> {
   const res = await fetch("/api/admin/rooster/volunteers");
-  if (!res.ok) throw new Error(await res.text().catch(() => "Failed to fetch volunteers"));
-  const json = await res.json();
-  return (json.data ?? []).filter((v: VolunteerRow) => v.is_active !== false);
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = typeof json?.error === "string" ? json.error : "Failed to fetch volunteers";
+    console.error("getVolunteers error:", res.status, json);
+    throw new Error(msg);
+  }
+  const list = Array.isArray(json.data) ? json.data : [];
+  const filtered = list.filter((v: VolunteerRow) => v.is_active !== false);
+  console.log("getVolunteers ok:", list.length, "total,", filtered.length, "active");
+  return filtered;
 }
 
 export async function createShift(data: {

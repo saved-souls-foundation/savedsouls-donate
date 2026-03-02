@@ -41,6 +41,64 @@ export async function GET(request: NextRequest) {
   q = q.order("aangemeld_op", { ascending: false }).range(from, from + limit - 1);
 
   const { data, error: e, count } = await q;
+  console.log("[admin/newsletter] GET result:", { rowCount: data?.length ?? 0, total: count ?? 0, page, limit, error: e?.message ?? null });
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
   return NextResponse.json({ data: data ?? [], total: count ?? 0, page, limit });
+}
+
+export async function POST(request: NextRequest) {
+  const { error, supabase } = await requireAdmin();
+  if (error) return error;
+  let body: { email?: string; voornaam?: string; achternaam?: string; language?: string; type?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Ongeldige body." }, { status: 400 });
+  }
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    return NextResponse.json({ error: "Geldig e-mailadres is verplicht." }, { status: 400 });
+  }
+  const voornaam = typeof body.voornaam === "string" ? body.voornaam.trim() || null : null;
+  const achternaam = typeof body.achternaam === "string" ? body.achternaam.trim() || null : null;
+  const language = typeof body.language === "string" && ["nl", "en", "es", "ru", "th", "de", "fr"].includes(body.language) ? body.language : "nl";
+  const type = body.type === "bedrijf" || body.type === "persoon" ? body.type : null;
+
+  const { data: existing } = await supabase!.from("newsletter_subscribers").select("id, actief").eq("email", email).maybeSingle();
+  if (existing) {
+    return NextResponse.json({ error: "Dit e-mailadres staat al in de lijst." }, { status: 409 });
+  }
+
+  const unsubscribe_token = crypto.randomUUID();
+  const { data: inserted, error: insertErr } = await supabase!
+    .from("newsletter_subscribers")
+    .insert({
+      email,
+      voornaam,
+      achternaam,
+      type,
+      language,
+      actief: true,
+      unsubscribe_token,
+    })
+    .select("id, email, aangemeld_op")
+    .single();
+
+  if (insertErr) {
+    return NextResponse.json({ error: insertErr.message }, { status: 500 });
+  }
+
+  const { sendNewsletterConfirmation } = await import("@/lib/newsletterConfirmation");
+  sendNewsletterConfirmation({
+    email,
+    language: language as "nl" | "en" | "es" | "ru" | "th" | "de" | "fr",
+    unsubscribeToken: unsubscribe_token,
+    voornaam,
+    achternaam,
+  }).catch((err) => {
+    console.error("[admin/newsletter] Confirmation email failed after manual add (subscriber was added):", err);
+  });
+
+  return NextResponse.json({ data: inserted, message: "Abonnee toegevoegd." }, { status: 201 });
 }

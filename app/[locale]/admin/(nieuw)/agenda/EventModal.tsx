@@ -50,6 +50,7 @@ export default function EventModal({ initialDate, initialEvent, onClose, onSaved
   const [animalSearch, setAnimalSearch] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/animals")
@@ -76,7 +77,12 @@ export default function EventModal({ initialDate, initialEvent, onClose, onSaved
   const isLaboratorium = category === "laboratorium";
 
   async function handleSave() {
-    if (!title.trim()) return;
+    console.log("EventModal handleSave called");
+    setErrorMessage("");
+    if (!title.trim()) {
+      setErrorMessage("Vul een titel in.");
+      return;
+    }
     setSaving(true);
     try {
       const start = `${date}T${startTime}:00`;
@@ -98,11 +104,18 @@ export default function EventModal({ initialDate, initialEvent, onClose, onSaved
       const url = isEdit ? `/api/admin/agenda/events/${initialEvent!.id}` : "/api/admin/agenda/events";
       const method = isEdit ? "PATCH" : "POST";
       const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error((await res.json()).error);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = typeof data?.error === "string" ? data.error : "Opslaan mislukt";
+        console.error("Agenda event save error:", res.status, data);
+        throw new Error(msg);
+      }
       onSaved();
       onClose();
     } catch (e) {
-      console.error(e);
+      const msg = e instanceof Error ? e.message : "Opslaan mislukt";
+      setErrorMessage(msg);
+      console.error("EventModal handleSave error:", e);
     } finally {
       setSaving(false);
     }
@@ -371,6 +384,11 @@ export default function EventModal({ initialDate, initialEvent, onClose, onSaved
           )}
         </div>
         <div className="p-4 border-t flex flex-wrap gap-2 justify-end" style={{ borderColor: ADM_BORDER }}>
+          {errorMessage && (
+            <p className="w-full text-sm text-red-600 mb-2" role="alert">
+              {errorMessage}
+            </p>
+          )}
           {isEdit && (
             <button type="button" onClick={handleDelete} disabled={saving} className="px-4 py-2 rounded-lg text-sm text-red-600 border border-red-300 hover:bg-red-50">
               {t("delete")}

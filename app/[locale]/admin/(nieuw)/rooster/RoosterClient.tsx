@@ -160,7 +160,8 @@ export default function RoosterClient() {
     try {
       const data = await roosterService.getVolunteers();
       setVolunteers(data as Volunteer[]);
-    } catch {
+    } catch (e) {
+      console.error("RoosterClient fetchVolunteers:", e);
       setVolunteers([]);
     }
   }, []);
@@ -169,6 +170,11 @@ export default function RoosterClient() {
     setLoading(true);
     Promise.all([fetchShifts(), fetchVolunteers()]).finally(() => setLoading(false));
   }, [fetchShifts, fetchVolunteers]);
+
+  // Vrijwilligers opnieuw ophalen wanneer de shift-modal opent (verse data + retry na eerdere fout)
+  useEffect(() => {
+    if (shiftModal.open) fetchVolunteers();
+  }, [shiftModal.open, fetchVolunteers]);
 
   useEffect(() => {
     const supabase = createClient();

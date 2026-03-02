@@ -19,12 +19,30 @@ type AdoptionApplication = {
   created_at: string;
 };
 
+type Bericht = {
+  id: string;
+  afzender_id: string;
+  afzender_naam: string;
+  ontvanger_id: string | null;
+  inhoud: string;
+  gelezen: boolean;
+  created_at: string;
+  is_recipient?: boolean;
+};
+
 export default function PortalVrijwilligerClient() {
   const t = useTranslations("dashboard");
   const router = useRouter();
   const [voornaam, setVoornaam] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [adoptionApplications, setAdoptionApplications] = useState<AdoptionApplication[]>([]);
+  const [berichten, setBerichten] = useState<Bericht[]>([]);
+  const [loadingBerichten, setLoadingBerichten] = useState(false);
+  const [showNewMessage, setShowNewMessage] = useState(false);
+  const [newMessageText, setNewMessageText] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sentConfirmation, setSentConfirmation] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const hasSupabase = isSupabaseConfigured();
@@ -44,13 +62,14 @@ export default function PortalVrijwilligerClient() {
       void Promise.resolve(
         supabase
           .from("profiles")
-          .select("voornaam, huidige_stap")
+          .select("voornaam, huidige_stap, role")
           .eq("id", user.id)
           .single()
       )
         .then(({ data }) => {
           setVoornaam(data?.voornaam ?? null);
           setCurrentStep(Math.max(1, Number(data?.huidige_stap) || 1));
+          setRole((data as { role?: string })?.role ?? null);
         })
         .catch(() => {})
         .then(() => setLoading(false));
@@ -91,6 +110,41 @@ export default function PortalVrijwilligerClient() {
       if (channel) supabase.removeChannel(channel);
     };
   }, [hasSupabase]);
+
+  useEffect(() => {
+    if (!hasSupabase || role !== "vrijwilliger") return;
+    setLoadingBerichten(true);
+    fetch("/api/portal/berichten")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.berichten) setBerichten(data.berichten);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingBerichten(false));
+  }, [hasSupabase, role]);
+
+  const sendMessage = () => {
+    const text = newMessageText.trim();
+    if (!text || sending) return;
+    setSending(true);
+    fetch("/api/portal/berichten", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ inhoud: text }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) return;
+        setNewMessageText("");
+        setShowNewMessage(false);
+        setSentConfirmation(true);
+        fetch("/api/portal/berichten")
+          .then((r) => r.json())
+          .then((d) => d.berichten && setBerichten(d.berichten));
+        setTimeout(() => setSentConfirmation(false), 3000);
+      })
+      .finally(() => setSending(false));
+  };
 
   const displayName = voornaam || "daar";
 
@@ -170,6 +224,96 @@ export default function PortalVrijwilligerClient() {
               </h2>
               <Thermometer steps={VRIJWILLIGER_STEPS} currentStep={currentStep} />
             </div>
+
+            {role === "vrijwilliger" && (
+              <div className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg border border-stone-200 dark:border-stone-700 p-6 md:p-8 mb-8">
+                <h2 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">
+                  Berichten
+                </h2>
+                {loadingBerichten ? (
+                  <p className="text-sm text-stone-500 dark:text-stone-400">Laden…</p>
+                ) : berichten.length === 0 && !showNewMessage ? (
+                  <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">Nog geen berichten.</p>
+                ) : (
+                  <ul className="space-y-4 mb-4">
+                    {berichten.map((b) => (
+                      <li
+                        key={b.id}
+                        className="flex gap-2 text-sm border-b border-stone-200 dark:border-stone-600 pb-3 last:border-0"
+                      >
+                        <span className="shrink-0 w-4 flex justify-center pt-0.5">
+                          {b.is_recipient && !b.gelezen && (
+                            <span
+                              className="w-2 h-2 rounded-full block"
+                              style={{ backgroundColor: BRAND_GREEN }}
+                              aria-hidden
+                            />
+                          )}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-stone-600 dark:text-stone-400">
+                            <span className="font-medium text-stone-800 dark:text-stone-200">{b.afzender_naam}</span>
+                            {" · "}
+                            {new Date(b.created_at).toLocaleDateString("nl-NL", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <p className="text-stone-700 dark:text-stone-300 mt-0.5 whitespace-pre-wrap">{b.inhoud}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {sentConfirmation && (
+                  <p className="text-sm font-medium mb-3" style={{ color: BRAND_GREEN }}>
+                    Bericht verzonden. De coördinator ontvangt het.
+                  </p>
+                )}
+                {showNewMessage ? (
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                      Jouw bericht aan de coördinator
+                    </label>
+                    <textarea
+                      value={newMessageText}
+                      onChange={(e) => setNewMessageText(e.target.value)}
+                      placeholder="Typ je bericht…"
+                      rows={4}
+                      className="w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 px-3 py-2 text-sm"
+                    />
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={sendMessage}
+                        disabled={sending || !newMessageText.trim()}
+                        className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                        style={{ backgroundColor: BRAND_GREEN }}
+                      >
+                        {sending ? "Verzenden…" : "Verzenden"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setShowNewMessage(false); setNewMessageText(""); }}
+                        className="px-4 py-2 rounded-lg text-sm font-medium border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300"
+                      >
+                        Annuleren
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowNewMessage(true)}
+                    className="text-sm font-medium mt-2"
+                    style={{ color: BRAND_GREEN }}
+                  >
+                    Nieuw bericht schrijven
+                  </button>
+                )}
+              </div>
+            )}
 
             <div className="bg-stone-100 dark:bg-stone-800/80 rounded-xl border border-stone-200 dark:border-stone-700 p-4 mb-8">
               <Link
