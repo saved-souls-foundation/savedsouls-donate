@@ -32,6 +32,8 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
   const [detail, setDetail] = useState<VolunteerRow | null>(null);
   const [savingStep, setSavingStep] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState<VolunteerRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -92,6 +94,22 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
       setError(e instanceof Error ? e.message : t("errorGeneric"));
     } finally {
       setSavingStep(null);
+    }
+  }
+
+  async function handleDelete(row: VolunteerRow) {
+    setDeleting(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/admin/volunteers/${row.user_id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setDeleteConfirm(null);
+      if (detail?.user_id === row.user_id) setDetail(null);
+      window.location.reload();
+    } catch {
+      setError(t("errorGeneric"));
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -164,7 +182,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                   <td className="p-3" style={{ color: ADM_MUTED }}>
                     {r.created_at ? new Date(r.created_at).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 flex gap-2">
                     <button
                       type="button"
                       onClick={() => setDetail(r)}
@@ -173,6 +191,14 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                     >
                       {t("view")}
                     </button>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setDeleteConfirm(r); }}
+                      className="text-sm font-medium"
+                      style={{ color: ADM_ERROR }}
+                    >
+                      {t("deleteButton")}
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -180,6 +206,42 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           </table>
         </div>
       </div>
+
+      {deleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setDeleteConfirm(null)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteVolunteerConfirm")}</p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => handleDelete(deleteConfirm)}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ERROR }}
+              >
+                {deleting ? t("loading") : t("deleteButton")}
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setDeleteConfirm(null)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {t("members.cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {detail && (
         <div
@@ -249,11 +311,12 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                 </dd>
               </div>
             </dl>
-            <div className="mt-6 pt-4 border-t" style={{ borderColor: ADM_BORDER }}>
-              <p className="text-sm mb-2" style={{ color: ADM_MUTED }}>
-                {t("updateStep")} ({t("updateStepHint")})
-              </p>
-              <div className="flex flex-wrap gap-2">
+            <div className="mt-4 pt-4 border-t flex flex-wrap gap-2 justify-between" style={{ borderColor: ADM_BORDER }}>
+              <div>
+                <p className="text-sm mb-2" style={{ color: ADM_MUTED }}>
+                  {t("updateStep")} ({t("updateStepHint")})
+                </p>
+                <div className="flex flex-wrap gap-2">
                 {([1, 2, 3, 4] as const).map((stap) => (
                   <button
                     key={stap}
@@ -269,7 +332,16 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                     {savingStep === detail.user_id ? t("loading") : `${t("step")} ${stap}`}
                   </button>
                 ))}
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={() => { setDetail(null); setDeleteConfirm(detail); }}
+                className="px-4 py-2 rounded-lg border text-sm font-medium self-end"
+                style={{ borderColor: ADM_ERROR, color: ADM_ERROR }}
+              >
+                {t("deleteButton")}
+              </button>
             </div>
           </div>
         </div>

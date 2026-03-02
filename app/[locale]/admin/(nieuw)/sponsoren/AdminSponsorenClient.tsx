@@ -58,6 +58,8 @@ export default function AdminSponsorenClient() {
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState<SponsorRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -96,6 +98,21 @@ export default function AdminSponsorenClient() {
   function formatDate(d: string | null) {
     if (!d) return t("noValue");
     return locale === "en" ? new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  async function handleDelete(row: SponsorRow) {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/sponsors/${row.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setDeleteConfirm(null);
+      setData((prev) => prev.filter((x) => x.id !== row.id));
+      setTotal((prev) => Math.max(0, prev - 1));
+    } catch {
+      // ignore
+    } finally {
+      setDeleting(false);
+    }
   }
 
   function formatCurrency(n: number) {
@@ -263,7 +280,10 @@ export default function AdminSponsorenClient() {
                     <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(row.contract_eind)}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{statusLabel(row.status)}</td>
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <Link href={`/admin/sponsoren/${row.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                      <div className="flex gap-2">
+                        <Link href={`/admin/sponsoren/${row.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                        <button type="button" onClick={() => setDeleteConfirm(row)} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -271,6 +291,17 @@ export default function AdminSponsorenClient() {
             </tbody>
           </table>
         </div>
+        {deleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setDeleteConfirm(null)}>
+            <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
+              <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteConfirm")}</p>
+              <div className="flex gap-3">
+                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#dc2626" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
+                <button type="button" disabled={deleting} onClick={() => setDeleteConfirm(null)} className="px-4 py-2 rounded-lg border text-sm font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("cancel")}</button>
+              </div>
+            </div>
+          </div>
+        )}
         {totalPages > 1 && (
           <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
             <span className="text-sm" style={{ color: ADM_MUTED }}>{total} {t("title").toLowerCase()}</span>

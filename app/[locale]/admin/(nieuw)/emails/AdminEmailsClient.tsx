@@ -167,9 +167,12 @@ export default function AdminEmailsClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>{t("title")}</h1>
-        <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("templates")}</Link>
+        <div className="flex gap-4">
+          <Link href="/admin/emails/verzonden" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("sentEmails")}</Link>
+          <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("templates")}</Link>
+        </div>
       </div>
 
       {stats != null && (

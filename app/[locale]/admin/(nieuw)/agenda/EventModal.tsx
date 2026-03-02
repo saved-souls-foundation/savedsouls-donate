@@ -1,0 +1,389 @@
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
+import {
+  EVENT_CATEGORIES,
+  EVENT_CATEGORY_IDS,
+  LAB_RESULT_STATUSES,
+  LAB_STATUS_IDS,
+  type EventCategory,
+  type LabResultStatus,
+} from "@/lib/agendaConfig";
+import type { CalendarEvent } from "./AgendaClient";
+
+const ADM_CARD = "#ffffff";
+const ADM_BORDER = "#e2e8f0";
+const ADM_TEXT = "#1e293b";
+const ADM_MUTED = "#64748b";
+const ADM_ACCENT = "#0d9488";
+const TEAL = "#2A9D8F";
+
+type AnimalOption = { id: string; name: string; type: "dog" | "cat"; image?: string };
+
+type Props = {
+  initialDate?: string;
+  initialEvent?: CalendarEvent | null;
+  onClose: () => void;
+  onSaved: () => void;
+};
+
+export default function EventModal({ initialDate, initialEvent, onClose, onSaved }: Props) {
+  const t = useTranslations("admin.agenda");
+  const isEdit = !!initialEvent;
+
+  const [title, setTitle] = useState(initialEvent?.title ?? "");
+  const [category, setCategory] = useState<EventCategory>(initialEvent?.category ?? "afspraak");
+  const [date, setDate] = useState(initialDate ?? initialEvent?.start_time?.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
+  const [startTime, setStartTime] = useState(initialEvent?.start_time?.slice(11, 16) ?? "09:00");
+  const [endTime, setEndTime] = useState(initialEvent?.end_time?.slice(11, 16) ?? "10:00");
+  const [location, setLocation] = useState(initialEvent?.location ?? "");
+  const [animalId, setAnimalId] = useState<string | null>(initialEvent?.animal_id ?? null);
+  const [animalName, setAnimalName] = useState(initialEvent?.animal_name ?? "");
+  const [assignedTo, setAssignedTo] = useState(initialEvent?.assigned_to ?? "");
+  const [description, setDescription] = useState(initialEvent?.description ?? "");
+  const [attachmentUrl, setAttachmentUrl] = useState(initialEvent?.attachment_url ?? "");
+  const [labResultAvailable, setLabResultAvailable] = useState(!!initialEvent?.lab_result_status);
+  const [labResultStatus, setLabResultStatus] = useState<LabResultStatus | "">((initialEvent?.lab_result_status as LabResultStatus) ?? "normaal");
+  const [labResultNotes, setLabResultNotes] = useState(initialEvent?.lab_result_notes ?? "");
+  const [animals, setAnimals] = useState<AnimalOption[]>([]);
+  const [animalSearch, setAnimalSearch] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/animals")
+      .then((r) => r.json())
+      .then((data) => {
+        const list: AnimalOption[] = [];
+        (data.dogs ?? []).forEach((d: { id: string; name: string; image?: string }) =>
+          list.push({ id: String(d.id), name: d.name, type: "dog", image: d.image })
+        );
+        (data.cats ?? []).forEach((c: { id: string; name: string; image?: string }) =>
+          list.push({ id: String(c.id), name: c.name, type: "cat", image: c.image })
+        );
+        setAnimals(list);
+      })
+      .catch(() => {});
+  }, []);
+
+  const filteredAnimals = useMemo(() => {
+    if (!animalSearch.trim()) return animals.slice(0, 20);
+    const q = animalSearch.toLowerCase();
+    return animals.filter((a) => a.name.toLowerCase().includes(q)).slice(0, 20);
+  }, [animals, animalSearch]);
+
+  const isLaboratorium = category === "laboratorium";
+
+  async function handleSave() {
+    if (!title.trim()) return;
+    setSaving(true);
+    try {
+      const start = `${date}T${startTime}:00`;
+      const end = endTime ? `${date}T${endTime}:00` : null;
+      const payload = {
+        title: title.trim(),
+        description: description.trim() || null,
+        category,
+        start_time: start,
+        end_time: end,
+        location: location.trim() || null,
+        animal_id: animalId,
+        animal_name: animalName.trim() || null,
+        assigned_to: assignedTo.trim() || null,
+        attachment_url: attachmentUrl || null,
+        lab_result_status: isLaboratorium && labResultAvailable ? labResultStatus || null : null,
+        lab_result_notes: isLaboratorium && labResultAvailable ? labResultNotes.trim() || null : null,
+      };
+      const url = isEdit ? `/api/admin/agenda/events/${initialEvent!.id}` : "/api/admin/agenda/events";
+      const method = isEdit ? "PATCH" : "POST";
+      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      if (!res.ok) throw new Error((await res.json()).error);
+      onSaved();
+      onClose();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!isEdit || !confirm(t("deleteConfirm"))) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/agenda/events/${initialEvent!.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error((await res.json()).error);
+      onSaved();
+      onClose();
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleFileUpload(file: File) {
+    const form = new FormData();
+    form.append("file", file);
+    setUploading(true);
+    try {
+      const res = await fetch("/api/admin/agenda/upload", { method: "POST", body: form });
+      const data = await res.json();
+      if (res.ok && data.url) setAttachmentUrl(data.url);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 overflow-y-auto" onClick={onClose}>
+      <div
+        className="bg-white border w-full max-w-lg overflow-y-auto my-4 md:my-0 min-h-[100vh] md:min-h-0 md:max-h-[90vh] md:rounded-xl"
+        style={{ borderColor: ADM_BORDER }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: ADM_BORDER }}>
+          <h2 className="font-semibold" style={{ color: ADM_TEXT }}>
+            {isEdit ? "Event bewerken" : "Nieuw event"}
+          </h2>
+          <button type="button" onClick={onClose} className="text-xl leading-none" style={{ color: ADM_MUTED }}>
+            ×
+          </button>
+        </div>
+        <div className="p-4 space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>
+              Titel *
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg border bg-transparent"
+              style={{ borderColor: ADM_BORDER }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>
+              Categorie *
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as EventCategory)}
+              className="w-full px-3 py-2 rounded-lg border"
+              style={{ borderColor: ADM_BORDER }}
+            >
+              {EVENT_CATEGORY_IDS.map((id) => {
+                const c = EVENT_CATEGORIES[id];
+                return (
+                  <option key={id} value={id}>
+                    {c.icon} {c.label}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>
+                Datum *
+              </label>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border"
+                style={{ borderColor: ADM_BORDER }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>
+                Starttijd
+              </label>
+              <input
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border"
+                style={{ borderColor: ADM_BORDER }}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Eindtijd
+            </label>
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg border"
+              style={{ borderColor: ADM_BORDER }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Locatie / kamer
+            </label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Optioneel"
+              className="w-full px-3 py-2 rounded-lg border bg-transparent"
+              style={{ borderColor: ADM_BORDER }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Dier betrokken
+            </label>
+            <input
+              type="text"
+              value={animalSearch || animalName}
+              onChange={(e) => {
+                setAnimalSearch(e.target.value);
+                if (!e.target.value) setAnimalId(null);
+                setAnimalName(e.target.value);
+              }}
+              placeholder="Zoek op naam…"
+              className="w-full px-3 py-2 rounded-lg border bg-transparent"
+              style={{ borderColor: ADM_BORDER }}
+            />
+            {animalSearch && filteredAnimals.length > 0 && (
+              <ul className="mt-1 border rounded-lg overflow-hidden max-h-40 overflow-y-auto" style={{ borderColor: ADM_BORDER }}>
+                {filteredAnimals.map((a) => (
+                  <li key={a.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAnimalId(a.id);
+                        setAnimalName(a.name);
+                        setAnimalSearch("");
+                      }}
+                      className="w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-stone-50 text-sm"
+                      style={{ color: ADM_TEXT }}
+                    >
+                      {a.image && <img src={a.image.startsWith("http") ? a.image : `https://db.savedsouls-foundation.org${a.image}`} alt="" className="w-8 h-8 rounded object-cover" />}
+                      <span>{a.name}</span>
+                      <span className="text-xs" style={{ color: ADM_MUTED }}>{a.type}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Toegewezen aan
+            </label>
+            <input
+              type="text"
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              placeholder="Optioneel"
+              className="w-full px-3 py-2 rounded-lg border bg-transparent"
+              style={{ borderColor: ADM_BORDER }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Notities / beschrijving
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              className="w-full px-3 py-2 rounded-lg border bg-transparent resize-y"
+              style={{ borderColor: ADM_BORDER }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
+              Bijlage (PDF, JPG, PNG)
+            </label>
+            <input
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+              className="hidden"
+              id="agenda-file"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleFileUpload(f);
+                e.target.value = "";
+              }}
+            />
+            <label htmlFor="agenda-file" className="block border-2 border-dashed rounded-lg p-4 text-center text-sm cursor-pointer" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
+              {uploading ? "Uploaden…" : "Klik of sleep bestand"}
+            </label>
+            {attachmentUrl && (
+              <p className="mt-1 text-sm">
+                <a href={attachmentUrl} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: ADM_ACCENT }}>
+                  Bijlage bekijken
+                </a>
+                <button type="button" onClick={() => setAttachmentUrl("")} className="ml-2 text-red-600 text-xs">
+                  Verwijderen
+                </button>
+              </p>
+            )}
+          </div>
+
+          {isLaboratorium && (
+            <>
+              <div className="pt-2 border-t" style={{ borderColor: ADM_BORDER }}>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" checked={labResultAvailable} onChange={(e) => setLabResultAvailable(e.target.checked)} />
+                  <span className="text-sm" style={{ color: ADM_TEXT }}>Uitslag beschikbaar?</span>
+                </label>
+              </div>
+              {labResultAvailable && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Uitslag status</label>
+                    <select
+                      value={labResultStatus}
+                      onChange={(e) => setLabResultStatus(e.target.value as LabResultStatus)}
+                      className="w-full px-3 py-2 rounded-lg border"
+                      style={{ borderColor: ADM_BORDER }}
+                    >
+                      {LAB_STATUS_IDS.map((id) => {
+                        const s = LAB_RESULT_STATUSES[id];
+                        return (
+                          <option key={id} value={id}>
+                            {s.icon} {s.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>Uitslag samenvatting</label>
+                    <textarea
+                      value={labResultNotes}
+                      onChange={(e) => setLabResultNotes(e.target.value)}
+                      rows={2}
+                      className="w-full px-3 py-2 rounded-lg border bg-transparent"
+                      style={{ borderColor: ADM_BORDER }}
+                    />
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
+        <div className="p-4 border-t flex flex-wrap gap-2 justify-end" style={{ borderColor: ADM_BORDER }}>
+          {isEdit && (
+            <button type="button" onClick={handleDelete} disabled={saving} className="px-4 py-2 rounded-lg text-sm text-red-600 border border-red-300 hover:bg-red-50">
+              {t("delete")}
+            </button>
+          )}
+          <button type="button" onClick={onClose} disabled={saving} className="px-4 py-2 rounded-lg text-sm border" style={{ borderColor: ADM_BORDER }}>
+            {t("cancel")}
+          </button>
+          <button type="button" onClick={handleSave} disabled={saving} className="px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: TEAL }}>
+            {t("save")}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

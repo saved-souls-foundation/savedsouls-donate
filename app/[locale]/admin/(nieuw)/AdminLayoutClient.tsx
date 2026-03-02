@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Mail, Heart, Building, Inbox } from "lucide-react";
+import { Users, Mail, Heart, Building, Inbox, Share2, Calendar } from "lucide-react";
 
 const ADM_BG = "#f1f5f9";
 const ADM_SIDEBAR = "#ffffff";
@@ -168,6 +168,23 @@ export default function AdminLayoutClient({
           locale={locale}
           onClick={() => setMobileOpen(false)}
         />
+        <SectionLabel label={t("sidebarSectionPlanning")} />
+        <NavLink
+          href="/admin/agenda"
+          icon={<Calendar className="w-[18px] h-[18px]" />}
+          label={t("agenda.title")}
+          isActive={pathname?.includes("admin/agenda") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
+        <NavLink
+          href="/admin/rooster"
+          icon={<Users className="w-[18px] h-[18px]" />}
+          label={t("rooster.title")}
+          isActive={pathname?.includes("admin/rooster") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
         <SectionLabel label={t("sidebarSectionCommunication")} />
         <NavLink
           href="/admin/emails"
@@ -177,6 +194,14 @@ export default function AdminLayoutClient({
           locale={locale}
           onClick={() => setMobileOpen(false)}
           badge={pendingEmailsCount}
+        />
+        <NavLink
+          href="/admin/sociale-media"
+          icon={<Share2 className="w-[18px] h-[18px]" />}
+          label={t("socialeMedia.title")}
+          isActive={pathname?.includes("admin/sociale-media") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
         />
       </nav>
       <div className="p-2 border-t" style={{ borderColor: ADM_BORDER }}>

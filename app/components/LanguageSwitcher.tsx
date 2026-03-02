@@ -57,7 +57,7 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
     return (
       <div className={`flex items-center gap-1 text-xs ${overlay ? "text-white" : "text-stone-500 dark:text-stone-400"}`} role="group" aria-label="Taal kiezen">
         {locales.map((loc) => (
-          <span key={loc} className="flex items-center gap-1">
+          <span key={loc} className="flex items-center gap-1" suppressHydrationWarning>
             <button
               type="button"
               onClick={() => switchLocale(loc)}

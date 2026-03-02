@@ -60,6 +60,8 @@ export default function AdminDonateursClient() {
   const [recurringTotal, setRecurringTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<{ activeCount: number; totalMonthlyAmount: number; paymentIssuesCount: number } | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchOnetime = useCallback(async () => {
     setLoading(true);
@@ -156,6 +158,23 @@ export default function AdminDonateursClient() {
   };
   function name(r: { voornaam: string | null; achternaam: string | null }) {
     return [r.voornaam, r.achternaam].filter(Boolean).join(" ").trim() || t("noValue");
+  }
+
+  async function handleDelete(donorId: string) {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/donors/${donorId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setDeleteConfirm(null);
+      setOnetimeData((prev) => prev.filter((r) => r.id !== donorId));
+      setRecurringData((prev) => prev.filter((r) => r.id !== donorId));
+      setOnetimeTotal((prev) => Math.max(0, prev - (onetimeData.some((r) => r.id === donorId) ? 1 : 0)));
+      setRecurringTotal((prev) => Math.max(0, prev - (recurringData.some((r) => r.id === donorId) ? 1 : 0)));
+    } catch {
+      // ignore
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
@@ -270,7 +289,10 @@ export default function AdminDonateursClient() {
                       <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.last_donation)}</td>
                       <td className="p-3" style={{ color: ADM_TEXT }}>{r.donation_count}</td>
                       <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                        <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                        <div className="flex gap-2">
+                          <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                          <button type="button" onClick={() => setDeleteConfirm({ id: r.id, name: name(r) })} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -288,7 +310,10 @@ export default function AdminDonateursClient() {
                     <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.start_datum)}</td>
                     <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.volgende_betaling_datum)}</td>
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                      <div className="flex gap-2">
+                        <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
+                        <button type="button" onClick={() => setDeleteConfirm({ id: r.id, name: name(r) })} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -296,6 +321,17 @@ export default function AdminDonateursClient() {
             </tbody>
           </table>
         </div>
+        {deleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setDeleteConfirm(null)}>
+            <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
+              <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteConfirm")}</p>
+              <div className="flex gap-3">
+                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm.id)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#dc2626" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
+                <button type="button" disabled={deleting} onClick={() => setDeleteConfirm(null)} className="px-4 py-2 rounded-lg border text-sm font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("cancel")}</button>
+              </div>
+            </div>
+          </div>
+        )}
         {totalPages > 1 && (
           <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
             <span className="text-sm" style={{ color: ADM_MUTED }}>{tab === "onetime" ? onetimeTotal : recurringTotal} {t("title").toLowerCase()}</span>

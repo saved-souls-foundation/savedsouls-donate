@@ -77,7 +77,15 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
 
-  const messages = await getMessages();
+  let messages: Record<string, unknown> | undefined;
+  try {
+    messages = await getMessages();
+  } catch (e) {
+    console.error("[locale layout] getMessages failed:", e);
+  }
+  if (messages == null || typeof messages !== "object") {
+    messages = {};
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",

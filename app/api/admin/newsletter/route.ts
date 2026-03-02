@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -8,7 +9,7 @@ async function requireAdmin() {
   const { data: profile } = await supabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
   const isAdmin = profile?.role === "admin" || profile?.is_admin === true;
   if (!isAdmin) return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }), supabase: null };
-  return { error: null, supabase };
+  return { error: null, supabase: createAdminClient() };
 }
 
 export async function GET(request: NextRequest) {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  let q = supabase!
+  let q = supabase
     .from("newsletter_subscribers")
     .select("id, email, voornaam, achternaam, type, language, actief, aangemeld_op, uitgeschreven_op, unsubscribe_token", { count: "exact" });
 

@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
 import type { AdoptantRow } from "./page";
+
+const ANIMALS_BASE_URL = "https://db.savedsouls-foundation.org";
+const PLACEHOLDER_ANIMAL = "/icons/paw.svg";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -22,12 +26,15 @@ const adoptantStapLabels: Record<number, string> = {
 
 export default function AdminAdoptantenClient({ initialRows }: { initialRows: AdoptantRow[] }) {
   const t = useTranslations("admin");
+  const locale = useLocale();
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<AdoptantRow | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
   const [savingStep, setSavingStep] = useState<string | null>(null);
   const [savingNotes, setSavingNotes] = useState(false);
   const [error, setError] = useState("");
+  const [detailAnimalImage, setDetailAnimalImage] = useState<string | null>(null);
+  const [detailAnimalType, setDetailAnimalType] = useState<"dog" | "cat" | null>(null);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -41,20 +48,48 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
   function openDetail(row: AdoptantRow) {
     setDetail(row);
     setNotesDraft(row.notities ?? "");
+    setDetailAnimalImage(null);
+    setDetailAnimalType(null);
   }
+
+  useEffect(() => {
+    if (!detail?.dierId) return;
+    const id = String(detail.dierId);
+    fetch("/api/animals")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data?.dogs && !data?.cats) return;
+        const dogs = data.dogs || [];
+        const cats = data.cats || [];
+        const dog = dogs.find((a: { id: string }) => String(a.id) === id);
+        const cat = cats.find((a: { id: string }) => String(a.id) === id);
+        const animal = dog || cat;
+        if (animal) {
+          setDetailAnimalType(dog ? "dog" : "cat");
+          const raws = animal.images?.length ? animal.images : (animal.image ? [animal.image] : []);
+          const url = raws[0]
+            ? (raws[0].startsWith("http") ? raws[0] : `${ANIMALS_BASE_URL}${raws[0].startsWith("/") ? "" : "/"}${raws[0]}`)
+            : null;
+          setDetailAnimalImage(url);
+        }
+      })
+      .catch(() => {});
+  }, [detail?.dierId]);
 
   async function saveNotes() {
     if (!detail) return;
     setSavingNotes(true);
     setError("");
     try {
-      const { createClient } = await import("@/lib/supabase/client");
-      const supabase = createClient();
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ notities: notesDraft, updated_at: new Date().toISOString() })
-        .eq("id", detail.id);
-      if (updateError) throw updateError;
+      const res = await fetch(`/api/admin/adoptanten/${detail.id}/notes`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notities: notesDraft }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? t("errorGeneric"));
+      }
       setDetail({ ...detail, notities: notesDraft });
     } catch (e) {
       setError(e instanceof Error ? e.message : t("errorGeneric"));
@@ -82,6 +117,8 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
           naam: [row.voornaam, row.achternaam].filter(Boolean).join(" "),
           stepLabel: adoptantStapLabels[nieuweStap],
           role: "adoptant",
+          dierNaam: row.dierNaam ?? undefined,
+          dierInfo: row.dierId ? `ID: ${row.dierId}` : undefined,
         }),
       });
       if (!res.ok) {
@@ -218,6 +255,44 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
                   </span>
                 </dd>
               </div>
+              {(detail.dierNaam || detail.dierId) && (
+                <div>
+                  <dt style={{ color: ADM_MUTED }} className="mb-1">{t("requestedAnimal")}</dt>
+                  <dd className="flex items-center gap-3 mt-1">
+                    <div
+                      className="w-16 h-16 rounded-lg overflow-hidden border flex-shrink-0 bg-stone-100"
+                      style={{ borderColor: ADM_BORDER }}
+                    >
+                      <img
+                        src={detailAnimalImage ?? PLACEHOLDER_ANIMAL}
+                        alt={detail.dierNaam ?? ""}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const el = e.target as HTMLImageElement;
+                          el.onerror = null;
+                          el.src = PLACEHOLDER_ANIMAL;
+                        }}
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-medium" style={{ color: ADM_TEXT }}>
+                        {detail.dierNaam ?? `ID: ${detail.dierId}`}
+                      </p>
+                      {detail.dierId && detailAnimalType && (
+                        <Link
+                          href={`/${locale}/adopt/${detailAnimalType}/${detail.dierId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm underline"
+                          style={{ color: ADM_ACCENT }}
+                        >
+                          {t("openAnimalPage")}
+                        </Link>
+                      )}
+                    </div>
+                  </dd>
+                </div>
+              )}
             </dl>
             <div className="mt-4">
               <label className="block text-sm mb-1" style={{ color: ADM_MUTED }}>

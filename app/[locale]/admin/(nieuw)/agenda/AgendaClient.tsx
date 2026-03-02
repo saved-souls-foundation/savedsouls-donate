@@ -1,0 +1,652 @@
+"use client";
+
+import React, { useState, useMemo, useCallback, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import {
+  EVENT_CATEGORIES,
+  EVENT_CATEGORY_IDS,
+  LAB_RESULT_STATUSES,
+  type EventCategory,
+} from "@/lib/agendaConfig";
+import EventModal from "./EventModal";
+import ImportModal from "./ImportModal";
+import { createClient } from "@/lib/supabase/client";
+
+const ADM_CARD = "#ffffff";
+const ADM_BORDER = "#e2e8f0";
+const ADM_TEXT = "#1e293b";
+const ADM_MUTED = "#64748b";
+const ADM_ACCENT = "#0d9488";
+const TEAL = "#2A9D8F";
+const WEEKEND_BG = "#F8F9FA";
+
+export type CalendarEvent = {
+  id: string;
+  title: string;
+  description: string | null;
+  category: EventCategory;
+  start_time: string;
+  end_time: string | null;
+  location: string | null;
+  animal_id: string | null;
+  animal_name: string | null;
+  assigned_to: string | null;
+  attachment_url: string | null;
+  lab_result_status: string | null;
+  lab_result_notes: string | null;
+  is_recurring: boolean;
+};
+
+const HOURS = Array.from({ length: 16 }, (_, i) => i + 7); // 07:00 - 22:00
+
+function getMonthDays(year: number, month: number) {
+  const first = new Date(year, month, 1);
+  const last = new Date(year, month + 1, 0);
+  const startPad = first.getDay() === 0 ? 6 : first.getDay() - 1;
+  const days: { date: Date; isCurrentMonth: boolean; iso: string }[] = [];
+  for (let i = 0; i < startPad; i++) {
+    const d = new Date(year, month, -startPad + i + 1);
+    days.push({ date: d, isCurrentMonth: false, iso: d.toISOString().slice(0, 10) });
+  }
+  for (let d = 1; d <= last.getDate(); d++) {
+    const date = new Date(year, month, d);
+    days.push({ date, isCurrentMonth: true, iso: date.toISOString().slice(0, 10) });
+  }
+  const remain = 42 - days.length;
+  for (let i = 0; i < remain; i++) {
+    const d = new Date(year, month + 1, i + 1);
+    days.push({ date: d, isCurrentMonth: false, iso: d.toISOString().slice(0, 10) });
+  }
+  return days.slice(0, 42);
+}
+
+function getWeekDays(anchor: Date) {
+  const day = anchor.getDay();
+  const monday = new Date(anchor);
+  monday.setDate(anchor.getDate() - (day === 0 ? 6 : day - 1));
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return d;
+  });
+}
+
+export default function AgendaClient() {
+  const t = useTranslations("admin.agenda");
+  const [view, setView] = useState<"month" | "week" | "day">("month");
+  const [current, setCurrent] = useState(() => new Date());
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [eventModal, setEventModal] = useState<{ open: true; date?: string; event?: CalendarEvent } | { open: false }>({ open: false });
+  const [importOpen, setImportOpen] = useState(false);
+  const [sideFilter, setSideFilter] = useState<"all" | "medical" | "volunteers" | "deadlines">("all");
+  const [mobileDayPanel, setMobileDayPanel] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [sideTab, setSideTab] = useState<"upcoming" | "lab">("upcoming");
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 480px)");
+    setIsMobile(mq.matches);
+    if (mq.matches) setView("day");
+    const fn = () => {
+      const now = window.matchMedia("(max-width: 480px)").matches;
+      setIsMobile(now);
+      if (now) setView("day");
+    };
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  const [hiddenCategories, setHiddenCategories] = useState<Set<EventCategory>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const s = localStorage.getItem("agenda_hidden_categories");
+      const arr = s ? JSON.parse(s) : [];
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch {
+      return new Set();
+    }
+  });
+
+  const fetchEvents = useCallback(async () => {
+    try {
+      const from = new Date(year, month, 1);
+      const to = new Date(year, month + 2, 0);
+      const res = await fetch(`/api/admin/agenda/events?start=${from.toISOString()}&end=${to.toISOString()}`);
+      const data = await res.json();
+      if (res.ok) setEvents(data.data ?? []);
+    } catch {
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [year, month]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase
+      .channel("calendar_events_changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "calendar_events" },
+        () => { fetchEvents(); }
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchEvents]);
+
+  const year = current.getFullYear();
+  const month = current.getMonth();
+  const monthLabel = current.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
+  const todayIso = new Date().toISOString().slice(0, 10);
+
+  const monthDays = useMemo(() => getMonthDays(year, month), [year, month]);
+  const weekDays = useMemo(() => getWeekDays(current), [current]);
+
+  const visibleEvents = useMemo(
+    () => events.filter((e) => !hiddenCategories.has(e.category as EventCategory)),
+    [events, hiddenCategories]
+  );
+
+  const eventsByDate = useMemo(() => {
+    const m: Record<string, CalendarEvent[]> = {};
+    visibleEvents.forEach((ev) => {
+      const key = ev.start_time.slice(0, 10);
+      if (!m[key]) m[key] = [];
+      m[key].push(ev);
+    });
+    Object.keys(m).forEach((k) => m[k].sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()));
+    return m;
+  }, [visibleEvents]);
+
+  function toggleCategory(cat: EventCategory) {
+    setHiddenCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
+      try {
+        localStorage.setItem("agenda_hidden_categories", JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  }
+
+  const MEDICAL_CATEGORIES: EventCategory[] = ["dierenarts", "laboratorium", "medisch_followup"];
+  const VOLUNTEER_CATEGORIES: EventCategory[] = ["vrijwilligers", "adoptanten", "evenement"];
+
+  const upcomingEventsAll = useMemo(() => {
+    const from = new Date();
+    from.setHours(0, 0, 0, 0);
+    const to = new Date(from);
+    to.setDate(to.getDate() + 14);
+    return visibleEvents
+      .filter((e) => {
+        const t = new Date(e.start_time).getTime();
+        return t >= from.getTime() && t < to.getTime();
+      })
+      .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+  }, [visibleEvents]);
+
+  const upcomingEvents = useMemo(() => {
+    let list = upcomingEventsAll;
+    if (sideFilter === "medical") list = list.filter((e) => MEDICAL_CATEGORIES.includes(e.category as EventCategory));
+    else if (sideFilter === "volunteers") list = list.filter((e) => VOLUNTEER_CATEGORIES.includes(e.category as EventCategory));
+    else if (sideFilter === "deadlines") list = list.filter((e) => e.category === "deadline");
+    return list.slice(0, 10);
+  }, [upcomingEventsAll, sideFilter]);
+
+  const labEvents = useMemo(
+    () => visibleEvents.filter((e) => e.category === "laboratorium").sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime()).slice(0, 10),
+    [visibleEvents]
+  );
+
+  function goPrev() {
+    if (view === "month") setCurrent(new Date(year, month - 1));
+    else setCurrent(new Date(current.getTime() - (view === "week" ? 7 : 1) * 86400000));
+  }
+  function goNext() {
+    if (view === "month") setCurrent(new Date(year, month + 1));
+    else setCurrent(new Date(current.getTime() + (view === "week" ? 7 : 1) * 86400000));
+  }
+  function goToday() {
+    setCurrent(new Date());
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col lg:flex-row gap-4">
+        {/* Links: kalender (70%) */}
+        <div className="lg:w-[70%] space-y-3">
+          <div
+            className="rounded-xl border p-4 flex flex-wrap items-center justify-between gap-2"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+          >
+            <h1 className="text-lg font-semibold" style={{ color: ADM_TEXT }}>
+              {monthLabel}
+            </h1>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={goPrev}
+                className="p-2 rounded-lg border text-sm"
+                style={{ borderColor: ADM_BORDER }}
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={goToday}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium"
+                style={{ background: "rgba(42,157,143,.15)", color: TEAL }}
+              >
+                {t("today")}
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className="p-2 rounded-lg border text-sm"
+                style={{ borderColor: ADM_BORDER }}
+              >
+                →
+              </button>
+              <div className="flex rounded-lg border overflow-hidden" style={{ borderColor: ADM_BORDER }}>
+                {(["month", "week", "day"] as const).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setView(v)}
+                    className="px-3 py-1.5 text-sm"
+                    style={{
+                      background: view === v ? ADM_ACCENT : "transparent",
+                      color: view === v ? "#fff" : ADM_MUTED,
+                    }}
+                  >
+                    {v === "month" ? t("month") : v === "week" ? t("week") : t("day")}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setEventModal({ open: true })}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-white"
+                style={{ background: ADM_ACCENT }}
+              >
+                ➕ {t("newEvent")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setImportOpen(true)}
+                className="px-3 py-1.5 rounded-lg text-sm border"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                📥 {t("import")}
+              </button>
+            </div>
+          </div>
+
+          {/* Maandweergave */}
+          {view === "month" && (
+            <div
+              className="rounded-xl border overflow-hidden"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            >
+              <div className="grid grid-cols-7 text-center text-xs font-medium border-b" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
+                {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((d) => (
+                  <div key={d} className="p-2">
+                    {d}
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 grid-rows-6 gap-px" style={{ background: ADM_BORDER }}>
+                {monthDays.map(({ date, isCurrentMonth, iso }) => {
+                  const dayEvents = eventsByDate[iso] ?? [];
+                  const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                  const isToday = iso === todayIso;
+                  const isCompact = isMobile;
+                  return (
+                    <div
+                      key={iso}
+                      className={`flex flex-col ${isCompact ? "min-h-[44px]" : "min-h-[80px]"}`}
+                      style={{
+                        background: isWeekend ? WEEKEND_BG : ADM_CARD,
+                        borderLeft: isToday ? `3px solid ${TEAL}` : undefined,
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => (isCompact ? setMobileDayPanel(iso) : setEventModal({ open: true, date: iso }))}
+                        className="text-left p-1.5 text-sm font-medium hover:bg-stone-100 rounded flex items-center justify-center gap-1"
+                        style={{
+                          color: isCurrentMonth ? ADM_TEXT : ADM_MUTED,
+                          opacity: isCurrentMonth ? 1 : 0.6,
+                        }}
+                      >
+                        {date.getDate()}
+                        {isCompact && dayEvents.length > 0 && (
+                          <span className="flex gap-0.5">
+                            {dayEvents.slice(0, 3).map((ev) => (
+                              <span key={ev.id} className="w-1.5 h-1.5 rounded-full" style={{ background: EVENT_CATEGORIES[ev.category as EventCategory].color }} />
+                            ))}
+                            {dayEvents.length > 3 && <span className="text-xs" style={{ color: ADM_MUTED }}>+{dayEvents.length - 3}</span>}
+                          </span>
+                        )}
+                      </button>
+                      {!isCompact && (
+                        <div className="flex-1 flex flex-col gap-0.5 p-1 overflow-hidden">
+                          {dayEvents.slice(0, 3).map((ev) => {
+                            const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                            return (
+                              <button
+                                key={ev.id}
+                                type="button"
+                                onClick={() => setEventModal({ open: true, event: ev })}
+                                className="text-left px-1.5 py-0.5 rounded text-xs truncate border-l-2"
+                                style={{
+                                  background: `${cfg.color}30`,
+                                  borderLeftColor: cfg.color,
+                                  color: ADM_TEXT,
+                                }}
+                              >
+                                {cfg.icon} {ev.title.slice(0, 20)}{ev.title.length > 20 ? "…" : ""}
+                              </button>
+                            );
+                          })}
+                          {dayEvents.length > 3 && (
+                            <button
+                              type="button"
+                              className="text-xs text-stone-500 hover:underline"
+                              onClick={() => setEventModal({ open: true, date: iso })}
+                            >
+                              +{dayEvents.length - 3} meer
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Mobiel: slide-up panel met events van gekozen dag */}
+          {isMobile && mobileDayPanel && (
+            <div
+              className="fixed inset-x-0 bottom-0 z-40 rounded-t-xl border-t max-h-[70vh] overflow-y-auto lg:hidden"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            >
+              <div className="sticky top-0 p-4 border-b flex items-center justify-between" style={{ borderColor: ADM_BORDER, background: ADM_CARD }}>
+                <h3 className="font-semibold" style={{ color: ADM_TEXT }}>
+                  {new Date(mobileDayPanel).toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" })}
+                </h3>
+                <button type="button" onClick={() => setMobileDayPanel(null)} className="text-xl" style={{ color: ADM_MUTED }}>×</button>
+              </div>
+              <div className="p-4 space-y-2">
+                {(eventsByDate[mobileDayPanel] ?? []).map((ev) => {
+                  const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  return (
+                    <button
+                      key={ev.id}
+                      type="button"
+                      onClick={() => { setEventModal({ open: true, event: ev }); setMobileDayPanel(null); }}
+                      className="w-full text-left p-3 rounded-lg border-l-4"
+                      style={{ borderColor: cfg.color, background: `${cfg.color}15` }}
+                    >
+                      <span>{cfg.icon} {ev.title}</span>
+                      <span className="text-xs block mt-1" style={{ color: ADM_MUTED }}>
+                        {new Date(ev.start_time).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  onClick={() => { setEventModal({ open: true, date: mobileDayPanel }); setMobileDayPanel(null); }}
+                  className="w-full py-2 rounded-lg border border-dashed text-sm"
+                  style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+                >
+                  + Nieuw event
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Weekweergave */}
+          {view === "week" && (
+            <div
+              className="rounded-xl border overflow-x-auto"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            >
+              <div className="grid gap-px min-w-[600px]" style={{ gridTemplateColumns: `60px repeat(7, 1fr)` }}>
+                <div className="border-b border-r p-1" style={{ borderColor: ADM_BORDER }} />
+                {weekDays.map((d) => (
+                  <div key={d.toISOString()} className="border-b border-r p-1 text-center text-xs font-medium" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
+                    {d.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric" })}
+                  </div>
+                ))}
+                {HOURS.map((h) => (
+                  <React.Fragment key={h}>
+                    <div className="border-r p-1 text-xs" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
+                      {h}:00
+                    </div>
+                    {weekDays.map((d) => (
+                      <div key={d.toISOString()} className="border-r min-h-[48px]" style={{ borderColor: ADM_BORDER }} />
+                    ))}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Dagweergave */}
+          {view === "day" && (
+            <div
+              className="rounded-xl border overflow-auto"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            >
+              <div className="p-2 border-b text-center font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
+                {current.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+              </div>
+              <div className="flex">
+                <div className="w-14 shrink-0 border-r py-2" style={{ borderColor: ADM_BORDER }}>
+                  {HOURS.map((h) => (
+                    <div key={h} className="h-12 text-xs px-1" style={{ color: ADM_MUTED }}>
+                      {h}:00
+                    </div>
+                  ))}
+                </div>
+                <div className="flex-1 min-h-[480px] relative">
+                  {HOURS.map((h) => (
+                    <div key={h} className="h-12 border-b" style={{ borderColor: ADM_BORDER }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Kleurlegenda */}
+          <div className="flex flex-wrap items-center gap-2 pt-2" style={{ color: ADM_MUTED }}>
+            <span className="text-xs font-medium">Legenda:</span>
+            {EVENT_CATEGORY_IDS.map((id) => {
+              const cfg = EVENT_CATEGORIES[id];
+              const hidden = hiddenCategories.has(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => toggleCategory(id)}
+                  className="flex items-center gap-1.5 px-2 py-1 rounded text-xs border transition-opacity"
+                  style={{
+                    borderColor: hidden ? ADM_BORDER : cfg.color,
+                    background: hidden ? "#f1f5f9" : `${cfg.color}20`,
+                    opacity: hidden ? 0.6 : 1,
+                    textDecoration: hidden ? "line-through" : "none",
+                    color: hidden ? ADM_MUTED : ADM_TEXT,
+                  }}
+                >
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: cfg.color }} />
+                  <span>{cfg.icon}</span>
+                  <span>{cfg.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Rechts: zijpaneel (30%) — op mobiel tabbladen */}
+        <div className="lg:w-[30%] space-y-4">
+          {isMobile && (
+            <div className="flex rounded-lg border overflow-hidden" style={{ borderColor: ADM_BORDER }}>
+              <button
+                type="button"
+                onClick={() => setSideTab("upcoming")}
+                className="flex-1 py-2 text-sm font-medium"
+                style={{
+                  background: sideTab === "upcoming" ? "rgba(13,148,136,.15)" : "transparent",
+                  color: sideTab === "upcoming" ? ADM_ACCENT : ADM_MUTED,
+                }}
+              >
+                {t("upcomingEvents")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setSideTab("lab")}
+                className="flex-1 py-2 text-sm font-medium"
+                style={{
+                  background: sideTab === "lab" ? "rgba(13,148,136,.15)" : "transparent",
+                  color: sideTab === "lab" ? ADM_ACCENT : ADM_MUTED,
+                }}
+              >
+                {t("recentLabResults")}
+              </button>
+            </div>
+          )}
+          <div
+            className={`rounded-xl border p-4 ${isMobile && sideTab !== "upcoming" ? "hidden" : ""}`}
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+          >
+            <h2 className="font-semibold mb-2" style={{ color: ADM_TEXT }}>
+              {t("upcomingEvents")}
+            </h2>
+            <div className="flex gap-1 mb-3">
+              {(["all", "medical", "volunteers", "deadlines"] as const).map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setSideFilter(f)}
+                  className="px-2 py-1 rounded text-xs"
+                  style={{
+                    background: sideFilter === f ? "rgba(13,148,136,.2)" : "transparent",
+                    color: sideFilter === f ? ADM_ACCENT : ADM_MUTED,
+                  }}
+                >
+                  {f === "all" ? t("filterAll") : f === "medical" ? t("filterMedical") : f === "volunteers" ? t("filterVolunteers") : t("filterDeadlines")}
+                </button>
+              ))}
+            </div>
+            {upcomingEvents.length === 0 ? (
+              <p className="text-sm" style={{ color: ADM_MUTED }}>
+                Geen aankomende events
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {upcomingEvents.map((ev) => {
+                  const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  return (
+                    <li key={ev.id}>
+                      <button
+                        type="button"
+                        onClick={() => setEventModal({ open: true, event: ev })}
+                        className="w-full text-left flex items-center gap-2 p-2 rounded-lg border hover:bg-stone-50"
+                        style={{ borderColor: ADM_BORDER }}
+                      >
+                        <span className="w-2 h-2 rounded-full shrink-0" style={{ background: cfg.color }} />
+                        <span className="text-lg">{cfg.icon}</span>
+                        <span className="text-sm truncate flex-1" style={{ color: ADM_TEXT }}>
+                          {ev.title}
+                        </span>
+                        <span className="text-xs shrink-0" style={{ color: ADM_MUTED }}>
+                          {new Date(ev.start_time).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })} {new Date(ev.start_time).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            {upcomingEventsAll.length > 10 && (
+              <button
+                type="button"
+                onClick={() => setEventModal({ open: true })}
+                className="mt-2 text-sm font-medium"
+                style={{ color: ADM_ACCENT }}
+              >
+                {t("showMore")} →
+              </button>
+            )}
+          </div>
+          <div
+            className={`rounded-xl border p-4 ${isMobile && sideTab !== "lab" ? "hidden" : ""}`}
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+          >
+            <h2 className="font-semibold mb-2" style={{ color: ADM_TEXT }}>
+              {t("recentLabResults")}
+            </h2>
+            {labEvents.length === 0 ? (
+              <p className="text-sm" style={{ color: ADM_MUTED }}>
+                {t("noLabResults")}
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {labEvents.map((ev) => {
+                  const status = ev.lab_result_status;
+                  const statusCfg = status && (status === "normaal" || status === "afwijkend" || status === "kritiek")
+                    ? LAB_RESULT_STATUSES[status]
+                    : null;
+                  return (
+                    <li key={ev.id}>
+                      <button
+                        type="button"
+                        onClick={() => setEventModal({ open: true, event: ev })}
+                        className="w-full text-left p-2 rounded-lg border hover:bg-stone-50 text-sm"
+                        style={{ borderColor: ADM_BORDER }}
+                      >
+                        <span style={{ color: ADM_TEXT }}>{ev.animal_name ?? ev.title}</span>
+                        <span className="text-xs block mt-0.5 flex items-center gap-1" style={{ color: ADM_MUTED }}>
+                          {new Date(ev.start_time).toLocaleDateString("nl-NL")}
+                          {statusCfg && (
+                            <span className="px-1.5 py-0.5 rounded text-xs" style={{ background: `${statusCfg.color}30`, color: statusCfg.color }}>
+                              {statusCfg.icon} {statusCfg.label}
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {eventModal.open && (
+        <EventModal
+          initialDate={eventModal.date}
+          initialEvent={eventModal.event ?? null}
+          onClose={() => setEventModal({ open: false })}
+          onSaved={() => fetchEvents()}
+        />
+      )}
+      {importOpen && (
+        <ImportModal
+          onClose={() => setImportOpen(false)}
+          onImported={() => fetchEvents()}
+        />
+      )}
+    </div>
+  );
+}

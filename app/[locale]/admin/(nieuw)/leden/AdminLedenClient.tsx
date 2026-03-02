@@ -52,6 +52,8 @@ export default function AdminLedenClient() {
   const [data, setData] = useState<MemberRow[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState<MemberRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -101,6 +103,22 @@ export default function AdminLedenClient() {
     return locale === "en"
       ? new Date(d).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
       : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  async function handleDelete(row: MemberRow) {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/members/${row.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setDeleteConfirm(null);
+      setData((prev) => prev.filter((x) => x.id !== row.id));
+      setTotal((prev) => Math.max(0, prev - 1));
+      setToast("deleted");
+    } catch {
+      setToast(null);
+    } finally {
+      setDeleting(false);
+    }
   }
 
   return (
@@ -220,9 +238,19 @@ export default function AdminLedenClient() {
                       {formatDate(r.lid_sinds)}
                     </td>
                     <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <Link href={`/admin/leden/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
-                        {tAdmin("view")}
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link href={`/admin/leden/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
+                          {tAdmin("view")}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteConfirm(r)}
+                          className="text-sm font-medium"
+                          style={{ color: "#dc2626" }}
+                        >
+                          {t("delete")}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -230,6 +258,41 @@ export default function AdminLedenClient() {
             </tbody>
           </table>
         </div>
+        {deleteConfirm && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,.6)" }}
+            onClick={() => !deleting && setDeleteConfirm(null)}
+          >
+            <div
+              className="max-w-md w-full rounded-xl border p-6"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteConfirm")}</p>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => handleDelete(deleteConfirm)}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                  style={{ background: "#dc2626" }}
+                >
+                  {deleting ? loadingStr : t("delete")}
+                </button>
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-4 py-2 rounded-lg border text-sm font-medium"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {totalPages > 1 && (
           <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
             <span className="text-sm" style={{ color: ADM_MUTED }}>
