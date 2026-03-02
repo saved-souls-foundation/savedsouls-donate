@@ -84,6 +84,9 @@ export default function AgendaClient() {
   const [isMobile, setIsMobile] = useState(false);
   const [sideTab, setSideTab] = useState<"upcoming" | "lab">("upcoming");
 
+  const year = current.getFullYear();
+  const month = current.getMonth();
+
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 480px)");
     setIsMobile(mq.matches);
@@ -138,8 +141,6 @@ export default function AgendaClient() {
     return () => { supabase.removeChannel(channel); };
   }, [fetchEvents]);
 
-  const year = current.getFullYear();
-  const month = current.getMonth();
   const monthLabel = current.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
   const todayIso = new Date().toISOString().slice(0, 10);
 
