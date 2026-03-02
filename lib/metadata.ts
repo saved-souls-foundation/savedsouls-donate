@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const BASE_URL = "https://www.savedsouls-foundation.com";
-const LOCALES = ["nl", "en", "de", "es", "th", "ru"] as const;
+const LOCALES = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 
 /**
  * Genereert hreflang-alternates voor meertalige SEO.
@@ -18,6 +18,7 @@ export function alternatesForPath(
   for (const locale of LOCALES) {
     languages[locale] = `${BASE_URL}/${locale}${pathSegment}`;
   }
+  languages["x-default"] = `${BASE_URL}/en${pathSegment}`;
   return {
     canonical: `${BASE_URL}/${currentLocale}${pathSegment}`,
     languages,

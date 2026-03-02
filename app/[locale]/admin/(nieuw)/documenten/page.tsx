@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import AdminDocumentenClient from "./AdminDocumentenClient";
 
@@ -10,13 +11,15 @@ export type DocRow = {
 };
 
 export default async function AdminDocumentenPage() {
+  const t = await getTranslations("admin");
   const supabase = await createClient();
   const { data: rows } = await supabase
     .from("volunteer_onboarding")
     .select("user_id, voornaam, achternaam, id_doc_paths, vog_doc_paths, certs_doc_paths, extra_doc_paths");
 
+  const noValue = t("noValue");
   const docs: DocRow[] = (rows ?? []).flatMap((row) => {
-    const naam = [row.voornaam, row.achternaam].filter(Boolean).join(" ") || "—";
+    const naam = [row.voornaam, row.achternaam].filter(Boolean).join(" ") || noValue;
     const idPaths = (row.id_doc_paths ?? []) as string[];
     const vogPaths = (row.vog_doc_paths ?? []) as string[];
     const certsPaths = (row.certs_doc_paths ?? []) as string[];

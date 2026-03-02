@@ -6,6 +6,10 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "seo": {
+    "title": "SavedSouls Foundation — Animal Rescue Thailand",
+    "description": "We rescue dogs and cats in Thailand. Adopt, volunteer or donate. Over 550 animals saved from the dog meat trade and the streets."
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",
@@ -260,8 +264,12 @@
     "sidebarSectionFinance": "Finance",
     "sidebarSectionCommunication": "Communication",
     "adminPanelTitle": "Admin",
+    "brandName": "SavedSoulsFoundation",
     "menuOpen": "Open menu",
     "noValue": "—",
+    "ellipsis": "…",
+    "volunteerLabel": "Volunteer",
+    "adoptantLabel": "Adoptant",
     "logout": "Log out",
     "dashboardWelcome": "Saved Souls Foundation — Thailand. Overview of all ongoing adoption and volunteer journeys.",
     "volunteersRegistered": "Volunteers registered",
@@ -560,6 +568,7 @@
       "generatedReply": "Generated reply",
       "editReply": "Edit reply",
       "send": "Send",
+      "autoSentMessage": "Sent automatically",
       "templateOverride": "Override template",
       "noTemplate": "None",
       "categories": {

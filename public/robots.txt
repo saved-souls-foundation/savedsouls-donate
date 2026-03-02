@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
-
+Disallow: /api/
+Disallow: /admin/
+Disallow: /nl/admin/
+Disallow: /en/admin/
+Disallow: /es/admin/
+Disallow: /ru/admin/
+Disallow: /th/admin/
+Disallow: /de/admin/
+Disallow: /fr/admin/
 Sitemap: https://www.savedsouls-foundation.com/sitemap.xml

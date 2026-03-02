@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
   const bodyText = (rawBody ?? (useNl ? "Je bent aangemeld voor onze nieuwsbrief." : "You have been subscribed to our newsletter."))
     .replace(/\{\{unsubscribe_url\}\}/g, unsubscribeUrl)
     .replace(/\{\{email\}\}/g, email);
-  const bodyHtml = `<p>${bodyText.split(/\n/).map((line) => escapeHtml(line)).join("</p><p>")}</p><p style="font-size:12px;color:#666;"><a href="${escapeHtml(unsubscribeUrl)}">${useNl ? "Uitschrijven" : "Unsubscribe"}</a></p>`;
+  const bodyHtml = `<p>${bodyText.split(/\n/).map((line: string) => escapeHtml(line)).join("</p><p>")}</p><p style="font-size:12px;color:#666;"><a href="${escapeHtml(unsubscribeUrl)}">${useNl ? "Uitschrijven" : "Unsubscribe"}</a></p>`;
 
   await sendMail({
     to: email,

@@ -20,8 +20,8 @@ const vrijwilligerStapLabels: Record<number, string> = {
   4: "Reis & plan gereed — welkom aan boord! 🇹🇭",
 };
 
-function getAreaLabel(t: (key: string) => string, area: string | null): string {
-  if (!area) return "—";
+function getAreaLabel(t: (key: string) => string, noValue: string, area: string | null): string {
+  if (!area) return noValue;
   const key = area === "lokaal" ? "areaLokaal" : area === "thailand" ? "areaThailand" : null;
   return key ? t(key) : area;
 }
@@ -139,16 +139,16 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
               {filtered.map((r) => (
                 <tr key={r.user_id} className="border-t" style={{ borderColor: ADM_BORDER }}>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || "—"}
+                    {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue")}
                   </td>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {r.email ?? "—"}
+                    {r.email ?? t("noValue")}
                   </td>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {r.city ?? "—"}
+                    {r.city ?? t("noValue")}
                   </td>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {getAreaLabel(t, r.area)}
+                    {getAreaLabel(t, t("noValue"), r.area)}
                   </td>
                   <td className="p-3">
                     <span
@@ -162,7 +162,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                     </span>
                   </td>
                   <td className="p-3" style={{ color: ADM_MUTED }}>
-                    {r.created_at ? new Date(r.created_at).toLocaleDateString("nl-NL", { dateStyle: "short" }) : "—"}
+                    {r.created_at ? new Date(r.created_at).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
                   </td>
                   <td className="p-3">
                     <button
@@ -194,7 +194,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold" style={{ color: ADM_TEXT }}>
-                {[detail.voornaam, detail.achternaam].filter(Boolean).join(" ") || "Vrijwilliger"}
+                {[detail.voornaam, detail.achternaam].filter(Boolean).join(" ") || t("volunteerLabel")}
               </h3>
               <button
                 type="button"
@@ -208,31 +208,31 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
             <dl className="space-y-2 text-sm">
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("emailCol")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.email ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.email ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("phone")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.phone ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.phone ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("city")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.city ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.city ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("area")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{getAreaLabel(t, detail.area)}</dd>
+                <dd style={{ color: ADM_TEXT }}>{getAreaLabel(t, t("noValue"), detail.area)}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("motivation")}</dt>
-                <dd style={{ color: ADM_TEXT }} className="whitespace-pre-wrap">{detail.motivation ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }} className="whitespace-pre-wrap">{detail.motivation ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("callPreferenceLabel")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.call_preference ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.call_preference ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("languageLabel")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.language ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.language ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("currentStep")}</dt>

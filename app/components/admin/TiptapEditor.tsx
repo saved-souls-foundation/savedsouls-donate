@@ -39,7 +39,9 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
   useEffect(() => {
     if (!editor) return;
     editor.on("update", onUpdate);
-    return () => editor.off("update", onUpdate);
+    return () => {
+      editor.off("update", onUpdate);
+    };
   }, [editor, onUpdate]);
 
   useEffect(() => {

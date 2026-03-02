@@ -139,7 +139,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
               {filtered.map((r) => (
                 <tr key={r.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || "—"}
+                    {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue")}
                   </td>
                   <td className="p-3">
                     <span
@@ -153,10 +153,10 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
                     </span>
                   </td>
                   <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }}>
-                    {r.notities ? `${r.notities.slice(0, 60)}${r.notities.length > 60 ? "…" : ""}` : "—"}
+                    {r.notities ? `${r.notities.slice(0, 60)}${r.notities.length > 60 ? t("ellipsis") : ""}` : t("noValue")}
                   </td>
                   <td className="p-3" style={{ color: ADM_MUTED }}>
-                    {r.aangemeld_op ? new Date(r.aangemeld_op).toLocaleDateString("nl-NL", { dateStyle: "short" }) : "—"}
+                    {r.aangemeld_op ? new Date(r.aangemeld_op).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
                   </td>
                   <td className="p-3">
                     <button
@@ -188,7 +188,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold" style={{ color: ADM_TEXT }}>
-                {[detail.voornaam, detail.achternaam].filter(Boolean).join(" ") || "Adoptant"}
+                {[detail.voornaam, detail.achternaam].filter(Boolean).join(" ") || t("adoptantLabel")}
               </h3>
               <button
                 type="button"
@@ -202,7 +202,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
             <dl className="space-y-2 text-sm">
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("emailCol")}</dt>
-                <dd style={{ color: ADM_TEXT }}>{detail.email ?? "—"}</dd>
+                <dd style={{ color: ADM_TEXT }}>{detail.email ?? t("noValue")}</dd>
               </div>
               <div>
                 <dt style={{ color: ADM_MUTED }}>{t("currentStep")}</dt>

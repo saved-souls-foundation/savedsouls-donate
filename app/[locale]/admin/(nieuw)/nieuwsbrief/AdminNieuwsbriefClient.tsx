@@ -119,7 +119,7 @@ export default function AdminNieuwsbriefClient() {
     setConfirmUnsub(null);
     if (res.ok) {
       fetchSubscribers();
-      if (activeCount != null) setActiveCount((c) => Math.max(0, c - 1));
+      if (activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
     }
   }
 

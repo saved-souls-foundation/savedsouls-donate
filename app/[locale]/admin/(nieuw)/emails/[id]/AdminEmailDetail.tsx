@@ -44,6 +44,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   const [showEdit, setShowEdit] = useState(false);
   const [templateOverride, setTemplateOverride] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [autoSentBanner, setAutoSentBanner] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,9 +86,11 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         ai_gegenereerd_antwoord: data.ai_gegenereerd_antwoord ?? prev.ai_gegenereerd_antwoord,
         ai_suggestie_template_id: data.template_id ?? prev.ai_suggestie_template_id,
         taal: data.taal ?? prev.taal,
+        ...(data.autoSent ? { status: "verstuurd" as const } : {}),
       } : null);
       setEditReply(data.ai_gegenereerd_antwoord ?? "");
       if (data.template_id) setTemplateOverride(data.template_id);
+      if (data.autoSent) setAutoSentBanner(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : t("analyzeError"));
     } finally {
@@ -174,7 +177,15 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
           <h2 className="text-sm font-semibold mb-3" style={{ color: ADM_MUTED }}>{t("aiAssistant")}</h2>
           {email.status !== "in_behandeling" ? (
-            <p style={{ color: ADM_MUTED }}>{t("statuses." + email.status)}</p>
+            <div>
+              <p style={{ color: ADM_MUTED }}>{t("statuses." + email.status)}</p>
+              {autoSentBanner && email.status === "verstuurd" && (
+                <p className="mt-2 text-sm font-medium" style={{ color: ADM_GREEN }}>{t("autoSentMessage")}</p>
+              )}
+              {email.ai_gegenereerd_antwoord && (autoSentBanner || email.status === "verstuurd") && (
+                <div className="mt-3 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: email.ai_gegenereerd_antwoord.replace(/\n/g, "<br>") }} />
+              )}
+            </div>
           ) : (
             <>
               <button type="button" onClick={handleAnalyze} disabled={analyzing} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: ADM_ACCENT }}>

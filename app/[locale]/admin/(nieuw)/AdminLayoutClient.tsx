@@ -105,7 +105,7 @@ export default function AdminLayoutClient({
         <div className="flex items-center gap-2">
           <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-8 w-8 object-contain" />
           <span className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
-            SavedSoulsFoundation
+            {t("brandName")}
           </span>
         </div>
         <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1" style={{ background: "rgba(42,157,143,.2)", color: ADM_ACCENT }}>

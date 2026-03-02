@@ -6,6 +6,10 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "seo": {
+    "title": "SavedSouls Foundation — Dierenopvang Thailand",
+    "description": "Wij redden honden en katten in Thailand. Adopteer, vrijwillig of doneer. Meer dan 550 dieren gered uit de hondenvleeshandel en van straat."
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",
@@ -260,8 +264,12 @@
     "sidebarSectionFinance": "Financiën",
     "sidebarSectionCommunication": "Communicatie",
     "adminPanelTitle": "Admin",
+    "brandName": "SavedSoulsFoundation",
     "menuOpen": "Menu openen",
     "noValue": "—",
+    "ellipsis": "…",
+    "volunteerLabel": "Vrijwilliger",
+    "adoptantLabel": "Adoptant",
     "logout": "Uitloggen",
     "dashboardWelcome": "Saved Souls Foundation — Thailand. Overzicht van alle lopende adoptie- en vrijwilligerstrajecten.",
     "volunteersRegistered": "Vrijwilligers aangemeld",
@@ -560,6 +568,7 @@
       "generatedReply": "Gegenereerd antwoord",
       "editReply": "Bewerk antwoord",
       "send": "Verstuur",
+      "autoSentMessage": "Automatisch verstuurd",
       "templateOverride": "Andere template",
       "noTemplate": "Geen",
       "categories": {

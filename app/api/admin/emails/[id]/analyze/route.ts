@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
+import { sendMail } from "@/lib/sendMail";
+
+const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
+const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
+
+function wrapHtml(body: string): string {
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;line-height:1.5;">${body}</body></html>`;
+}
 
 const LANG_KEYS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 
@@ -83,6 +91,36 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   if (updateErr) return NextResponse.json({ error: updateErr.message }, { status: 500 });
 
+  const shouldAutoSend = confidence >= AUTO_SEND_CONFIDENCE_THRESHOLD && ai_gegenereerd_antwoord.trim().length > 0;
+  let autoSent = false;
+
+  if (shouldAutoSend) {
+    const to = (email.van_email as string) ?? "";
+    if (to) {
+      const subject = `Re: ${(email.onderwerp as string) ?? "Your message"}`;
+      const html = wrapHtml(ai_gegenereerd_antwoord.replace(/\n/g, "<br>\n"));
+      const sendResult = await sendMail({
+        from: RESEND_FROM,
+        to,
+        subject,
+        text: ai_gegenereerd_antwoord.replace(/<[^>]+>/g, ""),
+        html,
+      });
+      if (sendResult.success) {
+        const { data: { user } } = await supabase!.auth.getUser();
+        await supabase!
+          .from("incoming_emails")
+          .update({
+            status: "verstuurd",
+            verwerkt_door: user?.id ?? null,
+            verwerkt_op: new Date().toISOString(),
+          })
+          .eq("id", id);
+        autoSent = true;
+      }
+    }
+  }
+
   return NextResponse.json({
     taal,
     categorie,
@@ -91,5 +129,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     personalisatie: personalisatie ?? { naam: null, dier: null },
     suggestedTemplateName,
     ai_gegenereerd_antwoord,
+    autoSent,
+    autoSentMessage: autoSent ? "Automatisch verstuurd" : undefined,
   });
 }
