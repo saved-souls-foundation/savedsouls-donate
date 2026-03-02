@@ -118,6 +118,36 @@ export default function SoulSaverPage() {
           </div>
         </section>
 
+        {/* Promo: rolstoel-afbeeldingen */}
+        <section className="mb-16">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-stone-800 dark:text-stone-100 mb-6">
+            {t("promoTitle")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] bg-stone-100 dark:bg-stone-800">
+              <Image
+                src="/soul-saver-wheelchair.png"
+                alt={t("promoAlt1")}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] bg-stone-100 dark:bg-stone-800">
+              <Image
+                src="/soul-saver-rolstoel-collage.png"
+                alt={t("promoAlt2")}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </div>
+          <p className="text-center text-stone-600 dark:text-stone-400 mt-4 font-medium">
+            {t("promoCaption")}
+          </p>
+        </section>
+
         {/* Emotionele tekst */}
         <section
           className="mb-16 rounded-2xl p-8 md:p-12 text-center"

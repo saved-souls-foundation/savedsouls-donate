@@ -641,7 +641,11 @@
     "paypalDirect": "PayPal (direkt)",
     "imgAlt": "Ein geretteter Hund bei Saved Souls Foundation, glücklich und geheilt",
     "imgCaption": "Jede Seele verdient eine zweite Chance. Du kannst derjenige sein, der es möglich macht.",
-    "finalCta": "JETZT SPENDEN – RETTE EINE SEELE"
+    "finalCta": "JETZT SPENDEN – RETTE EINE SEELE",
+    "promoTitle": "So macht deine Spende einen Unterschied",
+    "promoCaption": "Maßgefertigte Rollstühle geben gelähmten Hunden ihre Freiheit zurück.",
+    "promoAlt1": "Hund im blauen Rollstuhl – Mobilität für gelähmte Hunde",
+    "promoAlt2": "Geretteter Hund mit Rollstuhl in Aktion – Saved Souls Foundation"
   },
   "adoptInquiry": {
     "badge": "Starte deine Reise",

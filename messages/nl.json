@@ -1160,7 +1160,11 @@
     "paypalDirect": "PayPal (direct)",
     "imgAlt": "Een geredde hond bij Saved Souls Foundation, gelukkig en genezen",
     "imgCaption": "Elke ziel verdient een tweede kans. Jij kunt degene zijn die het mogelijk maakt.",
-    "finalCta": "DONEER NU – RED EEN ZIEL"
+    "finalCta": "DONEER NU – RED EEN ZIEL",
+    "promoTitle": "Zo maakt jouw donatie verschil",
+    "promoCaption": "Rolstoelen op maat geven verlamde honden hun vrijheid terug.",
+    "promoAlt1": "Hond in blauwe rolstoel – mobiliteit voor verlamde pups",
+    "promoAlt2": "Geredde hond met rolstoel in actie – Saved Souls Foundation"
   },
   "adoptInquiry": {
     "badge": "Begin je reis",

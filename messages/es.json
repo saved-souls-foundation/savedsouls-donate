@@ -641,7 +641,11 @@
     "paypalDirect": "PayPal (directo)",
     "imgAlt": "Un perro rescatado en Saved Souls Foundation, feliz y curado",
     "imgCaption": "Cada alma merece una segunda oportunidad. La tuya puede ser la que lo haga posible.",
-    "finalCta": "DONAR AHORA – SALVAR UN ALMA"
+    "finalCta": "DONAR AHORA – SALVAR UN ALMA",
+    "promoTitle": "Así marca tu donación la diferencia",
+    "promoCaption": "Las sillas de ruedas a medida devuelven la libertad a los perros paralizados.",
+    "promoAlt1": "Perro en silla de ruedas azul – movilidad para cachorros paralizados",
+    "promoAlt2": "Perro rescatado con silla de ruedas en acción – Saved Souls Foundation"
   },
   "adoptInquiry": {
     "badge": "Comienza tu viaje",

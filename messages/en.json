@@ -1161,7 +1161,11 @@
     "paypalDirect": "PayPal (direct)",
     "imgAlt": "A rescued dog at Saved Souls Foundation, happy and healed",
     "imgCaption": "Every soul deserves a second chance. Yours can be the one that makes it possible.",
-    "finalCta": "DONATE NOW – SAVE A SOUL"
+    "finalCta": "DONATE NOW – SAVE A SOUL",
+    "promoTitle": "This is how your donation makes a difference",
+    "promoCaption": "Custom wheelchairs give paralysed dogs their freedom back.",
+    "promoAlt1": "Dog in blue wheelchair – mobility for paralysed pups",
+    "promoAlt2": "Rescued dog with wheelchair in action – Saved Souls Foundation"
   },
   "adoptInquiry": {
     "badge": "Start your journey",

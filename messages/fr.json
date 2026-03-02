@@ -922,7 +922,11 @@
     "paypalDirect": "PayPal (direct)",
     "imgAlt": "A rescued dog at Saved Souls Foundation, happy and healed",
     "imgCaption": "Every soul deserves a second chance. Yours can be the one that makes it possible.",
-    "finalCta": "DONATE NOW – SAVE A SOUL"
+    "finalCta": "DONATE NOW – SAVE A SOUL",
+    "promoTitle": "Voici comment votre don fait la différence",
+    "promoCaption": "Les fauteuils sur mesure redonnent leur liberté aux chiens paralysés.",
+    "promoAlt1": "Chien en fauteuil roulant bleu – mobilité pour les chiots paralysés",
+    "promoAlt2": "Chien secouru avec fauteuil en action – Saved Souls Foundation"
   },
   "adoptInquiry": {
     "badge": "Start your journey",

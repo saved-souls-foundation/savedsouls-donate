@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
 import BankTransferSection from "../../components/BankTransferSection";
 import RecentDonations from "../../components/RecentDonationsFooter";
-import PayPalDonate from "../../components/PayPalDonate";
+import PayPalDonate from "@/components/PayPalDonate";
 
 const ACCENT_GREEN = "#2aa348";
 
