@@ -23,7 +23,7 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     { count: totalAdoptanten },
     { count: voltooideAdoptanten },
   ] = await Promise.all([
-    supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "vrijwilliger"),
+    supabase.from("volunteer_onboarding").select("*", { count: "exact", head: true }),
     supabase.from("volunteer_onboarding").select("*", { count: "exact", head: true }).eq("step", 4),
     supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "adoptant"),
     supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "adoptant").eq("huidige_stap", 4),
