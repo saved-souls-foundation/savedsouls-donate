@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+export const dynamic = "force-dynamic";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
@@ -21,7 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function DonatePage() {
+type DonatePageProps = { params: Promise<{ locale: string }> };
+
+export default async function DonatePage({ params }: DonatePageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("donate");
 
   return (

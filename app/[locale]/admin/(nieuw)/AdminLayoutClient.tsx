@@ -46,11 +46,11 @@ function NavLink({
       className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
       style={{
         background: isActive ? "rgba(42,157,143,.15)" : "transparent",
-        color: isActive ? ADM_ACCENT : ADM_MUTED,
+        color: isActive ? ADM_ACCENT : ADM_TEXT,
       }}
     >
-      <span className="flex-shrink-0 w-5 flex items-center justify-center">{icon}</span>
-      <span className="flex-1 min-w-0">{label}</span>
+      <span className="flex-shrink-0 w-5 flex items-center justify-center opacity-100">{icon}</span>
+      <span className="flex-1 min-w-0 truncate">{label}</span>
       {badge != null && badge > 0 && (
         <span
           className="flex-shrink-0 min-w-[1.25rem] h-5 px-1.5 rounded-full text-xs font-semibold flex items-center justify-center text-white"
@@ -67,7 +67,7 @@ function SectionLabel({ label }: { label: string }) {
   return (
     <p
       className="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider"
-      style={{ color: ADM_MUTED }}
+      style={{ color: ADM_TEXT }}
     >
       {label}
     </p>
@@ -100,8 +100,8 @@ export default function AdminLayoutClient({
   }
 
   const sidebar = (
-    <>
-      <div className="p-4 border-b" style={{ borderColor: ADM_BORDER }}>
+    <div className="flex flex-col h-full" style={{ background: ADM_SIDEBAR, color: ADM_TEXT }}>
+      <div className="p-4 border-b shrink-0" style={{ borderColor: ADM_BORDER }}>
         <div className="flex items-center gap-2">
           <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-8 w-8 object-contain" />
           <span className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
@@ -115,7 +115,7 @@ export default function AdminLayoutClient({
           {t("subtitle")}
         </p>
       </div>
-      <nav className="p-2 flex-1">
+      <nav className="p-2 flex-1 overflow-y-auto min-h-0">
         {nav.map((item) => {
           const isActive = pathname?.includes(item.href.slice(1));
           return (
@@ -126,11 +126,11 @@ export default function AdminLayoutClient({
               className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
               style={{
                 background: isActive ? "rgba(42,157,143,.15)" : "transparent",
-                color: isActive ? ADM_ACCENT : ADM_MUTED,
+                color: isActive ? ADM_ACCENT : ADM_TEXT,
               }}
             >
-              <span>{item.icon}</span>
-              {t(item.labelKey)}
+              <span className="flex-shrink-0">{item.icon}</span>
+              <span className="truncate">{t(item.labelKey)}</span>
             </Link>
           );
         })}
@@ -204,17 +204,17 @@ export default function AdminLayoutClient({
           onClick={() => setMobileOpen(false)}
         />
       </nav>
-      <div className="p-2 border-t" style={{ borderColor: ADM_BORDER }}>
+      <div className="p-2 border-t shrink-0" style={{ borderColor: ADM_BORDER }}>
         <button
           type="button"
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm"
-          style={{ color: ADM_MUTED }}
+          style={{ color: ADM_TEXT }}
         >
           {t("logout")}
         </button>
       </div>
-    </>
+    </div>
   );
 
   return (
@@ -242,8 +242,8 @@ export default function AdminLayoutClient({
           onClick={() => setMobileOpen(false)}
         >
           <aside
-            className="absolute left-0 top-0 bottom-0 w-56 flex flex-col border-r"
-            style={{ background: ADM_SIDEBAR, borderColor: ADM_BORDER }}
+            className="absolute left-0 top-0 bottom-0 w-64 max-w-[85vw] flex flex-col border-r shadow-xl"
+            style={{ background: ADM_SIDEBAR, borderColor: ADM_BORDER, color: ADM_TEXT }}
             onClick={(e) => e.stopPropagation()}
           >
             {sidebar}

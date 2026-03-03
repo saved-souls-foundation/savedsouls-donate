@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import AgendaClient from "./AgendaClient";
 
 export const metadata = {
@@ -5,6 +6,12 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function AgendaPage() {
+export default async function AgendaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return <AgendaClient />;
 }

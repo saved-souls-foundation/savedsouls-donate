@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import AdminAdoptantenClient from "./AdminAdoptantenClient";
@@ -16,7 +17,13 @@ export type AdoptantRow = {
   dierId: string | null;
 };
 
-export default async function AdminAdoptantenPage() {
+export default async function AdminAdoptantenPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const supabase = await createClient();
   const { data: rows } = await supabase
     .from("profiles")

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
 import AdminLayoutClient from "./AdminLayoutClient";
 
 export const metadata = {
@@ -7,9 +8,13 @@ export const metadata = {
 
 export default async function AdminNieuwLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   let pendingEmailsCount = 0;
   try {
     const supabase = await createClient();

@@ -493,7 +493,32 @@
         "th": "Thais",
         "de": "Duits",
         "fr": "Frans"
-      }
+      },
+      "sjablonenTitle": "Nieuwsbriefsjablonen",
+      "sjablonenTab": "Sjablonen",
+      "verzondenTab": "Verzonden",
+      "wachtrijTab": "Wachtrij",
+      "handmatigTab": "Handmatig versturen",
+      "backToNewsletter": "Terug naar Nieuwsbrief",
+      "templatesListTitle": "Sjablonen",
+      "templatesListDescription": "Gebruik een sjabloon om een nieuwsbrief op te stellen of handmatig te versturen.",
+      "noTemplates": "Geen sjablonen gevonden.",
+      "useToSend": "Gebruiken om te versturen",
+      "sentNewslettersTitle": "Verzonden nieuwsbrieven",
+      "sentNewslettersDescription": "Overzicht wat er wanneer naar hoeveel ontvangers is verzonden.",
+      "sentAt": "Verzonden op",
+      "recipientCount": "Aantal ontvangers",
+      "recipients": "ontvangers",
+      "sendsTotal": "verzendingen",
+      "noSends": "Nog geen nieuwsbrieven verzonden.",
+      "sendsStatusSent": "Verstuurd",
+      "sendsStatusFailed": "Mislukt",
+      "sendsStatusPartial": "Gedeeltelijk",
+      "queueTitle": "Wachtrij",
+      "queueDescription": "Stel een nieuwsbrief op via \"Handmatig versturen\" en verstuur direct of plan later in.",
+      "manualSendTitle": "Handmatig nieuwsbrieven versturen",
+      "manualSendDescription": "Open de opstellpagina om een nieuwsbrief te schrijven en naar alle actieve abonnees te versturen.",
+      "sjablonen": "Sjablonen"
     },
     "donors": {
       "title": "Donateurs",
@@ -730,7 +755,12 @@
       "sentAt": "Verstuurd op",
       "bodyPreview": "Fragment",
       "noSentEmails": "Nog geen verzonden mails",
-      "typeColumn": "Type"
+      "typeColumn": "Type",
+      "manualSend": "Handmatig verzenden",
+      "sentRepliesTitle": "Verzonden automatische antwoorden",
+      "sentRepliesDescription": "Overzicht wat er naar wie is verzonden (laatste 15).",
+      "viewAllSent": "Bekijk alle verzonden mails →",
+      "noSentReplies": "Nog geen automatische antwoorden verzonden."
     },
     "socialeMedia": {
       "title": "Sociale media",

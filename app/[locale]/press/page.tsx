@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import PressBanner from "../../components/PressBanner";
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 export default async function PressPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("press");
   const bannerTitle = t("bannerTitle");
   const bannerSubtitle = t("bannerSubtitle");

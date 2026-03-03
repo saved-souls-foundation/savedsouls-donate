@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const ADM_CARD = "#ffffff";
@@ -36,8 +36,16 @@ type Template = {
   usage_count?: number;
 };
 
+type SentEmail = {
+  id: string;
+  to_email: string;
+  subject: string;
+  sent_at: string;
+};
+
 export default function AdminEmailTemplatesClient() {
   const t = useTranslations("admin.emails");
+  const locale = useLocale();
   const [list, setList] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -45,6 +53,8 @@ export default function AdminEmailTemplatesClient() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [bulkSaving, setBulkSaving] = useState(false);
+  const [sentEmails, setSentEmails] = useState<SentEmail[]>([]);
+  const [loadingSent, setLoadingSent] = useState(false);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -57,6 +67,22 @@ export default function AdminEmailTemplatesClient() {
   useEffect(() => {
     fetchList();
   }, [fetchList]);
+
+  const fetchSentEmails = useCallback(async () => {
+    setLoadingSent(true);
+    try {
+      const res = await fetch("/api/admin/sent-emails?type=email_assistant&limit=15");
+      const data = await res.json();
+      if (res.ok && data?.data) setSentEmails(data.data);
+      else setSentEmails([]);
+    } finally {
+      setLoadingSent(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSentEmails();
+  }, [fetchSentEmails]);
 
   const filtered = list.filter((tm) => {
     if (categoryFilter !== "all" && (tm.categorie ?? "") !== categoryFilter) return false;
@@ -136,6 +162,12 @@ export default function AdminEmailTemplatesClient() {
     return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
   }
 
+  function formatSentDate(d: string) {
+    return locale === "en"
+      ? new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
+      : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -145,13 +177,22 @@ export default function AdminEmailTemplatesClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("templatesTitle")}
         </h1>
-        <Link
-          href="/admin/emails/templates/nieuw"
-          className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white"
-          style={{ background: ADM_ACCENT }}
-        >
-          {t("newTemplate")}
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/emails"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_ACCENT, color: ADM_ACCENT }}
+          >
+            {t("manualSend")}
+          </Link>
+          <Link
+            href="/admin/emails/templates/nieuw"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white"
+            style={{ background: ADM_ACCENT }}
+          >
+            {t("newTemplate")}
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-3 items-center">
@@ -306,6 +347,52 @@ export default function AdminEmailTemplatesClient() {
           </div>
         </>
       )}
+
+      <section className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+        <div className="p-4 border-b flex flex-wrap items-center justify-between gap-2" style={{ borderColor: ADM_BORDER }}>
+          <div>
+            <h2 className="font-semibold" style={{ color: ADM_TEXT }}>
+              {t("sentRepliesTitle")}
+            </h2>
+            <p className="text-sm mt-0.5" style={{ color: ADM_MUTED }}>
+              {t("sentRepliesDescription")}
+            </p>
+          </div>
+          <Link
+            href="/admin/emails/verzonden?type=email_assistant"
+            className="text-sm font-medium"
+            style={{ color: ADM_ACCENT }}
+          >
+            {t("viewAllSent")}
+          </Link>
+        </div>
+        {loadingSent ? (
+          <div className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</div>
+        ) : sentEmails.length === 0 ? (
+          <div className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noSentReplies")}</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ color: ADM_MUTED }}>
+                  <th className="text-left p-3">{t("to")}</th>
+                  <th className="text-left p-3">{t("subject")}</th>
+                  <th className="text-left p-3">{t("sentAt")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sentEmails.map((row) => (
+                  <tr key={row.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
+                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.to_email}</td>
+                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.subject}>{row.subject}</td>
+                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatSentDate(row.sent_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

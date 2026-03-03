@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -35,6 +36,10 @@ type Props = {
   attention: Attention;
   recentVolunteers: RecentVolunteer[];
   recentDonations: RecentDonation[];
+  groupBOverview?: ReactNode;
+  groupBAttention?: ReactNode;
+  groupBRecent?: ReactNode;
+  groupBAutoReplies?: ReactNode;
 };
 
 function AnimatedNumber({ value, format = "number" }: { value: number; format?: "number" | "currency" }) {
@@ -66,44 +71,35 @@ export function DashboardClient({
   attention,
   recentVolunteers,
   recentDonations,
+  groupBOverview,
+  groupBAttention,
+  groupBRecent,
+  groupBAutoReplies,
 }: Props) {
   const t = useTranslations("admin");
   const attentionTotal = attention.pendingEmails + attention.volunteersStep12 + attention.expiredSponsors;
   const showAttentionSection = attentionTotal > 0;
 
-  const overviewCards: { icon: string; labelKey: string; value: number; valueFormatted?: string; href: string }[] = [
+  const overviewCardsA: { icon: string; labelKey: string; value: number; valueFormatted?: string; href: string }[] = [
     { icon: "🤝", labelKey: "volunteersRegistered", value: overview.volunteers, href: "/admin/vrijwilligers" },
     { icon: "🐾", labelKey: "adoptantsRegistered", value: overview.adoptants, href: "/admin/adoptanten" },
     { icon: "👥", labelKey: "dashboard.activeMembers", value: overview.activeMembers, href: "/admin/leden" },
     { icon: "✉️", labelKey: "dashboard.newsletterSubscribers", value: overview.newsletter, href: "/admin/nieuwsbrief" },
-    {
-      icon: "€",
-      labelKey: "dashboard.donationsThisMonth",
-      value: overview.donationsThisMonth,
-      valueFormatted: `€ ${overview.donationsThisMonth.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`,
-      href: "/admin/donateurs",
-    },
-    { icon: "🏢", labelKey: "dashboard.activeSponsors", value: overview.activeSponsors, href: "/admin/sponsoren" },
   ];
 
-  const attentionItems: { icon: string; label: string; count: number; href: string }[] = [
+  const attentionItemsA: { icon: string; label: string; count: number; href: string }[] = [
     { icon: "📬", label: "Openstaande e-mails", count: attention.pendingEmails, href: "/admin/emails" },
-    { icon: "⏳", label: "Vrijwilligers in stap 1-2", count: attention.volunteersStep12, href: "/admin/vrijwilligers" },
-    { icon: "⚠️", label: "Verlopen sponsoren", count: attention.expiredSponsors, href: "/admin/sponsoren" },
   ];
 
   return (
     <div className="space-y-8">
-      {/* Sectie 1 — Overzicht */}
+      {/* Sectie 1 — Overzicht (4 kaarten Groep A + 2 kaarten Groep B via slot) */}
       <section>
         <h2 className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: ADM_MUTED }}>
           Overzicht
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {overviewCards.map((card) => (
+          {overviewCardsA.map((card) => (
             <Link
               key={card.labelKey}
               href={card.href}
@@ -123,15 +119,16 @@ export function DashboardClient({
               </p>
             </Link>
           ))}
+          {groupBOverview}
         </div>
       </section>
 
-      {/* Sectie 2 — Aandacht vereist */}
+      {/* Sectie 2 — Aandacht vereist (pendingEmails uit A + extra items uit Groep B slot) */}
       <section>
         <h2 className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: ADM_MUTED }}>
           Aandacht vereist
         </h2>
-        {showAttentionSection ? (
+        {showAttentionSection || groupBAttention ? (
           <div
             className="rounded-xl border p-4 flex flex-wrap items-center gap-4"
             style={{
@@ -143,7 +140,7 @@ export function DashboardClient({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
               <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600" />
             </span>
-            {attentionItems
+            {attentionItemsA
               .filter((item) => item.count > 0)
               .map((item) => (
                 <Link
@@ -159,6 +156,7 @@ export function DashboardClient({
                   </span>
                 </Link>
               ))}
+            {groupBAttention}
           </div>
         ) : (
           <div
@@ -171,82 +169,16 @@ export function DashboardClient({
         )}
       </section>
 
-      {/* Sectie 3 — Laatste activiteit */}
+      {/* Sectie 3 — Laatste activiteit (Groep B slot) */}
       <section>
         <h2 className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: ADM_MUTED }}>
           Laatste activiteit
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            className="rounded-xl border overflow-hidden"
-            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
-          >
-            <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: ADM_BORDER }}>
-              <h3 className="font-semibold" style={{ color: ADM_TEXT }}>
-                {t("lastVolunteers")}
-              </h3>
-              <Link href="/admin/vrijwilligers" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
-                {t("allVolunteers")}
-              </Link>
-            </div>
-            <ul className="divide-y" style={{ borderColor: ADM_BORDER }}>
-              {recentVolunteers.length === 0 ? (
-                <li className="p-4 text-sm" style={{ color: ADM_MUTED }}>
-                  {t("noValue")}
-                </li>
-              ) : (
-                recentVolunteers.map((v, i) => (
-                  <li key={i} className="p-4 flex flex-wrap items-center gap-2 text-sm">
-                    <span className="font-medium" style={{ color: ADM_TEXT }}>
-                      {v.name ?? t("noValue")}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded" style={{ background: "rgba(13,148,136,.15)", color: ADM_ACCENT }}>
-                      {t("stepN", { n: v.step })}
-                    </span>
-                    <span className="ml-auto text-xs" style={{ color: ADM_MUTED }}>
-                      {v.date ? new Date(v.date).toLocaleDateString(dateLocale, { dateStyle: "short" }) : "—"}
-                    </span>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-          <div
-            className="rounded-xl border overflow-hidden"
-            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
-          >
-            <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: ADM_BORDER }}>
-              <h3 className="font-semibold" style={{ color: ADM_TEXT }}>
-                Recente donaties
-              </h3>
-              <Link href="/admin/donateurs" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
-                Donateurs →
-              </Link>
-            </div>
-            <ul className="divide-y" style={{ borderColor: ADM_BORDER }}>
-              {recentDonations.length === 0 ? (
-                <li className="p-4 text-sm" style={{ color: ADM_MUTED }}>
-                  Nog geen donaties
-                </li>
-              ) : (
-                recentDonations.map((d, i) => (
-                  <li key={i} className="p-4 flex flex-wrap items-center gap-2 text-sm">
-                    <span className="font-medium" style={{ color: ADM_TEXT }}>
-                      {d.name ?? t("noValue")}
-                    </span>
-                    <span className="font-medium ml-auto" style={{ color: ADM_TEXT }}>
-                      € {d.amount.toLocaleString(locale === "en" ? "en-GB" : "nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </span>
-                    <span className="text-xs" style={{ color: ADM_MUTED }}>
-                      {d.date ? new Date(d.date).toLocaleDateString(dateLocale, { dateStyle: "short" }) : "—"}
-                    </span>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-        </div>
+        {groupBRecent}
       </section>
+
+      {/* Auto-replies & Nieuwsbrieven (Groep B slot) */}
+      {groupBAutoReplies}
     </div>
   );
 }

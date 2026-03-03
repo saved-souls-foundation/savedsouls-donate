@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import AdminVrijwilligersClient from "./AdminVrijwilligersClient";
 
@@ -17,7 +18,13 @@ export type VolunteerRow = {
   updated_at: string | null;
 };
 
-export default async function AdminVrijwilligersPage() {
+export default async function AdminVrijwilligersPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const supabase = await createClient();
   const { data: rows } = await supabase
     .from("volunteer_onboarding")

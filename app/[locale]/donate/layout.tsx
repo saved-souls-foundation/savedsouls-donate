@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 
 const BASE_URL = "https://www.savedsouls-foundation.com";
 
@@ -20,7 +21,15 @@ const donateActionSchema = {
   },
 };
 
-export default function DonateLayout({ children }: { children: React.ReactNode }) {
+export default async function DonateLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <>
       <script

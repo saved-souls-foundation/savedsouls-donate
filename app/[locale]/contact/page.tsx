@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
@@ -19,6 +19,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("common");
   return (
     <ParallaxPage>

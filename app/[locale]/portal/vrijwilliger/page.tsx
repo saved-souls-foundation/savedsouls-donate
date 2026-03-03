@@ -1,8 +1,15 @@
+import { setRequestLocale } from "next-intl/server";
 import PortalVrijwilligerClient from "./PortalVrijwilligerClient";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default function PortalVrijwilligerPage() {
+export default async function PortalVrijwilligerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return <PortalVrijwilligerClient />;
 }

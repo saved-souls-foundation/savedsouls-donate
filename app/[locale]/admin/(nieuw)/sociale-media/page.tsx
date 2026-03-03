@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import SocialeMediaClient from "./SocialeMediaClient";
 
 export const metadata = {
@@ -5,6 +6,12 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function SocialeMediaPage() {
+export default async function SocialeMediaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return <SocialeMediaClient />;
 }

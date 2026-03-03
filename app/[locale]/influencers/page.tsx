@@ -1,7 +1,9 @@
 import { Link } from "@/i18n/navigation";
 import InfluencerImage from "../../components/InfluencerImage";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+export const dynamic = "force-dynamic";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 
@@ -17,7 +19,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function InfluencersPage() {
+export default async function InfluencersPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("influencers");
 
   return (

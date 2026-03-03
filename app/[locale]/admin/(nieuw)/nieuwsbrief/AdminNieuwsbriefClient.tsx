@@ -244,6 +244,13 @@ export default function AdminNieuwsbriefClient() {
             {t("addSubscriberButton")}
           </button>
           <Link
+            href="/admin/nieuwsbrief/sjablonen"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_ACCENT, color: ADM_ACCENT }}
+          >
+            {t("sjablonen")}
+          </Link>
+          <Link
             href="/admin/nieuwsbrief/versturen"
             className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white"
             style={{ background: ADM_ACCENT }}

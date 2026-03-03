@@ -1,14 +1,18 @@
 import { Suspense } from "react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import UnsubscribeClient from "./UnsubscribeClient";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Unsubscribed | Saved Souls Foundation",
   description: "Newsletter unsubscribe – Saved Souls Foundation",
 };
 
-export default async function UnsubscribePage() {
+export default async function UnsubscribePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("common");
   return (
     <Suspense

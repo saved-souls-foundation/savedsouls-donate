@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -25,7 +26,11 @@ type SentRow = {
 export default function AdminSentEmailsClient() {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
-  const [typeFilter, setTypeFilter] = useState("all");
+  const searchParams = useSearchParams();
+  const typeFromUrl = searchParams.get("type");
+  const [typeFilter, setTypeFilter] = useState(() =>
+    typeFromUrl === "email_assistant" || typeFromUrl === "step_notify" ? typeFromUrl : "all"
+  );
   const [page, setPage] = useState(1);
   const [data, setData] = useState<SentRow[]>([]);
   const [total, setTotal] = useState(0);
@@ -49,6 +54,13 @@ export default function AdminSentEmailsClient() {
     setTotal(json.total ?? 0);
     setLoading(false);
   }, [typeFilter, page]);
+
+  useEffect(() => {
+    if (typeFromUrl === "email_assistant" || typeFromUrl === "step_notify") {
+      setTypeFilter(typeFromUrl);
+      setPage(1);
+    }
+  }, [typeFromUrl]);
 
   useEffect(() => {
     fetchList();

@@ -493,7 +493,32 @@
         "th": "Thai",
         "de": "German",
         "fr": "French"
-      }
+      },
+      "sjablonenTitle": "Newsletter templates",
+      "sjablonenTab": "Templates",
+      "verzondenTab": "Sent",
+      "wachtrijTab": "Queue",
+      "handmatigTab": "Send manually",
+      "backToNewsletter": "Back to Newsletter",
+      "templatesListTitle": "Templates",
+      "templatesListDescription": "Use a template to compose or send a newsletter manually.",
+      "noTemplates": "No templates found.",
+      "useToSend": "Use to send",
+      "sentNewslettersTitle": "Sent newsletters",
+      "sentNewslettersDescription": "Overview of what was sent when and to how many recipients.",
+      "sentAt": "Sent at",
+      "recipientCount": "Recipient count",
+      "recipients": "recipients",
+      "sendsTotal": "sends",
+      "noSends": "No newsletters sent yet.",
+      "sendsStatusSent": "Sent",
+      "sendsStatusFailed": "Failed",
+      "sendsStatusPartial": "Partial",
+      "queueTitle": "Queue",
+      "queueDescription": "Compose a newsletter via \"Send manually\" and send now or schedule for later.",
+      "manualSendTitle": "Send newsletters manually",
+      "manualSendDescription": "Open the compose page to write a newsletter and send to all active subscribers.",
+      "sjablonen": "Templates"
     },
     "donors": {
       "title": "Donors",
@@ -730,7 +755,12 @@
       "sentAt": "Sent at",
       "bodyPreview": "Preview",
       "noSentEmails": "No sent emails yet",
-      "typeColumn": "Type"
+      "typeColumn": "Type",
+      "manualSend": "Send manually",
+      "sentRepliesTitle": "Sent automatic replies",
+      "sentRepliesDescription": "Overview of what was sent to whom (last 15).",
+      "viewAllSent": "View all sent emails →",
+      "noSentReplies": "No automatic replies sent yet."
     },
     "socialeMedia": {
       "title": "Social media",
