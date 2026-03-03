@@ -26,6 +26,13 @@ function getAreaLabel(t: (key: string) => string, noValue: string, area: string 
   return key ? t(key) : area;
 }
 
+const AREA_OPTIONS: { value: string; label: string }[] = [
+  { value: "thailand", label: "Op locatie in Thailand" },
+  { value: "lokaal", label: "Vanuit huis" },
+  { value: "beide", label: "Beide" },
+];
+const LANGUAGE_OPTIONS = ["nl", "en", "de", "es", "fr", "ru", "th"] as const;
+
 export default function AdminVrijwilligersClient({ initialRows }: { initialRows: VolunteerRow[] }) {
   const t = useTranslations("admin");
   const [search, setSearch] = useState("");
@@ -34,6 +41,17 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
   const [error, setError] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<VolunteerRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [addSaving, setAddSaving] = useState(false);
+  const [addForm, setAddForm] = useState({
+    voornaam: "",
+    achternaam: "",
+    email: "",
+    phone: "",
+    city: "",
+    area: "",
+    language: "nl",
+  });
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -113,13 +131,50 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
     }
   }
 
+  async function handleAddVolunteer(e: React.FormEvent) {
+    e.preventDefault();
+    if (!addForm.voornaam.trim() || !addForm.email.trim()) {
+      setError("Voornaam en e-mail zijn verplicht.");
+      return;
+    }
+    setAddSaving(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/volunteers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          voornaam: addForm.voornaam.trim(),
+          achternaam: addForm.achternaam.trim() || undefined,
+          email: addForm.email.trim(),
+          phone: addForm.phone.trim() || undefined,
+          city: addForm.city.trim() || undefined,
+          area: addForm.area || undefined,
+          language: addForm.language || "nl",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error ?? "Opslaan mislukt.");
+        return;
+      }
+      setAddModalOpen(false);
+      setAddForm({ voornaam: "", achternaam: "", email: "", phone: "", city: "", area: "", language: "nl" });
+      window.location.reload();
+    } catch {
+      setError(t("errorGeneric"));
+    } finally {
+      setAddSaving(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <p className="text-sm" style={{ color: ADM_MUTED }}>
         {t("vrijwilligersIntro")}
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
         <input
           type="search"
           placeholder={t("searchPlaceholderVol")}
@@ -128,6 +183,14 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           className="flex-1 max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
+        <button
+          type="button"
+          onClick={() => { setAddModalOpen(true); setError(""); setAddForm({ voornaam: "", achternaam: "", email: "", phone: "", city: "", area: "", language: "nl" }); }}
+          className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white shrink-0"
+          style={{ background: ADM_ACCENT }}
+        >
+          + Vrijwilliger toevoegen
+        </button>
       </div>
 
       {error && (
@@ -239,6 +302,132 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                 {t("members.cancel")}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {addModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !addSaving && setAddModalOpen(false)}
+        >
+          <div
+            className="max-w-md w-full max-h-[90vh] overflow-y-auto rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold" style={{ color: ADM_TEXT }}>Vrijwilliger toevoegen</h3>
+              <button
+                type="button"
+                onClick={() => !addSaving && setAddModalOpen(false)}
+                className="text-xl leading-none"
+                style={{ color: ADM_MUTED }}
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={handleAddVolunteer} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Voornaam *</label>
+                <input
+                  type="text"
+                  required
+                  value={addForm.voornaam}
+                  onChange={(e) => setAddForm((f) => ({ ...f, voornaam: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Achternaam</label>
+                <input
+                  type="text"
+                  value={addForm.achternaam}
+                  onChange={(e) => setAddForm((f) => ({ ...f, achternaam: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>E-mail *</label>
+                <input
+                  type="email"
+                  required
+                  value={addForm.email}
+                  onChange={(e) => setAddForm((f) => ({ ...f, email: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Telefoon</label>
+                <input
+                  type="text"
+                  value={addForm.phone}
+                  onChange={(e) => setAddForm((f) => ({ ...f, phone: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Stad</label>
+                <input
+                  type="text"
+                  value={addForm.city}
+                  onChange={(e) => setAddForm((f) => ({ ...f, city: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Werkgebied</label>
+                <select
+                  value={addForm.area}
+                  onChange={(e) => setAddForm((f) => ({ ...f, area: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  <option value="">—</option>
+                  {AREA_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1" style={{ color: ADM_TEXT }}>Taal</label>
+                <select
+                  value={addForm.language}
+                  onChange={(e) => setAddForm((f) => ({ ...f, language: e.target.value }))}
+                  className="w-full px-4 py-2 rounded-lg border bg-transparent outline-none"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  {LANGUAGE_OPTIONS.map((lang) => (
+                    <option key={lang} value={lang}>{lang.toUpperCase()}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="submit"
+                  disabled={addSaving}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                  style={{ background: ADM_ACCENT }}
+                >
+                  {addSaving ? t("loading") : "Opslaan"}
+                </button>
+                <button
+                  type="button"
+                  disabled={addSaving}
+                  onClick={() => setAddModalOpen(false)}
+                  className="px-4 py-2 rounded-lg border text-sm font-medium"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  {t("members.cancel")}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

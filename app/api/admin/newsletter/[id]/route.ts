@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -8,7 +9,7 @@ async function requireAdmin() {
   const { data: profile } = await supabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
   const isAdmin = profile?.role === "admin" || profile?.is_admin === true;
   if (!isAdmin) return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }), supabase: null };
-  return { error: null, supabase };
+  return { error: null, supabase: createAdminClient() };
 }
 
 const VALID_LANGUAGE = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
@@ -56,6 +57,34 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     .select()
     .single();
   if (e) return NextResponse.json({ error: e.message }, { status: e.code === "23505" ? 409 : 500 });
+  return NextResponse.json(data);
+}
+
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { error, supabase } = await requireAdmin();
+  if (error) return error;
+  const { id } = await params;
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+  const actief = body.actief === true || body.actief === false ? body.actief : undefined;
+  if (actief === undefined) {
+    return NextResponse.json({ error: "actief (boolean) is required" }, { status: 400 });
+  }
+  const update: { actief: boolean; uitgeschreven_op: string | null } = {
+    actief,
+    uitgeschreven_op: actief ? null : new Date().toISOString(),
+  };
+  const { data, error: e } = await supabase!
+    .from("newsletter_subscribers")
+    .update(update)
+    .eq("id", id)
+    .select()
+    .single();
+  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
   return NextResponse.json(data);
 }
 

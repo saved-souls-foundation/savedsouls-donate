@@ -42,6 +42,7 @@ export default function AdminNieuwsbriefClient() {
   const [activeCount, setActiveCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [unsubscribingId, setUnsubscribingId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [confirmUnsub, setConfirmUnsub] = useState<{ id: string; name: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -141,6 +142,36 @@ export default function AdminNieuwsbriefClient() {
     if (res.ok) {
       fetchSubscribers();
       if (wasActief && activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
+    }
+  }
+
+  async function handleToggleActief(row: SubscriberRow) {
+    const newActief = !row.actief;
+    setTogglingId(row.id);
+    try {
+      const res = await fetch(`/api/admin/newsletter/${row.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actief: newActief }),
+      });
+      if (res.ok) {
+        setData((prev) =>
+          prev.map((r) =>
+            r.id === row.id
+              ? {
+                  ...r,
+                  actief: newActief,
+                  uitgeschreven_op: newActief ? null : (r.uitgeschreven_op ?? new Date().toISOString()),
+                }
+              : r
+          )
+        );
+        if (activeCount != null) {
+          setActiveCount((c) => (newActief ? (c ?? 0) + 1 : Math.max(0, (c ?? 0) - 1)));
+        }
+      }
+    } finally {
+      setTogglingId(null);
     }
   }
 
@@ -275,19 +306,20 @@ export default function AdminNieuwsbriefClient() {
                 <th className="text-left p-3">{t("language")}</th>
                 <th className="text-left p-3">{t("subscribedOn")}</th>
                 <th className="text-left p-3">{t("status")}</th>
+                <th className="text-left p-3">Nieuwsbrief</th>
                 <th className="text-left p-3">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-6 text-center" style={{ color: ADM_MUTED }}>
+                  <td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>
                     …
                   </td>
                 </tr>
               ) : data.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-6 text-center" style={{ color: ADM_MUTED }}>
+                  <td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>
                     {t("noResults")}
                   </td>
                 </tr>
@@ -311,6 +343,24 @@ export default function AdminNieuwsbriefClient() {
                     </td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>
                       {r.actief ? t("actief") : t("inactief")}
+                    </td>
+                    <td className="p-3">
+                      <button
+                        type="button"
+                        disabled={togglingId === r.id}
+                        onClick={() => handleToggleActief(r)}
+                        className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{
+                          backgroundColor: r.actief ? "#22c55e" : "#94a3b8",
+                        }}
+                        title={r.actief ? t("inactief") : t("actief")}
+                      >
+                        <span
+                          className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition mt-0.5 ${
+                            r.actief ? "translate-x-5" : "translate-x-0.5"
+                          }`}
+                        />
+                      </button>
                     </td>
                     <td className="p-3 flex flex-wrap items-center gap-2">
                       {r.actief ? (
