@@ -50,10 +50,10 @@ export async function GET(request: NextRequest) {
 
   q = q.order("aangemeld_op", { ascending: false }).range(from, from + limit - 1);
 
-  const { data: listData, error: e, count } = await q;
-  console.log("[admin/newsletter] GET result:", { rowCount: listData?.length ?? 0, total: count ?? 0, page, limit, error: e?.message ?? null });
+  const { data: listData, error: e, count: totalItems } = await q;
+  console.log("[admin/newsletter] GET result:", { rowCount: listData?.length ?? 0, total: totalItems ?? 0, page, limit, error: e?.message ?? null });
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ data: listData ?? [], total: count ?? 0, page, limit });
+  return NextResponse.json({ data: listData ?? [], total: totalItems ?? 0, page, limit });
 }
 
 export async function POST(request: NextRequest) {
