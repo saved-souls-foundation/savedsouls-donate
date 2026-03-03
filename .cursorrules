@@ -1,0 +1,5 @@
+## TypeScript
+- Gebruik nooit handmatige types voor externe library callbacks
+- Gebruik altijd de ingebouwde types van de library zelf (bijv. import("jspdf-autotable").CellHookData)
+- Na elke TypeScript fix: controleer of npx tsc --noEmit schoon is
+- Bij "module not found" lokaal: controleer of het type wel klopt met de echte library types
