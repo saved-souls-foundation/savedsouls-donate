@@ -259,8 +259,8 @@
       "perMonth": "per month",
       "activeSponsors": "Active Sponsors",
       "pendingEmails": "Pending Emails",
-      "autoReplies": "Auto-replies",
-      "newsletterTemplates": "Newsletters",
+      "autoReplies": "Automatic replies",
+      "newsletterTemplates": "Newsletter templates",
       "sponsorAlert": "{count} sponsor contract(s) expiring within 30 days",
       "subscribersByLanguage": "Subscribers by Language",
       "viewSponsors": "Go to sponsors →"

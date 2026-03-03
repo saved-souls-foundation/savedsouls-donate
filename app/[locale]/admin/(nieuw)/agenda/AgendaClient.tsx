@@ -77,6 +77,7 @@ export default function AgendaClient() {
   const [current, setCurrent] = useState(() => new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [eventModal, setEventModal] = useState<{ open: true; date?: string; event?: CalendarEvent } | { open: false }>({ open: false });
   const [importOpen, setImportOpen] = useState(false);
   const [sideFilter, setSideFilter] = useState<"all" | "medical" | "volunteers" | "deadlines">("all");
@@ -111,13 +112,21 @@ export default function AgendaClient() {
   });
 
   const fetchEvents = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
       const from = new Date(year, month, 1);
       const to = new Date(year, month + 2, 0);
       const res = await fetch(`/api/admin/agenda/events?start=${from.toISOString()}&end=${to.toISOString()}`);
       const data = await res.json();
-      if (res.ok) setEvents(data.data ?? []);
+      if (res.ok) {
+        setEvents(data.data ?? []);
+      } else {
+        setError("Kon data niet laden");
+        setEvents([]);
+      }
     } catch {
+      setError("Kon data niet laden");
       setEvents([]);
     } finally {
       setLoading(false);
@@ -218,6 +227,11 @@ export default function AgendaClient() {
 
   return (
     <div className="space-y-4">
+      {error && (
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
+          {error}
+        </div>
+      )}
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Links: kalender (70%) */}
         <div className="lg:w-[70%] space-y-3">
@@ -294,6 +308,21 @@ export default function AgendaClient() {
               className="rounded-xl border overflow-hidden"
               style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
             >
+              {loading ? (
+                <>
+                  <div className="grid grid-cols-7 text-center text-xs font-medium border-b" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
+                    {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((d) => (
+                      <div key={d} className="p-2">{d}</div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 grid-rows-6 gap-px" style={{ background: ADM_BORDER }}>
+                    {Array.from({ length: 42 }).map((_, i) => (
+                      <div key={i} className="min-h-[80px] animate-pulse bg-gray-100 rounded-none" style={{ background: "rgba(0,0,0,.06)" }} />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
               <div className="grid grid-cols-7 text-center text-xs font-medium border-b" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
                 {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((d) => (
                   <div key={d} className="p-2">
@@ -370,6 +399,8 @@ export default function AgendaClient() {
                   );
                 })}
               </div>
+                </>
+              )}
             </div>
           )}
 
@@ -421,6 +452,15 @@ export default function AgendaClient() {
               className="rounded-xl border overflow-x-auto"
               style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
             >
+              {loading ? (
+                <div className="min-h-[400px] flex items-center justify-center p-8">
+                  <div className="grid grid-cols-8 gap-2 min-w-[400px]">
+                    {Array.from({ length: 64 }).map((_, i) => (
+                      <div key={i} className="h-12 animate-pulse rounded" style={{ background: "rgba(0,0,0,.06)" }} />
+                    ))}
+                  </div>
+                </div>
+              ) : (
               <div className="grid gap-px min-w-[600px]" style={{ gridTemplateColumns: `60px repeat(7, 1fr)` }}>
                 <div className="border-b border-r p-1" style={{ borderColor: ADM_BORDER }} />
                 {weekDays.map((d) => (
@@ -439,6 +479,7 @@ export default function AgendaClient() {
                   </React.Fragment>
                 ))}
               </div>
+              )}
             </div>
           )}
 
@@ -448,6 +489,15 @@ export default function AgendaClient() {
               className="rounded-xl border overflow-auto"
               style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
             >
+              {loading ? (
+                <div className="min-h-[480px] p-4 space-y-2">
+                  <div className="h-6 w-48 animate-pulse rounded mx-auto" style={{ background: "rgba(0,0,0,.06)" }} />
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <div key={i} className="h-12 animate-pulse rounded" style={{ background: "rgba(0,0,0,.06)" }} />
+                  ))}
+                </div>
+              ) : (
+                <>
               <div className="p-2 border-b text-center font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
                 {current.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
               </div>
@@ -465,6 +515,8 @@ export default function AgendaClient() {
                   ))}
                 </div>
               </div>
+                </>
+              )}
             </div>
           )}
 

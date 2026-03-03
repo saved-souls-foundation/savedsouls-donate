@@ -36,7 +36,9 @@ export default function AdminLedenClient() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<"saved" | "deleted" | null>(null);
+  const [toastError, setToastError] = useState<string | null>(null);
   useEffect(() => {
     if (searchParams.get("saved") === "1") setToast("saved");
     if (searchParams.get("deleted") === "1") setToast("deleted");
@@ -46,6 +48,11 @@ export default function AdminLedenClient() {
     const tid = setTimeout(() => setToast(null), 4000);
     return () => clearTimeout(tid);
   }, [toast]);
+  useEffect(() => {
+    if (!toastError) return;
+    const tid = setTimeout(() => setToastError(null), 4000);
+    return () => clearTimeout(tid);
+  }, [toastError]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [page, setPage] = useState(1);
@@ -57,6 +64,7 @@ export default function AdminLedenClient() {
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (statusFilter !== "all") params.set("status", statusFilter);
@@ -67,6 +75,7 @@ export default function AdminLedenClient() {
     if (!res.ok) {
       setData([]);
       setTotal(0);
+      setError("Kon data niet laden");
       setLoading(false);
       return;
     }
@@ -107,6 +116,7 @@ export default function AdminLedenClient() {
 
   async function handleDelete(row: MemberRow) {
     setDeleting(true);
+    setToastError(null);
     try {
       const res = await fetch(`/api/admin/members/${row.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
@@ -115,7 +125,7 @@ export default function AdminLedenClient() {
       setTotal((prev) => Math.max(0, prev - 1));
       setToast("deleted");
     } catch {
-      setToast(null);
+      setToastError("Verwijderen mislukt");
     } finally {
       setDeleting(false);
     }
@@ -136,6 +146,11 @@ export default function AdminLedenClient() {
         </Link>
       </div>
 
+      {error && (
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
+          {error}
+        </div>
+      )}
       {toast && (
         <div
           className="rounded-lg border px-4 py-3 text-sm"
@@ -146,6 +161,11 @@ export default function AdminLedenClient() {
           }}
         >
           {toast === "saved" ? t("savedToast") : t("deletedToast")}
+        </div>
+      )}
+      {toastError && (
+        <div className="rounded-lg border px-4 py-3 text-sm border-red-200 bg-red-50 text-red-600">
+          {toastError}
         </div>
       )}
 

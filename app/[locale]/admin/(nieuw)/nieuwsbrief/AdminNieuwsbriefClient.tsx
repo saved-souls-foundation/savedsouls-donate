@@ -54,9 +54,18 @@ export default function AdminNieuwsbriefClient() {
   const [addType, setAddType] = useState<string>("persoon");
   const [addSaving, setAddSaving] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [toastError, setToastError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toastError) return;
+    const tid = setTimeout(() => setToastError(null), 4000);
+    return () => clearTimeout(tid);
+  }, [toastError]);
 
   const fetchSubscribers = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (statusFilter !== "all") params.set("status", statusFilter);
@@ -68,6 +77,7 @@ export default function AdminNieuwsbriefClient() {
     if (!res.ok) {
       setData([]);
       setTotal(0);
+      setError("Kon data niet laden");
       setLoading(false);
       return;
     }
@@ -125,23 +135,29 @@ export default function AdminNieuwsbriefClient() {
 
   async function handleUnsubscribe(id: string) {
     setUnsubscribingId(id);
+    setToastError(null);
     const res = await fetch(`/api/admin/newsletter/${id}`, { method: "DELETE" });
     setUnsubscribingId(null);
     setConfirmUnsub(null);
     if (res.ok) {
       fetchSubscribers();
       if (activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
+    } else {
+      setToastError("Uitschrijven mislukt");
     }
   }
 
   async function handleDelete(id: string, wasActief: boolean) {
     setDeletingId(id);
+    setToastError(null);
     const res = await fetch(`/api/admin/newsletter/${id}/delete`, { method: "DELETE" });
     setDeletingId(null);
     setConfirmDelete(null);
     if (res.ok) {
       fetchSubscribers();
       if (wasActief && activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
+    } else {
+      setToastError("Verwijderen mislukt");
     }
   }
 
@@ -241,6 +257,17 @@ export default function AdminNieuwsbriefClient() {
         <p className="text-sm" style={{ color: ADM_MUTED }}>
           {t("totalActive", { count: activeCount })}
         </p>
+      )}
+
+      {error && (
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
+          {error}
+        </div>
+      )}
+      {toastError && (
+        <div className="rounded-lg border px-4 py-3 text-sm border-red-200 bg-red-50 text-red-600">
+          {toastError}
+        </div>
       )}
 
       <div className="flex flex-col sm:flex-row gap-4 flex-wrap">

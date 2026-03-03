@@ -310,7 +310,7 @@ export default function RoosterClient() {
 
   return (
     <DndContext
-      onDragStart={({ active }) => setActiveVolunteerId(String(active.id))}
+      onDragStart={({ active }: { active: { id: string | number } }) => setActiveVolunteerId(String(active.id))}
       onDragEnd={handleDragEnd}
       onDragCancel={() => setActiveVolunteerId(null)}
     >

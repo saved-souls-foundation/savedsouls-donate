@@ -20,7 +20,7 @@ async function requireAdmin() {
   const { data: profile } = await supabase.from("profiles").select("role, is_admin").eq("id", user.id).single();
   const isAdmin = profile?.role === "admin" || profile?.is_admin === true;
   if (!isAdmin) return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }), supabase: null };
-  return { error: null, supabase };
+  return { error: null, supabase: createAdminClient() };
 }
 
 function getTemplateContent(template: Record<string, unknown>, taal: string): { onderwerp: string; inhoud: string } {

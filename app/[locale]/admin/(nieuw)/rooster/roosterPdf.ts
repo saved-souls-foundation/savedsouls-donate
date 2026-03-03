@@ -75,7 +75,12 @@ export function generateRosterPdf(
     columnStyles: {
       0: { cellWidth: 38 },
     },
-    didParseCell: (data) => {
+    didParseCell: (data: {
+      section: string;
+      row: { index: number };
+      column: { index: number };
+      cell: { styles: { fillColor?: number[]; textColor?: number[] } };
+    }) => {
       if (data.section !== "body") return;
       const zoneIndex = Math.floor(data.row.index / 3);
       const zoneId = ZONE_IDS[zoneIndex];

@@ -67,9 +67,9 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
     (d: {
       bedrag: number | null;
       donatie_datum: string | null;
-      donors: { voornaam: string | null; achternaam: string | null; email: string | null } | null;
+      donors: { voornaam: string | null; achternaam: string | null; email: string | null }[] | null;
     }) => {
-      const donor = d.donors;
+      const donor = Array.isArray(d.donors) ? d.donors[0] ?? null : d.donors;
       const name =
         donor && [donor.voornaam, donor.achternaam].filter(Boolean).join(" ").trim()
           ? [donor.voornaam, donor.achternaam].filter(Boolean).join(" ").trim()

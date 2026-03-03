@@ -59,12 +59,21 @@ export default function AdminDonateursClient() {
   const [onetimeTotal, setOnetimeTotal] = useState(0);
   const [recurringTotal, setRecurringTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [toastError, setToastError] = useState<string | null>(null);
   const [stats, setStats] = useState<{ activeCount: number; totalMonthlyAmount: number; paymentIssuesCount: number } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
 
+  useEffect(() => {
+    if (!toastError) return;
+    const tid = setTimeout(() => setToastError(null), 4000);
+    return () => clearTimeout(tid);
+  }, [toastError]);
+
   const fetchOnetime = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = new URLSearchParams();
     params.set("tab", "onetime");
     if (search) params.set("search", search);
@@ -78,6 +87,7 @@ export default function AdminDonateursClient() {
     if (!res.ok) {
       setOnetimeData([]);
       setOnetimeTotal(0);
+      setError("Kon data niet laden");
       setLoading(false);
       return;
     }
@@ -89,6 +99,7 @@ export default function AdminDonateursClient() {
 
   const fetchRecurring = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = new URLSearchParams();
     params.set("tab", "recurring");
     if (search) params.set("search", search);
@@ -99,6 +110,7 @@ export default function AdminDonateursClient() {
     if (!res.ok) {
       setRecurringData([]);
       setRecurringTotal(0);
+      setError("Kon data niet laden");
       setLoading(false);
       return;
     }
@@ -162,6 +174,7 @@ export default function AdminDonateursClient() {
 
   async function handleDelete(donorId: string) {
     setDeleting(true);
+    setToastError(null);
     try {
       const res = await fetch(`/api/admin/donors/${donorId}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
@@ -171,7 +184,7 @@ export default function AdminDonateursClient() {
       setOnetimeTotal((prev) => Math.max(0, prev - (onetimeData.some((r) => r.id === donorId) ? 1 : 0)));
       setRecurringTotal((prev) => Math.max(0, prev - (recurringData.some((r) => r.id === donorId) ? 1 : 0)));
     } catch {
-      // ignore
+      setToastError("Verwijderen mislukt");
     } finally {
       setDeleting(false);
     }
@@ -187,6 +200,17 @@ export default function AdminDonateursClient() {
           {t("addDonor")}
         </Link>
       </div>
+
+      {error && (
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
+          {error}
+        </div>
+      )}
+      {toastError && (
+        <div className="rounded-lg border px-4 py-3 text-sm border-red-200 bg-red-50 text-red-600">
+          {toastError}
+        </div>
+      )}
 
       <div className="flex border-b gap-2" style={{ borderColor: ADM_BORDER }}>
         <button type="button" onClick={() => { setTab("onetime"); setPage(1); }} className="px-4 py-2 text-sm font-medium border-b-2 -mb-px" style={{ borderColor: tab === "onetime" ? ADM_ACCENT : "transparent", color: tab === "onetime" ? ADM_ACCENT : ADM_MUTED }}>

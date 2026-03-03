@@ -47,13 +47,22 @@ export default function AdminEmailsClient() {
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [toastError, setToastError] = useState<string | null>(null);
   const [sendingId, setSendingId] = useState<string | null>(null);
   const [ignoringId, setIgnoringId] = useState<string | null>(null);
   const [templates, setTemplates] = useState<TemplateInfo[]>([]);
   const [hoverTooltip, setHoverTooltip] = useState<{ row: EmailRow; x: number; y: number } | null>(null);
 
+  useEffect(() => {
+    if (!toastError) return;
+    const tid = setTimeout(() => setToastError(null), 4000);
+    return () => clearTimeout(tid);
+  }, [toastError]);
+
   const fetchList = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = new URLSearchParams();
     params.set("page", String(page));
     params.set("limit", String(PAGE_SIZE));
@@ -65,6 +74,7 @@ export default function AdminEmailsClient() {
     if (!res.ok) {
       setData([]);
       setTotal(0);
+      setError("Kon data niet laden");
       setLoading(false);
       return;
     }
@@ -126,13 +136,14 @@ export default function AdminEmailsClient() {
 
   async function handleSendReply(id: string) {
     setSendingId(id);
+    setToastError(null);
     try {
       const res = await fetch(`/api/admin/emails/${id}`, { method: "GET" });
       if (!res.ok) throw new Error();
       const email = await res.json();
       const reply = (email.ai_gegenereerd_antwoord as string) ?? "";
       if (!reply.trim()) {
-        alert(t("saveError"));
+        setToastError(t("saveError"));
         setSendingId(null);
         return;
       }
@@ -145,7 +156,7 @@ export default function AdminEmailsClient() {
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), sentToday: stats.sentToday + 1 });
     } catch {
-      alert(t("saveError"));
+      setToastError(t("saveError"));
     } finally {
       setSendingId(null);
     }
@@ -153,13 +164,14 @@ export default function AdminEmailsClient() {
 
   async function handleIgnore(id: string) {
     setIgnoringId(id);
+    setToastError(null);
     try {
       const res = await fetch(`/api/admin/emails/${id}/ignore`, { method: "PUT" });
       if (!res.ok) throw new Error();
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), ignored: stats.ignored + 1 });
     } catch {
-      alert(t("saveError"));
+      setToastError(t("saveError"));
     } finally {
       setIgnoringId(null);
     }
@@ -174,6 +186,17 @@ export default function AdminEmailsClient() {
           <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("templates")}</Link>
         </div>
       </div>
+
+      {error && (
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
+          {error}
+        </div>
+      )}
+      {toastError && (
+        <div className="rounded-lg border px-4 py-3 text-sm border-red-200 bg-red-50 text-red-600">
+          {toastError}
+        </div>
+      )}
 
       {stats != null && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
