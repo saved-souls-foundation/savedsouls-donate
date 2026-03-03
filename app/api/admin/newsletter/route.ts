@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
   const { error, supabase } = await requireAdmin();
   if (error) return error;
 
-  const { data, error: debugError, count } = await supabase
+  const { data, error: debugError, count: totalCount } = await supabase
     .from("newsletter_subscribers")
     .select("*", { count: "exact" });
 
   console.log("=== NEWSLETTER DEBUG ===");
-  console.log("Count:", count);
+  console.log("Count:", totalCount);
   console.log("Error:", debugError);
   console.log("Data:", data);
 
