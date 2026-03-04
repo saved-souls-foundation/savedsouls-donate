@@ -109,6 +109,8 @@ export default function SocialeMediaClient() {
   const [blogAiPrompt, setBlogAiPrompt] = useState("");
   const [blogAiWriting, setBlogAiWriting] = useState(false);
   const [blogAiTranslating, setBlogAiTranslating] = useState(false);
+  const [saveToast, setSaveToast] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -332,41 +334,64 @@ export default function SocialeMediaClient() {
   }
 
   async function handleBlogSave() {
-    const payload = {
-      title: blogTitle,
-      body: blogBody,
-      body_en: blogBodyEn || null,
-      body_th: blogBodyTh || null,
-      category: blogCategory,
-      status: blogStatus,
-      source: "manual",
-      slug: blogTitle
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .slice(0, 60),
-      published_at: blogStatus === "published" ? new Date().toISOString() : null,
-    };
+    if (!blogTitle.trim()) {
+      setSaveError("Voeg een titel toe.");
+      return;
+    }
+    if (!blogBody.trim()) {
+      setSaveError("Voeg tekst toe in NL tab.");
+      return;
+    }
+    setSaveError("");
+    const slug = blogTitle
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 60);
     try {
-      const url = editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog";
-      const method = editingBlogPost ? "PUT" : "POST";
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (res.ok) {
-        showToast("Bericht opgeslagen!");
-        setBlogView("list");
-        loadBlogPosts();
+      const res = await fetch(
+        editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog",
+        {
+          method: editingBlogPost ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: blogTitle,
+            body: blogBody,
+            body_en: blogBodyEn || null,
+            body_th: blogBodyTh || null,
+            category: blogCategory,
+            status: blogStatus,
+            source: "manual",
+            slug,
+            published_at: blogStatus === "published" ? new Date().toISOString() : null,
+          }),
+        }
+      );
+      if (!res.ok) {
+        setSaveError("Fout bij opslaan.");
+        return;
       }
-    } catch (e) {
-      console.error("Blog save error:", e);
+      setSaveToast(true);
+      setTimeout(() => setSaveToast(false), 3000);
+      setBlogView("list");
+      loadBlogPosts();
+    } catch {
+      setSaveError("Netwerkfout. Probeer opnieuw.");
     }
   }
 
   return (
     <div className="space-y-6">
+      {saveError && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 mb-3">
+          ❌ {saveError}
+        </div>
+      )}
+      {saveToast && (
+        <div className="fixed top-4 right-4 z-[200] bg-green-500 text-white px-5 py-3 rounded-xl shadow-xl font-semibold flex items-center gap-2">
+          ✅ Bericht opgeslagen!
+        </div>
+      )}
       {toast && (
         <div
           className="fixed bottom-4 right-4 z-[60] px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium animate-fade-in"

@@ -21,14 +21,17 @@ const TEAL = "#2A9D8F";
 
 type AnimalOption = { id: string; name: string; type: "dog" | "cat"; image?: string };
 
+type Volunteer = { id: string; name: string | null; line_id?: string | null; telefoon?: string | null };
+
 type Props = {
   initialDate?: string;
   initialEvent?: CalendarEvent | null;
+  volunteers?: Volunteer[];
   onClose: () => void;
   onSaved: () => void;
 };
 
-export default function EventModal({ initialDate, initialEvent, onClose, onSaved }: Props) {
+export default function EventModal({ initialDate, initialEvent, volunteers = [], onClose, onSaved }: Props) {
   const t = useTranslations("admin.agenda");
   const isEdit = !!initialEvent;
 
@@ -289,14 +292,29 @@ export default function EventModal({ initialDate, initialEvent, onClose, onSaved
             <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
               Toegewezen aan
             </label>
-            <input
-              type="text"
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(e.target.value)}
-              placeholder="Optioneel"
-              className="w-full px-3 py-2 rounded-lg border bg-transparent"
-              style={{ borderColor: ADM_BORDER }}
-            />
+            <div className="flex items-center gap-2 flex-wrap">
+              <input
+                type="text"
+                value={assignedTo}
+                onChange={(e) => setAssignedTo(e.target.value)}
+                placeholder="Optioneel"
+                className="flex-1 min-w-[120px] px-3 py-2 rounded-lg border bg-transparent"
+                style={{ borderColor: ADM_BORDER }}
+              />
+              {(() => {
+                const vol = volunteers.find((v) => v.name === assignedTo.trim());
+                return vol && (vol.line_id || vol.telefoon) ? (
+                  <a
+                    href={vol.line_id ? `https://line.me/ti/p/~${vol.line_id}` : `https://line.me/ti/p/${(vol.telefoon ?? "").replace(/\s/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#06C755] text-white text-xs font-bold rounded-lg hover:bg-[#05a847] transition-colors"
+                  >
+                    💬 LINE
+                  </a>
+                ) : null;
+              })()}
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>

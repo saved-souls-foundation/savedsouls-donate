@@ -73,7 +73,7 @@ function getWeekDays(anchor: Date) {
 
 export default function AgendaClient() {
   const t = useTranslations("admin.agenda");
-  const [view, setView] = useState<"month" | "week" | "day">("month");
+  const [view, setView] = useState<"month" | "week" | "day">("week");
   const [current, setCurrent] = useState(() => new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,6 +84,18 @@ export default function AgendaClient() {
   const [mobileDayPanel, setMobileDayPanel] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [sideTab, setSideTab] = useState<"upcoming" | "lab">("upcoming");
+  const supabase = createClient();
+  const [volunteers, setVolunteers] = useState<{ id: string; name: string | null; line_id?: string | null; telefoon?: string | null }[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("volunteers")
+      .select("id, name, line_id, telefoon")
+      .eq("is_active", true)
+      .then(({ data }) => {
+        if (data) setVolunteers(data);
+      });
+  }, []);
 
   const year = current.getFullYear();
   const month = current.getMonth();
@@ -368,20 +380,34 @@ export default function AgendaClient() {
                         <div className="flex-1 flex flex-col gap-0.5 p-1 overflow-hidden">
                           {dayEvents.slice(0, 3).map((ev) => {
                             const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                            const vol = volunteers.find((v) => v.name === ev.assigned_to);
+                            const showLine = vol && (vol.line_id || vol.telefoon);
                             return (
-                              <button
-                                key={ev.id}
-                                type="button"
-                                onClick={() => setEventModal({ open: true, event: ev })}
-                                className="text-left px-1.5 py-0.5 rounded text-xs truncate border-l-2"
-                                style={{
-                                  background: `${cfg.color}30`,
-                                  borderLeftColor: cfg.color,
-                                  color: ADM_TEXT,
-                                }}
-                              >
-                                {cfg.icon} {ev.title.slice(0, 20)}{ev.title.length > 20 ? "…" : ""}
-                              </button>
+                              <div key={ev.id} className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => setEventModal({ open: true, event: ev })}
+                                  className="text-left flex-1 min-w-0 px-1.5 py-0.5 rounded text-xs truncate border-l-2"
+                                  style={{
+                                    background: `${cfg.color}30`,
+                                    borderLeftColor: cfg.color,
+                                    color: ADM_TEXT,
+                                  }}
+                                >
+                                  {cfg.icon} {ev.title.slice(0, 20)}{ev.title.length > 20 ? "…" : ""}
+                                </button>
+                                {showLine && (
+                                  <a
+                                    href={vol.line_id ? `https://line.me/ti/p/~${vol.line_id}` : `https://line.me/ti/p/${(vol.telefoon ?? "").replace(/\s/g, "")}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="shrink-0 inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#06C755] text-white text-[10px] font-bold rounded hover:bg-[#05a847]"
+                                  >
+                                    LINE
+                                  </a>
+                                )}
+                              </div>
                             );
                           })}
                           {dayEvents.length > 3 && (
@@ -419,6 +445,8 @@ export default function AgendaClient() {
               <div className="p-4 space-y-2">
                 {(eventsByDate[mobileDayPanel] ?? []).map((ev) => {
                   const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  const vol = volunteers.find((v) => v.name === ev.assigned_to);
+                  const showLine = vol && (vol.line_id || vol.telefoon);
                   return (
                     <button
                       key={ev.id}
@@ -428,8 +456,19 @@ export default function AgendaClient() {
                       style={{ borderColor: cfg.color, background: `${cfg.color}15` }}
                     >
                       <span>{cfg.icon} {ev.title}</span>
-                      <span className="text-xs block mt-1" style={{ color: ADM_MUTED }}>
+                      <span className="text-xs block mt-1 flex items-center gap-2 flex-wrap" style={{ color: ADM_MUTED }}>
                         {new Date(ev.start_time).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}
+                        {showLine && (
+                          <a
+                            href={vol.line_id ? `https://line.me/ti/p/~${vol.line_id}` : `https://line.me/ti/p/${(vol.telefoon ?? "").replace(/\s/g, "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#06C755] text-white text-xs font-bold rounded-lg hover:bg-[#05a847] transition-colors"
+                          >
+                            💬 LINE
+                          </a>
+                        )}
                       </span>
                     </button>
                   );
@@ -608,6 +647,8 @@ export default function AgendaClient() {
               <ul className="space-y-2">
                 {upcomingEvents.map((ev) => {
                   const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  const vol = volunteers.find((v) => v.name === ev.assigned_to);
+                  const showLine = vol && (vol.line_id || vol.telefoon);
                   return (
                     <li key={ev.id}>
                       <button
@@ -621,8 +662,19 @@ export default function AgendaClient() {
                         <span className="text-sm truncate flex-1" style={{ color: ADM_TEXT }}>
                           {ev.title}
                         </span>
-                        <span className="text-xs shrink-0" style={{ color: ADM_MUTED }}>
+                        <span className="text-xs shrink-0 flex items-center gap-1" style={{ color: ADM_MUTED }}>
                           {new Date(ev.start_time).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })} {new Date(ev.start_time).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}
+                          {showLine && (
+                            <a
+                              href={vol.line_id ? `https://line.me/ti/p/~${vol.line_id}` : `https://line.me/ti/p/${(vol.telefoon ?? "").replace(/\s/g, "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#06C755] text-white text-xs font-bold rounded-lg hover:bg-[#05a847] transition-colors"
+                            >
+                              💬 LINE
+                            </a>
+                          )}
                         </span>
                       </button>
                     </li>
@@ -659,6 +711,8 @@ export default function AgendaClient() {
                   const statusCfg = status && (status === "normaal" || status === "afwijkend" || status === "kritiek")
                     ? LAB_RESULT_STATUSES[status]
                     : null;
+                  const vol = volunteers.find((v) => v.name === ev.assigned_to);
+                  const showLine = vol && (vol.line_id || vol.telefoon);
                   return (
                     <li key={ev.id}>
                       <button
@@ -668,12 +722,23 @@ export default function AgendaClient() {
                         style={{ borderColor: ADM_BORDER }}
                       >
                         <span style={{ color: ADM_TEXT }}>{ev.animal_name ?? ev.title}</span>
-                        <span className="text-xs block mt-0.5 flex items-center gap-1" style={{ color: ADM_MUTED }}>
+                        <span className="text-xs block mt-0.5 flex items-center gap-1 flex-wrap" style={{ color: ADM_MUTED }}>
                           {new Date(ev.start_time).toLocaleDateString("nl-NL")}
                           {statusCfg && (
                             <span className="px-1.5 py-0.5 rounded text-xs" style={{ background: `${statusCfg.color}30`, color: statusCfg.color }}>
                               {statusCfg.icon} {statusCfg.label}
                             </span>
+                          )}
+                          {showLine && (
+                            <a
+                              href={vol.line_id ? `https://line.me/ti/p/~${vol.line_id}` : `https://line.me/ti/p/${(vol.telefoon ?? "").replace(/\s/g, "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#06C755] text-white text-xs font-bold rounded-lg hover:bg-[#05a847] transition-colors"
+                            >
+                              💬 LINE
+                            </a>
                           )}
                         </span>
                       </button>
@@ -690,6 +755,7 @@ export default function AgendaClient() {
         <EventModal
           initialDate={eventModal.date}
           initialEvent={eventModal.event ?? null}
+          volunteers={volunteers}
           onClose={() => setEventModal({ open: false })}
           onSaved={() => fetchEvents()}
         />

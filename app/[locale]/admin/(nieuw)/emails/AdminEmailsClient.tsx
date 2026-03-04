@@ -94,6 +94,7 @@ export default function AdminEmailsClient() {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [detailLoading, setDetailLoading] = useState(false);
+  const [sentSuccess, setSentSuccess] = useState(false);
 
   useEffect(() => {
     if (!toastError) return;
@@ -156,6 +157,7 @@ export default function AdminEmailsClient() {
       setSelectedEmail(row);
       setReplyText(row.ai_gegenereerd_antwoord ?? "");
       setAiSuggestion("");
+      setSentSuccess(false);
     } finally {
       setDetailLoading(false);
     }
@@ -246,9 +248,7 @@ export default function AdminEmailsClient() {
       if (!sendRes.ok) throw new Error();
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), sentToday: stats.sentToday + 1 });
-      setSelectedEmail(null);
-      setReplyText("");
-      setAiSuggestion("");
+      setSentSuccess(true);
     } catch {
       setToastError(t("saveError"));
     } finally {
@@ -518,6 +518,40 @@ export default function AdminEmailsClient() {
                     </div>
                   </div>
 
+                  {sentSuccess ? (
+                    <div className="mt-6 p-8 bg-green-50 border border-green-200 rounded-2xl text-center">
+                      <div className="text-5xl mb-3">✅</div>
+                      <div className="text-lg font-bold text-green-700">Verzonden!</div>
+                      <div className="text-sm text-green-600 mt-2">
+                        Verstuurd naar{" "}
+                        <span className="font-semibold">
+                          {(selectedEmail?.van_naam || selectedEmail?.van_email) ?? "—"}
+                        </span>
+                      </div>
+                      <div className="flex gap-3 justify-center mt-5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSentSuccess(false);
+                            setSelectedEmail(null);
+                            setReplyText("");
+                            setAiSuggestion("");
+                          }}
+                          className="px-5 py-2.5 rounded-xl bg-[#2aa348] text-white font-semibold text-sm hover:bg-[#166534]"
+                        >
+                          Volgende email →
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSentSuccess(false)}
+                          className="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+                        >
+                          Nog een antwoord
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
                   {/* Reply editor */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between mb-2">
@@ -587,6 +621,8 @@ export default function AdminEmailsClient() {
                       </div>
                     </div>
                   </div>
+                    </>
+                  )}
                 </div>
               )}
             </>

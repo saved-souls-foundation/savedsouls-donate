@@ -86,21 +86,21 @@ function MeldingRij({
   href: string;
 }) {
   const styles = {
-    danger: "bg-red-50 border-red-200 text-red-700",
-    warning: "bg-amber-50 border-amber-200 text-amber-700",
-    info: "bg-blue-50 border-blue-200 text-blue-700",
+    danger: "bg-red-50 border-red-200 text-red-700 hover:bg-red-100",
+    warning: "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100",
+    info: "bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100",
   };
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-xl border ${styles[type]}`}>
+    <Link
+      href={href}
+      className={`flex items-center gap-3 p-3 rounded-xl border transition-all cursor-pointer group ${styles[type]}`}
+    >
       <span className="text-base shrink-0">{icon}</span>
       <span className="flex-1 text-sm font-medium">{tekst}</span>
-      <Link
-        href={href}
-        className="shrink-0 text-xs font-bold px-2.5 py-1 bg-white rounded-lg border hover:shadow-sm transition-shadow whitespace-nowrap"
-      >
-        {actie}
-      </Link>
-    </div>
+      <span className="shrink-0 text-xs font-bold px-2.5 py-1 bg-white rounded-lg border opacity-70 group-hover:opacity-100 whitespace-nowrap">
+        {actie} →
+      </span>
+    </Link>
   );
 }
 
@@ -352,52 +352,6 @@ export function DashboardClient({
           ))}
           {groupBOverview}
         </div>
-      </section>
-
-      {/* Sectie 2 — Aandacht vereist (pendingEmails uit A + extra items uit Groep B slot) */}
-      <section>
-        <h2 className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: ADM_MUTED }}>
-          Aandacht vereist
-        </h2>
-        {showAttentionSection || groupBAttention ? (
-          <div
-            className="rounded-xl border p-4 flex flex-wrap items-center gap-4"
-            style={{
-              background: "rgba(254, 215, 170, 0.3)",
-              borderColor: "#ea580c",
-            }}
-          >
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600" />
-            </span>
-            {attentionItemsA
-              .filter((item) => item.count > 0)
-              .map((item) => (
-                <Link
-                  key={item.href + item.label}
-                  href={item.href}
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border font-medium text-sm hover:shadow transition"
-                  style={{ borderColor: "#ea580c", color: ADM_TEXT, background: ADM_CARD }}
-                >
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
-                  <span className="font-bold" style={{ color: "#dc2626" }}>
-                    {item.count}
-                  </span>
-                </Link>
-              ))}
-            {groupBAttention}
-          </div>
-        ) : (
-          <div
-            className="rounded-xl border p-4 flex items-center gap-2"
-            style={{ background: "rgba(61, 139, 94, 0.15)", borderColor: "#22c55e", color: "#166534" }}
-          >
-            <span className="text-lg">✓</span>
-            <span className="font-medium">Alles in orde ✓</span>
-          </div>
-        )}
       </section>
 
       {/* Sectie 3 — Laatste activiteit (Groep B slot) */}
