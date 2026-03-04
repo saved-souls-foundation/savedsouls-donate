@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
   // Alle rijen uit incoming_emails (inkomend); createAdminClient omzeilt RLS
   let q = admin
     .from("incoming_emails")
-    .select("id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, status, taal, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord", { count: "exact" });
+    .select("id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, status, taal, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord, ai_automatisch_verstuurd", { count: "exact" });
   if (status && status !== "all") q = q.eq("status", status);
   if (ai_categorie && ai_categorie !== "all") q = q.eq("ai_categorie", ai_categorie);
   if (taal && taal !== "all") q = q.eq("taal", taal);

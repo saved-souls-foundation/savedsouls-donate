@@ -159,27 +159,29 @@ export default function AdminRoosterClient({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 bg-gray-100 rounded-xl p-1">
+          <div className="flex items-center gap-2 bg-gray-100 rounded-xl p-1">
             <button
               type="button"
               onClick={prevWeek}
-              className="px-3 py-1.5 rounded-lg hover:bg-white text-gray-600 text-sm font-semibold transition-colors"
+              className="px-4 py-2 rounded-lg hover:bg-white text-gray-700 text-sm font-semibold transition-colors"
+              aria-label="Vorige week"
             >
-              ←
+              ← Vorige week
             </button>
             <button
               type="button"
               onClick={() => setCurrentWeekStart(getMonday(new Date()))}
-              className="px-3 py-1.5 rounded-lg hover:bg-white text-gray-600 text-xs font-semibold"
+              className="px-3 py-2 rounded-lg hover:bg-white text-gray-600 text-xs font-semibold"
             >
               Vandaag
             </button>
             <button
               type="button"
               onClick={nextWeek}
-              className="px-3 py-1.5 rounded-lg hover:bg-white text-gray-600 text-sm font-semibold"
+              className="px-4 py-2 rounded-lg hover:bg-white text-gray-700 text-sm font-semibold transition-colors"
+              aria-label="Volgende week"
             >
-              →
+              Volgende week →
             </button>
           </div>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-xl">

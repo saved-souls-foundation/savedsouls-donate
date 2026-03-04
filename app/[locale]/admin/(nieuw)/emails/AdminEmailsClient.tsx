@@ -28,6 +28,7 @@ type EmailRow = {
   ai_confidence: number | null;
   ai_suggestie_template_id: string | null;
   ai_gegenereerd_antwoord: string | null;
+  ai_automatisch_verstuurd?: boolean | null;
   status: string;
   taal: string | null;
   bron?: string | null;
@@ -513,6 +514,9 @@ export default function AdminEmailsClient() {
                           {(row.bron === "inkomend" || row.bron === "resend_webhook") && (
                             <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-1.5 py-0.5">Inkomend</span>
                           )}
+                          {row.ai_automatisch_verstuurd && (
+                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5" title="Automatisch beantwoord door AI">🤖 AI</span>
+                          )}
                           <CategoryBadge category={row.ai_categorie} />
                           {row.status === "in_behandeling" && (
                             <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 rounded-full px-1.5 py-0.5">
@@ -580,6 +584,9 @@ export default function AdminEmailsClient() {
                       </div>
                       <div className="text-xs text-gray-400 mt-0.5">
                         {formatDate(selectedEmail.ontvangen_op)}
+                        {selectedEmail.ai_automatisch_verstuurd && (
+                          <span className="ml-2 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5">🤖 Automatisch beantwoord</span>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-1">

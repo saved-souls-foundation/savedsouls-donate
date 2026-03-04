@@ -42,6 +42,9 @@ export default function AdminNieuwsbriefVersturenClient() {
   const [previewLang, setPreviewLang] = useState<(typeof LANGUAGES)[number] | null>(null);
   const [templates, setTemplates] = useState<NewsletterTemplate[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
+  const [scheduledAt, setScheduledAt] = useState("");
+  const [scheduling, setScheduling] = useState(false);
+  const [scheduleSuccess, setScheduleSuccess] = useState(false);
 
   const fetchCounts = useCallback(async () => {
     const res = await fetch("/api/admin/newsletter/count");
@@ -107,6 +110,29 @@ export default function AdminNieuwsbriefVersturenClient() {
       setSendError(true);
     } finally {
       setSending(false);
+    }
+  }
+
+  async function handleSchedule() {
+    if (!scheduledAt.trim()) return;
+    setScheduling(true);
+    setScheduleSuccess(false);
+    try {
+      const res = await fetch("/api/admin/newsletter/drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...payload(),
+          scheduled_at: new Date(scheduledAt).toISOString(),
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.draft) {
+        setScheduleSuccess(true);
+        setScheduledAt("");
+      }
+    } finally {
+      setScheduling(false);
     }
   }
 
@@ -253,7 +279,32 @@ export default function AdminNieuwsbriefVersturenClient() {
         </div>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex flex-wrap items-center gap-4 justify-between">
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="text-sm font-medium" style={{ color: ADM_MUTED }}>
+            Plan voor later:
+          </label>
+          <input
+            type="datetime-local"
+            value={scheduledAt}
+            onChange={(e) => setScheduledAt(e.target.value)}
+            min={new Date().toISOString().slice(0, 16)}
+            className="px-3 py-2 rounded-lg border text-sm"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          />
+          <button
+            type="button"
+            disabled={scheduling || !scheduledAt.trim()}
+            onClick={handleSchedule}
+            className="px-4 py-2 rounded-lg text-sm font-medium border disabled:opacity-50"
+            style={{ borderColor: ADM_ACCENT, color: ADM_ACCENT }}
+          >
+            {scheduling ? loadingStr : "Inplannen"}
+          </button>
+          {scheduleSuccess && (
+            <span className="text-sm" style={{ color: ADM_ACCENT }}>Gepland. Cron verstuurt automatisch op het gekozen tijdstip.</span>
+          )}
+        </div>
         <button
           type="button"
           disabled={sending || (counts?.total ?? 0) === 0}
