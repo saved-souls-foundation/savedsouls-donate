@@ -44,6 +44,17 @@ export async function PUT(
   const { id } = await params;
   const body = await req.json();
 
+  const status = body.status ?? undefined;
+  const isPublished = status === "published" || status === "Gepubliceerd";
+  const gepubliceerdOp =
+    body.gepubliceerd_op != null
+      ? body.gepubliceerd_op
+      : body.published_at != null
+        ? (body.published_at ? new Date(body.published_at).toISOString() : null)
+        : isPublished
+          ? new Date().toISOString()
+          : undefined;
+
   const updates: Record<string, unknown> = {
     updated_at: new Date().toISOString(),
     ...(body.titel != null && { titel: body.titel }),
@@ -55,10 +66,9 @@ export async function PUT(
     ...(body.category != null && { category: body.category }),
     ...(body.status != null && { status: body.status }),
     ...(body.source != null && { source: body.source }),
-    ...(body.slug != null && { slug: body.slug }),
+    ...(body.slug != null && body.slug !== "" && { slug: body.slug }),
     ...(body.meta_description != null && { meta_description: body.meta_description }),
-    ...(body.gepubliceerd_op != null && { gepubliceerd_op: body.gepubliceerd_op }),
-    ...(body.published_at != null && { gepubliceerd_op: body.published_at ? new Date(body.published_at).toISOString() : null }),
+    ...(gepubliceerdOp !== undefined && { gepubliceerd_op: gepubliceerdOp }),
   };
 
   const admin = createAdminClient();

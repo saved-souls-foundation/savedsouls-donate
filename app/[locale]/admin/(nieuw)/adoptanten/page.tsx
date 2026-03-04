@@ -1,5 +1,4 @@
 import { setRequestLocale } from "next-intl/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import AdminAdoptantenClient from "./AdminAdoptantenClient";
 
@@ -24,11 +23,12 @@ export default async function AdminAdoptantenPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const supabase = await createClient();
-  const { data: rows } = await supabase
+  const admin = createAdminClient();
+  const { data: rows } = await admin
     .from("profiles")
     .select("id, email, voornaam, achternaam, huidige_stap, notities, aangemeld_op, updated_at")
     .eq("role", "adoptant")
+    .or("verwijderd.eq.false,verwijderd.is.null")
     .order("aangemeld_op", { ascending: false });
 
   let applicationsByEmail: Map<string, { animal_name: string | null; animal_id: string | null }[]> = new Map();

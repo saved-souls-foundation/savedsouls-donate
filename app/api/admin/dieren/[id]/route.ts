@@ -12,17 +12,6 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { error } = await requireAdmin();
-  if (error) return error;
-  const { id } = await params;
-  const admin = createAdminClient();
-  const { data: row, error: e } = await admin.from("incoming_emails").select("*").eq("id", id).maybeSingle();
-  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(row);
-}
-
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -32,7 +21,7 @@ export async function DELETE(
   const { id } = await params;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
   const admin = createAdminClient();
-  const { error: e } = await admin.from("incoming_emails").delete().eq("id", id);
+  const { error: e } = await admin.from("dieren").delete().eq("id", id);
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }

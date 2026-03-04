@@ -934,7 +934,16 @@ export default function SocialeMediaClient() {
                   title="Geen blogberichten"
                   description="Schrijf je eerste bericht of koppel Facebook"
                   actionLabel="+ Nieuw bericht"
-                  onAction={() => setBlogView("editor")}
+                  onAction={() => {
+                    setEditingBlogPost(null);
+                    setBlogTitle("");
+                    setBlogBody("");
+                    setBlogBodyEn("");
+                    setBlogBodyTh("");
+                    setBlogCategory("nieuws");
+                    setBlogStatus("concept");
+                    setBlogView("editor");
+                  }}
                 />
               ) : (
                 <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -968,7 +977,7 @@ export default function SocialeMediaClient() {
                           <td className="px-4 py-3">
                             <StatusBadge
                               label={
-                                post.status === "published"
+                                post.status === "published" || post.status === "Gepubliceerd"
                                   ? "Gepubliceerd"
                                   : post.status === "concept"
                                     ? "Concept"
@@ -977,7 +986,7 @@ export default function SocialeMediaClient() {
                                       : String(post.status ?? "")
                               }
                               type={
-                                post.status === "published"
+                                post.status === "published" || post.status === "Gepubliceerd"
                                   ? "success"
                                   : post.status === "concept"
                                     ? "warning"

@@ -2,6 +2,16 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 80)
+    .replace(/^-|-$/g, "");
+}
+
 async function requireAdmin() {
   const supabase = await createClient();
   const {
@@ -30,7 +40,10 @@ export async function GET() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
+  if (e) {
+    console.error("[blog] GET error:", e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
   return NextResponse.json({ posts: rows ?? [] });
 }
 
@@ -39,23 +52,45 @@ export async function POST(req: Request) {
   if (error) return error;
 
   const body = await req.json();
+  const titel = body.title ?? body.titel ?? null;
+  const inhoud = body.body ?? body.inhoud ?? null;
+  const status = body.status ?? "concept";
+  const isPublished = status === "published" || status === "Gepubliceerd";
+  const gepubliceerdOp = body.published_at
+    ? new Date(body.published_at).toISOString()
+    : isPublished
+      ? new Date().toISOString()
+      : null;
+
+  let slug: string | null =
+    (typeof body.slug === "string" && body.slug.trim() ? body.slug.trim() : null) || null;
+  if (!slug && titel) {
+    slug = slugify(titel) || null;
+  }
+  if (!slug) {
+    slug = `post-${Date.now()}`;
+  }
+
   const insertData = {
-    titel: body.title ?? null,
-    inhoud: body.body ?? null,
+    titel,
+    inhoud,
     body_en: body.body_en ?? null,
     body_th: body.body_th ?? null,
     category: body.category ?? "nieuws",
-    status: body.status ?? "concept",
+    status,
     source: body.source ?? "manual",
-    slug: body.slug ?? null,
+    slug,
     meta_description: body.meta_description ?? null,
-    gepubliceerd_op: body.published_at ? new Date(body.published_at).toISOString() : null,
+    gepubliceerd_op: gepubliceerdOp,
   };
-  console.log("[blog] Poging publiceren:", insertData);
+  console.log("[blog] POST insert:", { titel: insertData.titel?.slice(0, 40), status, slug });
   const admin = createAdminClient();
   const { data, error: e } = await admin.from("posts").insert(insertData).select().single();
-  console.log("[blog] DB Resultaat:", e);
 
-  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
+  if (e) {
+    console.error("[blog] POST DB error:", e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+  console.log("[blog] POST success, id:", data?.id);
   return NextResponse.json({ post: data });
 }

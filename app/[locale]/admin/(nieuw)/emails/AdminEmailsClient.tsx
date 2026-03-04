@@ -91,6 +91,8 @@ export default function AdminEmailsClient() {
   const [hoverTooltip, setHoverTooltip] = useState<{ row: EmailRow; x: number; y: number } | null>(null);
 
   const [selectedEmail, setSelectedEmail] = useState<EmailDetail | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
   const [replyText, setReplyText] = useState("");
   const [replyLang, setReplyLang] = useState<"nl" | "en" | "th">("nl");
   const [aiLoading, setAiLoading] = useState(false);
@@ -279,6 +281,85 @@ export default function AdminEmailsClient() {
     }
   }
 
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    if (selectedIds.size === data.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(data.map((r) => r.id)));
+  }
+
+  async function handleDeleteOne(id: string) {
+    if (!confirm("Weet je zeker dat je deze mail wilt verwijderen? Dit kan niet ongedaan worden gemaakt.")) return;
+    setDeletingIds((prev) => new Set(prev).add(id));
+    setToastError(null);
+    try {
+      const res = await fetch(`/api/admin/emails/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j?.error ?? "Verwijderen mislukt");
+      }
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      if (selectedEmail?.id === id) {
+        setSelectedEmail(null);
+        setReplyText("");
+        setAiSuggestion("");
+      }
+      fetchList();
+      if (stats) setStats({ ...stats, pending: Math.max(0, (stats.pending ?? 0) - 1) });
+    } catch (err) {
+      setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
+    } finally {
+      setDeletingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  }
+
+  async function handleDeleteSelected() {
+    if (selectedIds.size === 0) return;
+    const msg =
+      selectedIds.size === 1
+        ? "Weet je zeker dat je deze mail wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
+        : `Weet je zeker dat je ${selectedIds.size} mails wilt verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+    if (!confirm(msg)) return;
+    setDeletingIds(new Set(selectedIds));
+    setToastError(null);
+    try {
+      for (const id of selectedIds) {
+        const res = await fetch(`/api/admin/emails/${id}`, { method: "DELETE" });
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          throw new Error(j?.error ?? "Verwijderen mislukt");
+        }
+      }
+      if (selectedEmail && selectedIds.has(selectedEmail.id)) {
+        setSelectedEmail(null);
+        setReplyText("");
+        setAiSuggestion("");
+      }
+      setSelectedIds(new Set());
+      fetchList();
+      if (stats) setStats({ ...stats, pending: Math.max(0, (stats.pending ?? 0) - selectedIds.size) });
+    } catch (err) {
+      setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
+    } finally {
+      setDeletingIds(new Set());
+    }
+  }
+
   const tabCounts = {
     inbox: inboxCount,
     sent: sentCount,
@@ -343,7 +424,7 @@ export default function AdminEmailsClient() {
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100">
+          <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100 items-center">
             <input
               type="search"
               placeholder={t("search")}
@@ -355,6 +436,27 @@ export default function AdminEmailsClient() {
               className="flex-1 min-w-0 max-w-[200px] px-3 py-1.5 rounded-lg border text-sm bg-transparent outline-none"
               style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
             />
+            {data.length > 0 && (
+              <>
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.size === data.length && data.length > 0}
+                    onChange={toggleSelectAll}
+                    className="rounded border-gray-300"
+                  />
+                  Selecteer alles
+                </label>
+                <button
+                  type="button"
+                  disabled={selectedIds.size === 0 || deletingIds.size > 0}
+                  onClick={handleDeleteSelected}
+                  className="px-3 py-1.5 rounded-lg text-sm font-medium border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  {deletingIds.size > 0 ? "Verwijderen…" : `Verwijder geselecteerde${selectedIds.size > 0 ? ` (${selectedIds.size})` : ""}`}
+                </button>
+              </>
+            )}
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -366,6 +468,8 @@ export default function AdminEmailsClient() {
               data.map((row) => {
                 const selected = selectedEmail?.id === row.id;
                 const senderName = row.van_naam || row.van_email || t("noValue");
+                const isRowSelected = selectedIds.has(row.id);
+                const isDeleting = deletingIds.has(row.id);
                 return (
                   <div
                     key={row.id}
@@ -375,9 +479,17 @@ export default function AdminEmailsClient() {
                     onKeyDown={(e) => e.key === "Enter" && fetchEmailDetail(row.id)}
                     className={`p-4 cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition-colors ${
                       selected ? "bg-green-50 border-l-4 border-l-[#2aa348]" : ""
-                    }`}
+                    } ${isDeleting ? "opacity-50 pointer-events-none" : ""}`}
                   >
                     <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={isRowSelected}
+                        onChange={() => toggleSelect(row.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-1 rounded border-gray-300 shrink-0"
+                        aria-label="Selecteer mail"
+                      />
                       <Avatar name={senderName} size="md" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
@@ -409,6 +521,19 @@ export default function AdminEmailsClient() {
                           )}
                         </div>
                       </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteOne(row.id);
+                        }}
+                        disabled={isDeleting}
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 shrink-0"
+                        title="Verwijderen"
+                        aria-label="Verwijderen"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
                 );
@@ -464,6 +589,15 @@ export default function AdminEmailsClient() {
                         className="px-3 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] min-h-[44px] min-w-[44px] flex items-center justify-center md:min-h-0 md:min-w-0"
                       >
                         Beantwoord
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => selectedEmail && handleDeleteOne(selectedEmail.id)}
+                        disabled={selectedEmail && deletingIds.has(selectedEmail.id)}
+                        className="p-2 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600"
+                        title="Verwijderen"
+                      >
+                        🗑️
                       </button>
                       <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Urgent">
                         🚨

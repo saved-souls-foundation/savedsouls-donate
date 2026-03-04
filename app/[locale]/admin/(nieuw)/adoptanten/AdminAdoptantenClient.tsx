@@ -35,6 +35,8 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
   const [error, setError] = useState("");
   const [detailAnimalImage, setDetailAnimalImage] = useState<string | null>(null);
   const [detailAnimalType, setDetailAnimalType] = useState<"dog" | "cat" | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<AdoptantRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -134,6 +136,24 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
     }
   }
 
+  async function handleDelete(row: AdoptantRow) {
+    setDeleting(true);
+    setDeleteConfirm(null);
+    try {
+      const res = await fetch(`/api/admin/adoptanten/${row.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error((j as { error?: string }).error ?? t("errorGeneric"));
+      }
+      if (detail?.id === row.id) setDetail(null);
+      window.location.reload();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : t("errorGeneric"));
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <p className="text-sm" style={{ color: ADM_MUTED }}>
@@ -195,7 +215,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
                   <td className="p-3" style={{ color: ADM_MUTED }}>
                     {r.aangemeld_op ? new Date(r.aangemeld_op).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 flex gap-2">
                     <button
                       type="button"
                       onClick={() => openDetail(r)}
@@ -203,6 +223,14 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
                       style={{ color: ADM_ACCENT }}
                     >
                       {t("view")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDeleteConfirm(r)}
+                      className="text-sm font-medium"
+                      style={{ color: ADM_ERROR }}
+                    >
+                      🗑️ Verwijderen
                     </button>
                   </td>
                 </tr>
@@ -336,6 +364,56 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(detail)}
+                disabled={deleting}
+                className="mt-4 px-4 py-2 rounded-lg text-sm font-medium border"
+                style={{ borderColor: ADM_ERROR, color: ADM_ERROR }}
+              >
+                🗑️ Adoptant verwijderen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteConfirm && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setDeleteConfirm(null)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-semibold mb-2" style={{ color: ADM_TEXT }}>
+              Adoptant verwijderen
+            </h3>
+            <p className="text-sm mb-4" style={{ color: ADM_MUTED }}>
+              Weet je zeker dat je &quot;{[deleteConfirm.voornaam, deleteConfirm.achternaam].filter(Boolean).join(" ") || deleteConfirm.email}&quot; wilt verwijderen? Deze adoptant verdwijnt uit de lijst.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(null)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg text-sm font-medium border disabled:opacity-50"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                Annuleren
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(deleteConfirm)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ERROR }}
+              >
+                {deleting ? t("loading") : "Ja, verwijderen"}
+              </button>
             </div>
           </div>
         </div>

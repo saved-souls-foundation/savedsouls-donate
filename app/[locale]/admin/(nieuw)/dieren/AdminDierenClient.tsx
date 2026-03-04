@@ -114,6 +114,8 @@ export function AdminDierenClient({ dieren }: { dieren: DierRow[] }) {
   const [soortFilter, setSoortFilter] = useState("alle");
   const [selectedDier, setSelectedDier] = useState<DierRow | null>(null);
   const [modalTab, setModalTab] = useState<"Info" | "Medisch" | "Notities">("Info");
+  const [deleteConfirm, setDeleteConfirm] = useState<DierRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const gefilterd = dieren.filter((d) => {
     const matchZoek =
@@ -133,6 +135,24 @@ export function AdminDierenClient({ dieren }: { dieren: DierRow[] }) {
     return jaar === new Date().getFullYear();
   }).length;
   const medischUrgent = dieren.filter((d) => d.medisch_urgent === true).length;
+
+  async function handleDeleteDier(dier: DierRow) {
+    setDeleting(true);
+    setDeleteConfirm(null);
+    try {
+      const res = await fetch(`/api/admin/dieren/${dier.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error((j as { error?: string }).error ?? "Verwijderen mislukt");
+      }
+      if (selectedDier?.id === dier.id) setSelectedDier(null);
+      router.refresh();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Verwijderen mislukt");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   if (dieren.length === 0) {
     return (
@@ -290,7 +310,7 @@ export function AdminDierenClient({ dieren }: { dieren: DierRow[] }) {
                         {
                           icon: "🗑️",
                           label: "Verwijderen",
-                          onClick: () => {},
+                          onClick: () => setDeleteConfirm(dier),
                         },
                       ]}
                     />
@@ -432,12 +452,57 @@ export function AdminDierenClient({ dieren }: { dieren: DierRow[] }) {
               >
                 Sluiten
               </button>
-              <Link
-                href={`/admin/dieren/${selectedDier.id}`}
-                className="px-4 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-semibold hover:bg-[#166534] transition-colors inline-block"
-              >
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => selectedDier && setDeleteConfirm(selectedDier)}
+                  className="px-4 py-2 rounded-xl border border-red-200 text-sm font-semibold text-red-600 hover:bg-red-50"
+                >
+                  🗑️ Verwijderen
+                </button>
+                <Link
+                  href={`/admin/dieren/${selectedDier.id}`}
+                  className="px-4 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-semibold hover:bg-[#166534] transition-colors inline-block"
+                >
                 ✏️ Volledig bewerken
-              </Link>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Verwijder bevestiging */}
+      {deleteConfirm && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/60 flex items-center justify-center p-4"
+          onClick={() => !deleting && setDeleteConfirm(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Dier verwijderen</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Weet je zeker dat je &quot;{deleteConfirm.naam ?? "dit dier"}&quot; wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(null)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+              >
+                Annuleren
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteDier(deleteConfirm)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 disabled:opacity-50"
+              >
+                {deleting ? "Bezig…" : "Ja, verwijderen"}
+              </button>
             </div>
           </div>
         </div>
