@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next/intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
 export default async function DierDetailPage({

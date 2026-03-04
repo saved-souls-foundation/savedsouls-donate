@@ -428,12 +428,12 @@ export default function AdminEmailsClient() {
                   {/* Email header */}
                   <div className="flex items-start gap-3 flex-wrap">
                     <Avatar
-                      name={selectedEmail.van_naam || selectedEmail.van_email ?? "—"}
+                      name={(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
                       size="lg"
                     />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-semibold text-gray-900">
-                        {selectedEmail.van_naam || selectedEmail.van_email ?? "—"}
+                        {(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
                       </div>
                       <div className="text-xs text-gray-500">{selectedEmail.van_email ?? "—"}</div>
                       <div className="text-sm font-semibold text-gray-900 mt-1">

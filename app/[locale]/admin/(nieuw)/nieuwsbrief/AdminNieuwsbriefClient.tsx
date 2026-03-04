@@ -408,7 +408,7 @@ export default function AdminNieuwsbriefClient() {
                   >
                     <td className="p-3">
                       <div className="flex items-center gap-3">
-                        <Avatar name={name(r) || r.email ?? "–"} size="sm" />
+                        <Avatar name={(name(r) || r.email) ?? "–"} size="sm" />
                         <div>
                           <div className="text-sm font-semibold text-gray-900">
                             {name(r) || "–"}
