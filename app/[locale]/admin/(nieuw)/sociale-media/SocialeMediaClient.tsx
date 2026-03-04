@@ -47,6 +47,23 @@ function truncate(s: string, len: number): string {
 
 type TabId = "compose" | "platforms" | "calendar" | "blog";
 
+interface BlogPost {
+  id: string;
+  title: string | null;
+  body: string | null;
+  body_en: string | null;
+  body_th: string | null;
+  status: string | null;
+  category: string | null;
+  source: string | null;
+  slug: string | null;
+  meta_description: string | null;
+  published_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  facebook_post_id: string | null;
+}
+
 export default function SocialeMediaClient() {
   const t = useTranslations("admin.socialeMedia");
   const [activeTab, setActiveTab] = useState<TabId>("compose");
@@ -78,10 +95,10 @@ export default function SocialeMediaClient() {
 
   const [calendarWeek, setCalendarWeek] = useState(new Date());
 
-  const [blogPosts, setBlogPosts] = useState<Record<string, unknown>[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [blogLoading, setBlogLoading] = useState(false);
   const [blogView, setBlogView] = useState<"list" | "editor">("list");
-  const [editingBlogPost, setEditingBlogPost] = useState<Record<string, unknown> | null>(null);
+  const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
   const [blogTitle, setBlogTitle] = useState("");
   const [blogBody, setBlogBody] = useState("");
   const [blogBodyEn, setBlogBodyEn] = useState("");
@@ -860,7 +877,7 @@ export default function SocialeMediaClient() {
                       </tr>
                     </thead>
                     <tbody>
-                      {blogPosts.map((post: Record<string, unknown>) => (
+                      {blogPosts.map((post: BlogPost) => (
                         <tr
                           key={String(post.id)}
                           className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
