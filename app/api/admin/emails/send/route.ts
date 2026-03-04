@@ -61,31 +61,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error ?? "Send failed" }, { status: 502 });
     }
 
+    const admin = createAdminClient();
+    let verwerktDoor: string | null = null;
+    try {
+      const sessionSupabase = await createClient();
+      const { data: { user } } = await sessionSupabase.auth.getUser();
+      verwerktDoor = user?.id ?? null;
+    } catch {
+      // session optional voor verwerkt_door
+    }
+
     if (incoming_email_id) {
-      const { data: { user } } = await supabase!.auth.getUser();
-      await supabase!
+      await admin
         .from("incoming_emails")
         .update({
           status: "verstuurd",
-          verwerkt_door: user?.id ?? null,
+          verwerkt_door: verwerktDoor,
           verwerkt_op: new Date().toISOString(),
         })
         .eq("id", incoming_email_id);
     }
 
-    // sent_emails (migration 20250305): aan→to_email, onderwerp→subject, inhoud→body_preview, verstuurd_op→sent_at
     const verstuurdOp = new Date().toISOString();
-    const { error: insertErr } = await supabase!.from("sent_emails").insert({
+    const inhoudPreview = bodyText.replace(/\s+/g, " ").trim().slice(0, 500);
+    const { error: insertErr } = await admin.from("sent_emails").insert({
       type: "email_assistant",
-      to_email,       // aan
-      subject,        // onderwerp
-      body_preview: bodyText.replace(/\s+/g, " ").trim().slice(0, 500), // inhoud (preview)
-      sent_at: verstuurdOp, // verstuurd_op
+      aan: to_email,
+      onderwerp: subject,
+      inhoud: inhoudPreview || null,
+      verstuurd_op: verstuurdOp,
       reference_id: incoming_email_id ?? null,
       reference_type: incoming_email_id ? "incoming_email" : null,
     });
     if (insertErr) {
-      console.error("[admin/emails/send] sent_emails insert failed:", insertErr);
+      console.error("[admin/emails/send] sent_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
       return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt" }, { status: 500 });
     }
 

@@ -90,16 +90,17 @@ export async function POST(request: NextRequest) {
 
     try {
       const admin = createAdminClient();
-      const { error: insertErr } = await admin.from("incoming_emails").insert({
+      const row = {
         van_email: van_email ?? null,
         van_naam: van_naam ?? null,
         onderwerp: subject || null,
         inhoud,
         bron: "resend_webhook",
         status: "in_behandeling",
-      });
+      };
+      const { error: insertErr } = await admin.from("incoming_emails").insert(row);
       if (insertErr) {
-        console.error("[webhooks/resend] incoming_emails insert failed:", insertErr);
+        console.error("[webhooks/resend] incoming_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
         return NextResponse.json({ error: "Failed to store email" }, { status: 500 });
       }
     } catch (e) {

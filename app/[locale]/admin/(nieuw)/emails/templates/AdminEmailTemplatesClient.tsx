@@ -38,9 +38,9 @@ type Template = {
 
 type SentEmail = {
   id: string;
-  to_email: string;
-  subject: string;
-  sent_at: string;
+  aan: string;
+  onderwerp: string;
+  verstuurd_op: string;
 };
 
 export default function AdminEmailTemplatesClient() {
@@ -383,9 +383,9 @@ export default function AdminEmailTemplatesClient() {
               <tbody>
                 {sentEmails.map((row) => (
                   <tr key={row.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.to_email}</td>
-                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.subject}>{row.subject}</td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatSentDate(row.sent_at)}</td>
+                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.aan}</td>
+                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.onderwerp}>{row.onderwerp}</td>
+                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatSentDate(row.verstuurd_op)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -13,8 +13,9 @@ async function requireAdmin() {
 }
 
 export async function GET(request: NextRequest) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
+  const admin = createAdminClient();
   const { searchParams } = new URL(request.url);
   const status = searchParams.get("status")?.trim() ?? "";
   const ai_categorie = searchParams.get("ai_categorie")?.trim() ?? "";
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  let q = supabase!
+  let q = admin
     .from("incoming_emails")
     .select("id, van_email, van_naam, onderwerp, ontvangen_op, ai_categorie, ai_confidence, status, taal, ai_suggestie_template_id, ai_gegenereerd_antwoord", { count: "exact" });
   if (status && status !== "all") q = q.eq("status", status);

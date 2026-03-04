@@ -13,7 +13,7 @@ async function requireAdmin() {
 }
 
 export async function GET(request: NextRequest) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
 
   const { searchParams } = new URL(request.url);
@@ -22,10 +22,11 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  let q = supabase
+  const admin = createAdminClient();
+  let q = admin
     .from("sent_emails")
-    .select("id, type, to_email, subject, body_preview, sent_at, reference_id, meta", { count: "exact" })
-    .order("sent_at", { ascending: false })
+    .select("id, type, aan, onderwerp, inhoud, verstuurd_op, reference_id, meta", { count: "exact" })
+    .order("verstuurd_op", { ascending: false })
     .range(from, from + limit - 1);
 
   if (type === "step_notify" || type === "email_assistant") q = q.eq("type", type);

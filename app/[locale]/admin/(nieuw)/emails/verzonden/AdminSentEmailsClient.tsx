@@ -16,10 +16,10 @@ const PAGE_SIZE = 20;
 type SentRow = {
   id: string;
   type: string;
-  to_email: string;
-  subject: string;
-  body_preview: string | null;
-  sent_at: string;
+  aan: string;
+  onderwerp: string;
+  inhoud: string | null;
+  verstuurd_op: string;
   reference_id: string | null;
   meta: Record<string, unknown> | null;
 };
@@ -141,11 +141,11 @@ export default function AdminSentEmailsClient() {
               ) : (
                 data.map((row) => (
                   <tr key={row.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                    <td className="p-3 whitespace-nowrap" style={{ color: ADM_MUTED }}>{formatDate(row.sent_at)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.to_email}</td>
-                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.subject}>{row.subject}</td>
+                    <td className="p-3 whitespace-nowrap" style={{ color: ADM_MUTED }}>{formatDate(row.verstuurd_op)}</td>
+                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.aan}</td>
+                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.onderwerp}>{row.onderwerp}</td>
                     <td className="p-3" style={{ color: ADM_TEXT }}>{typeLabel(row.type)}</td>
-                    <td className="p-3 max-w-[280px] truncate" style={{ color: ADM_MUTED }} title={row.body_preview ?? ""}>{row.body_preview ?? "—"}</td>
+                    <td className="p-3 max-w-[280px] truncate" style={{ color: ADM_MUTED }} title={row.inhoud ?? ""}>{row.inhoud ?? "—"}</td>
                   </tr>
                 ))
               )}
