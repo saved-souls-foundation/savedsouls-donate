@@ -1,11 +1,12 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
-import { getAllBlogPosts, isFacebookPost } from "@/lib/blog-posts";
+import { getAllBlogPosts, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFacebook } from "@/lib/blog-posts";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -18,23 +19,50 @@ function formatDate(dateStr: string, locale: string): string {
   }).format(date);
 }
 
-function getPostTitle(post: ReturnType<typeof getAllBlogPosts>[0], t: (key: string) => string): string {
+function getPostTitle(post: BlogPostOrFacebook, t: (key: string) => string): string {
   if (isFacebookPost(post)) {
     const firstLine = post.message.split("\n")[0]?.trim().slice(0, 80);
     return firstLine || "Update van Facebook";
   }
+  if (isDbPost(post)) return post.titel?.trim() || "Blog";
   return t(`posts.${post.slug}.title`);
 }
 
-function getPostExcerpt(post: ReturnType<typeof getAllBlogPosts>[0], t: (key: string) => string): string {
+function getPostExcerpt(post: BlogPostOrFacebook, t: (key: string) => string): string {
   if (isFacebookPost(post)) return post.excerpt;
+  if (isDbPost(post)) {
+    const text = post.inhoud?.replace(/<[^>]+>/g, "").trim() ?? "";
+    return text.length > 160 ? `${text.slice(0, 160)}…` : text;
+  }
   return t(`posts.${post.slug}.excerpt`);
 }
 
 export default function BlogPage() {
   const t = useTranslations("blog");
   const locale = useLocale();
-  const posts = getAllBlogPosts();
+  const [dbPosts, setDbPosts] = useState<BlogPostOrFacebook[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    fetch("/api/blog/public")
+      .then((res) => (res.ok ? res.json() : { posts: [] }))
+      .then((data) => {
+        if (cancelled) return;
+        const list = Array.isArray(data?.posts) ? data.posts : [];
+        setDbPosts(list.map((row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null }) => toDbPost(row)));
+      })
+      .catch(() => { if (!cancelled) setDbPosts([]); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const posts = useMemo(() => {
+    const staticAndFb = getAllBlogPosts();
+    const merged = [...staticAndFb, ...dbPosts];
+    return merged.sort((a, b) => (b.date > a.date ? 1 : -1));
+  }, [dbPosts]);
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
@@ -73,6 +101,9 @@ export default function BlogPage() {
                     {isFacebookPost(post) && (
                       <span className="ml-2 text-xs text-white/70 drop-shadow">Facebook</span>
                     )}
+                    {isDbPost(post) && (
+                      <span className="ml-2 text-xs text-white/70 drop-shadow">Blog</span>
+                    )}
                     <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-lg mt-1">
                       {title}
                     </h2>
@@ -86,7 +117,7 @@ export default function BlogPage() {
             const className = "block group rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-600 shadow-lg hover:shadow-xl hover:border-[#2aa348]/40 transition-all duration-300";
 
             return (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className={className}>
+              <Link key={isDbPost(post) ? post.id : post.slug} href={`/blog/${post.slug}`} className={className}>
                 {cardContent}
               </Link>
             );

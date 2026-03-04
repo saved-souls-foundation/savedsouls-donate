@@ -1,12 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../../components/ParallaxPage";
 import Footer from "../../../components/Footer";
-import { getPostBySlug, isFacebookPost } from "@/lib/blog-posts";
+import { getPostBySlug, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFacebook, type DbPost } from "@/lib/blog-posts";
 import { notFound } from "next/navigation";
 
 const ACCENT_GREEN = "#2aa348";
@@ -24,19 +25,69 @@ function formatDate(dateStr: string, locale: string): string {
 export default function BlogPostPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const post = getPostBySlug(slug);
+  const staticPost = getPostBySlug(slug);
+  const [dbPost, setDbPost] = useState<DbPost | null>(null);
+  const [fetchStatus, setFetchStatus] = useState<"idle" | "loading" | "found" | "404">(
+    staticPost ? "idle" : "loading"
+  );
   const t = useTranslations("blog");
   const tCommon = useTranslations("common");
   const locale = useLocale();
 
-  if (!post) notFound();
+  useEffect(() => {
+    if (staticPost) return;
+    fetch(`/api/blog/public/${encodeURIComponent(slug)}`)
+      .then((res) => {
+        if (!res.ok) {
+          setFetchStatus("404");
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const row = data?.post;
+        if (row?.id) {
+          setDbPost(toDbPost({
+            id: row.id,
+            slug: row.slug ?? row.id,
+            titel: row.titel,
+            inhoud: row.inhoud,
+            gepubliceerd_op: row.gepubliceerd_op,
+          }));
+          setFetchStatus("found");
+        } else {
+          setFetchStatus("404");
+        }
+      })
+      .catch(() => setFetchStatus("404"));
+  }, [slug, staticPost]);
+
+  if (staticPost) {
+    // Gebruik static of Facebook post
+  } else if (fetchStatus === "404") {
+    notFound();
+  } else if (fetchStatus === "loading" || !dbPost) {
+    return (
+      <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
+        <main className="max-w-3xl mx-auto px-4 py-12 md:py-20">
+          <div className="animate-pulse rounded-2xl bg-stone-200 dark:bg-stone-700 h-64 mb-6" />
+          <div className="animate-pulse rounded bg-stone-200 dark:bg-stone-700 h-6 w-3/4 mb-4" />
+          <div className="animate-pulse rounded bg-stone-200 dark:bg-stone-700 h-4 w-full mb-2" />
+          <div className="animate-pulse rounded bg-stone-200 dark:bg-stone-700 h-4 w-full" />
+        </main>
+      </ParallaxPage>
+    );
+  }
+
+  const post: BlogPostOrFacebook = staticPost ?? dbPost!;
 
   const handleDonate = () => {
     window.open("https://paypal.me/savedsoulsfoundation", "_blank");
   };
 
   const isFacebook = isFacebookPost(post);
-  const isAdoptLayout = !isFacebook && post.layout === "adopt";
+  const isDb = isDbPost(post);
+  const isAdoptLayout = !isFacebook && !isDb && "layout" in post && post.layout === "adopt";
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
@@ -49,17 +100,22 @@ export default function BlogPostPage() {
             {isFacebook && (
               <span className="ml-2 text-xs font-medium text-stone-500 dark:text-stone-400">Facebook</span>
             )}
+            {isDb && (
+              <span className="ml-2 text-xs font-medium text-stone-500 dark:text-stone-400">Blog</span>
+            )}
             <h1 className="text-3xl md:text-4xl font-black text-stone-800 dark:text-stone-100 mt-2 mb-4 leading-tight">
               {isFacebook
                 ? (post.message.split("\n")[0]?.trim().slice(0, 100) || "Update van Facebook")
-                : t(`posts.${slug}.title`)}
+                : isDb
+                  ? (post.titel?.trim() || "Blog")
+                  : t(`posts.${slug}.title`)}
             </h1>
           </header>
 
           <div className="mb-10 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 relative aspect-[16/10]">
             <Image
               src={post.heroImage}
-              alt={isFacebook ? "" : t(`posts.${slug}.heroAlt`)}
+              alt={isFacebook ? "" : isDb ? "" : t(`posts.${slug}.heroAlt`)}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 896px"
@@ -99,7 +155,18 @@ export default function BlogPostPage() {
             </div>
           )}
 
-          {!isAdoptLayout && !isFacebook && (
+          {isDb && (
+            <div className="prose prose-lg dark:prose-invert max-w-none">
+              <div
+                className="text-stone-600 dark:text-stone-400 leading-relaxed text-lg"
+                dangerouslySetInnerHTML={{
+                  __html: (post.inhoud ?? "").replace(/\n/g, "<br />"),
+                }}
+              />
+            </div>
+          )}
+
+          {!isAdoptLayout && !isFacebook && !isDb && (
             <>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-lg">

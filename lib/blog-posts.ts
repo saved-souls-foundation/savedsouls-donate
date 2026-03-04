@@ -23,7 +23,20 @@ export type FacebookPost = {
   source: "facebook";
 };
 
-export type BlogPostOrFacebook = BlogPost | FacebookPost;
+/** Posts uit Supabase (posts-tabel, kolommen titel, inhoud, gepubliceerd_op) */
+export type DbPost = {
+  id: string;
+  slug: string;
+  titel: string | null;
+  inhoud: string | null;
+  gepubliceerd_op: string | null;
+  date: string; // YYYY-MM-DD afgeleid van gepubliceerd_op
+  heroImage: string;
+  listingImage?: string;
+  source: "database";
+};
+
+export type BlogPostOrFacebook = BlogPost | FacebookPost | DbPost;
 
 export const BLOG_POSTS: BlogPost[] = [
   {
@@ -76,4 +89,27 @@ export function getAllBlogPosts(): BlogPostOrFacebook[] {
 
 export function isFacebookPost(post: BlogPostOrFacebook): post is FacebookPost {
   return post.source === "facebook";
+}
+
+export function isDbPost(post: BlogPostOrFacebook): post is DbPost {
+  return post.source === "database";
+}
+
+const DEFAULT_BLOG_IMAGE = "/savedsoul-logo-bg.webp";
+
+/** Maakt een DbPost van een API-response (titel, inhoud, gepubliceerd_op) */
+export function toDbPost(row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null }): DbPost {
+  const iso = row.gepubliceerd_op ?? new Date().toISOString();
+  const date = iso.slice(0, 10);
+  return {
+    id: row.id,
+    slug: row.slug ?? row.id,
+    titel: row.titel,
+    inhoud: row.inhoud,
+    gepubliceerd_op: row.gepubliceerd_op,
+    date,
+    heroImage: DEFAULT_BLOG_IMAGE,
+    listingImage: DEFAULT_BLOG_IMAGE,
+    source: "database",
+  };
 }

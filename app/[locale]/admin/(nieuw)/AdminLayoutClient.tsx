@@ -393,7 +393,7 @@ export default function AdminLayoutClient({
           <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
         </div>
       </header>
-      <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 pb-16 md:pb-8">
+      <main className="flex-1 min-w-0 w-full overflow-auto p-4 md:p-6 lg:p-8 pb-16 md:pb-8 max-w-full">
         {children}
       </main>
       <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} />

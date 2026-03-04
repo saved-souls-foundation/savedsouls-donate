@@ -13,10 +13,11 @@ async function requireAdmin() {
 }
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
-  const { data: row, error: e } = await supabase!.from("incoming_emails").select("*").eq("id", id).maybeSingle();
+  const admin = createAdminClient();
+  const { data: row, error: e } = await admin.from("incoming_emails").select("*").eq("id", id).maybeSingle();
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(row);

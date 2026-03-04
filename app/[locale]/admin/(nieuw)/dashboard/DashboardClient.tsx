@@ -189,7 +189,7 @@ export function DashboardClient({
       </div>
 
       {/* RUN 3 — Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard icon="🐾" label="Dieren in opvang" value={aantalDieren} sub="actief in shelter" />
         <StatCard
           icon="🤝"
@@ -214,8 +214,8 @@ export function DashboardClient({
         />
       </div>
 
-      {/* RUN 3 — 2-koloms: Urgente meldingen + Recente emails */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* RUN 3 — 2-koloms: Urgente meldingen + Recente emails (1 kolom op mobiel) */}
+      <div className="grid grid-cols-1 min-w-0 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
             <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
@@ -301,7 +301,7 @@ export function DashboardClient({
       </div>
 
       {/* RUN 3 — Snelkoppelingen */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
         {[
           { icon: "🐾", label: "Dier toevoegen", sub: "Nieuw dier registreren", href: "/admin/dieren/nieuw" },
           { icon: "📧", label: "Emails beantwoorden", sub: "Inbox bekijken", href: "/admin/emails" },
@@ -329,7 +329,7 @@ export function DashboardClient({
         <h2 className="text-xs font-medium uppercase tracking-wider mb-4" style={{ color: ADM_MUTED }}>
           Overzicht
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
           {overviewCardsA.map((card) => (
             <Link
               key={card.labelKey}
