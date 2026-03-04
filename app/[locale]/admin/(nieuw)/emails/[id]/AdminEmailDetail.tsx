@@ -76,6 +76,15 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   }, [id]);
 
   useEffect(() => {
+    if (!id) return;
+    fetch("/api/admin/emails/mark-read", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    }).catch(() => {});
+  }, [id]);
+
+  useEffect(() => {
     if (email?.ai_gegenereerd_antwoord != null) {
       setEditReply(email.ai_gegenereerd_antwoord);
       if (!templateOverride && email.ai_suggestie_template_id) setTemplateOverride(email.ai_suggestie_template_id);

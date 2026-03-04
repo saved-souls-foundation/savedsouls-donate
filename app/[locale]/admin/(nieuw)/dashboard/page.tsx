@@ -52,15 +52,20 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
     withTimeout(Promise.resolve(supabase.from("adoption_applications").select("*", { count: "exact", head: true }).not("status", "eq", "afgerond"))),
     withTimeout(Promise.resolve(supabase.from("members").select("*", { count: "exact", head: true }).eq("status", "actief"))),
     withTimeout(Promise.resolve(supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true))),
-    withTimeout(Promise.resolve(supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"))),
+    withTimeout(
+      Promise.resolve(
+        supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").eq("gelezen", false)
+      )
+    ).catch(() => ({ count: 0 })),
     withTimeout(
       Promise.resolve(
         supabase
           .from("incoming_emails")
           .select("id, onderwerp, van_email, van_naam, ontvangen_op, ai_categorie")
           .eq("status", "in_behandeling")
+          .eq("gelezen", false)
           .order("ontvangen_op", { ascending: false })
-          .limit(5)
+          .limit(3)
       )
     ).catch(() => ({ data: [] })),
     withTimeout(

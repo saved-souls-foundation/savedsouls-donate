@@ -75,14 +75,19 @@ function SectionLabel({ label }: { label: string }) {
   );
 }
 
-function NotificationBell({ locale }: { locale: string }) {
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m geleden`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}u geleden`;
+  return `${Math.floor(hrs / 24)}d geleden`;
+}
+
+type UnreadEmail = { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string };
+
+function NotificationBell({ locale, count, recentUnread }: { locale: string; count: number; recentUnread: UnreadEmail[] }) {
   const [open, setOpen] = useState(false);
-  const [notifications] = useState([
-    { id: 1, text: "Nieuwe email van adoptant", time: "2m", type: "email" },
-    { id: 2, text: "Max — vaccinatie vervallen", time: "1u", type: "medical" },
-    { id: 3, text: "Rooster: zaterdag open slot", time: "3u", type: "roster" },
-  ]);
-  const count = notifications.length;
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -99,13 +104,13 @@ function NotificationBell({ locale }: { locale: string }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+        className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center md:min-h-0 md:min-w-0"
         aria-label="Notificaties"
       >
         <span className="text-xl">🔔</span>
         {count > 0 && (
           <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center">
-            {count > 9 ? "9+" : count}
+            {count > 99 ? "99+" : count}
           </span>
         )}
       </button>
@@ -115,27 +120,38 @@ function NotificationBell({ locale }: { locale: string }) {
             <span className="text-sm font-semibold text-gray-900">Notificaties</span>
           </div>
           <div className="max-h-80 overflow-y-auto">
-            {notifications.slice(0, 5).map((n) => (
-              <div
-                key={n.id}
-                className="flex items-start gap-3 p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-              >
-                <span className="text-lg flex-shrink-0">🔔</span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm text-gray-900">{n.text}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{n.time}</p>
-                </div>
+            {recentUnread.length > 0 ? (
+              recentUnread.map((mail) => (
+                <Link
+                  key={mail.id}
+                  href={`/${locale}/admin/emails/${mail.id}`}
+                  className="flex items-start gap-3 p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 block"
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="text-lg flex-shrink-0">📧</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-gray-900 truncate">
+                      {mail.van_naam || mail.van_email || "Onbekend"}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">{mail.onderwerp ?? "—"}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{timeAgo(mail.ontvangen_op)}</p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="px-4 py-6 text-center text-sm text-gray-500">
+                Geen ongelezen e-mails
               </div>
-            ))}
+            )}
           </div>
           <div className="p-2 border-t border-gray-100">
-            <button
-              type="button"
-              className="w-full text-xs font-medium text-gray-500 hover:text-[#2aa348] py-2"
+            <Link
+              href={`/${locale}/admin/emails`}
+              className="block w-full text-xs font-medium text-gray-500 hover:text-[#2aa348] py-2 text-center"
               onClick={() => setOpen(false)}
             >
-              Alles markeren als gelezen
-            </button>
+              Alle e-mails bekijken →
+            </Link>
           </div>
         </div>
       )}
@@ -146,9 +162,11 @@ function NotificationBell({ locale }: { locale: string }) {
 export default function AdminLayoutClient({
   children,
   pendingEmailsCount = 0,
+  recentUnreadEmails = [],
 }: {
   children: React.ReactNode;
   pendingEmailsCount?: number;
+  recentUnreadEmails?: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string }[];
 }) {
   const t = useTranslations("admin");
   const pathname = usePathname();
@@ -202,7 +220,7 @@ export default function AdminLayoutClient({
                 ⌘K
               </kbd>
             </button>
-            <NotificationBell locale={locale} />
+            <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
           </div>
         </div>
         <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1" style={{ background: "rgba(42,157,143,.2)", color: ADM_ACCENT }}>
@@ -372,7 +390,7 @@ export default function AdminLayoutClient({
           >
             <span className="text-lg">🔍</span>
           </button>
-          <NotificationBell locale={locale} />
+          <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
         </div>
       </header>
       <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 pb-16 md:pb-8">

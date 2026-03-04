@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 import { Avatar, EmptyState } from "../components/ui/design-system";
+import ComposeEmailModal from "./ComposeEmailModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -95,6 +96,7 @@ export default function AdminEmailsClient() {
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [detailLoading, setDetailLoading] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
+  const [replyComposeOpen, setReplyComposeOpen] = useState(false);
 
   useEffect(() => {
     if (!toastError) return;
@@ -158,6 +160,8 @@ export default function AdminEmailsClient() {
       setReplyText(row.ai_gegenereerd_antwoord ?? "");
       setAiSuggestion("");
       setSentSuccess(false);
+      fetch("/api/admin/emails/mark-read", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }).catch(() => {});
+      router.refresh();
     } finally {
       setDetailLoading(false);
     }
@@ -444,6 +448,13 @@ export default function AdminEmailsClient() {
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setReplyComposeOpen(true)}
+                        className="px-3 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] min-h-[44px] min-w-[44px] flex items-center justify-center md:min-h-0 md:min-w-0"
+                      >
+                        Beantwoord
+                      </button>
                       <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Urgent">
                         🚨
                       </button>
@@ -455,6 +466,20 @@ export default function AdminEmailsClient() {
                       </button>
                     </div>
                   </div>
+
+                  {replyComposeOpen && selectedEmail && (
+                    <ComposeEmailModal
+                      open={replyComposeOpen}
+                      onClose={() => setReplyComposeOpen(false)}
+                      onSent={() => {
+                        setSentSuccess(true);
+                        fetchList();
+                      }}
+                      initialTo={selectedEmail.van_email ?? ""}
+                      initialSubject={`RE: ${selectedEmail.onderwerp ?? "Your message"}`}
+                      incomingEmailId={selectedEmail.id}
+                    />
+                  )}
 
                   {/* Body */}
                   <div className="rounded-xl border border-gray-200 p-5 bg-white">

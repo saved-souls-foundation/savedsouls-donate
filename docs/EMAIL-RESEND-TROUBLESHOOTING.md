@@ -66,5 +66,16 @@ v=DMARC1; p=quarantine; rua=mailto:info@savedsouls-foundation.com
 
 - **RESEND_API_KEY** – verplicht; moet in **Production** (en eventueel Preview) staan.
 - **RESEND_FROM** – optioneel; default in de code is `Saved Souls Website <info@savedsouls-foundation.com>`.
+- **RESEND_WEBHOOK_SECRET** – voor inkomende mail via Resend Inbound: signing secret (format `whsec_...`) van de webhook in het Resend-dashboard. Zonder deze waarde weigert `POST /api/webhooks/resend` alle webhook-requests (500).
 
 Na wijziging van env vars: opnieuw deployen (of wachten op automatische redeploy).
+
+## Inkomende mail (Resend Inbound + webhook)
+
+Om inkomende e-mail in het admin-dashboard (E-mailassistent) te tonen:
+
+1. **Resend-dashboard** → **Webhooks** → **Add Webhook**.
+2. **Endpoint URL:** `https://<jouw-domein>/api/webhooks/resend` (bijv. `https://savedsouls-foundation.org/api/webhooks/resend`).
+3. **Events:** vink **email.received** aan.
+4. Na aanmaken: kopieer het **Signing Secret** (`whsec_...`) en zet dat in Vercel als **RESEND_WEBHOOK_SECRET**.
+5. Zonder **RESEND_WEBHOOK_SECRET** geeft de route 500; zonder **RESEND_API_KEY** kan de body van de mail niet worden opgehaald (alleen metadata wordt opgeslagen).

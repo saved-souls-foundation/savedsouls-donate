@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
+import ComposeEmailModal from "../ComposeEmailModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -35,6 +36,7 @@ export default function AdminSentEmailsClient() {
   const [data, setData] = useState<SentRow[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [composeOpen, setComposeOpen] = useState(false);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -82,10 +84,25 @@ export default function AdminSentEmailsClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>{t("sentEmailsTitle")}</h1>
-        <Link href="/admin/emails" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>← {t("backToList")}</Link>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setComposeOpen(true)}
+            className="px-4 py-2 rounded-lg text-white text-sm font-medium bg-[#2aa348] hover:bg-[#166534] min-h-[44px] min-w-[44px] flex items-center justify-center"
+          >
+            Nieuwe mail opstellen
+          </button>
+          <Link href="/admin/emails" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>← {t("backToList")}</Link>
+        </div>
       </div>
+
+      <ComposeEmailModal
+        open={composeOpen}
+        onClose={() => setComposeOpen(false)}
+        onSent={() => fetchList()}
+      />
 
       <div className="flex flex-wrap gap-4">
         <select
