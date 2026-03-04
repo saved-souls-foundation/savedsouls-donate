@@ -514,6 +514,9 @@ export default function AdminEmailsClient() {
                           {(row.bron === "inkomend" || row.bron === "resend_webhook") && (
                             <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-1.5 py-0.5">Inkomend</span>
                           )}
+                          {row.bron === "line" && (
+                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5" title="Line bericht">💬 Line</span>
+                          )}
                           {row.ai_automatisch_verstuurd && (
                             <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5" title="Automatisch beantwoord door AI">🤖 AI</span>
                           )}

@@ -227,6 +227,22 @@ export default function PortalVrijwilligerClient() {
 
             {role === "vrijwilliger" && (
               <div className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg border border-stone-200 dark:border-stone-700 p-6 md:p-8 mb-8">
+                <h2 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2">📷 Foto uploaden</h2>
+                <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
+                  Stuur een foto van een dier met een korte notitie. De foto wordt aan het dierprofiel in het dashboard gekoppeld.
+                </p>
+                <Link
+                  href="/portal/vrijwilliger/foto-upload"
+                  className="inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90"
+                  style={{ backgroundColor: BRAND_GREEN }}
+                >
+                  Naar foto-upload →
+                </Link>
+              </div>
+            )}
+
+            {role === "vrijwilliger" && (
+              <div className="bg-white dark:bg-stone-800 rounded-2xl shadow-lg border border-stone-200 dark:border-stone-700 p-6 md:p-8 mb-8">
                 <h2 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">
                   Berichten
                 </h2>
