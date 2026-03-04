@@ -20,10 +20,6 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
-function mapPostFromDb(row: Record<string, unknown>): Record<string, unknown> {
-  return { ...row, title: row.titel, body: row.inhoud, published_at: row.gepubliceerd_op };
-}
-
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -36,7 +32,7 @@ export async function GET(
   const { data, error: e } = await admin.from("posts").select("*").eq("id", id).single();
 
   if (e) return NextResponse.json({ error: e.message }, { status: 404 });
-  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
+  return NextResponse.json({ post: data });
 }
 
 export async function PUT(
@@ -74,7 +70,7 @@ export async function PUT(
     .single();
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
+  return NextResponse.json({ post: data });
 }
 
 export async function DELETE(

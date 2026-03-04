@@ -20,15 +20,6 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
-function mapPostFromDb(row: Record<string, unknown>): Record<string, unknown> {
-  return {
-    ...row,
-    title: row.titel,
-    body: row.inhoud,
-    published_at: row.gepubliceerd_op,
-  };
-}
-
 export async function GET() {
   const { error } = await requireAdmin();
   if (error) return error;
@@ -40,8 +31,7 @@ export async function GET() {
     .order("created_at", { ascending: false });
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  const posts = (rows ?? []).map(mapPostFromDb);
-  return NextResponse.json({ posts });
+  return NextResponse.json({ posts: rows ?? [] });
 }
 
 export async function POST(req: Request) {
@@ -67,5 +57,5 @@ export async function POST(req: Request) {
   console.log("[blog] DB Resultaat:", e);
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
+  return NextResponse.json({ post: data });
 }

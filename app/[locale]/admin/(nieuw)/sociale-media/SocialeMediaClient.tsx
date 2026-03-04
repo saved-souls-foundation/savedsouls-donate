@@ -49,8 +49,8 @@ type TabId = "compose" | "platforms" | "calendar" | "blog";
 
 interface BlogPost {
   id: string;
-  title: string | null;
-  body: string | null;
+  titel: string | null;
+  inhoud: string | null;
   body_en: string | null;
   body_th: string | null;
   status: string | null;
@@ -58,7 +58,7 @@ interface BlogPost {
   source: string | null;
   slug: string | null;
   meta_description: string | null;
-  published_at: string | null;
+  gepubliceerd_op: string | null;
   created_at: string | null;
   updated_at: string | null;
   facebook_post_id: string | null;
@@ -959,7 +959,7 @@ export default function SocialeMediaClient() {
                         >
                           <td className="px-4 py-3">
                             <div className="text-sm font-semibold text-gray-900 max-w-[200px] truncate">
-                              {String(post.title ?? "–")}
+                              {String(post.titel ?? "–")}
                             </div>
                             <div className="text-xs text-gray-400 mt-0.5">
                               {(post.meta_description as string)?.slice(0, 50) || "–"}
@@ -987,14 +987,14 @@ export default function SocialeMediaClient() {
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex gap-1">
-                              {post.body && <span title="Nederlands">🇳🇱</span>}
+                              {post.inhoud && <span title="Nederlands">🇳🇱</span>}
                               {post.body_en && <span title="Engels">🇬🇧</span>}
                               {post.body_th && <span title="Thai">🇹🇭</span>}
                             </div>
                           </td>
                           <td className="px-4 py-3 text-xs text-gray-500">
-                            {post.published_at
-                              ? new Date(post.published_at as string).toLocaleDateString("nl-NL")
+                            {post.gepubliceerd_op
+                              ? new Date(post.gepubliceerd_op as string).toLocaleDateString("nl-NL")
                               : "–"}
                           </td>
                           <td className="px-4 py-3">
@@ -1010,8 +1010,8 @@ export default function SocialeMediaClient() {
                                   label: "Bewerken",
                                   onClick: () => {
                                     setEditingBlogPost(post);
-                                    setBlogTitle(String(post.title ?? ""));
-                                    setBlogBody(String(post.body ?? ""));
+                                    setBlogTitle(String(post.titel ?? ""));
+                                    setBlogBody(String(post.inhoud ?? ""));
                                     setBlogBodyEn(String(post.body_en ?? ""));
                                     setBlogBodyTh(String(post.body_th ?? ""));
                                     setBlogCategory(String(post.category ?? "nieuws"));
