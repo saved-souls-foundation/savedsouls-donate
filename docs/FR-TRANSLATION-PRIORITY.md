@@ -34,9 +34,19 @@ Deze volgorde is bedoeld om de belangrijkste pagina’s voor Franstalige bezoeke
 |19 | partners     | 30   | Partners         | ✅ Vertaald  |
 |20 | shelters     | 20   | Andere asielen   | ✅ Vertaald  |
 
-## Fase 4 – Gidsen (veel tekst, later)
-- health, nutrition, behavior, vaccinations, heartworm, en alle overige gids-namespaces.
-- Kan per onderwerp of in batches (bijv. eerst health, dan nutrition).
+## Fase 4 – Gidsen ✅ (kern afgerond)
+| Namespace      | Status      |
+|----------------|-------------|
+| gidsen         | ✅ Vertaald |
+| nutrition      | ✅ Vertaald |
+| toysTraining   | ✅ Vertaald |
+| rawHide        | ✅ Vertaald |
+| health         | ✅ Vertaald |
+| behavior       | ✅ Vertaald |
+| vaccinations   | ✅ Vertaald |
+| heartworm      | ✅ Vertaald |
+
+Overige gids-namespaces (disabledDogGuide, vetCosts, deworming, firstAid, fleaTickParasiteGuide, etc.) kunnen later in batches worden vertaald indien gewenst.
 
 ## Werkwijze
 - Vertaal in `messages/fr.json` de betreffende namespace van EN/NL naar FR.

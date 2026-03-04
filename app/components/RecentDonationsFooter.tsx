@@ -13,10 +13,16 @@ export default function RecentDonations() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     fetch(`/api/donations/recent?locale=${loc}`)
-      .then((res) => res.json())
-      .then((data) => setDonations(data.donations ?? []))
-      .catch(() => setDonations([]));
+      .then((res) => (cancelled ? undefined : res.json()))
+      .then((data) => {
+        if (!cancelled) setDonations(data?.donations ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setDonations([]);
+      });
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- loc is stable; locale changes = page navigation = remount
   }, []);
 

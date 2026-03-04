@@ -33,6 +33,10 @@ type SiteHeaderProps = {
 const ICON_GREEN = "#2d7a3a";
 const CHEVRON_GRAY = "#d1d5db";
 
+/** Vaste classNames voor header-rechterkant om hydration mismatch te voorkomen (server/client moeten identiek zijn) */
+const HEADER_RIGHT_WRAPPER = "flex items-center gap-3 md:gap-6 shrink-0";
+const HEADER_DESKTOP_ACTIONS = "hidden md:flex items-center gap-6 lg:gap-8";
+
 export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -159,9 +163,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         </div>
 
         {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) – vaste gaps tegen hydration mismatch */}
-        <div className="flex items-center gap-2 md:gap-4 shrink-0" suppressHydrationWarning>
+        <div className={HEADER_RIGHT_WRAPPER} suppressHydrationWarning>
           {/* Desktop: search, language, donate */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-5" suppressHydrationWarning>
+          <div className={HEADER_DESKTOP_ACTIONS} suppressHydrationWarning>
             <SiteSearch desktopIconOnly overlay={isOverlay} />
             <LanguageSwitcher minimal overlay={isOverlay} />
             {isHomePage ? (

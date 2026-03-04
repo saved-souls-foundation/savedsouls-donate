@@ -43,10 +43,17 @@ export default function SpotlightSection() {
 
   useEffect(() => {
     if (!inView) return;
+    let cancelled = false;
     fetch("/api/spotlight")
-      .then((r) => r.json())
-      .then(setData)
-      .catch(() => setData({ week: 0, dog: null, cat: null }));
+      .then((r) => (cancelled ? undefined : r.json()))
+      .then((d) => {
+        if (!cancelled && d) setData(d);
+        else if (!cancelled) setData({ week: 0, dog: null, cat: null });
+      })
+      .catch(() => {
+        if (!cancelled) setData({ week: 0, dog: null, cat: null });
+      });
+    return () => { cancelled = true; };
   }, [inView]);
 
   const hasContent = data && (data.dog || data.cat);

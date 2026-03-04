@@ -184,66 +184,90 @@ export default function AdoptPage() {
           </div>
         </header>
 
-        <section className="mb-12 p-6 md:p-10 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-emerald-50/30 dark:from-stone-900 dark:via-stone-800 dark:to-emerald-950/20 border-2 border-amber-200 dark:border-amber-800 shadow-lg">
-          <p className="text-lg md:text-xl text-stone-700 dark:text-stone-300 leading-relaxed mb-4">
-            {t("happyFaces1Before")}
-            <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
-              {t("happyFaces1Link")}
-            </a>
-            {t("happyFaces1After")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-            {t("happyFaces2")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-            {t("happyFaces3")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-            {t("happyFaces4")}
-          </p>
-          <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4">
-            {t("happyFaces5")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
-            {t("happyFaces6")}
-          </p>
-          <ul className="space-y-2 mb-6 text-stone-700 dark:text-stone-300">
-            <li>✨ {t("happyFaces7")}</li>
-            <li>✨ {t("happyFaces8")}</li>
-            <li>✨ {t("happyFaces9")}</li>
-            <li>✨ {t("happyFaces10")}</li>
-          </ul>
-          <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4" style={{ color: ACCENT_GREEN }}>
-            {t("happyFaces11")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-            {t("happyFaces12")}
-          </p>
-          <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
-            {t("happyFaces12Share")}{" "}
-            <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
-              Facebook
-            </a>
-            {" · "}
-            <a href="https://www.youtube.com/@savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
-              YouTube
-            </a>
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a href="#animals" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
+        <section className="mb-12 p-6 md:p-10 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-emerald-50/30 dark:from-stone-900 dark:via-stone-800 dark:to-emerald-950/20 border-2 border-amber-200 dark:border-amber-800 shadow-lg grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 md:items-start">
+          {/* Links: tekst boven + tekst onder */}
+          <div className="md:col-start-1 md:row-start-1">
+            <p className="text-lg md:text-xl text-stone-700 dark:text-stone-300 leading-relaxed mb-4">
+              {t("happyFaces1Before")}
+              <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+                {t("happyFaces1Link")}
+              </a>
+              {t("happyFaces1After")}
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+              {t("happyFaces2")}
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+              {t("happyFaces3")}
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+              {t("happyFaces4")}
+            </p>
+            <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4">
+              {t("happyFaces5")}
+            </p>
+            <a href="#animals" className="inline-block px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90 mb-2" style={{ backgroundColor: ACCENT_GREEN }}>
               {t("happyFacesAdopt")}
             </a>
-            {showSponsor && (
-              <Link href="/sponsor" className="px-5 py-2.5 rounded-xl font-semibold border-2 hover:opacity-90" style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}>
-                {t("happyFacesSponsor")}
+          </div>
+          {/* Rechts (desktop) / midden (mobiel): video */}
+          <div className="w-[85%] max-w-[85%] mx-auto min-h-[200px] rounded-xl overflow-hidden border-2 border-amber-200 dark:border-amber-800 shadow-md bg-stone-200 dark:bg-stone-700 md:col-start-2 md:row-start-1 md:row-span-2 md:sticky md:top-4">
+            <video
+              src="/videos/adopt-hero.mp4"
+              className="w-full h-auto aspect-video object-cover"
+              controls
+              playsInline
+              muted
+              loop
+              autoPlay
+              aria-label={t("happyFaces1Link")}
+            >
+              <track kind="captions" />
+            </video>
+          </div>
+          {/* Links: rest van de tekst */}
+          <div className="md:col-start-1 md:row-start-2">
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
+              {t("happyFaces6")}
+            </p>
+            <ul className="space-y-2 mb-6 text-stone-700 dark:text-stone-300">
+              <li>✨ {t("happyFaces7")}</li>
+              <li>✨ {t("happyFaces8")}</li>
+              <li>✨ {t("happyFaces9")}</li>
+              <li>✨ {t("happyFaces10")}</li>
+            </ul>
+            <p className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4" style={{ color: ACCENT_GREEN }}>
+              {t("happyFaces11")}
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+              {t("happyFaces12")}
+            </p>
+            <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-6">
+              {t("happyFaces12Share")}{" "}
+              <a href="https://www.facebook.com/SavedSoulsFoundation/" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+                Facebook
+              </a>
+              {" · "}
+              <a href="https://www.youtube.com/@savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="font-semibold underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+                YouTube
+              </a>
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="#animals" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: ACCENT_GREEN }}>
+                {t("happyFacesAdopt")}
+              </a>
+              {showSponsor && (
+                <Link href="/sponsor" className="px-5 py-2.5 rounded-xl font-semibold border-2 hover:opacity-90" style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}>
+                  {t("happyFacesSponsor")}
+                </Link>
+              )}
+              <Link href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
+                {t("happyFacesDonate")}
               </Link>
-            )}
-            <Link href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
-              {t("happyFacesDonate")}
-            </Link>
-            <Link href="/volunteer" className="px-5 py-2.5 rounded-xl font-semibold border-2 border-stone-400 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
-              {t("happyFacesVolunteer")}
-            </Link>
+              <Link href="/volunteer" className="px-5 py-2.5 rounded-xl font-semibold border-2 border-stone-400 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
+                {t("happyFacesVolunteer")}
+              </Link>
+            </div>
           </div>
         </section>
 
