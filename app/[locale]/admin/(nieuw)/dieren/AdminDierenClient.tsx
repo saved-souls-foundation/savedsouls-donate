@@ -272,7 +272,7 @@ export function AdminDierenClient({ dieren }: { dieren: DierRow[] }) {
                   <td className="py-3 pr-2">
                     <StatusBadge
                       label={(dier.status && statusLabel[dier.status]) ?? dier.status ?? "–"}
-                      type={(dier.status && statusKleur[dier.status]) ?? "gray"}
+                      type={(statusKleur[dier.status] || "gray") as "gray" | "success" | "warning" | "danger" | "info"}
                     />
                   </td>
                   <td className="py-3 pr-2 text-gray-500">
