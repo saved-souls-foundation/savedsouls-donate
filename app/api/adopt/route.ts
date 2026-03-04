@@ -121,8 +121,16 @@ export async function POST(req: NextRequest) {
           extra_animals: extraAnimals.length > 0 ? extraAnimals : [],
           step: 1,
         });
+        await supabase.from("incoming_emails").insert({
+          van_email: email,
+          van_naam: name,
+          onderwerp: `Adoptieaanvraag: ${name}${dogPreference ? ` – ${dogPreference}` : ""}`,
+          inhoud: text,
+          bron: "aanvraag",
+          status: "in_behandeling",
+        });
       } catch (e) {
-        console.error("Supabase adoption_applications insert failed:", e);
+        console.error("Supabase adoption_applications or incoming_emails insert failed:", e);
       }
     }
 

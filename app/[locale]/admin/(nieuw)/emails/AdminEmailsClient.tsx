@@ -30,6 +30,7 @@ type EmailRow = {
   ai_gegenereerd_antwoord: string | null;
   status: string;
   taal: string | null;
+  bron?: string | null;
 };
 
 type EmailDetail = EmailRow & { inhoud?: string | null };
@@ -390,7 +391,16 @@ export default function AdminEmailsClient() {
                         <div className="text-xs text-gray-600 mt-0.5 truncate font-medium">
                           {row.onderwerp ?? "—"}
                         </div>
-                        <div className="flex items-center gap-2 mt-1.5">
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          {row.bron === "contact_formulier" && (
+                            <span className="text-[10px] font-semibold text-gray-600 bg-gray-100 border border-gray-200 rounded-full px-1.5 py-0.5">Contact</span>
+                          )}
+                          {row.bron === "aanvraag" && (
+                            <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-full px-1.5 py-0.5">Aanvraag</span>
+                          )}
+                          {row.bron === "resend_webhook" && (
+                            <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-1.5 py-0.5">Inkomend</span>
+                          )}
                           <CategoryBadge category={row.ai_categorie} />
                           {row.status === "in_behandeling" && (
                             <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 rounded-full px-1.5 py-0.5">

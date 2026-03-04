@@ -25,9 +25,10 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
+  // Alle rijen uit incoming_emails (inkomend); createAdminClient omzeilt RLS
   let q = admin
     .from("incoming_emails")
-    .select("id, van_email, van_naam, onderwerp, ontvangen_op, ai_categorie, ai_confidence, status, taal, ai_suggestie_template_id, ai_gegenereerd_antwoord", { count: "exact" });
+    .select("id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, status, taal, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord", { count: "exact" });
   if (status && status !== "all") q = q.eq("status", status);
   if (ai_categorie && ai_categorie !== "all") q = q.eq("ai_categorie", ai_categorie);
   if (taal && taal !== "all") q = q.eq("taal", taal);
