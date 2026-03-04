@@ -13,26 +13,26 @@ Deze volgorde is bedoeld om de belangrijkste pagina’s voor Franstalige bezoeke
 | 6 | volunteer    | 111  | Vrijwilliger     | ✅ Kern vertaald (titels, dag, logement, CTA) |
 | 7 | volunteerSignup | 26 | Aanmelden vrijwilliger | ✅ Vertaald |
 
-## Fase 2 – Donatie & acties
-| # | Namespace      | Keys | Pagina        |
-|---|----------------|------|---------------|
-| 8 | donate        | 32   | Doneren       |
-| 9 | sponsorPage   | 22   | Sponsor       |
-|10 | sponsorForm   | 13   | Sponsorformulier |
-|11 | sponsorCheckout | 12 | Sponsor afrekenen |
-|12 | thankYou      | 24   | Bedankpagina  |
+## Fase 2 – Donatie & acties ✅
+| # | Namespace      | Keys | Pagina        | Status      |
+|---|----------------|------|---------------|-------------|
+| 8 | donate        | 32   | Doneren       | ✅ Vertaald |
+| 9 | sponsorPage   | 22   | Sponsor       | ✅ Vertaald |
+|10 | sponsorForm   | 13   | Sponsorformulier | ✅ Vertaald |
+|11 | sponsorCheckout | 12 | Sponsor afrekenen | ✅ Vertaald |
+|12 | thankYou      | 24   | Bedankpagina  | ✅ Vertaald |
 
-## Fase 3 – Overige content
-| # | Namespace    | Keys | Opmerking        |
-|---|--------------|------|------------------|
-|13 | influencers  | 47   | Influenceurs     |
-|14 | dashboard    | 72   | Portaal (login, stappen) |
-|15 | clinicRenovation | 23 | Kliniek-actie   |
-|16 | faq          | 84   | FAQ              |
-|17 | disclaimer   | 23   | Disclaimer       |
-|18 | blog         | 11   | Blog             |
-|19 | partners     | 30   | Partners         |
-|20 | shelters     | 20   | Andere asielen   |
+## Fase 3 – Overige content ✅
+| # | Namespace    | Keys | Opmerking        | Status      |
+|---|--------------|------|------------------|-------------|
+|13 | influencers  | 47   | Influenceurs     | ✅ Vertaald  |
+|14 | dashboard    | 72   | Portaal (login, stappen) | ✅ Vertaald  |
+|15 | clinicRenovation | 23 | Kliniek-actie   | ✅ Vertaald  |
+|16 | faq          | 84   | FAQ              | ✅ Vertaald  |
+|17 | disclaimer   | 23   | Disclaimer       | ✅ Vertaald  |
+|18 | blog         | 11   | Blog             | ✅ Vertaald  |
+|19 | partners     | 30   | Partners         | ✅ Vertaald  |
+|20 | shelters     | 20   | Andere asielen   | ✅ Vertaald  |
 
 ## Fase 4 – Gidsen (veel tekst, later)
 - health, nutrition, behavior, vaccinations, heartworm, en alle overige gids-namespaces.
