@@ -85,16 +85,18 @@ export async function POST(request: NextRequest) {
     }
 
     const verstuurdOp = new Date().toISOString();
-    const inhoudPreview = bodyText.replace(/\s+/g, " ").trim().slice(0, 500);
-    const { error: insertErr } = await admin.from("sent_emails").insert({
-      type: "email_assistant",
+    const insertData = {
+      type: "email_assistant" as const,
       aan: to_email,
       onderwerp: subject,
-      inhoud: inhoudPreview || null,
+      inhoud: bodyText,
       verstuurd_op: verstuurdOp,
       reference_id: incoming_email_id ?? null,
       reference_type: incoming_email_id ? "incoming_email" : null,
-    });
+    };
+    console.log("[admin/emails/send] Poging tot opslaan in DB:", insertData);
+    const { data: insertedRow, error: insertErr } = await admin.from("sent_emails").insert(insertData).select("id").single();
+    console.log("[admin/emails/send] Resultaat van DB:", { error: insertErr, insertedId: insertedRow?.id });
     if (insertErr) {
       console.error("[admin/emails/send] sent_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
       return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt" }, { status: 500 });

@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  // Ophalen via admin client (RLS omzeild)
+  // Ophalen via admin client (RLS omzeild); Nederlandse kolommen: aan, onderwerp, inhoud, verstuurd_op
   const admin = createAdminClient();
   let q = admin
     .from("sent_emails")
