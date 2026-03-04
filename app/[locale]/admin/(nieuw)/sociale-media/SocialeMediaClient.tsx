@@ -91,6 +91,7 @@ export default function SocialeMediaClient() {
   const [scheduleDate, setScheduleDate] = useState("");
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiWriting, setAiWriting] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const [postLang, setPostLang] = useState<"nl" | "en" | "th">("nl");
 
   const [calendarWeek, setCalendarWeek] = useState(new Date());
@@ -109,6 +110,7 @@ export default function SocialeMediaClient() {
   const [blogAiPrompt, setBlogAiPrompt] = useState("");
   const [blogAiWriting, setBlogAiWriting] = useState(false);
   const [blogAiTranslating, setBlogAiTranslating] = useState(false);
+  const [blogSaving, setBlogSaving] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
   const [saveError, setSaveError] = useState("");
 
@@ -234,9 +236,12 @@ export default function SocialeMediaClient() {
         }),
       });
       const data = await res.json();
-      setPostText(data.text ?? "");
+      const text = data?.text ?? data?.content ?? "";
+      setPostText(text);
+      if (!res.ok) showToast(data?.error ?? "AI-schrijven mislukt");
     } catch (e) {
       console.error("AI write error:", e);
+      showToast("AI-schrijven mislukt");
     } finally {
       setAiWriting(false);
     }
@@ -246,31 +251,64 @@ export default function SocialeMediaClient() {
     const activePlatforms = Object.keys(selectedPlatforms).filter((k) =>
       selectedPlatforms[k as keyof typeof selectedPlatforms]
     );
-    if (activePlatforms.includes("blog")) {
-      try {
+    if (activePlatforms.length === 0) return;
+    if (!postText.trim()) return;
+
+    setIsPublishing(true);
+    try {
+      const socialPlatforms = activePlatforms.filter((p) =>
+        ["facebook", "instagram", "tiktok"].includes(p)
+      );
+      if (socialPlatforms.length > 0) {
+        const res = await fetch("/api/admin/scheduled-posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: postText.trim(),
+            platforms: socialPlatforms,
+            status: scheduleMode === "now" ? "gepland" : "concept",
+            scheduled_at:
+              scheduleMode === "now"
+                ? new Date().toISOString()
+                : scheduleDate || new Date(Date.now() + 86400000).toISOString(),
+          }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err?.error ?? err?.message ?? "Opslaan mislukt");
+        }
+        fetchPosts();
+      }
+      if (activePlatforms.includes("blog")) {
         const res = await fetch("/api/blog", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: postText.slice(0, 60) + (postText.length > 60 ? "..." : ""),
-            body: postText,
-            status: scheduleMode === "now" ? "published" : "scheduled",
+            title: postText.slice(0, 60).trim() + (postText.length > 60 ? "..." : ""),
+            body: postText.trim(),
+            status: scheduleMode === "now" ? "published" : "concept",
             source: "manual",
             published_at:
-              scheduleMode === "now" ? new Date().toISOString() : scheduleDate || new Date().toISOString(),
+              scheduleMode === "now" ? new Date().toISOString() : null,
           }),
         });
-        if (!res.ok) throw new Error((await res.json()).error);
-      } catch (e) {
-        console.error("Blog publish error:", e);
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err?.error ?? err?.message ?? "Blog opslaan mislukt");
+        }
       }
+      showToast(
+        `Bericht ${scheduleMode === "now" ? "gepubliceerd" : "ingepland"}! ${activePlatforms.join(", ")}`
+      );
+      setPostText("");
+      setPostImage(null);
+      setAiPrompt("");
+    } catch (e) {
+      console.error("Publish error:", e);
+      showToast(e instanceof Error ? e.message : "Publiceren mislukt");
+    } finally {
+      setIsPublishing(false);
     }
-    showToast(
-      `Bericht ${scheduleMode === "now" ? "gepubliceerd" : "ingepland"}! ${activePlatforms.join(", ")}`
-    );
-    setPostText("");
-    setPostImage(null);
-    setAiPrompt("");
   }
 
   async function handleBlogAiWrite() {
@@ -287,12 +325,14 @@ export default function SocialeMediaClient() {
         }),
       });
       const data = await res.json();
-      const text = data.text ?? "";
+      const text = data?.text ?? data?.content ?? "";
       if (blogLang === "nl") setBlogBody(text);
       else if (blogLang === "en") setBlogBodyEn(text);
       else setBlogBodyTh(text);
+      if (!res.ok) showToast(data?.error ?? "AI-schrijven mislukt");
     } catch (e) {
       console.error("Blog AI write error:", e);
+      showToast("AI-schrijven mislukt");
     } finally {
       setBlogAiWriting(false);
     }
@@ -348,6 +388,7 @@ export default function SocialeMediaClient() {
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .slice(0, 60);
+    setBlogSaving(true);
     try {
       const res = await fetch(
         editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog",
@@ -368,7 +409,8 @@ export default function SocialeMediaClient() {
         }
       );
       if (!res.ok) {
-        setSaveError("Fout bij opslaan.");
+        const err = await res.json().catch(() => ({}));
+        setSaveError(err?.error ?? err?.message ?? "Fout bij opslaan.");
         return;
       }
       setSaveToast(true);
@@ -377,6 +419,8 @@ export default function SocialeMediaClient() {
       loadBlogPosts();
     } catch {
       setSaveError("Netwerkfout. Probeer opnieuw.");
+    } finally {
+      setBlogSaving(false);
     }
   }
 
@@ -609,14 +653,20 @@ export default function SocialeMediaClient() {
               </button>
               <button
                 type="button"
-                disabled={!postText.trim()}
+                disabled={!postText.trim() || isPublishing}
                 onClick={handlePublish}
-                className="px-6 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-bold hover:bg-[#166534] transition-colors disabled:opacity-40 flex items-center gap-2"
+                className="px-6 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-bold hover:bg-[#166534] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 min-h-[44px]"
               >
-                🚀 {scheduleMode === "now" ? "Publiceer nu" : "Inplannen"}{" "}
-                <span className="text-xs opacity-75">
-                  ({Object.values(selectedPlatforms).filter(Boolean).length} platforms)
-                </span>
+                {isPublishing ? (
+                  "⏳ Bezig..."
+                ) : (
+                  <>
+                    🚀 {scheduleMode === "now" ? "Publiceer nu" : "Inplannen"}{" "}
+                    <span className="text-xs opacity-75">
+                      ({Object.values(selectedPlatforms).filter(Boolean).length} platforms)
+                    </span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -1126,10 +1176,10 @@ export default function SocialeMediaClient() {
                   <button
                     type="button"
                     onClick={handleBlogSave}
-                    disabled={!blogTitle.trim() || !blogBody.trim()}
-                    className="w-full py-3 rounded-xl bg-[#2aa348] text-white font-bold text-sm hover:bg-[#166534] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled={!blogTitle.trim() || !blogBody.trim() || blogSaving}
+                    className="w-full py-3 rounded-xl bg-[#2aa348] text-white font-bold text-sm hover:bg-[#166534] transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px]"
                   >
-                    {editingBlogPost ? "💾 Wijzigingen opslaan" : "🚀 Bericht publiceren"}
+                    {blogSaving ? "⏳ Bezig..." : editingBlogPost ? "💾 Wijzigingen opslaan" : "🚀 Bericht publiceren"}
                   </button>
                 </div>
               </div>

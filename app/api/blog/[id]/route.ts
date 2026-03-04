@@ -20,53 +20,73 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
+function mapPostFromDb(row: Record<string, unknown>): Record<string, unknown> {
+  return { ...row, title: row.titel, body: row.inhoud, published_at: row.gepubliceerd_op };
+}
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
 
-  const { data, error: e } = await supabase!
-    .from("posts")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const admin = createAdminClient();
+  const { data, error: e } = await admin.from("posts").select("*").eq("id", id).single();
 
   if (e) return NextResponse.json({ error: e.message }, { status: 404 });
-  return NextResponse.json({ post: data });
+  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
 }
 
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
   const body = await req.json();
 
-  const { data, error: e } = await supabase!
+  const updates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+    ...(body.titel != null && { titel: body.titel }),
+    ...(body.title != null && { titel: body.title }),
+    ...(body.inhoud != null && { inhoud: body.inhoud }),
+    ...(body.body != null && { inhoud: body.body }),
+    ...(body.body_en != null && { body_en: body.body_en }),
+    ...(body.body_th != null && { body_th: body.body_th }),
+    ...(body.category != null && { category: body.category }),
+    ...(body.status != null && { status: body.status }),
+    ...(body.source != null && { source: body.source }),
+    ...(body.slug != null && { slug: body.slug }),
+    ...(body.meta_description != null && { meta_description: body.meta_description }),
+    ...(body.gepubliceerd_op != null && { gepubliceerd_op: body.gepubliceerd_op }),
+    ...(body.published_at != null && { gepubliceerd_op: body.published_at ? new Date(body.published_at).toISOString() : null }),
+  };
+
+  const admin = createAdminClient();
+  const { data, error: e } = await admin
     .from("posts")
-    .update({ ...body, updated_at: new Date().toISOString() })
+    .update(updates)
     .eq("id", id)
     .select()
     .single();
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ post: data });
+  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
 }
 
 export async function DELETE(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
 
-  const { error: e } = await supabase!.from("posts").delete().eq("id", id);
+  const admin = createAdminClient();
+  const { error: e } = await admin.from("posts").delete().eq("id", id);
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
   return NextResponse.json({ success: true });

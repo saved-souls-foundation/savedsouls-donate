@@ -36,13 +36,13 @@ export async function POST(req: Request) {
 
             if (!existing) {
               await supabase.from("posts").insert({
-                title:
+                titel:
                   message.slice(0, 60) + (message.length > 60 ? "..." : ""),
-                body: message,
+                inhoud: message,
                 status: "published",
                 source: "facebook",
                 facebook_post_id: postId,
-                published_at: new Date().toISOString(),
+                gepubliceerd_op: new Date().toISOString(),
               });
             }
           }

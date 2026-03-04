@@ -20,7 +20,7 @@ const STATUSES = ["concept", "gepland", "geplaatst", "mislukt"] as const;
 const PLATFORMS = ["facebook", "instagram", "tiktok", "youtube", "reddit", "x"] as const;
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
@@ -33,17 +33,18 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   }
 
   const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
-  if (typeof body.content === "string") updates.content = body.content.trim();
+  if (typeof body.content === "string") updates.inhoud = body.content.trim();
   if (Array.isArray(body.media_urls))
     updates.media_urls = (body.media_urls as string[]).filter((u) => typeof u === "string");
-  if (typeof body.scheduled_at === "string") updates.scheduled_at = body.scheduled_at ? new Date(body.scheduled_at).toISOString() : null;
+  if (typeof body.scheduled_at === "string") updates.gepland_op = body.scheduled_at ? new Date(body.scheduled_at).toISOString() : null;
   if (typeof body.campaign_label === "string") updates.campaign_label = body.campaign_label.trim() || null;
   if (STATUSES.includes((body.status as (typeof STATUSES)[number]) ?? "concept"))
     updates.status = body.status;
   if (typeof body.platform === "string" && PLATFORMS.includes(body.platform as (typeof PLATFORMS)[number]))
     updates.platform = body.platform;
 
-  const { data, error: e } = await supabase!
+  const admin = createAdminClient();
+  const { data, error: e } = await admin
     .from("scheduled_posts")
     .update(updates)
     .eq("id", id)
@@ -51,16 +52,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     .single();
 
   if (e) return NextResponse.json({ error: e.message }, { status: e.code === "PGRST116" ? 404 : 500 });
-  return NextResponse.json({ data });
+  const row = data as { inhoud?: string; gepland_op?: string | null } & typeof data;
+  return NextResponse.json({
+    data: { ...row, content: row.inhoud, scheduled_at: row.gepland_op ?? null },
+  });
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
 
-  const { error: e } = await supabase!.from("scheduled_posts").delete().eq("id", id);
+  const admin = createAdminClient();
+  const { error: e } = await admin.from("scheduled_posts").delete().eq("id", id);
 
   if (e) return NextResponse.json({ error: e.message }, { status: e.code === "PGRST116" ? 404 : 500 });
   return NextResponse.json({ success: true });

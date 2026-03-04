@@ -17,23 +17,29 @@ async function requireAdmin() {
 }
 
 export async function GET() {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
 
-  const { data, error: e } = await supabase!
+  const admin = createAdminClient();
+  const { data, error: e } = await admin
     .from("scheduled_posts")
-    .select("*")
-    .order("scheduled_at", { ascending: true, nullsFirst: false });
+    .select("id, platform, inhoud, media_urls, gepland_op, campaign_label, status, created_at, updated_at")
+    .order("gepland_op", { ascending: true, nullsFirst: false });
 
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ data: data ?? [] });
+  const rows = (data ?? []).map((row) => ({
+    ...row,
+    content: row.inhoud,
+    scheduled_at: row.gepland_op,
+  }));
+  return NextResponse.json({ data: rows });
 }
 
 const PLATFORMS = ["facebook", "instagram", "tiktok", "youtube", "reddit", "x"] as const;
 const STATUSES = ["concept", "gepland", "geplaatst", "mislukt"] as const;
 
 export async function POST(request: NextRequest) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
 
   let body: Record<string, unknown>;
@@ -43,7 +49,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const content = typeof body.content === "string" ? body.content.trim() : "";
+  const inhoud = typeof body.content === "string" ? body.content.trim() : "";
   const platforms = Array.isArray(body.platforms)
     ? (body.platforms as string[]).filter((p) => PLATFORMS.includes(p as (typeof PLATFORMS)[number]))
     : typeof body.platform === "string" && PLATFORMS.includes(body.platform as (typeof PLATFORMS)[number])
@@ -52,7 +58,7 @@ export async function POST(request: NextRequest) {
   const status = STATUSES.includes((body.status as (typeof STATUSES)[number]) ?? "concept")
     ? (body.status as (typeof STATUSES)[number])
     : "concept";
-  const scheduled_at =
+  const gepland_op =
     status === "gepland" && typeof body.scheduled_at === "string" && body.scheduled_at
       ? new Date(body.scheduled_at).toISOString()
       : null;
@@ -62,23 +68,31 @@ export async function POST(request: NextRequest) {
     ? (body.media_urls as string[]).filter((u) => typeof u === "string")
     : [];
 
-  if (!content) return NextResponse.json({ error: "content is required" }, { status: 400 });
+  if (!inhoud) return NextResponse.json({ error: "content is required" }, { status: 400 });
   if (platforms.length === 0) return NextResponse.json({ error: "At least one platform is required" }, { status: 400 });
 
   const rows = platforms.map((platform) => ({
     platform,
-    content,
+    inhoud,
     media_urls,
-    scheduled_at,
+    gepland_op,
     campaign_label,
     status,
   }));
 
-  const { data: inserted, error: insertErr } = await supabase!
+  const admin = createAdminClient();
+  console.log("[scheduled-posts] Poging publiceren:", rows);
+  const { data: inserted, error: insertErr } = await admin
     .from("scheduled_posts")
     .insert(rows)
-    .select("id, platform, content, media_urls, scheduled_at, campaign_label, status, created_at, updated_at");
+    .select("id, platform, inhoud, media_urls, gepland_op, campaign_label, status, created_at, updated_at");
+  console.log("[scheduled-posts] DB Resultaat:", insertErr);
 
   if (insertErr) return NextResponse.json({ error: insertErr.message }, { status: 500 });
-  return NextResponse.json({ data: inserted ?? [] });
+  const data = (inserted ?? []).map((row) => ({
+    ...row,
+    content: row.inhoud,
+    scheduled_at: row.gepland_op,
+  }));
+  return NextResponse.json({ data });
 }

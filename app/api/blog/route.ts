@@ -20,35 +20,52 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
+function mapPostFromDb(row: Record<string, unknown>): Record<string, unknown> {
+  return {
+    ...row,
+    title: row.titel,
+    body: row.inhoud,
+    published_at: row.gepubliceerd_op,
+  };
+}
+
 export async function GET() {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
 
-  const { data: posts, error: e } = await supabase!
+  const admin = createAdminClient();
+  const { data: rows, error: e } = await admin
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-  }
-  return NextResponse.json({ posts: posts ?? [] });
+  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
+  const posts = (rows ?? []).map(mapPostFromDb);
+  return NextResponse.json({ posts });
 }
 
 export async function POST(req: Request) {
-  const { error, supabase } = await requireAdmin();
+  const { error } = await requireAdmin();
   if (error) return error;
 
   const body = await req.json();
+  const insertData = {
+    titel: body.title ?? null,
+    inhoud: body.body ?? null,
+    body_en: body.body_en ?? null,
+    body_th: body.body_th ?? null,
+    category: body.category ?? "nieuws",
+    status: body.status ?? "concept",
+    source: body.source ?? "manual",
+    slug: body.slug ?? null,
+    meta_description: body.meta_description ?? null,
+    gepubliceerd_op: body.published_at ? new Date(body.published_at).toISOString() : null,
+  };
+  console.log("[blog] Poging publiceren:", insertData);
+  const admin = createAdminClient();
+  const { data, error: e } = await admin.from("posts").insert(insertData).select().single();
+  console.log("[blog] DB Resultaat:", e);
 
-  const { data, error: e } = await supabase!
-    .from("posts")
-    .insert(body)
-    .select()
-    .single();
-
-  if (e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-  }
-  return NextResponse.json({ post: data });
+  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
+  return NextResponse.json({ post: mapPostFromDb(data as Record<string, unknown>) });
 }
