@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/sendMail";
 
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
+/** From moet formaat "Name <email@domain.com>" hebben voor Resend (geverifieerd domein). */
+const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -50,6 +51,8 @@ export async function POST(request: NextRequest) {
     const html = wrapHtml(bodyText);
     const text = bodyText.replace(/<[^>]+>/g, "");
 
+    console.log("[admin/emails/send] RESEND_API_KEY present:", Boolean(process.env.RESEND_API_KEY), "| from:", RESEND_FROM, "| to:", to_email);
+
     const result = await sendMail({
       from: RESEND_FROM,
       to: to_email,
@@ -59,7 +62,9 @@ export async function POST(request: NextRequest) {
     });
 
     if (!result.success) {
-      return NextResponse.json({ error: result.error ?? "Send failed" }, { status: 502 });
+      const errMsg = result.error ?? "Send failed";
+      console.error("[admin/emails/send] Resend foutmelding:", errMsg);
+      return NextResponse.json({ error: errMsg }, { status: 502 });
     }
 
     // Alle database-schrijfacties via admin client (RLS omzeild)

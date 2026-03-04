@@ -14,6 +14,7 @@ function parseFrom(from: string): { van_naam: string | null; van_email: string |
 }
 
 export async function POST(request: NextRequest) {
+  console.log("[webhooks/resend] POST received");
   try {
     const secret = process.env.RESEND_WEBHOOK_SECRET;
     if (!secret) {
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (payload.type !== "email.received") {
+      console.log("[webhooks/resend] Event genegeerd (niet email.received): type=", payload.type);
       return NextResponse.json({ received: true });
     }
 
@@ -88,22 +90,25 @@ export async function POST(request: NextRequest) {
     const { van_naam, van_email } = parseFrom(fromHeader);
     const inhoud = (html ?? text ?? "").trim() || null;
 
+    console.log("[webhooks/resend] email.received – email_id=", emailId, "from=", fromHeader, "subject=", subject?.slice(0, 50));
+
     try {
-      // Database via admin client (RLS omzeild)
       const admin = createAdminClient();
       const row = {
         van_email: van_email ?? null,
         van_naam: van_naam ?? null,
         onderwerp: subject || null,
         inhoud,
-        bron: "resend_webhook",
+        ontvangen_op: new Date().toISOString(),
+        bron: "inkomend",
         status: "in_behandeling",
       };
-      const { error: insertErr } = await admin.from("incoming_emails").insert(row);
+      const { data: inserted, error: insertErr } = await admin.from("incoming_emails").insert(row).select("id").single();
       if (insertErr) {
         console.error("[webhooks/resend] incoming_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
         return NextResponse.json({ error: "Failed to store email" }, { status: 500 });
       }
+      console.log("[webhooks/resend] Saved to incoming_emails id=", inserted?.id);
     } catch (e) {
       console.error("[webhooks/resend] Supabase/incoming_emails error:", e);
       return NextResponse.json({ error: "Database not configured or insert failed" }, { status: 500 });

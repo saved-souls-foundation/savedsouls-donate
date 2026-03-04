@@ -398,7 +398,7 @@ export default function AdminEmailsClient() {
                           {row.bron === "aanvraag" && (
                             <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-full px-1.5 py-0.5">Aanvraag</span>
                           )}
-                          {row.bron === "resend_webhook" && (
+                          {(row.bron === "inkomend" || row.bron === "resend_webhook") && (
                             <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-1.5 py-0.5">Inkomend</span>
                           )}
                           <CategoryBadge category={row.ai_categorie} />

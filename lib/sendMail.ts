@@ -45,14 +45,16 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
     });
     const { data, error } = result;
     if (error) {
-      console.error("[Resend] sendMail error:", JSON.stringify({ name: error.name, message: error.message }));
-      return { success: false, error: error.message || "Failed to send email." };
+      const errMsg = error.message || "Failed to send email.";
+      console.error("[Resend] sendMail error – exact:", JSON.stringify(error), "| message:", errMsg);
+      return { success: false, error: errMsg };
     }
     console.log("[Resend] Mail sent", { id: data?.id, to, from });
     return { success: true };
   } catch (e) {
-    console.error("[Resend] sendMail exception:", e);
-    return { success: false, error: e instanceof Error ? e.message : "Failed to send email." };
+    const errMsg = e instanceof Error ? e.message : String(e);
+    console.error("[Resend] sendMail exception – exact:", e);
+    return { success: false, error: errMsg };
   }
 }
 

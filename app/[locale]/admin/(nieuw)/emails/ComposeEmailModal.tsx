@@ -61,7 +61,7 @@ export default function ComposeEmailModal({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(typeof data?.error === "string" ? data.error : "Verzenden mislukt");
+        setError(typeof data?.error === "string" ? data.error : "Verzenden mislukt. Zie Vercel Logs voor [admin/emails/send] of [Resend].");
         return;
       }
       onSent();
