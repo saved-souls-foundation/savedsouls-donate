@@ -22,6 +22,7 @@ function wrapHtml(body: string): string {
 /**
  * Verstuur een nieuwe e-mail (niet gekoppeld aan inkomende mail, of als antwoord met optional incoming_email_id).
  * POST body: { to_email, subject, body, incoming_email_id? }
+ * Logt in sent_emails met Nederlandse kolommen: aan, onderwerp, inhoud, verstuurd_op.
  */
 export async function POST(request: NextRequest) {
   try {
