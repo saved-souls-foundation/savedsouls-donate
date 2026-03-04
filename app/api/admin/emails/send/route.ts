@@ -64,7 +64,11 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       const errMsg = result.error ?? "Send failed";
       console.error("[admin/emails/send] Resend foutmelding:", errMsg);
-      return NextResponse.json({ error: errMsg }, { status: 502 });
+      const isDomainError = /domain|verif|verified/i.test(String(errMsg));
+      const clientMessage = isDomainError
+        ? "Verzenden mislukt. Controleer de e-mailinstellingen (domein)."
+        : errMsg;
+      return NextResponse.json({ error: clientMessage }, { status: 502 });
     }
 
     // Alle database-schrijfacties via admin client (RLS omzeild)

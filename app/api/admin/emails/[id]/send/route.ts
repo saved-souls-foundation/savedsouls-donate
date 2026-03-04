@@ -49,7 +49,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     html,
   });
 
-  if (!result.success) return NextResponse.json({ error: result.error ?? "Send failed" }, { status: 502 });
+  if (!result.success) {
+    const errMsg = result.error ?? "Send failed";
+    if (/domain|verif|verified/i.test(String(errMsg))) {
+      console.error("[admin/emails/[id]/send] Resend (niet tonen aan gebruiker):", errMsg);
+      return NextResponse.json({ error: "Verzenden mislukt. Controleer de e-mailinstellingen (domein)." }, { status: 502 });
+    }
+    return NextResponse.json({ error: errMsg }, { status: 502 });
+  }
 
   const { data: { user } } = await supabase!.auth.getUser();
   const { error: updateErr } = await supabase!

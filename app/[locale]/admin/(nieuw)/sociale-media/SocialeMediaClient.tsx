@@ -1038,8 +1038,13 @@ export default function SocialeMediaClient() {
                                   icon: "🗑️",
                                   label: "Verwijderen",
                                   onClick: async () => {
-                                    if (!confirm("Bericht verwijderen?")) return;
-                                    await fetch(`/api/blog/${post.id}`, { method: "DELETE" });
+                                    if (!confirm("Weet je zeker dat je dit blogbericht wilt verwijderen? Dit kan niet ongedaan worden gemaakt.")) return;
+                                    const res = await fetch(`/api/blog/${post.id}`, { method: "DELETE" });
+                                    if (!res.ok) {
+                                      const err = await res.json().catch(() => ({}));
+                                      alert((err as { error?: string }).error ?? "Verwijderen mislukt.");
+                                      return;
+                                    }
                                     loadBlogPosts();
                                   },
                                 },

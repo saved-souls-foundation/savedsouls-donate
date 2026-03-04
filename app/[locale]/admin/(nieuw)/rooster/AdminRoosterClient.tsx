@@ -148,7 +148,7 @@ export default function AdminRoosterClient({
       {/* HEADER */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900">📋 Rooster</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">📅 Rooster</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             Week van{" "}
             {new Date(currentWeekStart).toLocaleDateString("nl-NL", {
@@ -219,7 +219,7 @@ export default function AdminRoosterClient({
           value={new Set(shifts?.map((s) => s.volunteer_id) ?? []).size}
         />
         <StatCard
-          icon="📋"
+          icon="📅"
           label="Diensten deze week"
           value={shifts?.length ?? 0}
           accentColor="blue"
@@ -548,6 +548,7 @@ export default function AdminRoosterClient({
                                 icon: "🗑️",
                                 label: "Verwijderen",
                                 onClick: async () => {
+                                  if (!confirm("Weet je zeker dat je deze dienst wilt verwijderen?")) return;
                                   const supabase = createClient();
                                   await supabase
                                     .from("roster_shifts")
@@ -677,17 +678,30 @@ export default function AdminRoosterClient({
                     </div>
                   )}
                 </div>
-                <div className="p-4 border-t border-gray-100 flex gap-2 rounded-b-2xl">
+                <div className="p-4 border-t border-gray-100 flex flex-wrap gap-2 rounded-b-2xl">
                   <button
                     type="button"
                     onClick={() => setSelectedShift(null)}
-                    className="flex-1 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+                    className="flex-1 min-w-[80px] py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50"
                   >
                     Sluiten
                   </button>
                   <button
                     type="button"
-                    className="flex-1 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-semibold hover:bg-[#166534]"
+                    onClick={async () => {
+                      if (!confirm("Weet je zeker dat je deze dienst wilt verwijderen?")) return;
+                      const supabase = createClient();
+                      await supabase.from("roster_shifts").delete().eq("id", selectedShift.id);
+                      setSelectedShift(null);
+                      reloadShifts();
+                    }}
+                    className="py-2 px-4 rounded-xl border border-red-200 text-sm font-semibold text-red-600 hover:bg-red-50"
+                  >
+                    🗑️ Verwijderen
+                  </button>
+                  <button
+                    type="button"
+                    className="flex-1 min-w-[80px] py-2 rounded-xl bg-[#2aa348] text-white text-sm font-semibold hover:bg-[#166534]"
                   >
                     ✏️ Bewerken
                   </button>

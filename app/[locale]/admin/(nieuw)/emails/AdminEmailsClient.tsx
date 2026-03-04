@@ -136,12 +136,17 @@ export default function AdminEmailsClient() {
     fetchList();
   }, [fetchList]);
 
-  useEffect(() => {
-    fetch("/api/admin/emails/stats")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => j && setStats(j))
-      .catch(() => setStats(null));
+  const fetchStats = useCallback(async () => {
+    const res = await fetch("/api/admin/emails/stats");
+    if (res.ok) {
+      const j = await res.json();
+      setStats(j ?? null);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   useEffect(() => {
     fetch("/api/admin/email-templates")
@@ -316,8 +321,9 @@ export default function AdminEmailsClient() {
         setReplyText("");
         setAiSuggestion("");
       }
-      fetchList();
-      if (stats) setStats({ ...stats, pending: Math.max(0, (stats.pending ?? 0) - 1) });
+      setData((prev) => prev.filter((r) => r.id !== id));
+      setTotal((prev) => Math.max(0, prev - 1));
+      fetchStats();
     } catch (err) {
       setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
     } finally {
@@ -351,9 +357,11 @@ export default function AdminEmailsClient() {
         setReplyText("");
         setAiSuggestion("");
       }
+      const deletedSet = new Set(selectedIds);
+      setData((prev) => prev.filter((r) => !deletedSet.has(r.id)));
+      setTotal((prev) => Math.max(0, prev - deletedSet.size));
       setSelectedIds(new Set());
-      fetchList();
-      if (stats) setStats({ ...stats, pending: Math.max(0, (stats.pending ?? 0) - selectedIds.size) });
+      fetchStats();
     } catch (err) {
       setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
     } finally {

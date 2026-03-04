@@ -39,6 +39,10 @@ export async function POST(request: NextRequest) {
   const title = typeof body.title === "string" ? body.title.trim() : "";
   if (!title) return NextResponse.json({ error: "title required" }, { status: 400 });
 
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const rawAnimalId = body.animal_id;
+  const animal_id = typeof rawAnimalId === "string" && rawAnimalId.trim() && uuidRegex.test(rawAnimalId.trim()) ? rawAnimalId.trim() : null;
+
   const row = {
     title,
     description: body.description ?? null,
@@ -46,7 +50,7 @@ export async function POST(request: NextRequest) {
     start_time: body.start_time,
     end_time: body.end_time ?? null,
     location: body.location ?? null,
-    animal_id: body.animal_id ?? null,
+    animal_id,
     animal_name: body.animal_name ?? null,
     assigned_to: body.assigned_to ?? null,
     attachment_url: body.attachment_url ?? null,

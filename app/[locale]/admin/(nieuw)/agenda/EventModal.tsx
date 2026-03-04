@@ -56,7 +56,7 @@ export default function EventModal({ initialDate, initialEvent, volunteers = [],
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    fetch("/api/animals")
+    fetch("/api/admin/agenda/animals")
       .then((r) => r.json())
       .then((data) => {
         const list: AnimalOption[] = [];

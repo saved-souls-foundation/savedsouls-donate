@@ -24,6 +24,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const rawAnimalId = body.animal_id;
+  const animalId = typeof rawAnimalId === "string" && rawAnimalId.trim() && uuidRegex.test(rawAnimalId.trim()) ? rawAnimalId.trim() : null;
+
   const updates: Record<string, unknown> = {
     updated_at: new Date().toISOString(),
     ...(typeof body.title === "string" && { title: body.title.trim() }),
@@ -32,7 +36,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     ...(body.start_time !== undefined && { start_time: body.start_time }),
     ...(body.end_time !== undefined && { end_time: body.end_time }),
     ...(body.location !== undefined && { location: body.location }),
-    ...(body.animal_id !== undefined && { animal_id: body.animal_id }),
+    ...(body.animal_id !== undefined && { animal_id: animalId }),
     ...(body.animal_name !== undefined && { animal_name: body.animal_name }),
     ...(body.assigned_to !== undefined && { assigned_to: body.assigned_to }),
     ...(body.attachment_url !== undefined && { attachment_url: body.attachment_url }),

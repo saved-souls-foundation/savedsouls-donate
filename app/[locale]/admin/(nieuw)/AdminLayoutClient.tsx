@@ -365,27 +365,30 @@ export default function AdminLayoutClient({
           </aside>
         </div>
       )}
-      <header className="md:hidden flex items-center justify-between p-3 border-b" style={{ borderColor: ADM_BORDER, background: ADM_SIDEBAR }}>
+      <header
+        className="md:hidden flex items-center justify-between gap-2 shrink-0 min-h-[52px] px-3 py-2 border-b"
+        style={{ borderColor: ADM_BORDER, background: ADM_SIDEBAR }}
+      >
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="shrink-0 p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
           style={{ color: ADM_TEXT }}
           aria-label={t("menuOpen")}
         >
           <span className="text-xl">☰</span>
         </button>
-        <div className="flex items-center gap-2">
-          <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-7 w-7 object-contain" />
-          <span className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
+        <div className="flex items-center gap-2 min-w-0 flex-1 justify-center">
+          <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-6 w-6 object-contain shrink-0" />
+          <span className="font-bold text-sm truncate" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
             {t("adminPanelTitle")}
           </span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 shrink-0">
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100"
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Zoeken"
           >
             <span className="text-lg">🔍</span>

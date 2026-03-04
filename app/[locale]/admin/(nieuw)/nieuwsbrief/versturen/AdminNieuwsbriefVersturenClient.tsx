@@ -26,6 +26,16 @@ type NewsletterTemplate = {
   body_en: string;
 };
 
+type NewsletterDraft = {
+  id: string;
+  titel: string | null;
+  subject_nl: string | null;
+  subject_en: string | null;
+  aangemaakt_op: string | null;
+  scheduled_at: string | null;
+  verstuurd_op: string | null;
+};
+
 export default function AdminNieuwsbriefVersturenClient() {
   const t = useTranslations("admin.newsletter");
   const tAdmin = useTranslations("admin");
@@ -45,6 +55,32 @@ export default function AdminNieuwsbriefVersturenClient() {
   const [scheduledAt, setScheduledAt] = useState("");
   const [scheduling, setScheduling] = useState(false);
   const [scheduleSuccess, setScheduleSuccess] = useState(false);
+  const [drafts, setDrafts] = useState<NewsletterDraft[]>([]);
+  const [deletingDraftId, setDeletingDraftId] = useState<string | null>(null);
+
+  const fetchDrafts = useCallback(async () => {
+    const res = await fetch("/api/admin/newsletter/drafts");
+    if (res.ok) {
+      const json = await res.json();
+      setDrafts(json.drafts ?? []);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDrafts();
+  }, [fetchDrafts]);
+
+  async function handleDeleteDraft(id: string) {
+    if (!confirm("Weet je zeker dat je deze nieuwsbrief-draft wilt verwijderen?")) return;
+    setDeletingDraftId(id);
+    try {
+      const res = await fetch(`/api/admin/newsletter/drafts/${id}`, { method: "DELETE" });
+      if (res.ok) await fetchDrafts();
+      else alert("Verwijderen mislukt.");
+    } finally {
+      setDeletingDraftId(null);
+    }
+  }
 
   const fetchCounts = useCallback(async () => {
     const res = await fetch("/api/admin/newsletter/count");
@@ -181,6 +217,38 @@ export default function AdminNieuwsbriefVersturenClient() {
       {sendError && (
         <div className="rounded-lg border px-4 py-3 text-sm border-red-300 bg-red-50 text-red-800">
           {t("sendError")}
+        </div>
+      )}
+
+      {drafts.length > 0 && (
+        <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+          <h2 className="text-sm font-semibold mb-3" style={{ color: ADM_TEXT }}>Geplande / verzonden nieuwsbrieven</h2>
+          <ul className="space-y-2">
+            {drafts.map((d) => (
+              <li key={d.id} className="flex items-center justify-between gap-3 py-2 border-b last:border-b-0" style={{ borderColor: ADM_BORDER }}>
+                <div className="min-w-0 flex-1">
+                  <span className="text-sm font-medium truncate block" style={{ color: ADM_TEXT }}>{d.titel || d.subject_nl || d.subject_en || "Nieuwsbrief"}</span>
+                  <span className="text-xs" style={{ color: ADM_MUTED }}>
+                    {d.scheduled_at ? `Gepland: ${new Date(d.scheduled_at).toLocaleString("nl-NL")}` : "—"}
+                    {d.verstuurd_op && (
+                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                        Verzonden
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  disabled={deletingDraftId === d.id}
+                  onClick={() => handleDeleteDraft(d.id)}
+                  className="shrink-0 px-3 py-1.5 rounded-lg border text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+                  style={{ borderColor: ADM_BORDER }}
+                >
+                  {deletingDraftId === d.id ? loadingStr : "Verwijderen"}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
