@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import TurnstileWidget from "./TurnstileWidget";
 
 const ACCENT_GREEN = "#2aa348";
@@ -18,6 +18,7 @@ type ContactFormProps = {
 export default function ContactForm({ idPrefix = "contact", showTitle = true, className = "", locale: localeProp }: ContactFormProps) {
   const localeFromContext = useLocale();
   const locale = (localeProp && localeProp.trim()) || localeFromContext || "en";
+  const t = useTranslations("home");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -30,7 +31,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
-      setError("Please complete the security check.");
+      setError(t("contactError"));
       return;
     }
     setError("");
@@ -50,7 +51,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError((data as { error?: string }).error || "Something went wrong. Please try again.");
+        setError((data as { error?: string }).error || t("contactError"));
         return;
       }
       setSent(true);
@@ -60,7 +61,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       setMessage("");
       setTurnstileToken(null);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(t("contactError"));
     } finally {
       setSending(false);
     }
@@ -76,23 +77,23 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       <div className="max-w-xl mx-auto w-full px-4">
         {showTitle && (
           <h2 className="text-xl font-bold mb-6 text-center dark:text-[#2aa348]" style={{ color: ACCENT_GREEN }}>
-            Contact
+            {t("contactTitle")}
           </h2>
         )}
         {sent ? (
           <div className="text-center py-8 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
             <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Thanks for contacting us!
+              {t("contactThanksTitle")}
             </p>
             <p className="text-stone-600 dark:text-stone-400 text-base">
-              Your message has been sent to info@savedsouls-foundation.org. We&apos;ll get back to you as soon as we can.
+              {t("contactThanksMessage")}
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor={nameId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Name
+                {t("contactName")}
               </label>
               <input
                 id={nameId}
@@ -101,12 +102,12 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="w-full px-4 py-3 min-h-[44px] rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="Your name"
+                placeholder={t("contactNamePlaceholder")}
               />
             </div>
             <div>
               <label htmlFor={emailId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Email
+                {t("contactEmail")}
               </label>
               <input
                 id={emailId}
@@ -115,12 +116,12 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 min-h-[44px] rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="your@email.com"
+                placeholder={t("contactEmailPlaceholder")}
               />
             </div>
             <div>
               <label htmlFor={subjectId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Subject
+                {t("contactSubject")}
               </label>
               <input
                 id={subjectId}
@@ -128,12 +129,12 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="w-full px-4 py-3 min-h-[44px] rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348]"
-                placeholder="What is your message about?"
+                placeholder={t("contactSubjectPlaceholder")}
               />
             </div>
             <div>
               <label htmlFor={messageId} className="block text-base font-medium text-stone-700 dark:text-stone-300 mb-1">
-                Message
+                {t("contactMessage")}
               </label>
               <textarea
                 id={messageId}
@@ -142,7 +143,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 required
                 rows={4}
                 className="w-full px-4 py-3 min-h-[44px] rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#2aa348]/50 focus:border-[#2aa348] resize-y"
-                placeholder="Write your message..."
+                placeholder={t("contactMessagePlaceholder")}
               />
             </div>
             {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
@@ -164,7 +165,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
               className="w-full py-3 min-h-[48px] rounded-lg font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
-              {sending ? "Sending…" : "Send message"}
+              {sending ? t("contactSending") : t("contactSend")}
             </button>
           </form>
         )}

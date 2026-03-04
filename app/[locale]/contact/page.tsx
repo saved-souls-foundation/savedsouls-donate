@@ -21,14 +21,15 @@ export default async function ContactPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("common");
+  const tContact = await getTranslations("contactPage");
   return (
     <ParallaxPage>
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center">
-          Contact
+          {tContact("title")}
         </h1>
         <p className="text-stone-600 dark:text-stone-400 text-center mb-10">
-          General enquiries, visits or adoption? Get in touch.
+          {tContact("subtitle")}
         </p>
 
         <section className="space-y-8 text-stone-700 dark:text-stone-300">
@@ -54,7 +55,7 @@ export default async function ContactPage({ params }: Props) {
                   133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand
                 </p>
                 <p className="text-base text-stone-500 dark:text-stone-400 mt-1">
-                  Opening hours: 1:30 – 3:30 p.m. daily. Please contact us to schedule an appointment.
+                  {tContact("openingHours")}
                 </p>
               </div>
             </div>
@@ -84,7 +85,7 @@ export default async function ContactPage({ params }: Props) {
 
           <div className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Email
+              {tContact("emailHeading")}
             </h2>
             <a
               href="mailto:info@savedsouls-foundation.org"
@@ -94,51 +95,46 @@ export default async function ContactPage({ params }: Props) {
               info@savedsouls-foundation.org
             </a>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-1">
-              For general enquiries or use the <Link href="/#contact" className="underline" style={{ color: ACCENT_GREEN }}>contact form on our homepage</Link>.
+              {tContact("emailLinkBefore")}
+              <Link href="/#contact" className="underline" style={{ color: ACCENT_GREEN }}>{tContact("emailLinkLabel")}</Link>
+              {tContact("emailLinkAfter")}
             </p>
           </div>
 
           <div className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
-              Phone
+              {tContact("phoneHeading")}
             </h2>
             <p className="font-medium">
               <a href="tel:+66623698246" className="inline-block py-2 pr-1 -ml-1 min-h-[44px] min-w-[44px] hover:underline underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded" style={{ color: "inherit" }}>
                 +66 62 369 8246
               </a>
-              <span className="text-stone-500 dark:text-stone-400 text-sm"> (Thai)</span>
-            </p>
-            <p className="font-medium mt-1">
-              <a href="tel:+980005406" className="inline-block py-2 pr-1 -ml-1 min-h-[44px] min-w-[44px] hover:underline underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded" style={{ color: "inherit" }}>
-                +98 000 5406
-              </a>
-              <span className="text-stone-500 dark:text-stone-400 text-sm"> (English)</span>
             </p>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-2">
-              Office hours: 8:00 AM – 4:00 PM
+              {tContact("officeHours")}
             </p>
           </div>
 
           {/* Bank details */}
           <div className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
             <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: ACCENT_GREEN }}>
-              Bank details (donations)
+              {tContact("bankHeading")}
             </h2>
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Thai Bank Account</p>
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">{tContact("thaiBankAccount")}</p>
                 <dl className="space-y-1.5 text-sm md:text-base">
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("accountHolder")}</dt>
                     <dd className="font-medium text-stone-800 dark:text-stone-200">Saved-Souls Foundation</dd>
                     <dd className="text-stone-600 dark:text-stone-300">Ban Fang, Khon Kaen</dd>
                   </div>
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("bank")}</dt>
                     <dd className="font-medium text-stone-800 dark:text-stone-200">Kasikorn Bank</dd>
                   </div>
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("account")}</dt>
                     <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">033-8-13623-4</dd>
                   </div>
                   <div>
@@ -152,18 +148,18 @@ export default async function ContactPage({ params }: Props) {
                 </dl>
               </div>
               <div className="p-4 rounded-lg bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-600">
-                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Swiss Bank Account</p>
+                <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">{tContact("swissBankAccount")}</p>
                 <dl className="space-y-1.5 text-sm md:text-base">
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("accountHolder")}</dt>
                     <dd className="font-medium text-stone-800 dark:text-stone-200">Saved Souls Animal Sanctuary / Tierheim Ban Fang</dd>
                   </div>
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("bank")}</dt>
                     <dd className="font-medium text-stone-800 dark:text-stone-200">PostFinance AG</dd>
                   </div>
                   <div>
-                    <dt className="text-stone-500 dark:text-stone-400">Account</dt>
+                    <dt className="text-stone-500 dark:text-stone-400">{tContact("account")}</dt>
                     <dd className="font-mono text-stone-700 dark:text-stone-300">80-271722-9</dd>
                   </div>
                   <div>
@@ -178,7 +174,9 @@ export default async function ContactPage({ params }: Props) {
               </div>
             </div>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-3">
-              Or donate directly via <Link href="/#donate" className="underline" style={{ color: ACCENT_GREEN }}>PayPal on our homepage</Link>.
+              {tContact("orDonateViaBefore")}
+              <Link href="/#donate" className="underline" style={{ color: ACCENT_GREEN }}>{tContact("orDonateViaLink")}</Link>
+              {tContact("orDonateViaAfter")}
             </p>
           </div>
         </section>
@@ -190,24 +188,24 @@ export default async function ContactPage({ params }: Props) {
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: BUTTON_ORANGE }}
           >
-            Send email
+            {tContact("sendEmail")}
           </a>
           <Link
             href="/#contact"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
             style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
           >
-            Contact form on homepage
+            {tContact("contactFormHomepage")}
           </Link>
         </div>
 
         {/* Contact form */}
         <div className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
-            Send us a message
+            {tContact("sendMessageHeading")}
           </h2>
           <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
-            Fill out the form below and we&apos;ll get back to you as soon as possible.
+            {tContact("sendMessageSubtitle")}
           </p>
           <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
         </div>

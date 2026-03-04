@@ -158,10 +158,10 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           />
         </div>
 
-        {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) */}
-        <div className="flex items-center gap-3 md:gap-6 shrink-0">
+        {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) – vaste gaps tegen hydration mismatch */}
+        <div className="flex items-center gap-2 md:gap-4 shrink-0" suppressHydrationWarning>
           {/* Desktop: search, language, donate */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden md:flex items-center gap-3 lg:gap-5" suppressHydrationWarning>
             <SiteSearch desktopIconOnly overlay={isOverlay} />
             <LanguageSwitcher minimal overlay={isOverlay} />
             {isHomePage ? (

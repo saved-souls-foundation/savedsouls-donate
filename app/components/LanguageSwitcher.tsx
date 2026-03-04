@@ -14,6 +14,7 @@ const LOCALE_NAMES: Record<string, string> = {
   es: "Español",
   th: "ไทย",
   ru: "Русский",
+  fr: "Français",
 };
 
 /** Short codes for minimal inline display */
@@ -24,6 +25,7 @@ const LOCALE_SHORT: Record<string, string> = {
   es: "ES",
   th: "TH",
   ru: "RU",
+  fr: "FR",
 };
 
 export default function LanguageSwitcher({ compact = false, minimal = false, overlay = false }: { compact?: boolean; minimal?: boolean; overlay?: boolean }) {
@@ -68,24 +70,31 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
     );
   }
 
-  // Minimal: plain text "NL · EN · DE ..." – no dropdown, each clickable
+  // Minimal: compact "NL EN DE ..." zonder puntjes, dicht op elkaar – bij hover en gekozen taal oplichten
   if (minimal) {
     return (
-      <div className={`flex items-center gap-1 text-xs ${overlay ? "text-white" : "text-stone-500 dark:text-stone-400"}`} role="group" aria-label="Taal kiezen">
-        {locales.map((loc) => (
-          <span key={loc} className="flex items-center gap-1">
+      <div className={`flex items-center gap-0 text-xs ${overlay ? "text-white" : "text-stone-500 dark:text-stone-400"}`} role="group" aria-label="Taal kiezen" suppressHydrationWarning>
+        {locales.map((loc) => {
+          const isSelected = loc === locale;
+          return (
             <button
+              key={loc}
               type="button"
               onClick={() => switchLocale(loc)}
-              className={`transition-colors ${overlay ? "hover:text-white/90" : "hover:text-stone-700 dark:hover:text-stone-200"} ${
-                loc === locale ? (overlay ? "font-medium text-white" : "font-medium text-stone-700 dark:text-stone-200") : ""
+              className={`transition-all rounded px-0.5 py-0.5 min-w-0 ${
+                isSelected
+                  ? overlay
+                    ? "font-semibold text-white bg-white/25 shadow-sm"
+                    : "font-semibold text-stone-800 dark:text-stone-100 bg-stone-200 dark:bg-stone-600 shadow-sm"
+                  : overlay
+                    ? "hover:font-medium hover:text-white hover:bg-white/15"
+                    : "hover:font-medium hover:text-stone-800 dark:hover:text-stone-100 hover:bg-stone-200/80 dark:hover:bg-stone-600/80"
               }`}
             >
               {LOCALE_SHORT[loc] ?? loc.toUpperCase()}
             </button>
-            {loc !== locales[locales.length - 1] && <span className={overlay ? "text-white/70 select-none" : "text-stone-400 dark:text-stone-500 select-none"}>·</span>}
-          </span>
-        ))}
+          );
+        })}
       </div>
     );
   }
@@ -117,7 +126,7 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
         <ul
           id="locale-listbox"
           role="listbox"
-          className="absolute right-0 top-full mt-1 py-2 min-w-[140px] rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-xl z-[120]"
+          className="absolute right-0 top-full mt-1 py-2 min-w-[160px] max-h-[70vh] overflow-y-auto rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-xl z-[120]"
         >
           {locales.map((loc) => (
             <li key={loc} role="option" aria-selected={loc === locale}>

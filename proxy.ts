@@ -8,15 +8,15 @@ const intlMiddleware = createMiddleware(routing);
 export default async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  const localeMatch = pathname.match(/^\/(nl|en|de|es|th|ru)(\/|$)/);
+  const localeMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)(\/|$)/);
   const locale = localeMatch?.[1] ?? "nl";
 
-  const portalMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/portal(\/|$)/);
-  const adminDashboardMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/admin\/dashboard/);
+  const portalMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/portal(\/|$)/);
+  const adminDashboardMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/admin\/dashboard/);
   const isProtected = portalMatch || adminDashboardMatch;
 
   // Nieuwe admin-routes (dashboard, vrijwilligers, adoptanten, documenten): eigen login
-  const adminSubRouteMatch = pathname.match(/^\/(nl|en|de|es|th|ru)\/admin\/(dashboard|vrijwilligers|adoptanten|documenten)(\/|$)/);
+  const adminSubRouteMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/admin\/(dashboard|vrijwilligers|adoptanten|documenten)(\/|$)/);
   const isAdminSubRoute = Boolean(adminSubRouteMatch);
 
   if (isAdminSubRoute && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -62,7 +62,7 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  const pathWithoutLocale = pathname.replace(/^\/(nl|en|de|es|th|ru)(\/|$)/, "$2") || "/";
+  const pathWithoutLocale = pathname.replace(/^\/(nl|en|de|es|th|ru|fr)(\/|$)/, "$2") || "/";
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-path-without-locale", pathWithoutLocale);
   const modifiedRequest = new NextRequest(request.url, { headers: requestHeaders });

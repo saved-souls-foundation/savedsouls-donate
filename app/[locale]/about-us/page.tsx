@@ -244,10 +244,6 @@ export default function AboutUsPage() {
                 <a href="tel:+66623698246" className="font-semibold underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded">
                   +66 62 369 8246
                 </a>{" "}
-                {t("visit5")}{" "}
-                <a href="tel:+980005406" className="font-semibold underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded">
-                  +98 000 5406
-                </a>{" "}
                 {t("visit6")}
               </p>
               <p className="text-stone-700 leading-relaxed mb-4">{t("visit7")}</p>
