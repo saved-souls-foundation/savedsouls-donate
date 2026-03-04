@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -129,6 +130,24 @@ export default function AdminSponsorenClient() {
     const key = s as keyof typeof statusKeys;
     return statusKeys[key] ?? s;
   }
+  function niveauStijl(niveau: string | null) {
+    const n = (niveau || "").toLowerCase();
+    if (n === "platinum") return "bg-gray-100 text-gray-700 border-gray-300";
+    if (n === "gold") return "bg-amber-50 text-amber-700 border-amber-300";
+    if (n === "silver") return "bg-slate-50 text-slate-600 border-slate-300";
+    if (n === "bronze") return "bg-orange-50 text-orange-700 border-orange-300";
+    return "bg-gray-50 text-gray-500 border-gray-200";
+  }
+  function contractKleur(datum: string | null) {
+    if (!datum) return "text-gray-400";
+    const dagen = Math.floor(
+      (new Date(datum).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+    if (dagen < 0) return "text-red-600 font-semibold";
+    if (dagen < 30) return "text-red-600 font-semibold";
+    if (dagen < 90) return "text-amber-600 font-medium";
+    return "text-gray-600";
+  }
   const statusKeys: Record<string, string> = {
     actief: t("statuses.actief"),
     inactief: t("statuses.inactief"),
@@ -152,6 +171,40 @@ export default function AdminSponsorenClient() {
         <Link href="/admin/sponsoren/nieuw" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: ADM_ACCENT }}>
           {t("addSponsor")}
         </Link>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard
+          icon="🏢"
+          label="Actieve sponsoren"
+          value={data.filter((s) => s.status === "actief" || s.status === "Actief").length}
+        />
+        <StatCard
+          icon="💶"
+          label="Totaal/maand"
+          value={"€" + data.reduce((s, sp) => s + (Number(sp.bedrag_per_maand) || 0), 0).toLocaleString("nl-NL")}
+          accentColor="green"
+        />
+        <StatCard
+          icon="🥇"
+          label="Gold+"
+          value={data.filter((s) => ["platinum", "gold", "Platinum", "Gold"].includes(s.niveau ?? "")).length}
+          accentColor="amber"
+        />
+        <StatCard
+          icon="⚠️"
+          label="Contract verloopt"
+          value={data.filter((s) => {
+            const end = s.contract_eind;
+            if (!end) return false;
+            const d = new Date(end);
+            const now = new Date();
+            const diff = (d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+            return diff < 90 && diff > 0;
+          }).length}
+          sub="binnen 90 dagen"
+          accentColor="red"
+        />
       </div>
 
       {stats != null && (
@@ -200,7 +253,7 @@ export default function AdminSponsorenClient() {
           placeholder={t("search")}
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
+          className="flex-1 min-w-0 sm:min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
         <select
@@ -231,66 +284,93 @@ export default function AdminSponsorenClient() {
       </div>
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ color: ADM_MUTED }}>
-                <th className="text-left p-3">{t("company")}</th>
-                <th className="text-left p-3">{t("contact")}</th>
-                <th className="text-left p-3">{t("level")}</th>
-                <th className="text-left p-3">{t("amountPerMonth")}</th>
-                <th className="text-left p-3">{t("contractEnd")}</th>
-                <th className="text-left p-3">{t("status")}</th>
-                <th className="text-left p-3">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={7} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
-              ) : data.length === 0 ? (
-                <tr><td colSpan={7} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
-              ) : (
-                data.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="border-t cursor-pointer hover:opacity-90"
-                    style={{ borderColor: ADM_BORDER }}
-                    onClick={() => router.push(`/admin/sponsoren/${row.id}`)}
-                  >
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.bedrijfsnaam ?? t("noValue")}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {[row.contactpersoon_naam, row.contactpersoon_email].filter(Boolean).join(" · ") || t("noValue")}
-                    </td>
-                    <td className="p-3">
-                      {row.niveau ? (
+        {loading ? (
+          <div className="p-6 text-center text-gray-500">{t("loading")}</div>
+        ) : data.length === 0 ? (
+          <EmptyState
+            icon="🏢"
+            title="Geen sponsoren gevonden"
+            description="Voeg een sponsor toe om te beginnen"
+            actionLabel="+ Sponsor toevoegen"
+            onAction={() => router.push("/admin/sponsoren/nieuw")}
+          />
+        ) : (
+          <TableWrapper>
+            <table className="w-full text-sm min-w-[700px]">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="text-left p-3">{t("company")}</th>
+                  <th className="text-left p-3">{t("contact")}</th>
+                  <th className="text-left p-3">{t("level")}</th>
+                  <th className="text-left p-3">{t("amountPerMonth")}</th>
+                  <th className="text-left p-3">{t("contractEnd")}</th>
+                  <th className="text-left p-3">{t("status")}</th>
+                  <th className="text-left p-3">{t("actions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((row) => {
+                  const bedrijfNaam = row.bedrijfsnaam ?? "–";
+                  const contact = row.contactpersoon_naam ?? row.contactpersoon_email ?? "–";
+                  return (
+                    <tr
+                      key={row.id}
+                      className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
+                      onClick={() => router.push(`/admin/sponsoren/${row.id}`)}
+                    >
+                      <td className="p-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar name={bedrijfNaam} size="sm" />
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">
+                              {row.bedrijfsnaam ?? "–"}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {contact}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-3 text-gray-600">
+                        {[row.contactpersoon_naam, row.contactpersoon_email].filter(Boolean).join(" · ") || t("noValue")}
+                      </td>
+                      <td className="p-3">
                         <span
-                          className="inline-block px-2 py-0.5 rounded text-xs font-medium"
-                          style={{
-                            background: `${LEVEL_COLORS[row.niveau.toLowerCase()] ?? ADM_BORDER}40`,
-                            color: LEVEL_COLORS[row.niveau.toLowerCase()] ?? ADM_TEXT,
-                          }}
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${niveauStijl(row.niveau)}`}
                         >
-                          {levelLabel(row.niveau)}
+                          {row.niveau ? levelLabel(row.niveau) : "–"}
                         </span>
-                      ) : t("noValue")}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {row.bedrag_per_maand != null ? formatCurrency(Number(row.bedrag_per_maand)) : t("noValue")}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(row.contract_eind)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{statusLabel(row.status)}</td>
-                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex gap-2">
-                        <Link href={`/admin/sponsoren/${row.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
-                        <button type="button" onClick={() => setDeleteConfirm(row)} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                      </td>
+                      <td className="p-3">
+                        <span className="text-sm font-semibold text-[#2aa348]">
+                          €{Number(row.bedrag_per_maand ?? 0).toLocaleString("nl-NL")}
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        <span className={`text-sm ${contractKleur(row.contract_eind)}`}>
+                          {row.contract_eind
+                            ? new Date(row.contract_eind).toLocaleDateString("nl-NL")
+                            : "–"}
+                        </span>
+                      </td>
+                      <td className="p-3 text-gray-900">{statusLabel(row.status)}</td>
+                      <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                        <QuickActions
+                          actions={[
+                            { icon: "📧", label: "Email", onClick: () => router.push(`/admin/sponsoren/${row.id}`) },
+                            { icon: "📄", label: "Contract", onClick: () => router.push(`/admin/sponsoren/${row.id}`) },
+                            { icon: "🔄", label: "Verlengen", onClick: () => router.push(`/admin/sponsoren/${row.id}`) },
+                            { icon: "🗑️", label: "Verwijderen", onClick: () => setDeleteConfirm(row) },
+                          ]}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrapper>
+        )}
         {deleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setDeleteConfirm(null)}>
             <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>

@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import type { VolunteerRow } from "./page";
+import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -199,75 +200,111 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
         </p>
       )}
 
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard icon="🤝" label="Totaal vrijwilligers" value={initialRows.length} />
+        <StatCard
+          icon="✈️"
+          label="Actief in Thailand"
+          value={initialRows.filter((v) => (v as { status?: string }).status === "actief" || v.step === 4).length}
+          accentColor="blue"
+        />
+        <StatCard
+          icon="📅"
+          label="Nieuwe aanmeldingen"
+          value={initialRows.filter((v) => {
+            const d = new Date((v as { aangemeld_op?: string }).aangemeld_op || v.created_at || 0);
+            const now = new Date();
+            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+          }).length}
+          sub="deze maand"
+          accentColor="orange"
+        />
+        <StatCard
+          icon="⏳"
+          label="In behandeling"
+          value={initialRows.filter((v) => (v.step ?? 0) < 4).length}
+          accentColor="violet"
+        />
+      </div>
+
       <div
         className="rounded-xl border overflow-hidden"
         style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
       >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ color: ADM_MUTED }}>
-                <th className="text-left p-3">{t("name")}</th>
-                <th className="text-left p-3">{t("emailCol")}</th>
-                <th className="text-left p-3">{t("city")}</th>
-                <th className="text-left p-3">{t("area")}</th>
-                <th className="text-left p-3">{t("step")}</th>
-                <th className="text-left p-3">{t("registeredAt")}</th>
-                <th className="text-left p-3">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r) => (
-                <tr key={r.user_id} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                  <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue")}
-                  </td>
-                  <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {r.email ?? t("noValue")}
-                  </td>
-                  <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {r.city ?? t("noValue")}
-                  </td>
-                  <td className="p-3" style={{ color: ADM_TEXT }}>
-                    {getAreaLabel(t, t("noValue"), r.area)}
-                  </td>
-                  <td className="p-3">
-                    <span
-                      className="inline-block px-2 py-0.5 rounded text-xs font-medium"
-                      style={{
-                        background: r.step === 4 ? "rgba(61,139,94,.2)" : "rgba(240,192,80,.2)",
-                        color: r.step === 4 ? ADM_GREEN : ADM_YELLOW,
-                      }}
-                    >
-                      {r.step === 4 ? t("completed") : t("stepN", { n: r.step })}
-                    </span>
-                  </td>
-                  <td className="p-3" style={{ color: ADM_MUTED }}>
-                    {r.created_at ? new Date(r.created_at).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
-                  </td>
-                  <td className="p-3 flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setDetail(r)}
-                      className="text-sm font-medium"
-                      style={{ color: ADM_ACCENT }}
-                    >
-                      {t("view")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); setDeleteConfirm(r); }}
-                      className="text-sm font-medium"
-                      style={{ color: ADM_ERROR }}
-                    >
-                      {t("deleteButton")}
-                    </button>
-                  </td>
+        {filtered.length === 0 ? (
+          <EmptyState
+            icon="🤝"
+            title="Geen vrijwilligers gevonden"
+            description="Voeg een vrijwilliger toe of pas je zoekopdracht aan"
+            actionLabel="+ Vrijwilliger toevoegen"
+            onAction={() => { setAddModalOpen(true); setError(""); setAddForm({ voornaam: "", achternaam: "", email: "", phone: "", city: "", area: "", language: "nl" }); }}
+          />
+        ) : (
+          <TableWrapper>
+            <table className="w-full text-sm min-w-[600px]">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="text-left p-3">{t("name")}</th>
+                  <th className="text-left p-3">{t("emailCol")}</th>
+                  <th className="text-left p-3">{t("city")}</th>
+                  <th className="text-left p-3">{t("area")}</th>
+                  <th className="text-left p-3">{t("step")}</th>
+                  <th className="text-left p-3">{t("registeredAt")}</th>
+                  <th className="text-left p-3">{t("actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((r) => {
+                  const naam = [r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue");
+                  return (
+                    <tr
+                      key={r.user_id}
+                      className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
+                      onClick={() => setDetail(r)}
+                    >
+                      <td className="p-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar name={naam} size="sm" />
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">{naam}</div>
+                            <div className="text-xs text-gray-400">{r.email ?? t("noValue")}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-3 text-gray-600">{r.email ?? t("noValue")}</td>
+                      <td className="p-3 text-gray-900">{r.city ?? t("noValue")}</td>
+                      <td className="p-3 text-gray-900">{getAreaLabel(t, t("noValue"), r.area)}</td>
+                      <td className="p-3">
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4].map((i) => (
+                            <div
+                              key={i}
+                              className={`w-2 h-2 rounded-full ${i <= (r.step ?? 0) ? "bg-[#2aa348]" : "bg-gray-200"}`}
+                            />
+                          ))}
+                          <span className="text-xs text-gray-400 ml-1">{(r.step ?? 0)}/4</span>
+                        </div>
+                      </td>
+                      <td className="p-3 text-gray-500">
+                        {r.created_at ? new Date(r.created_at).toLocaleDateString("nl-NL", { dateStyle: "short" }) : t("noValue")}
+                      </td>
+                      <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                        <QuickActions
+                          actions={[
+                            { icon: "📧", label: "Email", onClick: () => setDetail(r) },
+                            { icon: "📋", label: "Taken", onClick: () => setDetail(r) },
+                            { icon: "✅", label: "Voltooien", onClick: () => updateStep(r.user_id, r, 4) },
+                            { icon: "🗑️", label: "Verwijderen", onClick: () => setDeleteConfirm(r) },
+                          ]}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrapper>
+        )}
       </div>
 
       {deleteConfirm && (

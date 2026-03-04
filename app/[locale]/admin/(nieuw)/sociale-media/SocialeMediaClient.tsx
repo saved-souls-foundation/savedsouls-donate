@@ -13,6 +13,14 @@ import {
 } from "./platformConfig";
 import PlatformIcon from "./PlatformIcon";
 import { createClient } from "@/lib/supabase/client";
+import { StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
+
+const PLATFORMS_COMPOSE = [
+  { id: "facebook", name: "Facebook", icon: "📘", color: "#1877f2" },
+  { id: "instagram", name: "Instagram", icon: "📸", color: "#e1306c" },
+  { id: "tiktok", name: "TikTok", icon: "🎵", color: "#000000" },
+  { id: "blog", name: "Website Blog", icon: "📝", color: "#2aa348" },
+] as const;
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -37,9 +45,11 @@ function truncate(s: string, len: number): string {
   return s.slice(0, len) + "…";
 }
 
+type TabId = "compose" | "platforms" | "calendar" | "blog";
+
 export default function SocialeMediaClient() {
   const t = useTranslations("admin.socialeMedia");
-  const [activeTab, setActiveTab] = useState<"platforms" | "calendar">("platforms");
+  const [activeTab, setActiveTab] = useState<TabId>("compose");
   const [posts, setPosts] = useState<ScheduledPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string } | null>(null);
@@ -51,6 +61,37 @@ export default function SocialeMediaClient() {
   });
   const [calendarPlatformFilter, setCalendarPlatformFilter] = useState<PlatformId | "all">("all");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const [postText, setPostText] = useState("");
+  const [postImage, setPostImage] = useState<File | null>(null);
+  const [selectedPlatforms, setSelectedPlatforms] = useState({
+    facebook: true,
+    instagram: true,
+    tiktok: false,
+    blog: true,
+  });
+  const [scheduleMode, setScheduleMode] = useState<"now" | "later">("now");
+  const [scheduleDate, setScheduleDate] = useState("");
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiWriting, setAiWriting] = useState(false);
+  const [postLang, setPostLang] = useState<"nl" | "en" | "th">("nl");
+
+  const [calendarWeek, setCalendarWeek] = useState(new Date());
+
+  const [blogPosts, setBlogPosts] = useState<Record<string, unknown>[]>([]);
+  const [blogLoading, setBlogLoading] = useState(false);
+  const [blogView, setBlogView] = useState<"list" | "editor">("list");
+  const [editingBlogPost, setEditingBlogPost] = useState<Record<string, unknown> | null>(null);
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogBody, setBlogBody] = useState("");
+  const [blogBodyEn, setBlogBodyEn] = useState("");
+  const [blogBodyTh, setBlogBodyTh] = useState("");
+  const [blogCategory, setBlogCategory] = useState("nieuws");
+  const [blogStatus, setBlogStatus] = useState("concept");
+  const [blogLang, setBlogLang] = useState<"nl" | "en" | "th">("nl");
+  const [blogAiPrompt, setBlogAiPrompt] = useState("");
+  const [blogAiWriting, setBlogAiWriting] = useState(false);
+  const [blogAiTranslating, setBlogAiTranslating] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -131,6 +172,182 @@ export default function SocialeMediaClient() {
 
   const connectedPlatforms = new Set<PlatformId>(); // placeholder: none connected
 
+  function getWeekDays(date: Date) {
+    const start = new Date(date);
+    start.setDate(date.getDate() - date.getDay() + 1);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      return d;
+    });
+  }
+
+  async function loadBlogPosts() {
+    setBlogLoading(true);
+    try {
+      const res = await fetch("/api/blog");
+      const data = await res.json();
+      setBlogPosts(data.posts ?? []);
+    } catch (e) {
+      console.error("Blog load error:", e);
+    } finally {
+      setBlogLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (activeTab === "blog") loadBlogPosts();
+  }, [activeTab]);
+
+  async function handleAiWrite() {
+    if (!aiPrompt) return;
+    setAiWriting(true);
+    try {
+      const res = await fetch("/api/ai/write-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: aiPrompt,
+          language: postLang,
+          platforms: Object.keys(selectedPlatforms).filter((k) =>
+            selectedPlatforms[k as keyof typeof selectedPlatforms]
+          ),
+        }),
+      });
+      const data = await res.json();
+      setPostText(data.text ?? "");
+    } catch (e) {
+      console.error("AI write error:", e);
+    } finally {
+      setAiWriting(false);
+    }
+  }
+
+  async function handlePublish() {
+    const activePlatforms = Object.keys(selectedPlatforms).filter((k) =>
+      selectedPlatforms[k as keyof typeof selectedPlatforms]
+    );
+    if (activePlatforms.includes("blog")) {
+      try {
+        const res = await fetch("/api/blog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: postText.slice(0, 60) + (postText.length > 60 ? "..." : ""),
+            body: postText,
+            status: scheduleMode === "now" ? "published" : "scheduled",
+            source: "manual",
+            published_at:
+              scheduleMode === "now" ? new Date().toISOString() : scheduleDate || new Date().toISOString(),
+          }),
+        });
+        if (!res.ok) throw new Error((await res.json()).error);
+      } catch (e) {
+        console.error("Blog publish error:", e);
+      }
+    }
+    showToast(
+      `Bericht ${scheduleMode === "now" ? "gepubliceerd" : "ingepland"}! ${activePlatforms.join(", ")}`
+    );
+    setPostText("");
+    setPostImage(null);
+    setAiPrompt("");
+  }
+
+  async function handleBlogAiWrite() {
+    if (!blogAiPrompt) return;
+    setBlogAiWriting(true);
+    try {
+      const res = await fetch("/api/ai/write-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: blogAiPrompt,
+          language: blogLang,
+          platforms: ["blog"],
+        }),
+      });
+      const data = await res.json();
+      const text = data.text ?? "";
+      if (blogLang === "nl") setBlogBody(text);
+      else if (blogLang === "en") setBlogBodyEn(text);
+      else setBlogBodyTh(text);
+    } catch (e) {
+      console.error("Blog AI write error:", e);
+    } finally {
+      setBlogAiWriting(false);
+    }
+  }
+
+  async function handleBlogTranslate() {
+    if (!blogBody) return;
+    setBlogAiTranslating(true);
+    try {
+      const [enRes, thRes] = await Promise.all([
+        fetch("/api/ai/write-post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: `Vertaal deze tekst naar vloeiend Engels. Behoud de emotionele toon en structuur. Tekst: ${blogBody}`,
+            language: "en",
+            platforms: ["blog"],
+          }),
+        }),
+        fetch("/api/ai/write-post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: `Vertaal deze tekst naar vloeiend Thai. Behoud de emotionele toon en structuur. Tekst: ${blogBody}`,
+            language: "th",
+            platforms: ["blog"],
+          }),
+        }),
+      ]);
+      const [enData, thData] = await Promise.all([enRes.json(), thRes.json()]);
+      setBlogBodyEn(enData.text ?? "");
+      setBlogBodyTh(thData.text ?? "");
+      showToast("Vertaling naar Engels en Thai voltooid.");
+    } catch (e) {
+      console.error("Translate error:", e);
+    } finally {
+      setBlogAiTranslating(false);
+    }
+  }
+
+  async function handleBlogSave() {
+    const payload = {
+      title: blogTitle,
+      body: blogBody,
+      body_en: blogBodyEn || null,
+      body_th: blogBodyTh || null,
+      category: blogCategory,
+      status: blogStatus,
+      source: "manual",
+      slug: blogTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .slice(0, 60),
+      published_at: blogStatus === "published" ? new Date().toISOString() : null,
+    };
+    try {
+      const url = editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog";
+      const method = editingBlogPost ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        showToast("Bericht opgeslagen!");
+        setBlogView("list");
+        loadBlogPosts();
+      }
+    } catch (e) {
+      console.error("Blog save error:", e);
+    }
+  }
+
   return (
     <div className="space-y-6">
       {toast && (
@@ -146,33 +363,226 @@ export default function SocialeMediaClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <div className="flex gap-1 ml-auto">
-          <button
-            type="button"
-            onClick={() => setActiveTab("platforms")}
-            className="px-3 py-1.5 rounded-lg text-sm font-medium"
-            style={{
-              background: activeTab === "platforms" ? "rgba(13,148,136,.15)" : "transparent",
-              color: activeTab === "platforms" ? ADM_ACCENT : ADM_MUTED,
-            }}
-          >
-            Platforms
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("calendar")}
-            className="px-3 py-1.5 rounded-lg text-sm font-medium"
-            style={{
-              background: activeTab === "calendar" ? "rgba(13,148,136,.15)" : "transparent",
-              color: activeTab === "calendar" ? ADM_ACCENT : ADM_MUTED,
-            }}
-          >
-            📅 {t("contentCalendar")}
-          </button>
-        </div>
       </div>
 
+      <div className="flex border-b border-gray-200 mb-6">
+        {(
+          [
+            { id: "compose", label: "✍️ Nieuw bericht" },
+            { id: "platforms", label: "📱 Platforms" },
+            { id: "calendar", label: "📅 Contentkalender" },
+            { id: "blog", label: "📝 Blog" },
+          ] as const
+        ).map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-5 py-3 text-sm font-semibold border-b-2 transition-colors -mb-px ${
+              activeTab === tab.id
+                ? "border-[#2aa348] text-[#2aa348]"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "compose" && (
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-3 mb-5">
+            {PLATFORMS_COMPOSE.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() =>
+                  setSelectedPlatforms((prev) => ({
+                    ...prev,
+                    [p.id]: !prev[p.id as keyof typeof prev],
+                  }))
+                }
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all text-sm font-semibold ${
+                  selectedPlatforms[p.id as keyof typeof selectedPlatforms]
+                    ? "text-white"
+                    : "border-gray-200 text-gray-400 hover:border-gray-300 bg-white"
+                }`}
+                style={
+                  selectedPlatforms[p.id as keyof typeof selectedPlatforms]
+                    ? { borderColor: p.color, backgroundColor: p.color }
+                    : {}
+                }
+              >
+                <span>{p.icon}</span>
+                <span>{p.name}</span>
+                {selectedPlatforms[p.id as keyof typeof selectedPlatforms] && <span>✓</span>}
+              </button>
+            ))}
+          </div>
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-[#2aa348]/20 p-4 mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span>✨</span>
+              <span className="text-sm font-bold text-gray-700">AI Schrijfassistent</span>
+              <span className="text-xs text-gray-400">powered by Claude</span>
+            </div>
+            <div className="flex gap-2 mb-3">
+              <input
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                placeholder='Bijv: "Adoptieverhaal Luna, herder mix 3 jaar, gevonden Chiang Mai"'
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30 focus:border-[#2aa348] bg-white"
+              />
+              <div className="flex gap-1">
+                {(["nl", "en", "th"] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => setPostLang(lang)}
+                    className={`px-2.5 py-2 rounded-lg text-xs font-bold uppercase ${
+                      postLang === lang ? "bg-[#2aa348] text-white" : "bg-white border border-gray-200 text-gray-500"
+                    }`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {[
+                {
+                  label: "🐾 Adoptieverhaal",
+                  prompt:
+                    "Schrijf een emotioneel adoptieverhaal over een hond die een thuis gevonden heeft",
+                },
+                {
+                  label: "📢 Doneeroproep",
+                  prompt: "Schrijf een urgente maar positieve doneeroproep voor de shelter",
+                },
+                {
+                  label: "🎉 Succesnieuws",
+                  prompt: "Schrijf een vrolijk succesbericht over een geslaagde adoptie",
+                },
+                {
+                  label: "🏠 Zoekt thuis",
+                  prompt: "Schrijf een bericht voor een hond die dringend een thuis zoekt",
+                },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => setAiPrompt(item.prompt)}
+                  className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs font-medium text-gray-600 hover:border-[#2aa348] hover:text-[#2aa348] transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={handleAiWrite}
+              disabled={!aiPrompt || aiWriting}
+              className="w-full py-2 rounded-lg bg-[#2aa348] text-white text-sm font-semibold hover:bg-[#166534] transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
+            >
+              {aiWriting ? "⏳ Schrijven..." : "✨ Schrijf bericht met AI"}
+            </button>
+          </div>
+          <div className="relative">
+            <textarea
+              value={postText}
+              onChange={(e) => setPostText(e.target.value)}
+              placeholder="Schrijf je bericht, of laat AI het schrijven..."
+              className="w-full h-40 p-4 rounded-xl border border-gray-200 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30 focus:border-[#2aa348]"
+            />
+            <div className="absolute bottom-3 right-3 text-xs text-gray-400">{postText.length} tekens</div>
+          </div>
+          <div className="mt-3">
+            <input
+              type="file"
+              accept="image/*"
+              id="post-image"
+              className="hidden"
+              onChange={(e) => setPostImage(e.target.files?.[0] ?? null)}
+            />
+            <label
+              htmlFor="post-image"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-gray-300 text-sm text-gray-500 hover:border-[#2aa348] hover:text-[#2aa348] cursor-pointer transition-colors w-fit"
+            >
+              📎 {postImage ? postImage.name : "Afbeelding toevoegen"}
+            </label>
+            {postImage && (
+              <button
+                type="button"
+                onClick={() => setPostImage(null)}
+                className="ml-2 text-xs text-red-400 hover:text-red-600"
+              >
+                ✕ verwijderen
+              </button>
+            )}
+          </div>
+          <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div className="flex items-center gap-6 mb-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="schedule"
+                  checked={scheduleMode === "now"}
+                  onChange={() => setScheduleMode("now")}
+                  className="accent-[#2aa348]"
+                />
+                <span className="text-sm font-medium text-gray-700">Nu publiceren</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="schedule"
+                  checked={scheduleMode === "later"}
+                  onChange={() => setScheduleMode("later")}
+                  className="accent-[#2aa348]"
+                />
+                <span className="text-sm font-medium text-gray-700">Inplannen</span>
+              </label>
+            </div>
+            {scheduleMode === "later" && (
+              <input
+                type="datetime-local"
+                value={scheduleDate}
+                onChange={(e) => setScheduleDate(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30"
+              />
+            )}
+          </div>
+          <div className="flex justify-between items-center mt-4">
+            <button
+              type="button"
+              className="px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-500 hover:bg-gray-50"
+            >
+              👁️ Preview
+            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className="px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+              >
+                💾 Concept opslaan
+              </button>
+              <button
+                type="button"
+                disabled={!postText.trim()}
+                onClick={handlePublish}
+                className="px-6 py-2 rounded-xl bg-[#2aa348] text-white text-sm font-bold hover:bg-[#166534] transition-colors disabled:opacity-40 flex items-center gap-2"
+              >
+                🚀 {scheduleMode === "now" ? "Publiceer nu" : "Inplannen"}{" "}
+                <span className="text-xs opacity-75">
+                  ({Object.values(selectedPlatforms).filter(Boolean).length} platforms)
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {activeTab === "platforms" && (
+        <>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {loading ? (
             <>
@@ -219,15 +629,10 @@ export default function SocialeMediaClient() {
                       {config.name}
                     </span>
                   </div>
-                  <span
-                    className="flex-shrink-0 text-xs px-2 py-0.5 rounded"
-                    style={{
-                      background: isConnected ? "rgba(42,157,143,.2)" : "rgba(233,196,106,.2)",
-                      color: isConnected ? "#2A9D8F" : "#B45309",
-                    }}
-                  >
-                    {isConnected ? "🟢 " + t("connected") : "🟡 " + t("notConnected")}
-                  </span>
+                  <StatusBadge
+                    label={isConnected ? "Verbonden" : "Niet verbonden"}
+                    type={isConnected ? "success" : "warning"}
+                  />
                 </div>
                 <div className="p-3 flex flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
                   <button
@@ -298,159 +703,397 @@ export default function SocialeMediaClient() {
                   )}
                 </div>
                 <div className="p-3 border-t text-xs" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
-                  <p className="mb-1">📊 {t("statsPlaceholder")}</p>
-                  <p>
-                    {t("followers")}: — | {t("postsThisMonth")}: — | {t("reach")}: —
-                  </p>
+                  <p className="mb-1">👥 – volgers · 📅 Laatste post: – · 📊 Bereik: –</p>
                 </div>
               </div>
             );
           })
           )}
         </div>
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+          <h3 className="font-bold text-sm text-blue-800 mb-2">
+            📘 Facebook → Blog Synchronisatie
+          </h3>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-xs text-blue-700 font-medium">
+              Webhook status: Niet geconfigureerd
+            </span>
+          </div>
+          <p className="text-xs text-blue-600 mb-3">
+            Wanneer je een bericht op Facebook plaatst, verschijnt het automatisch op de website
+            blog. Hiervoor heb je een Facebook App nodig (gratis via developers.facebook.com).
+          </p>
+          <div className="bg-white rounded-lg p-3 text-xs font-mono text-gray-600 border border-blue-200 break-all">
+            Webhook URL: {typeof window !== "undefined" ? window.location.origin : ""}
+            /api/webhooks/facebook
+          </div>
+          <div className="mt-3 text-xs text-blue-600 space-y-1">
+            <div>1. Ga naar developers.facebook.com → Maak App aan</div>
+            <div>2. Voeg Webhooks product toe → Subscribe op &quot;feed&quot;</div>
+            <div>3. Plak bovenstaande URL + token: savedsouls_webhook_2026</div>
+          </div>
+        </div>
+        </>
       )}
 
       {activeTab === "calendar" && (
-        <div className="space-y-4">
-          <div
-            className="rounded-xl border p-4"
-            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
-          >
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <div className="flex gap-2">
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <button
+              type="button"
+              onClick={() => {
+                const d = new Date(calendarWeek);
+                d.setDate(d.getDate() - 7);
+                setCalendarWeek(d);
+              }}
+              className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+            >
+              ←
+            </button>
+            <span className="text-sm font-semibold text-gray-700">
+              Week van {getWeekDays(calendarWeek)[0].toLocaleDateString("nl-NL", { day: "numeric", month: "long" })}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                const d = new Date(calendarWeek);
+                d.setDate(d.getDate() + 7);
+                setCalendarWeek(d);
+              }}
+              className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+            >
+              →
+            </button>
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {getWeekDays(calendarWeek).map((day, i) => {
+              const isToday = day.toDateString() === new Date().toDateString();
+              return (
+                <div
+                  key={i}
+                  className={`rounded-xl border p-2 min-h-[120px] ${
+                    isToday ? "border-[#2aa348] bg-green-50" : "border-gray-200 bg-white"
+                  }`}
+                >
+                  <div
+                    className={`text-xs font-bold mb-2 text-center ${
+                      isToday ? "text-[#2aa348]" : "text-gray-500"
+                    }`}
+                  >
+                    {day.toLocaleDateString("nl-NL", { weekday: "short" })}
+                    <br />
+                    <span className={`text-base ${isToday ? "text-[#2aa348]" : "text-gray-900"}`}>
+                      {day.getDate()}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveTab("compose");
+                      setScheduleMode("later");
+                      setScheduleDate(day.toISOString().slice(0, 16));
+                    }}
+                    className="w-full py-1 rounded-lg border border-dashed border-gray-300 text-gray-400 text-xs hover:border-[#2aa348] hover:text-[#2aa348] transition-colors"
+                  >
+                    + Post
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            Klik op "+ Post" om een bericht voor die dag in te plannen
+          </p>
+        </div>
+      )}
+
+      {activeTab === "blog" && (
+        <>
+          {blogView === "list" ? (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center mb-5">
+                <div>
+                  <h2 className="text-lg font-extrabold text-gray-900">Blog beheer</h2>
+                  <p className="text-sm text-gray-500">Berichten worden gesynchroniseerd met de website</p>
+                </div>
                 <button
                   type="button"
-                  onClick={() =>
-                    setCalendarMonth((m) =>
-                      m.month === 0 ? { year: m.year - 1, month: 11 } : { year: m.year, month: m.month - 1 }
-                    )
-                  }
-                  className="p-2 rounded-lg border"
-                  style={{ borderColor: ADM_BORDER }}
+                  onClick={() => {
+                    setEditingBlogPost(null);
+                    setBlogTitle("");
+                    setBlogBody("");
+                    setBlogBodyEn("");
+                    setBlogBodyTh("");
+                    setBlogCategory("nieuws");
+                    setBlogStatus("concept");
+                    setBlogView("editor");
+                  }}
+                  className="px-4 py-2 rounded-xl bg-[#2aa348] text-white font-semibold text-sm hover:bg-[#166534] transition-colors"
                 >
-                  ←
-                </button>
-                <span className="font-semibold py-2" style={{ color: ADM_TEXT }}>
-                  {new Date(calendarMonth.year, calendarMonth.month).toLocaleDateString("nl-NL", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCalendarMonth((m) =>
-                      m.month === 11 ? { year: m.year + 1, month: 0 } : { year: m.year, month: m.month + 1 }
-                    )
-                  }
-                  className="p-2 rounded-lg border"
-                  style={{ borderColor: ADM_BORDER }}
-                >
-                  →
+                  + Nieuw bericht
                 </button>
               </div>
-              <select
-                value={calendarPlatformFilter}
-                onChange={(e) => setCalendarPlatformFilter(e.target.value as PlatformId | "all")}
-                className="text-sm rounded-lg border px-2 py-1.5"
-                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
-              >
-                <option value="all">Alle platforms</option>
-                {PLATFORM_IDS.map((id) => (
-                  <option key={id} value={id}>
-                    {PLATFORM_CONFIG[id].name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs" style={{ color: ADM_MUTED }}>
-              {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((day) => (
-                <div key={day} className="py-1 font-medium">
-                  {day}
-                </div>
-              ))}
-              {calendarDays.map((cell) => {
-                const isSelected = selectedDate === cell.date;
-                const hasPosts = cell.postCount > 0;
-                return (
-                  <button
-                    key={cell.date}
-                    type="button"
-                    onClick={() => setSelectedDate(cell.date)}
-                    className="aspect-square rounded-lg flex flex-col items-center justify-center text-sm"
-                    style={{
-                      background: isSelected ? "rgba(13,148,136,.2)" : "transparent",
-                      color: cell.isCurrentMonth ? ADM_TEXT : ADM_MUTED,
-                      opacity: cell.isCurrentMonth ? 1 : 0.5,
-                    }}
-                  >
-                    <span>{cell.day}</span>
-                    {hasPosts && (
-                      <span className="w-1.5 h-1.5 rounded-full mt-0.5" style={{ background: ADM_ACCENT }} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          {selectedDate && (
-            <div
-              className="rounded-xl border p-4"
-              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
-            >
-              <h3 className="font-semibold mb-3" style={{ color: ADM_TEXT }}>
-                {t("postsOnDate", {
-                  date: new Date(selectedDate).toLocaleDateString("nl-NL", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }),
-                })}
-              </h3>
-              {postsOnSelectedDate.length === 0 ? (
-                <p className="text-sm" style={{ color: ADM_MUTED }}>
-                  {t("noPosts")}
-                </p>
+              {blogLoading ? (
+                <p className="text-gray-500">Berichten laden...</p>
+              ) : blogPosts.length === 0 ? (
+                <EmptyState
+                  icon="📝"
+                  title="Geen blogberichten"
+                  description="Schrijf je eerste bericht of koppel Facebook"
+                  actionLabel="+ Nieuw bericht"
+                  onAction={() => setBlogView("editor")}
+                />
               ) : (
-                <ul className="space-y-2">
-                  {postsOnSelectedDate.map((post) => {
-                    const statusCfg = POST_STATUS_CONFIG[post.status];
-                    const platformName = PLATFORM_CONFIG[post.platformId].name;
-                    return (
-                      <li key={post.id}>
-                        <button
-                          type="button"
-                          onClick={() => setEditingPost(post)}
-                          className="w-full text-left p-3 rounded-lg border"
-                          style={{ borderColor: ADM_BORDER }}
+                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        {["Titel", "Status", "Talen", "Datum", "Bron", "Acties"].map((h) => (
+                          <th
+                            key={h}
+                            className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide"
+                          >
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {blogPosts.map((post: Record<string, unknown>) => (
+                        <tr
+                          key={String(post.id)}
+                          className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
                         >
-                          <p className="text-sm" style={{ color: ADM_TEXT }}>
-                            {truncate(post.text, 80)}
-                          </p>
-                          <div className="flex items-center gap-2 mt-2 flex-wrap">
-                            <span className="text-xs" style={{ color: ADM_MUTED }}>
-                              {platformName}
+                          <td className="px-4 py-3">
+                            <div className="text-sm font-semibold text-gray-900 max-w-[200px] truncate">
+                              {String(post.title ?? "–")}
+                            </div>
+                            <div className="text-xs text-gray-400 mt-0.5">
+                              {(post.meta_description as string)?.slice(0, 50) || "–"}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <StatusBadge
+                              label={
+                                post.status === "published"
+                                  ? "Gepubliceerd"
+                                  : post.status === "concept"
+                                    ? "Concept"
+                                    : post.status === "scheduled"
+                                      ? "Ingepland"
+                                      : String(post.status ?? "")
+                              }
+                              type={
+                                post.status === "published"
+                                  ? "success"
+                                  : post.status === "concept"
+                                    ? "warning"
+                                    : "info"
+                              }
+                            />
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex gap-1">
+                              {post.body && <span title="Nederlands">🇳🇱</span>}
+                              {post.body_en && <span title="Engels">🇬🇧</span>}
+                              {post.body_th && <span title="Thai">🇹🇭</span>}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-xs text-gray-500">
+                            {post.published_at
+                              ? new Date(post.published_at as string).toLocaleDateString("nl-NL")
+                              : "–"}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="text-xs text-gray-500">
+                              {post.source === "facebook" ? "📘 Facebook" : "✍️ Handmatig"}
                             </span>
-                            <span
-                              className="text-xs px-1.5 py-0.5 rounded"
-                              style={{ background: statusCfg.bg, color: statusCfg.color }}
-                            >
-                              {statusCfg.label}
-                            </span>
-                            <span className="text-xs" style={{ color: ADM_MUTED }}>
-                              {formatDateTime(post.scheduledAt)}
-                            </span>
-                          </div>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
+                          </td>
+                          <td className="px-4 py-3">
+                            <QuickActions
+                              actions={[
+                                {
+                                  icon: "✏️",
+                                  label: "Bewerken",
+                                  onClick: () => {
+                                    setEditingBlogPost(post);
+                                    setBlogTitle(String(post.title ?? ""));
+                                    setBlogBody(String(post.body ?? ""));
+                                    setBlogBodyEn(String(post.body_en ?? ""));
+                                    setBlogBodyTh(String(post.body_th ?? ""));
+                                    setBlogCategory(String(post.category ?? "nieuws"));
+                                    setBlogStatus(String(post.status ?? "concept"));
+                                    setBlogView("editor");
+                                  },
+                                },
+                                {
+                                  icon: "🌐",
+                                  label: "Op site",
+                                  onClick: () =>
+                                    window.open(`/blog/${post.slug ?? post.id}`, "_blank"),
+                                },
+                                {
+                                  icon: "🗑️",
+                                  label: "Verwijderen",
+                                  onClick: async () => {
+                                    if (!confirm("Bericht verwijderen?")) return;
+                                    await fetch(`/api/blog/${post.id}`, { method: "DELETE" });
+                                    loadBlogPosts();
+                                  },
+                                },
+                              ]}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
+          ) : (
+            <div className="space-y-4">
+              <button
+                type="button"
+                onClick={() => setBlogView("list")}
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-5"
+              >
+                ← Terug naar overzicht
+              </button>
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+                <div className="space-y-4">
+                  <div className="flex gap-1 border-b border-gray-200 pb-0">
+                    {(["nl", "en", "th"] as const).map((l) => (
+                      <button
+                        key={l}
+                        type="button"
+                        onClick={() => setBlogLang(l)}
+                        className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
+                          blogLang === l
+                            ? "border-[#2aa348] text-[#2aa348]"
+                            : "border-transparent text-gray-400 hover:text-gray-600"
+                        }`}
+                      >
+                        {l === "nl" ? "🇳🇱 NL" : l === "en" ? "🇬🇧 EN" : "🇹🇭 TH"}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    value={blogTitle}
+                    onChange={(e) => setBlogTitle(e.target.value)}
+                    placeholder="Blogtitel..."
+                    className="w-full text-2xl font-extrabold border-none outline-none text-gray-900 placeholder-gray-300 bg-transparent focus:ring-0 p-0"
+                  />
+                  <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-[#2aa348]/20 p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span>✨</span>
+                      <span className="text-sm font-bold text-gray-700">AI Schrijfassistent</span>
+                      <span className="text-xs text-gray-400">schrijft volledige blogpost</span>
+                    </div>
+                    <input
+                      value={blogAiPrompt}
+                      onChange={(e) => setBlogAiPrompt(e.target.value)}
+                      placeholder='Bijv: "Adoptieverhaal Luna, herder mix 3 jaar"'
+                      className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30 focus:border-[#2aa348] mb-2"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={handleBlogAiWrite}
+                        disabled={!blogAiPrompt || blogAiWriting}
+                        className="flex-1 py-2 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] transition-colors disabled:opacity-40"
+                      >
+                        {blogAiWriting ? "⏳ Schrijven..." : `✨ Schrijf in ${blogLang.toUpperCase()}`}
+                      </button>
+                      {(blogBody || blogBodyEn || blogBodyTh) && (
+                        <button
+                          type="button"
+                          onClick={handleBlogTranslate}
+                          disabled={blogAiTranslating}
+                          className="flex-1 py-2 rounded-lg border border-[#2aa348] text-[#2aa348] text-xs font-semibold hover:bg-green-50 transition-colors disabled:opacity-40"
+                        >
+                          {blogAiTranslating ? "⏳ Vertalen..." : "🌐 Vertaal naar EN + TH"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <textarea
+                    value={blogLang === "nl" ? blogBody : blogLang === "en" ? blogBodyEn : blogBodyTh}
+                    onChange={(e) => {
+                      if (blogLang === "nl") setBlogBody(e.target.value);
+                      else if (blogLang === "en") setBlogBodyEn(e.target.value);
+                      else setBlogBodyTh(e.target.value);
+                    }}
+                    placeholder={
+                      blogLang === "nl"
+                        ? "Schrijf je blogbericht in het Nederlands..."
+                        : blogLang === "en"
+                          ? "Write your blog post in English..."
+                          : "เขียนบล็อกโพสต์ของคุณเป็นภาษาไทย..."
+                    }
+                    className="w-full min-h-[300px] p-4 rounded-xl border border-gray-200 text-sm text-gray-700 resize-y focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30 focus:border-[#2aa348] leading-relaxed"
+                  />
+                  <div className="text-xs text-gray-400 text-right">
+                    {(blogLang === "nl" ? blogBody : blogLang === "en" ? blogBodyEn : blogBodyTh).length}{" "}
+                    tekens
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                      Status
+                    </label>
+                    <select
+                      value={blogStatus}
+                      onChange={(e) => setBlogStatus(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30"
+                    >
+                      <option value="concept">📝 Concept</option>
+                      <option value="published">✅ Gepubliceerd</option>
+                      <option value="scheduled">📅 Ingepland</option>
+                    </select>
+                  </div>
+                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                      Categorie
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { value: "adoptieverhaal", label: "🐾 Adoptieverhaal" },
+                        { value: "nieuws", label: "📢 Nieuws" },
+                        { value: "tips", label: "💡 Tips" },
+                        { value: "update", label: "📊 Update" },
+                        { value: "evenement", label: "🎉 Evenement" },
+                      ].map((c) => (
+                        <button
+                          key={c.value}
+                          type="button"
+                          onClick={() => setBlogCategory(c.value)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                            blogCategory === c.value
+                              ? "bg-[#2aa348] text-white border-[#2aa348]"
+                              : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleBlogSave}
+                    disabled={!blogTitle.trim() || !blogBody.trim()}
+                    className="w-full py-3 rounded-xl bg-[#2aa348] text-white font-bold text-sm hover:bg-[#166534] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {editingBlogPost ? "💾 Wijzigingen opslaan" : "🚀 Bericht publiceren"}
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
-        </div>
+        </>
       )}
 
       {composeOpen && (

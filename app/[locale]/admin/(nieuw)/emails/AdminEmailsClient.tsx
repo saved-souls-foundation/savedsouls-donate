@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
+import { Avatar, EmptyState } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -30,9 +31,42 @@ type EmailRow = {
   taal: string | null;
 };
 
-type TemplateInfo = { id: string; naam: string | null };
+type EmailDetail = EmailRow & { inhoud?: string | null };
 
+type TemplateInfo = { id: string; naam: string | null };
 type Stats = { pending: number; sentToday: number; ignored: number };
+
+const cats: Record<string, [string, string, string, string]> = {
+  adoptie: ["bg-blue-50", "text-blue-700", "border-blue-200", "🏠 Adoptie"],
+  donatie: ["bg-green-50", "text-green-700", "border-green-200", "💰 Donatie"],
+  vrijwilliger: ["bg-violet-50", "text-violet-700", "border-violet-200", "🤝 Vrijwilliger"],
+  vraag: ["bg-amber-50", "text-amber-700", "border-amber-200", "❓ Vraag"],
+  overig: ["bg-gray-50", "text-gray-600", "border-gray-200", "📨 Overig"],
+};
+
+function CategoryBadge({ category }: { category: string | null }) {
+  const [bg, text, border, label] = cats[category ?? ""] ?? cats.overig;
+  return (
+    <span
+      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${bg} ${text} ${border}`}
+    >
+      {label}
+    </span>
+  );
+}
+
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m geleden`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}u geleden`;
+  return `${Math.floor(hrs / 24)}d geleden`;
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+}
 
 export default function AdminEmailsClient() {
   const t = useTranslations("admin.emails");
@@ -53,6 +87,13 @@ export default function AdminEmailsClient() {
   const [ignoringId, setIgnoringId] = useState<string | null>(null);
   const [templates, setTemplates] = useState<TemplateInfo[]>([]);
   const [hoverTooltip, setHoverTooltip] = useState<{ row: EmailRow; x: number; y: number } | null>(null);
+
+  const [selectedEmail, setSelectedEmail] = useState<EmailDetail | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [replyLang, setReplyLang] = useState<"nl" | "en" | "th">("nl");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState("");
+  const [detailLoading, setDetailLoading] = useState(false);
 
   useEffect(() => {
     if (!toastError) return;
@@ -98,23 +139,50 @@ export default function AdminEmailsClient() {
   useEffect(() => {
     fetch("/api/admin/email-templates")
       .then((r) => (r.ok ? r.json() : []))
-      .then((data) => setTemplates(Array.isArray(data) ? data.map((t: { id: string; naam: string | null }) => ({ id: t.id, naam: t.naam })) : []))
+      .then((data) =>
+        setTemplates(
+          Array.isArray(data) ? data.map((t: { id: string; naam: string | null }) => ({ id: t.id, naam: t.naam })) : []
+        )
+      )
       .catch(() => setTemplates([]));
   }, []);
 
-  function stripHtml(html: string): string {
-    return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  async function fetchEmailDetail(id: string) {
+    setDetailLoading(true);
+    try {
+      const res = await fetch(`/api/admin/emails/${id}`);
+      if (!res.ok) throw new Error();
+      const row = await res.json();
+      setSelectedEmail(row);
+      setReplyText(row.ai_gegenereerd_antwoord ?? "");
+      setAiSuggestion("");
+    } finally {
+      setDetailLoading(false);
+    }
   }
 
-  function templateNaam(templateId: string | null): string {
-    if (!templateId) return "";
-    return templates.find((t) => t.id === templateId)?.naam ?? templateId;
-  }
+  const inboxCount = stats?.pending ?? 0;
+  const sentCount = stats?.sentToday ?? 0;
+  const ignoredCount = stats?.ignored ?? 0;
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   function formatDate(d: string) {
-    return locale === "en" ? new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    return locale === "en"
+      ? new Date(d).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : new Date(d).toLocaleDateString("nl-NL", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
   }
 
   function statusLabel(s: string) {
@@ -134,6 +202,29 @@ export default function AdminEmailsClient() {
     algemeen: t("categories.algemeen"),
   };
 
+  async function handleAiSuggest() {
+    if (!selectedEmail) return;
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/ai/email-suggest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: selectedEmail.onderwerp,
+          body: selectedEmail.inhoud ?? selectedEmail.ai_gegenereerd_antwoord,
+          category: selectedEmail.ai_categorie,
+          language: replyLang,
+        }),
+      });
+      const data = await res.json();
+      setAiSuggestion(data.suggestion ?? "");
+    } catch (e) {
+      console.error("AI suggest error:", e);
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
   async function handleSendReply(id: string) {
     setSendingId(id);
     setToastError(null);
@@ -141,7 +232,7 @@ export default function AdminEmailsClient() {
       const res = await fetch(`/api/admin/emails/${id}`, { method: "GET" });
       if (!res.ok) throw new Error();
       const email = await res.json();
-      const reply = (email.ai_gegenereerd_antwoord as string) ?? "";
+      const reply = (replyText || email.ai_gegenereerd_antwoord) ?? "";
       if (!reply.trim()) {
         setToastError(t("saveError"));
         setSendingId(null);
@@ -155,6 +246,9 @@ export default function AdminEmailsClient() {
       if (!sendRes.ok) throw new Error();
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), sentToday: stats.sentToday + 1 });
+      setSelectedEmail(null);
+      setReplyText("");
+      setAiSuggestion("");
     } catch {
       setToastError(t("saveError"));
     } finally {
@@ -170,6 +264,9 @@ export default function AdminEmailsClient() {
       if (!res.ok) throw new Error();
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), ignored: stats.ignored + 1 });
+      setSelectedEmail(null);
+      setReplyText("");
+      setAiSuggestion("");
     } catch {
       setToastError(t("saveError"));
     } finally {
@@ -177,20 +274,31 @@ export default function AdminEmailsClient() {
     }
   }
 
+  const tabCounts = {
+    inbox: inboxCount,
+    sent: sentCount,
+    ignored: ignoredCount,
+    all: total,
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>{t("title")}</h1>
+        <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
+          {t("title")}
+        </h1>
         <div className="flex gap-4">
-          <Link href="/admin/emails/verzonden" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("sentEmails")}</Link>
-          <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("templates")}</Link>
+          <Link href="/admin/emails/verzonden" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
+            {t("sentEmails")}
+          </Link>
+          <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
+            {t("templates")}
+          </Link>
         </div>
       </div>
 
       {error && (
-        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
-          {error}
-        </div>
+        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">{error}</div>
       )}
       {toastError && (
         <div className="rounded-lg border px-4 py-3 text-sm border-red-200 bg-red-50 text-red-600">
@@ -198,133 +306,332 @@ export default function AdminEmailsClient() {
         </div>
       )}
 
-      {stats != null && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="rounded-xl border p-4" style={{ background: stats.pending > 0 ? "rgba(220,38,38,.08)" : ADM_CARD, borderColor: stats.pending > 0 ? ADM_RED : ADM_BORDER }}>
-            <p className="text-sm" style={{ color: ADM_MUTED }}>{t("pending")}</p>
-            <p className="text-2xl font-bold mt-1" style={{ color: stats.pending > 0 ? ADM_RED : ADM_TEXT }}>{stats.pending}</p>
+      {/* Split layout: desktop 38% / 62%, mobile stack */}
+      <div className="flex flex-col md:flex-row rounded-xl border overflow-hidden bg-white" style={{ borderColor: ADM_BORDER, minHeight: "70vh" }}>
+        {/* LEFT PANEL — Email list */}
+        <div
+          className={`flex flex-col border-gray-200 bg-white ${selectedEmail ? "hidden md:flex md:w-[38%] border-r" : "w-full md:w-[38%] md:border-r"}`}
+        >
+          {/* Tabs */}
+          <div className="flex border-b border-gray-200 shrink-0">
+            {[
+              { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
+              { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
+              { id: "geneigeerd", label: "Geneigeerd", count: tabCounts.ignored },
+              { id: "all", label: "Alles", count: tabCounts.all },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => {
+                  setStatusFilter(tab.id === "all" ? "all" : tab.id);
+                  setPage(1);
+                }}
+                className={`px-3 py-2.5 text-sm font-semibold border-b-2 transition-colors -mb-px ${
+                  (tab.id === "all" && statusFilter === "all") || statusFilter === tab.id
+                    ? "border-[#2aa348] text-[#2aa348]"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {tab.label} {tab.count != null && tab.count > 0 ? `(${tab.count})` : ""}
+              </button>
+            ))}
           </div>
-          <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-            <p className="text-sm" style={{ color: ADM_MUTED }}>{t("sentToday")}</p>
-            <p className="text-2xl font-bold mt-1" style={{ color: ADM_TEXT }}>{stats.sentToday}</p>
+
+          <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100">
+            <input
+              type="search"
+              placeholder={t("search")}
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="flex-1 min-w-0 max-w-[200px] px-3 py-1.5 rounded-lg border text-sm bg-transparent outline-none"
+              style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+            />
           </div>
-          <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-            <p className="text-sm" style={{ color: ADM_MUTED }}>{t("ignored")}</p>
-            <p className="text-2xl font-bold mt-1" style={{ color: ADM_TEXT }}>{stats.ignored}</p>
+
+          <div className="flex-1 overflow-y-auto">
+            {loading ? (
+              <div className="p-6 text-center text-gray-500">{t("loading")}</div>
+            ) : data.length === 0 ? (
+              <div className="p-6 text-center text-sm text-gray-500">{t("noResults")}</div>
+            ) : (
+              data.map((row) => {
+                const selected = selectedEmail?.id === row.id;
+                const senderName = row.van_naam || row.van_email || t("noValue");
+                return (
+                  <div
+                    key={row.id}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => fetchEmailDetail(row.id)}
+                    onKeyDown={(e) => e.key === "Enter" && fetchEmailDetail(row.id)}
+                    className={`p-4 cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition-colors ${
+                      selected ? "bg-green-50 border-l-4 border-l-[#2aa348]" : ""
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <Avatar name={senderName} size="md" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold text-gray-900 truncate">
+                            {senderName}
+                          </span>
+                          <span className="text-xs text-gray-400 ml-2 shrink-0">
+                            {timeAgo(row.ontvangen_op)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-600 mt-0.5 truncate font-medium">
+                          {row.onderwerp ?? "—"}
+                        </div>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <CategoryBadge category={row.ai_categorie} />
+                          {row.status === "in_behandeling" && (
+                            <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 rounded-full px-1.5 py-0.5">
+                              URGENT
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {/* RIGHT PANEL — Detail + Reply */}
+        <div className={`flex-1 flex flex-col min-w-0 ${selectedEmail ? "flex md:w-[62%]" : "hidden md:flex md:w-[62%]"}`}>
+          {selectedEmail ? (
+            <>
+              {/* Mobile back */}
+              <div className="md:hidden flex items-center gap-2 p-3 border-b border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setSelectedEmail(null)}
+                  className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+                >
+                  ← Terug
+                </button>
+                <span className="text-sm font-semibold text-gray-900 truncate">
+                  {selectedEmail.onderwerp ?? "—"}
+                </span>
+              </div>
+
+              {detailLoading ? (
+                <div className="p-6 text-center text-gray-500">Laden…</div>
+              ) : (
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+                  {/* Email header */}
+                  <div className="flex items-start gap-3 flex-wrap">
+                    <Avatar
+                      name={selectedEmail.van_naam || selectedEmail.van_email ?? "—"}
+                      size="lg"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-gray-900">
+                        {selectedEmail.van_naam || selectedEmail.van_email ?? "—"}
+                      </div>
+                      <div className="text-xs text-gray-500">{selectedEmail.van_email ?? "—"}</div>
+                      <div className="text-sm font-semibold text-gray-900 mt-1">
+                        {selectedEmail.onderwerp ?? "—"}
+                      </div>
+                      <div className="text-xs text-gray-400 mt-0.5">
+                        {formatDate(selectedEmail.ontvangen_op)}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Urgent">
+                        🚨
+                      </button>
+                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Koppel dier">
+                        🐾
+                      </button>
+                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Agenda">
+                        📅
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  <div className="rounded-xl border border-gray-200 p-5 bg-white">
+                    <div className="text-sm text-gray-700 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap">
+                      {stripHtml(selectedEmail.inhoud ?? selectedEmail.ai_gegenereerd_antwoord ?? "") || "—"}
+                    </div>
+                  </div>
+
+                  {/* AI Suggestie box */}
+                  <div className="rounded-xl border border-[#2aa348]/30 bg-gradient-to-r from-green-50 to-blue-50 p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-lg">🤖</span>
+                      <span className="text-sm font-bold text-gray-700">AI Suggestie</span>
+                      <span className="text-xs text-gray-400">(Claude analyseerde deze email)</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 text-xs mb-3">
+                      <div className="bg-white rounded-lg p-2 border border-gray-200">
+                        <div className="text-gray-400">Categorie</div>
+                        <div className="font-semibold mt-0.5">
+                          {selectedEmail.ai_categorie ? categoryKeys[selectedEmail.ai_categorie] ?? selectedEmail.ai_categorie : "–"}
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-lg p-2 border border-gray-200">
+                        <div className="text-gray-400">Taal</div>
+                        <div className="font-semibold mt-0.5">{selectedEmail.taal ?? "Nederlands"}</div>
+                      </div>
+                      <div className="bg-white rounded-lg p-2 border border-gray-200">
+                        <div className="text-gray-400">Urgentie</div>
+                        <div className="font-semibold mt-0.5">🟢 Normaal</div>
+                      </div>
+                    </div>
+                    {aiSuggestion ? (
+                      <div className="bg-white rounded-lg p-3 border border-gray-200 text-sm text-gray-700 mb-3 whitespace-pre-wrap">
+                        {aiSuggestion}
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleAiSuggest}
+                        disabled={aiLoading}
+                        className="w-full py-2 rounded-lg border-2 border-dashed border-[#2aa348]/40 text-[#2aa348] text-sm font-semibold hover:bg-green-50 transition-colors disabled:opacity-50"
+                      >
+                        {aiLoading ? "⏳ AI denkt na..." : "✨ Genereer AI antwoordsuggestie"}
+                      </button>
+                    )}
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setReplyText(aiSuggestion)}
+                        className="flex-1 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] transition-colors"
+                      >
+                        Gebruik suggestie
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAiSuggestion("")}
+                        className="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+                      >
+                        Negeer
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Reply editor */}
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-semibold text-gray-700">Antwoord schrijven</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-400">Taal:</span>
+                        {(["nl", "en", "th"] as const).map((lang) => (
+                          <button
+                            key={lang}
+                            type="button"
+                            onClick={() => setReplyLang(lang)}
+                            className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${
+                              replyLang === lang ? "bg-[#2aa348] text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                            }`}
+                          >
+                            {lang}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <textarea
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      placeholder="Schrijf je antwoord hier, of gebruik de AI suggestie..."
+                      className="w-full h-32 p-3 rounded-xl border border-gray-200 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-[#2aa348]/30 focus:border-[#2aa348]"
+                    />
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100"
+                        >
+                          📎 Bijlage
+                        </button>
+                        <button
+                          type="button"
+                          className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100"
+                        >
+                          📋 Template
+                        </button>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedEmail(null);
+                            setAiSuggestion("");
+                          }}
+                          className="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+                        >
+                          ⛔ Negeer
+                        </button>
+                        <button
+                          type="button"
+                          className="px-4 py-1.5 rounded-lg bg-gray-100 text-xs font-semibold text-gray-600 hover:bg-gray-200"
+                        >
+                          💾 Concept
+                        </button>
+                        <button
+                          type="button"
+                          disabled={!replyText.trim()}
+                          onClick={() => handleSendReply(selectedEmail.id)}
+                          className="px-4 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          📤 Verstuur
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center p-6">
+              <EmptyState
+                icon="📬"
+                title="Selecteer een email"
+                description="Klik op een email links om te lezen en beantwoorden"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {totalPages > 1 && (
+        <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2 rounded-b-xl border border-t-0" style={{ borderColor: ADM_BORDER }}>
+          <span className="text-sm" style={{ color: ADM_MUTED }}>
+            {total}
+          </span>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="px-3 py-1 rounded border text-sm disabled:opacity-50"
+              style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+            >
+              ←
+            </button>
+            <span className="px-3 py-1 text-sm" style={{ color: ADM_TEXT }}>
+              {page} / {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+              className="px-3 py-1 rounded border text-sm disabled:opacity-50"
+              style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+            >
+              →
+            </button>
           </div>
         </div>
       )}
-
-      <div className="flex flex-wrap gap-4">
-        <input type="search" placeholder={t("search")} value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
-        <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
-          <option value="all">{t("all")}</option>
-          {STATUS_OPTIONS.filter((s) => s !== "all").map((s) => (
-            <option key={s} value={s}>{statusLabel(s)}</option>
-          ))}
-        </select>
-        <select value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
-          <option value="all">{t("all")}</option>
-          {CATEGORY_OPTIONS.filter((c) => c !== "all").map((c) => (
-            <option key={c} value={c}>{categoryKeys[c] ?? c}</option>
-          ))}
-        </select>
-        <select value={languageFilter} onChange={(e) => { setLanguageFilter(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
-          <option value="all">{t("all")}</option>
-          {LANG_OPTIONS.filter((l) => l !== "all").map((l) => (
-            <option key={l} value={l}>{l.toUpperCase()}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ color: ADM_MUTED }}>
-                <th className="text-left p-3">{t("from")}</th>
-                <th className="text-left p-3">{t("subject")}</th>
-                <th className="text-left p-3">{t("received")}</th>
-                <th className="text-left p-3">{t("language")}</th>
-                <th className="text-left p-3">{t("aiCategory")}</th>
-                <th className="text-left p-3">{t("suggestedTemplate")}</th>
-                <th className="text-left p-3">{t("aiConfidence")}</th>
-                <th className="text-left p-3">{t("status")}</th>
-                <th className="text-left p-3">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
-              ) : data.length === 0 ? (
-                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
-              ) : (
-                data.map((row) => (
-                  <tr key={row.id} className="border-t hover:opacity-90" style={{ borderColor: ADM_BORDER }}>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {[row.van_naam, row.van_email].filter(Boolean).join(" · ") || t("noValue")}
-                    </td>
-                    <td className="p-3 max-w-[200px] truncate" style={{ color: ADM_TEXT }} title={row.onderwerp ?? ""}>{row.onderwerp ?? t("noValue")}</td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(row.ontvangen_op)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{(row.taal ?? "").toUpperCase() || t("noValue")}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.ai_categorie ? (categoryKeys[row.ai_categorie] ?? row.ai_categorie) : t("noValue")}</td>
-                    <td className="p-3 relative">
-                      <div
-                        className="inline"
-                        onMouseEnter={(e) => {
-                          if (!row.ai_suggestie_template_id) return;
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setHoverTooltip({ row, x: rect.left, y: rect.bottom + 4 });
-                        }}
-                        onMouseLeave={() => setHoverTooltip(null)}
-                      >
-                        {row.ai_suggestie_template_id ? (
-                          <span className="cursor-help underline decoration-dotted" style={{ color: ADM_ACCENT }}>
-                            {templateNaam(row.ai_suggestie_template_id) || t("noValue")}
-                          </span>
-                        ) : (
-                          <span style={{ color: ADM_MUTED }}>{t("noValue")}</span>
-                        )}
-                        {hoverTooltip?.row?.id === row.id && (
-                          <div
-                            className="fixed z-50 max-w-sm rounded-lg border p-3 text-sm shadow-lg"
-                            style={{ left: hoverTooltip.x, top: hoverTooltip.y, background: ADM_CARD, borderColor: ADM_BORDER, color: ADM_TEXT }}
-                          >
-                            <p className="font-medium">{templateNaam(row.ai_suggestie_template_id)}</p>
-                            {row.ai_confidence != null && <p style={{ color: ADM_MUTED }}>{Math.round(Number(row.ai_confidence) * 100)}%</p>}
-                            {row.ai_gegenereerd_antwoord && <p className="mt-2 line-clamp-4" style={{ color: ADM_MUTED }}>{stripHtml(row.ai_gegenereerd_antwoord).slice(0, 200)}{stripHtml(row.ai_gegenereerd_antwoord).length > 200 ? "…" : ""}</p>}
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{row.ai_confidence != null ? `${Math.round(Number(row.ai_confidence) * 100)}%` : t("noValue")}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{statusLabel(row.status)}</td>
-                    <td className="p-3">
-                      {row.status === "in_behandeling" && (
-                        <>
-                          <button type="button" onClick={() => handleSendReply(row.id)} disabled={!!sendingId} className="text-sm mr-2" style={{ color: ADM_ACCENT }} title={t("sendReply")}>✅</button>
-                          <button type="button" onClick={() => handleIgnore(row.id)} disabled={!!ignoringId} className="text-sm mr-2" style={{ color: ADM_MUTED }} title={t("ignore")}>❌</button>
-                        </>
-                      )}
-                      <button type="button" onClick={() => router.push(`/admin/emails/${row.id}`)} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("view")}</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-        {totalPages > 1 && (
-          <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
-            <span className="text-sm" style={{ color: ADM_MUTED }}>{total}</span>
-            <div className="flex gap-2">
-              <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="px-3 py-1 rounded border text-sm disabled:opacity-50" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>←</button>
-              <span className="px-3 py-1 text-sm" style={{ color: ADM_TEXT }}>{page} / {totalPages}</span>
-              <button type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="px-3 py-1 rounded border text-sm disabled:opacity-50" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>→</button>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 }

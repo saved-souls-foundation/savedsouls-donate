@@ -150,9 +150,9 @@ export default function IdealDonate() {
       </div>
 
       <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
-        {/* Eén regel: bedrag + valuta (valuta verborgen bij Thai) */}
-        <div className="flex gap-2">
-          <div className="flex-1 min-w-0">
+        {/* Eén regel: bedrag + valuta (valuta verborgen bij Thai); stacked on mobile */}
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="w-full sm:flex-1 sm:min-w-0">
             <label htmlFor="amount-select" className="sr-only">{t("idealAmount")}</label>
             <select
               id="amount-select"
@@ -178,7 +178,7 @@ export default function IdealDonate() {
               <option value="custom">{t("idealCustom")}</option>
             </select>
           </div>
-          <div className="w-28 shrink-0">
+          <div className="w-full sm:w-28 sm:shrink-0">
             <label htmlFor="currency-select" className="sr-only">{t("currencyLabel")}</label>
             <select
               id="currency-select"

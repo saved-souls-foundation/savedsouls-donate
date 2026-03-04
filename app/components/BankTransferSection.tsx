@@ -24,7 +24,7 @@ function CopyButton({
     <button
       type="button"
       onClick={copy}
-      className="px-3 py-1.5 rounded-lg text-sm font-medium border border-stone-300 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+      className="min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium border border-stone-300 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
       style={{ color: ACCENT_GREEN }}>
       {copied ? copiedLabel : label}
     </button>

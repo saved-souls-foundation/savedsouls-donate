@@ -444,6 +444,9 @@ export default function RoosterClient() {
             {loading && (
               <p className="text-sm py-2" style={{ color: ADM_MUTED }}>{t("loading")}</p>
             )}
+            <p className="lg:hidden text-xs text-stone-400 italic mb-1 px-1">
+              ← Scroll om het volledige rooster te zien
+            </p>
             {/* Desktop: rooster grid */}
             <div className="hidden lg:block overflow-auto">
               <table className="w-full border-collapse min-w-[800px]" style={{ borderColor: ADM_BORDER }}>

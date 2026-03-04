@@ -59,7 +59,12 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
 
   if (!mounted) {
     return (
-      <div className="flex items-center gap-1 text-xs" style={{ minWidth: "80px" }} aria-hidden />
+      <div
+        className="flex items-center gap-1 text-xs"
+        style={{ minWidth: "80px" }}
+        aria-hidden
+        suppressHydrationWarning
+      />
     );
   }
 

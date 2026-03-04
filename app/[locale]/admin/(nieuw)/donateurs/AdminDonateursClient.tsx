@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
+import { EmptyState, StatCard, TableWrapper, Avatar, StatusBadge, QuickActions } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -74,49 +75,73 @@ export default function AdminDonateursClient() {
   const fetchOnetime = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const params = new URLSearchParams();
-    params.set("tab", "onetime");
-    if (search) params.set("search", search);
-    if (country) params.set("country", country);
-    if (dateFrom) params.set("dateFrom", dateFrom);
-    if (dateTo) params.set("dateTo", dateTo);
-    if (methodeFilter === "paypal" || methodeFilter === "bank" || methodeFilter === "other") params.set("methode", methodeFilter);
-    params.set("page", String(page));
-    params.set("limit", String(PAGE_SIZE));
-    const res = await fetch(`/api/admin/donors?${params}`);
-    if (!res.ok) {
+    try {
+      const params = new URLSearchParams();
+      params.set("tab", "onetime");
+      if (search) params.set("search", search);
+      if (country) params.set("country", country);
+      if (dateFrom) params.set("dateFrom", dateFrom);
+      if (dateTo) params.set("dateTo", dateTo);
+      if (methodeFilter === "paypal" || methodeFilter === "bank" || methodeFilter === "other") params.set("methode", methodeFilter);
+      params.set("page", String(page));
+      params.set("limit", String(PAGE_SIZE));
+      const res = await fetch(`/api/admin/donors?${params}`);
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setOnetimeData([]);
+        setOnetimeTotal(0);
+        const msg = (json as { error?: string }).error || "Kon data niet laden";
+        setError(msg);
+        console.error("[AdminDonateurs] fetchOnetime error:", res.status, msg, json);
+        setLoading(false);
+        return;
+      }
+      setOnetimeData(json.data ?? []);
+      setOnetimeTotal(json.total ?? 0);
+    } catch (err) {
       setOnetimeData([]);
       setOnetimeTotal(0);
-      setError("Kon data niet laden");
+      const msg = err instanceof Error ? err.message : "Kon data niet laden (netwerkfout)";
+      setError(msg);
+      console.error("[AdminDonateurs] fetchOnetime exception:", err);
       setLoading(false);
       return;
     }
-    const json = await res.json();
-    setOnetimeData(json.data ?? []);
-    setOnetimeTotal(json.total ?? 0);
     setLoading(false);
   }, [search, country, dateFrom, dateTo, methodeFilter, page]);
 
   const fetchRecurring = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const params = new URLSearchParams();
-    params.set("tab", "recurring");
-    if (search) params.set("search", search);
-    if (statusFilter !== "all") params.set("status", statusFilter);
-    params.set("page", String(page));
-    params.set("limit", String(PAGE_SIZE));
-    const res = await fetch(`/api/admin/donors?${params}`);
-    if (!res.ok) {
+    try {
+      const params = new URLSearchParams();
+      params.set("tab", "recurring");
+      if (search) params.set("search", search);
+      if (statusFilter !== "all") params.set("status", statusFilter);
+      params.set("page", String(page));
+      params.set("limit", String(PAGE_SIZE));
+      const res = await fetch(`/api/admin/donors?${params}`);
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setRecurringData([]);
+        setRecurringTotal(0);
+        const msg = (json as { error?: string }).error || "Kon data niet laden";
+        setError(msg);
+        console.error("[AdminDonateurs] fetchRecurring error:", res.status, msg, json);
+        setLoading(false);
+        return;
+      }
+      setRecurringData(json.data ?? []);
+      setRecurringTotal(json.total ?? 0);
+    } catch (err) {
       setRecurringData([]);
       setRecurringTotal(0);
-      setError("Kon data niet laden");
+      const msg = err instanceof Error ? err.message : "Kon data niet laden (netwerkfout)";
+      setError(msg);
+      console.error("[AdminDonateurs] fetchRecurring exception:", err);
       setLoading(false);
       return;
     }
-    const json = await res.json();
-    setRecurringData(json.data ?? []);
-    setRecurringTotal(json.total ?? 0);
     setLoading(false);
   }, [search, statusFilter, page]);
 
@@ -202,8 +227,15 @@ export default function AdminDonateursClient() {
       </div>
 
       {error && (
-        <div className="text-red-500 p-4 rounded-lg border border-red-200 bg-red-50">
-          {error}
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-red-800 font-medium">{error}</p>
+          <button
+            type="button"
+            onClick={() => (tab === "onetime" ? fetchOnetime() : fetchRecurring())}
+            className="shrink-0 px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors"
+          >
+            Opnieuw proberen
+          </button>
         </div>
       )}
       {toastError && (
@@ -219,6 +251,46 @@ export default function AdminDonateursClient() {
         <button type="button" onClick={() => { setTab("recurring"); setPage(1); }} className="px-4 py-2 text-sm font-medium border-b-2 -mb-px" style={{ borderColor: tab === "recurring" ? ADM_ACCENT : "transparent", color: tab === "recurring" ? ADM_ACCENT : ADM_MUTED }}>
           {t("tabRecurring")}
         </button>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard
+          icon="💰"
+          label="Totaal donateurs"
+          value={tab === "onetime" ? onetimeTotal : recurringTotal}
+        />
+        <StatCard
+          icon="📈"
+          label="Totaal opgehaald"
+          value={"€" + (tab === "onetime"
+            ? onetimeData.reduce((s, d) => s + (Number(d.total_donated) || 0), 0).toLocaleString("nl-NL")
+            : recurringData.reduce((s, d) => s + (Number(d.amount) || 0), 0).toLocaleString("nl-NL"))}
+          accentColor="green"
+        />
+        <StatCard
+          icon="📅"
+          label="Deze maand"
+          value={"€" + (tab === "onetime"
+            ? onetimeData.filter((d) => {
+                const dt = new Date(d.last_donation || d.id);
+                const now = new Date();
+                return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear();
+              }).reduce((s, d) => s + (Number(d.total_donated) || 0), 0).toLocaleString("nl-NL")
+            : recurringData.filter((d) => {
+                const dt = new Date(d.start_datum || d.volgende_betaling_datum || "");
+                const now = new Date();
+                return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear();
+              }).reduce((s, d) => s + (Number(d.amount) || 0), 0).toLocaleString("nl-NL"))}
+          sub="lopende maand"
+          accentColor="orange"
+        />
+        <StatCard
+          icon="🔄"
+          label="Maandelijks"
+          value={tab === "recurring" ? recurringData.length : recurringTotal}
+          sub="vaste donateurs"
+          accentColor="violet"
+        />
       </div>
 
       {tab === "recurring" && stats != null && (
@@ -239,7 +311,7 @@ export default function AdminDonateursClient() {
       )}
 
       <div className="flex flex-wrap gap-4">
-        <input type="search" placeholder={t("search")} value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
+        <input type="search" placeholder={t("search")} value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="flex-1 min-w-0 sm:min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
         {tab === "onetime" && (
           <>
             <select value={methodeFilter} onChange={(e) => { setMethodeFilter(e.target.value); setPage(1); }} className="px-4 py-2 rounded-lg border bg-transparent outline-none" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} title={t("filterMethod")}>
@@ -272,10 +344,19 @@ export default function AdminDonateursClient() {
       </div>
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        {!loading && !error && (tab === "onetime" ? onetimeData.length === 0 : recurringData.length === 0) ? (
+          <EmptyState
+            icon="💰"
+            title={t("noResults")}
+            description={tab === "onetime" ? t("noDonorsOnetime") ?? "Er zijn nog geen eenmalige donaties." : t("noDonorsRecurring") ?? "Er zijn nog geen maandelijkse donateurs."}
+            actionLabel={t("addDonor")}
+            onAction={() => router.push("/admin/donateurs/nieuw")}
+          />
+        ) : (
+        <TableWrapper>
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
-              <tr style={{ color: ADM_MUTED }}>
+              <tr className="text-gray-500">
                 <th className="text-left p-3">{t("name")}</th>
                 <th className="text-left p-3">{t("email")}</th>
                 {tab === "onetime" ? (
@@ -305,18 +386,28 @@ export default function AdminDonateursClient() {
                   <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
                 ) : (
                   onetimeData.map((r) => (
-                    <tr key={r.id} className="border-t cursor-pointer hover:opacity-90" style={{ borderColor: ADM_BORDER }} onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
-                      <td className="p-3" style={{ color: ADM_TEXT }}>{name(r)}</td>
-                      <td className="p-3" style={{ color: ADM_TEXT }}>{r.email ?? t("noValue")}</td>
+                    <tr key={r.id} className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer" onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
+                      <td className="p-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar name={name(r)} size="sm" />
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">{name(r)}</div>
+                            <div className="text-xs text-gray-400">{r.email ?? t("noValue")}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-3 text-gray-600">{r.email ?? t("noValue")}</td>
                       <td className="p-3" style={{ color: ADM_TEXT }}>{r.land ?? t("noValue")}</td>
                       <td className="p-3" style={{ color: ADM_TEXT }}>{formatCurrency(r.total_donated)}</td>
                       <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.last_donation)}</td>
                       <td className="p-3" style={{ color: ADM_TEXT }}>{r.donation_count}</td>
                       <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex gap-2">
-                          <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
-                          <button type="button" onClick={() => setDeleteConfirm({ id: r.id, name: name(r) })} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
-                        </div>
+                        <QuickActions
+                          actions={[
+                            { icon: "👁️", label: tAdmin("view"), onClick: () => router.push(`/admin/donateurs/${r.id}`) },
+                            { icon: "🗑️", label: t("delete"), onClick: () => setDeleteConfirm({ id: r.id, name: name(r) }) },
+                          ]}
+                        />
                       </td>
                     </tr>
                   ))
@@ -325,26 +416,39 @@ export default function AdminDonateursClient() {
                 <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
               ) : (
                 recurringData.map((r) => (
-                  <tr key={r.recurring_id} className="border-t cursor-pointer hover:opacity-90" style={{ borderColor: ADM_BORDER }} onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{name(r)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{r.email ?? t("noValue")}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{formatCurrency(r.amount, r.valuta)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{freqLabel(r.frequentie)}</td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>{statusLabel(r.status)}</td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.start_datum)}</td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>{formatDate(r.volgende_betaling_datum)}</td>
-                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex gap-2">
-                        <Link href={`/admin/donateurs/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{tAdmin("view")}</Link>
-                        <button type="button" onClick={() => setDeleteConfirm({ id: r.id, name: name(r) })} className="text-sm font-medium" style={{ color: "#dc2626" }}>{t("delete")}</button>
+                  <tr key={r.recurring_id} className="group border-b border-gray-100 hover:bg-gray-50 transition-colors duration-100 cursor-pointer last:border-b-0" onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
+                    <td className="p-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar name={name(r)} size="sm" />
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">{name(r)}</div>
+                          <div className="text-xs text-gray-400">{r.email ?? t("noValue")}</div>
+                        </div>
                       </div>
+                    </td>
+                    <td className="p-3 text-gray-600">{r.email ?? t("noValue")}</td>
+                    <td className="p-3 text-gray-900">{formatCurrency(r.amount, r.valuta)}</td>
+                    <td className="p-3 text-gray-900">{freqLabel(r.frequentie)}</td>
+                    <td className="p-3">
+                      <StatusBadge label={statusLabel(r.status)} type={r.status === "actief" ? "success" : r.status === "betalingsprobleem" || r.status === "gestopt" ? "danger" : "gray"} />
+                    </td>
+                    <td className="p-3 text-gray-500">{formatDate(r.start_datum)}</td>
+                    <td className="p-3 text-gray-500">{formatDate(r.volgende_betaling_datum)}</td>
+                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                      <QuickActions
+                        actions={[
+                          { icon: "👁️", label: tAdmin("view"), onClick: () => router.push(`/admin/donateurs/${r.id}`) },
+                          { icon: "🗑️", label: t("delete"), onClick: () => setDeleteConfirm({ id: r.id, name: name(r) }) },
+                        ]}
+                      />
                     </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
-        </div>
+        </TableWrapper>
+        )}
         {deleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setDeleteConfirm(null)}>
             <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>

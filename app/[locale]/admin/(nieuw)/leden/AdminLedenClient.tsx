@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -25,6 +26,7 @@ type MemberRow = {
   lid_sinds: string | null;
   notities: string | null;
   created_at: string | null;
+  bijdrage?: number | null;
 };
 
 export default function AdminLedenClient() {
@@ -107,6 +109,18 @@ export default function AdminLedenClient() {
     if (ty === "bedrijf") return t("bedrijf");
     return ty ?? noVal;
   }
+  function typeIcon(ty: string | null) {
+    if (ty === "persoon") return "👤";
+    if (ty === "bedrijf") return "🏢";
+    if (ty === "organisatie" || (ty && ty.toLowerCase() === "organisatie")) return "🏛️";
+    return "";
+  }
+  function statusBadgeType(s: string | null): "success" | "warning" | "danger" | "gray" {
+    if (s === "actief" || s === "Actief") return "success";
+    if (s === "verlopen" || s === "Verlopen") return "danger";
+    if (s === "proef" || s === "Proef") return "warning";
+    return "gray";
+  }
   function formatDate(d: string | null) {
     if (!d) return noVal;
     return locale === "en"
@@ -169,13 +183,35 @@ export default function AdminLedenClient() {
         </div>
       )}
 
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard icon="👥" label="Totaal leden" value={data.length} />
+        <StatCard
+          icon="✅"
+          label="Actief"
+          value={data.filter((l) => ["actief", "Actief"].includes(l.status ?? "")).length}
+          accentColor="green"
+        />
+        <StatCard
+          icon="⚠️"
+          label="Verlopen"
+          value={data.filter((l) => ["verlopen", "Verlopen"].includes(l.status ?? "")).length}
+          accentColor="red"
+        />
+        <StatCard
+          icon="💳"
+          label="Omzet/maand"
+          value={"€" + data.reduce((sum, l) => sum + (Number(l.bijdrage) || 0), 0).toLocaleString("nl-NL")}
+          accentColor="orange"
+        />
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
         <input
           type="search"
           placeholder={t("search")}
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
+          className="flex-1 min-w-0 sm:min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
         <select
@@ -209,75 +245,76 @@ export default function AdminLedenClient() {
       </div>
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ color: ADM_MUTED }}>
-                <th className="text-left p-3">{t("name")}</th>
-                <th className="text-left p-3">{t("email")}</th>
-                <th className="text-left p-3">{t("type")}</th>
-                <th className="text-left p-3">{t("status")}</th>
-                <th className="text-left p-3">{t("memberSince")}</th>
-                <th className="text-left p-3">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="p-6 text-center" style={{ color: ADM_MUTED }}>
-                    {loadingStr}
-                  </td>
+        {loading ? (
+          <div className="p-6 text-center text-gray-500">{loadingStr}</div>
+        ) : data.length === 0 ? (
+          <EmptyState
+            icon="👥"
+            title="Geen leden gevonden"
+            description="Voeg een lid toe of pas je zoekopdracht of filters aan."
+            actionLabel={t("addMember")}
+            onAction={() => router.push("/admin/leden/nieuw")}
+          />
+        ) : (
+          <TableWrapper>
+            <table className="w-full text-sm min-w-[600px]">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="text-left p-3">{t("name")}</th>
+                  <th className="text-left p-3">{t("email")}</th>
+                  <th className="text-left p-3">{t("type")}</th>
+                  <th className="text-left p-3">{t("status")}</th>
+                  <th className="text-left p-3">{t("memberSince")}</th>
+                  <th className="text-left p-3">{t("actions")}</th>
                 </tr>
-              ) : data.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="p-6 text-center" style={{ color: ADM_MUTED }}>
-                    {t("noResults")}
-                  </td>
-                </tr>
-              ) : (
-                data.map((r) => (
-                  <tr
-                    key={r.id}
-                    className="border-t cursor-pointer hover:opacity-90"
-                    style={{ borderColor: ADM_BORDER }}
-                    onClick={() => router.push(`/admin/leden/${r.id}`)}
-                  >
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || noVal}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {r.email ?? noVal}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {typeLabel(r.type)}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {statusLabel(r.status)}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>
-                      {formatDate(r.lid_sinds)}
-                    </td>
-                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex gap-2">
-                        <Link href={`/admin/leden/${r.id}`} className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
-                          {tAdmin("view")}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteConfirm(r)}
-                          className="text-sm font-medium"
-                          style={{ color: "#dc2626" }}
-                        >
-                          {t("delete")}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {data.map((r) => {
+                  const naam = [r.voornaam, r.achternaam].filter(Boolean).join(" ") || noVal;
+                  return (
+                    <tr
+                      key={r.id}
+                      className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
+                      onClick={() => router.push(`/admin/leden/${r.id}`)}
+                    >
+                      <td className="p-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar name={naam} size="sm" />
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">{naam}</div>
+                            <div className="text-xs text-gray-400">{r.email ?? noVal}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-3 text-gray-600">{r.email ?? noVal}</td>
+                      <td className="p-3 text-gray-900">
+                        {typeIcon(r.type) ? (
+                          <span><span aria-hidden>{typeIcon(r.type)}</span> {typeLabel(r.type)}</span>
+                        ) : (
+                          typeLabel(r.type)
+                        )}
+                      </td>
+                      <td className="p-3">
+                        <StatusBadge label={statusLabel(r.status)} type={statusBadgeType(r.status)} />
+                      </td>
+                      <td className="p-3 text-gray-500">{formatDate(r.lid_sinds)}</td>
+                      <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                        <QuickActions
+                          actions={[
+                            { icon: "📧", label: "Email", onClick: () => router.push(`/admin/leden/${r.id}`) },
+                            { icon: "🔄", label: "Verlengen", onClick: () => router.push(`/admin/leden/${r.id}`) },
+                            { icon: "📄", label: "Factuur", onClick: () => router.push(`/admin/leden/${r.id}`) },
+                            { icon: "🗑️", label: "Verwijderen", onClick: () => setDeleteConfirm(r) },
+                          ]}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrapper>
+        )}
         {deleteConfirm && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"

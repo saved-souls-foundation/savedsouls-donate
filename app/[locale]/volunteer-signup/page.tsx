@@ -96,7 +96,7 @@ function VolunteerSignupForm() {
 
         {/* Formulier container */}
         <div
-          className="relative rounded-3xl p-8 md:p-10 shadow-xl border-2 transition-all duration-500 hover:shadow-2xl hover:scale-[1.01] group"
+          className="relative rounded-3xl p-4 sm:p-6 md:p-10 shadow-xl border-2 transition-all duration-500 hover:shadow-2xl hover:scale-[1.01] group"
           style={{
             backgroundColor: "rgba(255,255,255,0.95)",
             borderColor: ACCENT_GREEN,

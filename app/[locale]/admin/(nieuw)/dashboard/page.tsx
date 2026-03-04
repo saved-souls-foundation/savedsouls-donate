@@ -25,19 +25,74 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
   const firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
 
   // Groep A (kritisch, boven de vouw)
+  let aantalDieren = 0;
+  try {
+    const { count } = await withTimeout(
+      Promise.resolve(
+        supabase.from("dieren").select("*", { count: "exact", head: true }).eq("status", "in_opvang")
+      )
+    );
+    aantalDieren = count ?? 0;
+  } catch {
+    aantalDieren = 0;
+  }
+
   const [
     { count: volunteersCount },
+    { count: volunteersActiefCount },
     { count: adoptantsCount },
     { count: activeMembersCount },
     { count: newsletterCount },
     { count: pendingEmailsCount },
+    { data: recenteEmailsData },
+    { data: verlopendeSponsorcontractenData },
   ] = await Promise.all([
     withTimeout(Promise.resolve(supabase.from("volunteer_onboarding").select("*", { count: "exact", head: true }))),
-    withTimeout(Promise.resolve(supabase.from("adoption_applications").select("*", { count: "exact", head: true }))),
+    withTimeout(Promise.resolve(supabase.from("volunteer_onboarding").select("*", { count: "exact", head: true }).eq("step", 4))),
+    withTimeout(Promise.resolve(supabase.from("adoption_applications").select("*", { count: "exact", head: true }).not("status", "eq", "afgerond"))),
     withTimeout(Promise.resolve(supabase.from("members").select("*", { count: "exact", head: true }).eq("status", "actief"))),
     withTimeout(Promise.resolve(supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true))),
     withTimeout(Promise.resolve(supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"))),
+    withTimeout(
+      Promise.resolve(
+        supabase
+          .from("incoming_emails")
+          .select("id, onderwerp, van_email, van_naam, ontvangen_op, ai_categorie")
+          .eq("status", "in_behandeling")
+          .order("ontvangen_op", { ascending: false })
+          .limit(5)
+      )
+    ).catch(() => ({ data: [] })),
+    withTimeout(
+      Promise.resolve(
+        supabase
+          .from("sponsors")
+          .select("id, bedrijfsnaam, contract_eind")
+          .not("contract_eind", "is", null)
+          .lt("contract_eind", new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString())
+          .gt("contract_eind", new Date().toISOString())
+          .limit(3)
+      )
+    ).catch(() => ({ data: [] })),
   ]);
+
+  const recenteEmails = (recenteEmailsData ?? []).map(
+    (r: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string; ai_categorie: string | null }) => ({
+      id: r.id,
+      subject: r.onderwerp,
+      from_email: r.van_email,
+      from_name: r.van_naam,
+      created_at: r.ontvangen_op,
+      category: r.ai_categorie,
+    })
+  );
+  const verlopendeSponsorcontracten = (verlopendeSponsorcontractenData ?? []).map(
+    (s: { id: string; bedrijfsnaam: string | null; contract_eind: string | null }) => ({
+      id: s.id,
+      bedrijfsnaam: s.bedrijfsnaam,
+      contract_eind: s.contract_eind,
+    })
+  );
 
   const getGroupBData = cache(async () => {
     const supabaseB = createAdminClient();
@@ -339,6 +394,11 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
         }}
         recentVolunteers={[]}
         recentDonations={[]}
+        aantalDieren={aantalDieren}
+        aantalVrijwilligersActief={volunteersActiefCount ?? 0}
+        aantalOpenAdopties={adoptantsCount ?? 0}
+        recenteEmails={recenteEmails}
+        verlopendeSponsorcontracten={verlopendeSponsorcontracten}
         groupBOverview={
           <Suspense fallback={groupBSkeletonCards}>
             <DashboardGroupBOverview />

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
+import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -227,6 +228,25 @@ export default function AdminNieuwsbriefClient() {
   function name(row: SubscriberRow) {
     return [row.voornaam, row.achternaam].filter(Boolean).join(" ").trim() || noVal;
   }
+  function taalVlag(taal: string | null) {
+    if (!taal) return "🌐";
+    if (["Nederlands", "nl"].includes(taal)) return "🇳🇱";
+    if (["Engels", "en", "English"].includes(taal)) return "🇬🇧";
+    if (["Thai", "th", "ไทย"].includes(taal)) return "🇹🇭";
+    return "🌐";
+  }
+  function typeIcoon(type: string | null) {
+    if (!type) return "?";
+    if (["Donor", "donor"].includes(type)) return "💰";
+    if (["Vrijwilliger", "vrijwilliger"].includes(type)) return "🤝";
+    if (["Adoptant", "adoptant"].includes(type)) return "🏠";
+    return "?";
+  }
+  function statusBadgeType(r: SubscriberRow): "success" | "danger" | "gray" {
+    if (r.actief) return "success";
+    if (r.uitgeschreven_op) return "danger";
+    return "gray";
+  }
 
   return (
     <div className="space-y-6">
@@ -277,13 +297,40 @@ export default function AdminNieuwsbriefClient() {
         </div>
       )}
 
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard
+          icon="📬"
+          label="Actieve abonnees"
+          value={data.filter((a) => a.actief || (a as { status?: string; nieuwsbrief?: boolean }).nieuwsbrief === true).length}
+        />
+        <StatCard
+          icon="🇳🇱"
+          label="Nederlands"
+          value={data.filter((a) => ["Nederlands", "nl"].includes(a.language ?? "")).length}
+          accentColor="blue"
+        />
+        <StatCard
+          icon="🇬🇧"
+          label="Engels"
+          value={data.filter((a) => ["Engels", "en", "English"].includes(a.language ?? "")).length}
+          accentColor="orange"
+        />
+        <StatCard
+          icon="📊"
+          label="Open rate"
+          value="–"
+          sub="koppel email tool"
+          accentColor="violet"
+        />
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
         <input
           type="search"
           placeholder={t("search")}
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
+          className="flex-1 min-w-0 sm:min-w-[200px] max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
         <select
@@ -330,53 +377,59 @@ export default function AdminNieuwsbriefClient() {
       </div>
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ color: ADM_MUTED }}>
-                <th className="text-left p-3">{t("name")}</th>
-                <th className="text-left p-3">{t("email")}</th>
-                <th className="text-left p-3">{t("type")}</th>
-                <th className="text-left p-3">{t("language")}</th>
-                <th className="text-left p-3">{t("subscribedOn")}</th>
-                <th className="text-left p-3">{t("status")}</th>
-                <th className="text-left p-3">Nieuwsbrief</th>
-                <th className="text-left p-3">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>
-                    …
-                  </td>
+        {loading ? (
+          <div className="p-6 text-center text-gray-500">…</div>
+        ) : data.length === 0 ? (
+          <EmptyState
+            icon="📬"
+            title="Geen abonnees gevonden"
+            description="Voeg abonnees toe of pas je filter aan"
+          />
+        ) : (
+          <TableWrapper>
+            <table className="w-full text-sm min-w-[700px]">
+              <thead>
+                <tr className="text-gray-500">
+                  <th className="text-left p-3">{t("name")}</th>
+                  <th className="text-left p-3">{t("email")}</th>
+                  <th className="text-left p-3">{t("type")}</th>
+                  <th className="text-left p-3">{t("language")}</th>
+                  <th className="text-left p-3">{t("subscribedOn")}</th>
+                  <th className="text-left p-3">{t("status")}</th>
+                  <th className="text-left p-3">Nieuwsbrief</th>
+                  <th className="text-left p-3">{t("actions")}</th>
                 </tr>
-              ) : data.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>
-                    {t("noResults")}
-                  </td>
-                </tr>
-              ) : (
-                data.map((r) => (
-                  <tr key={r.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {name(r)}
+              </thead>
+              <tbody>
+                {data.map((r) => (
+                  <tr
+                    key={r.id}
+                    className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100"
+                  >
+                    <td className="p-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar name={name(r) || r.email ?? "–"} size="sm" />
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">
+                            {name(r) || "–"}
+                          </div>
+                          <div className="text-xs text-gray-400">{r.email ?? "–"}</div>
+                        </div>
+                      </div>
                     </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {r.email ?? noVal}
+                    <td className="p-3 text-gray-600">{r.email ?? noVal}</td>
+                    <td className="p-3 text-gray-900">
+                      <span aria-hidden>{typeIcoon(r.type)}</span> {typeLabel(r.type)}
                     </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {typeLabel(r.type)}
+                    <td className="p-3 text-gray-900">
+                      <span aria-hidden>{taalVlag(r.language)}</span> {r.language ? languageLabel(r.language) : "–"}
                     </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {languageLabel(r.language)}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_MUTED }}>
-                      {formatDate(r.aangemeld_op)}
-                    </td>
-                    <td className="p-3" style={{ color: ADM_TEXT }}>
-                      {r.actief ? t("actief") : t("inactief")}
+                    <td className="p-3 text-gray-500">{formatDate(r.aangemeld_op)}</td>
+                    <td className="p-3">
+                      <StatusBadge
+                        label={r.actief ? t("actief") : t("inactief")}
+                        type={statusBadgeType(r)}
+                      />
                     </td>
                     <td className="p-3">
                       <button
@@ -396,35 +449,33 @@ export default function AdminNieuwsbriefClient() {
                         />
                       </button>
                     </td>
-                    <td className="p-3 flex flex-wrap items-center gap-2">
-                      {r.actief ? (
-                        <button
-                          type="button"
-                          disabled={unsubscribingId === r.id}
-                          onClick={() => setConfirmUnsub({ id: r.id, name: name(r) })}
-                          className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
-                        >
-                          {unsubscribingId === r.id ? loadingStr : t("unsubscribeButton")}
-                        </button>
-                      ) : (
-                        noVal
-                      )}
-                      <button
-                        type="button"
-                        disabled={deletingId === r.id}
-                        onClick={() => setConfirmDelete({ id: r.id, name: name(r) })}
-                        className="text-sm text-stone-500 hover:text-red-600 disabled:opacity-50"
-                        title={t("deleteButton")}
-                      >
-                        {deletingId === r.id ? loadingStr : "🗑 " + t("deleteButton")}
-                      </button>
+                    <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                      <QuickActions
+                        actions={[
+                          {
+                            icon: "📧",
+                            label: "Test email",
+                            onClick: () => {},
+                          },
+                          {
+                            icon: "⛔",
+                            label: "Uitschrijven",
+                            onClick: () => setConfirmUnsub({ id: r.id, name: name(r) }),
+                          },
+                          {
+                            icon: "🗑️",
+                            label: "Verwijderen",
+                            onClick: () => setConfirmDelete({ id: r.id, name: name(r) }),
+                          },
+                        ]}
+                      />
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </TableWrapper>
+        )}
         {totalPages > 1 && (
           <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2" style={{ borderColor: ADM_BORDER }}>
             <span className="text-sm" style={{ color: ADM_MUTED }}>

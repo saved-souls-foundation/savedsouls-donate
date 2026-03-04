@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Users, Mail, Heart, Building, Inbox, Share2, Calendar } from "lucide-react";
+import GlobalSearch from "./components/GlobalSearch";
 
 const ADM_BG = "#f1f5f9";
 const ADM_SIDEBAR = "#ffffff";
@@ -74,6 +75,74 @@ function SectionLabel({ label }: { label: string }) {
   );
 }
 
+function NotificationBell({ locale }: { locale: string }) {
+  const [open, setOpen] = useState(false);
+  const [notifications] = useState([
+    { id: 1, text: "Nieuwe email van adoptant", time: "2m", type: "email" },
+    { id: 2, text: "Max — vaccinatie vervallen", time: "1u", type: "medical" },
+    { id: 3, text: "Rooster: zaterdag open slot", time: "3u", type: "roster" },
+  ]);
+  const count = notifications.length;
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+        aria-label="Notificaties"
+      >
+        <span className="text-xl">🔔</span>
+        {count > 0 && (
+          <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center">
+            {count > 9 ? "9+" : count}
+          </span>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 w-72 bg-white shadow-xl rounded-xl border border-gray-200 z-50 overflow-hidden">
+          <div className="p-2 border-b border-gray-100">
+            <span className="text-sm font-semibold text-gray-900">Notificaties</span>
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {notifications.slice(0, 5).map((n) => (
+              <div
+                key={n.id}
+                className="flex items-start gap-3 p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+              >
+                <span className="text-lg flex-shrink-0">🔔</span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-gray-900">{n.text}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{n.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-2 border-t border-gray-100">
+            <button
+              type="button"
+              className="w-full text-xs font-medium text-gray-500 hover:text-[#2aa348] py-2"
+              onClick={() => setOpen(false)}
+            >
+              Alles markeren als gelezen
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminLayoutClient({
   children,
   pendingEmailsCount = 0,
@@ -86,7 +155,19 @@ export default function AdminLayoutClient({
   const locale = useLocale();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const isLogin = pathname?.endsWith("/admin/login") ?? false;
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   async function handleLogout() {
     const supabase = createClient();
@@ -102,11 +183,27 @@ export default function AdminLayoutClient({
   const sidebar = (
     <div className="flex flex-col h-full" style={{ background: ADM_SIDEBAR, color: ADM_TEXT }}>
       <div className="p-4 border-b shrink-0" style={{ borderColor: ADM_BORDER }}>
-        <div className="flex items-center gap-2">
-          <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-8 w-8 object-contain" />
-          <span className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
-            {t("brandName")}
-          </span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <img src="/savedsouls-logo-darkgreen.png" alt="" className="h-8 w-8 object-contain" />
+            <span className="font-bold text-sm" style={{ fontFamily: "'Playfair Display', serif", color: ADM_ACCENT }}>
+              {t("brandName")}
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-sm text-gray-500 border border-gray-200"
+            >
+              <span>🔍</span>
+              <span className="hidden lg:inline text-xs">Zoeken</span>
+              <kbd className="hidden lg:inline text-xs bg-white px-1.5 py-0.5 rounded border border-gray-300 font-mono">
+                ⌘K
+              </kbd>
+            </button>
+            <NotificationBell locale={locale} />
+          </div>
         </div>
         <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1" style={{ background: "rgba(42,157,143,.2)", color: ADM_ACCENT }}>
           {t("adminPanelTitle")}
@@ -254,7 +351,7 @@ export default function AdminLayoutClient({
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="p-2 rounded"
+          className="p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
           style={{ color: ADM_TEXT }}
           aria-label={t("menuOpen")}
         >
@@ -266,11 +363,42 @@ export default function AdminLayoutClient({
             {t("adminPanelTitle")}
           </span>
         </div>
-        <div className="w-10" />
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100"
+            aria-label="Zoeken"
+          >
+            <span className="text-lg">🔍</span>
+          </button>
+          <NotificationBell locale={locale} />
+        </div>
       </header>
-      <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
+      <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 pb-16 md:pb-8">
         {children}
       </main>
+      <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden">
+        <div className="grid grid-cols-5 h-16">
+          {[
+            { icon: "🏠", label: "Home", href: `/${locale}/admin/dashboard` },
+            { icon: "🐾", label: "Dieren", href: `/${locale}/admin/adoptanten` },
+            { icon: "📧", label: "Email", href: `/${locale}/admin/emails` },
+            { icon: "💰", label: "Donateurs", href: `/${locale}/admin/donateurs` },
+            { icon: "📅", label: "Agenda", href: `/${locale}/admin/agenda` },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex flex-col items-center justify-center gap-1 text-gray-400 hover:text-[#2aa348] transition-colors active:scale-95"
+            >
+              <span className="text-xl">{item.icon}</span>
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }

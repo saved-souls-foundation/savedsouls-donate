@@ -228,7 +228,7 @@ export default function AdminEmailTemplatesClient() {
           placeholder={t("search")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-[180px] max-w-xs px-4 py-2 rounded-lg border bg-transparent outline-none text-sm"
+          className="flex-1 min-w-0 sm:min-w-[180px] max-w-xs px-4 py-2 rounded-lg border bg-transparent outline-none text-sm"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
       </div>

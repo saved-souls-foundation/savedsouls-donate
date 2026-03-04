@@ -183,13 +183,13 @@ export default function PressBanner({
           }}
         />
         <div className="absolute inset-0 flex items-center">
-          <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
+          <div className="flex-1 min-w-0 flex flex-col items-center justify-center px-8 text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">Saved Souls Foundation</h3>
             <p className="text-sm md:text-base text-white/95 mt-1">Where Broken Souls Learn to Love Again</p>
             <p className="text-sm md:text-base text-white/85 mt-1">Khon Kaen, Thailand</p>
             <span className="text-5xl md:text-6xl mt-2 animate-banner-heart opacity-20">💚</span>
           </div>
-          <div className="w-1/3 min-w-[200px] h-full relative flex items-center justify-center pr-4">
+          <div className="w-full md:w-1/3 min-w-0 md:min-w-[200px] h-full relative flex items-center justify-center pr-4">
             <div className="relative w-full max-w-[220px] aspect-square rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl">
               <Image
                 src={DOG_IMAGE}

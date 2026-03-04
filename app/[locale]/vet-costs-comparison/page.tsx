@@ -60,7 +60,33 @@ export default function VetCostsComparisonPage() {
           <p className="text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
             {t("medsIntro")}
           </p>
-          <div className="overflow-x-auto rounded-2xl border-2 border-stone-200 dark:border-stone-600 shadow-xl">
+          {/* Mobile: cards */}
+          <div className="md:hidden space-y-3">
+            {[
+              { key: "ear", nl: "€40–90", th: "฿300–800" },
+              { key: "skin", nl: "€50–120", th: "฿400–1200" },
+              { key: "diarrhea", nl: "€30–80", th: "฿200–600" },
+              { key: "dental", nl: "€80–250", th: "฿500–3000" },
+              { key: "allergy", nl: "€40–100", th: "฿300–900" },
+            ].map((row) => (
+              <div
+                key={row.key}
+                className="rounded-xl border border-stone-200 dark:border-stone-600 p-4 bg-white dark:bg-stone-900 shadow-sm"
+              >
+                <p className="font-semibold text-stone-800 dark:text-stone-100 mb-2">{t(`meds_${row.key}`)}</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-stone-500 dark:text-stone-400">Nederland</span>
+                  <span className="font-medium text-blue-700 dark:text-blue-300">{row.nl}</span>
+                </div>
+                <div className="flex justify-between text-sm mt-1">
+                  <span className="text-stone-500 dark:text-stone-400">Thailand</span>
+                  <span className="font-medium text-rose-700 dark:text-rose-300">{row.th}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop: table */}
+          <div className="hidden md:block overflow-x-auto rounded-2xl border-2 border-stone-200 dark:border-stone-600 shadow-xl">
             <table className="w-full min-w-[500px]">
               <thead>
                 <tr className="bg-stone-100 dark:bg-stone-800">
@@ -170,7 +196,27 @@ export default function VetCostsComparisonPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8" style={{ color: ACCENT_GREEN }}>
             📊 {t("tableTitle")}
           </h2>
-          <div className="overflow-x-auto rounded-2xl border-2 border-stone-200 dark:border-stone-600 shadow-xl">
+          {/* Mobile: cards */}
+          <div className="md:hidden space-y-3">
+            {tableRows.map((row) => (
+              <div
+                key={row.key}
+                className="rounded-xl border border-stone-200 dark:border-stone-600 p-4 bg-white dark:bg-stone-900 shadow-sm"
+              >
+                <p className="font-semibold text-stone-800 dark:text-stone-100 mb-2">{t(`table_${row.key}`)}</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-stone-500 dark:text-stone-400">Nederland</span>
+                  <span className="font-medium text-blue-700 dark:text-blue-300">{row.nlPrice}</span>
+                </div>
+                <div className="flex justify-between text-sm mt-1">
+                  <span className="text-stone-500 dark:text-stone-400">Thailand</span>
+                  <span className="font-medium text-rose-700 dark:text-rose-300">{row.thPrice}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop: table */}
+          <div className="hidden md:block overflow-x-auto rounded-2xl border-2 border-stone-200 dark:border-stone-600 shadow-xl">
             <table className="w-full min-w-[600px]">
               <thead>
                 <tr className="bg-stone-100 dark:bg-stone-800">
