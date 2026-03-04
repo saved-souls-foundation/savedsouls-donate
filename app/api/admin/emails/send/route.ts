@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/sendMail";
 
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
@@ -73,20 +73,20 @@ export async function POST(request: NextRequest) {
         .eq("id", incoming_email_id);
     }
 
-    if (isSupabaseAdminConfigured()) {
-      try {
-        const admin = createAdminClient();
-        await admin.from("sent_emails").insert({
-          type: "email_assistant",
-          to_email,
-          subject,
-          body_preview: bodyText.replace(/\s+/g, " ").trim().slice(0, 500),
-          reference_id: incoming_email_id ?? null,
-          reference_type: incoming_email_id ? "incoming_email" : null,
-        });
-      } catch (logErr) {
-        console.error("[admin/emails/send] sent_emails insert failed:", logErr);
-      }
+    // sent_emails (migration 20250305): aan→to_email, onderwerp→subject, inhoud→body_preview, verstuurd_op→sent_at
+    const verstuurdOp = new Date().toISOString();
+    const { error: insertErr } = await supabase!.from("sent_emails").insert({
+      type: "email_assistant",
+      to_email,       // aan
+      subject,        // onderwerp
+      body_preview: bodyText.replace(/\s+/g, " ").trim().slice(0, 500), // inhoud (preview)
+      sent_at: verstuurdOp, // verstuurd_op
+      reference_id: incoming_email_id ?? null,
+      reference_type: incoming_email_id ? "incoming_email" : null,
+    });
+    if (insertErr) {
+      console.error("[admin/emails/send] sent_emails insert failed:", insertErr);
+      return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });

@@ -474,6 +474,7 @@ export default function AdminEmailsClient() {
                       onSent={() => {
                         setSentSuccess(true);
                         fetchList();
+                        router.refresh();
                       }}
                       initialTo={selectedEmail.van_email ?? ""}
                       initialSubject={`RE: ${selectedEmail.onderwerp ?? "Your message"}`}

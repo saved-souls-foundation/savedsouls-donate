@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /** Parse "Name <email@domain.com>" of "email@domain.com" → { name, email } */
 function parseFrom(from: string): { van_naam: string | null; van_email: string | null } {
@@ -88,14 +88,9 @@ export async function POST(request: NextRequest) {
     const { van_naam, van_email } = parseFrom(fromHeader);
     const inhoud = (html ?? text ?? "").trim() || null;
 
-    if (!isSupabaseAdminConfigured()) {
-      console.error("[webhooks/resend] Supabase admin not configured");
-      return NextResponse.json({ error: "Database not configured" }, { status: 500 });
-    }
-
     try {
       const admin = createAdminClient();
-      await admin.from("incoming_emails").insert({
+      const { error: insertErr } = await admin.from("incoming_emails").insert({
         van_email: van_email ?? null,
         van_naam: van_naam ?? null,
         onderwerp: subject || null,
@@ -103,9 +98,13 @@ export async function POST(request: NextRequest) {
         bron: "resend_webhook",
         status: "in_behandeling",
       });
+      if (insertErr) {
+        console.error("[webhooks/resend] incoming_emails insert failed:", insertErr);
+        return NextResponse.json({ error: "Failed to store email" }, { status: 500 });
+      }
     } catch (e) {
-      console.error("[webhooks/resend] incoming_emails insert failed:", e);
-      return NextResponse.json({ error: "Failed to store email" }, { status: 500 });
+      console.error("[webhooks/resend] Supabase/incoming_emails error:", e);
+      return NextResponse.json({ error: "Database not configured or insert failed" }, { status: 500 });
     }
 
     return NextResponse.json({ received: true });

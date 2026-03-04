@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import ComposeEmailModal from "../ComposeEmailModal";
 
 const ADM_CARD = "#ffffff";
@@ -27,6 +27,7 @@ type SentRow = {
 export default function AdminSentEmailsClient() {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const typeFromUrl = searchParams.get("type");
   const [typeFilter, setTypeFilter] = useState(() =>
@@ -101,7 +102,10 @@ export default function AdminSentEmailsClient() {
       <ComposeEmailModal
         open={composeOpen}
         onClose={() => setComposeOpen(false)}
-        onSent={() => fetchList()}
+        onSent={() => {
+          fetchList();
+          router.refresh();
+        }}
       />
 
       <div className="flex flex-wrap gap-4">
