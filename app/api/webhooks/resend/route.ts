@@ -89,6 +89,7 @@ export async function POST(request: NextRequest) {
     const inhoud = (html ?? text ?? "").trim() || null;
 
     try {
+      // Database via admin client (RLS omzeild)
       const admin = createAdminClient();
       const row = {
         van_email: van_email ?? null,

@@ -25,7 +25,7 @@ function wrapHtml(body: string): string {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { error, supabase } = await requireAdmin();
+    const { error } = await requireAdmin();
     if (error) return error;
 
     let body: { to_email?: string; subject?: string; body?: string; incoming_email_id?: string };
@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error ?? "Send failed" }, { status: 502 });
     }
 
+    // Alle database-schrijfacties via admin client (RLS omzeild)
     const admin = createAdminClient();
     let verwerktDoor: string | null = null;
     try {
