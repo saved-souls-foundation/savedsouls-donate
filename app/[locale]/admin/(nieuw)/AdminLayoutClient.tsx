@@ -208,19 +208,19 @@ export default function AdminLayoutClient({
               {t("brandName")}
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2 flex-nowrap">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-sm text-gray-500 border border-gray-200 shrink-0"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-sm text-gray-500 border border-gray-200 shrink-0 min-w-0"
             >
               <span>🔍</span>
-              <span className="hidden lg:inline text-xs">Zoeken</span>
-              <kbd className="hidden lg:inline text-xs bg-white px-1.5 py-0.5 rounded border border-gray-300 font-mono">
+              <span className="hidden lg:inline text-xs whitespace-nowrap">Zoeken</span>
+              <kbd className="hidden lg:inline text-xs bg-white px-1.5 py-0.5 rounded border border-gray-300 font-mono shrink-0">
                 ⌘K
               </kbd>
             </button>
-            <div className="shrink-0">
+            <div className="shrink-0 ml-3 w-10 flex items-center justify-center">
               <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
             </div>
           </div>

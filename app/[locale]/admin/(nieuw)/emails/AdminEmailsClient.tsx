@@ -103,6 +103,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   const [detailLoading, setDetailLoading] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
   const [replyComposeOpen, setReplyComposeOpen] = useState(false);
+  const [composeOpen, setComposeOpen] = useState(false);
 
   useEffect(() => {
     if (!toastError) return;
@@ -391,12 +392,13 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
           {t("title")}
         </h1>
         <div className="flex gap-3 items-center">
-          <Link
-            href="/admin/emails/verzonden"
-            className="px-3 py-2 rounded-lg text-sm font-semibold border-2 border-[#2aa348] bg-green-50 text-[#2aa348] hover:bg-green-100 transition-colors"
+          <button
+            type="button"
+            onClick={() => setComposeOpen(true)}
+            className="px-3 py-2 rounded-lg text-sm font-medium text-white bg-[#2aa348] hover:bg-[#166534] transition-colors"
           >
-            📤 {t("sentEmails")}
-          </Link>
+            Nieuwe mail opstellen
+          </button>
           <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
             {t("templates")}
           </Link>
@@ -442,12 +444,6 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 {tab.label} {tab.count != null && tab.count > 0 ? `(${tab.count})` : ""}
               </button>
             ))}
-            <Link
-              href="/admin/emails/verzonden"
-              className="px-3 py-2.5 text-sm font-semibold border-b-2 border-transparent text-[#2aa348] hover:bg-green-50 -mb-px transition-colors"
-            >
-              📤 Verzonden
-            </Link>
           </div>
 
           <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100 items-center">
@@ -872,6 +868,18 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
             </button>
           </div>
         </div>
+      )}
+
+      {composeOpen && (
+        <ComposeEmailModal
+          open={composeOpen}
+          onClose={() => setComposeOpen(false)}
+          onSent={() => {
+            setComposeOpen(false);
+            fetchList();
+            router.refresh();
+          }}
+        />
       )}
     </div>
   );

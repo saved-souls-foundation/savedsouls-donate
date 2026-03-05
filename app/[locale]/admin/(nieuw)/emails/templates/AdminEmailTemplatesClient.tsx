@@ -358,13 +358,6 @@ export default function AdminEmailTemplatesClient() {
               {t("sentRepliesDescription")}
             </p>
           </div>
-          <Link
-            href="/admin/emails/verzonden?type=email_assistant"
-            className="text-sm font-medium"
-            style={{ color: ADM_ACCENT }}
-          >
-            {t("viewAllSent")}
-          </Link>
         </div>
         {loadingSent ? (
           <div className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</div>
