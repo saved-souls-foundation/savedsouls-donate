@@ -77,8 +77,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
+    // email.sent = outbound delivery (we acknowledge, no DB write); email.received = inbound (process below)
+    if (payload.type === "email.sent") {
+      console.log("[webhooks/resend] email.sent acknowledged", payload.data?.email_id ?? "");
+      return NextResponse.json({ received: true });
+    }
     if (payload.type !== "email.received") {
-      console.log("[webhooks/resend] Event genegeerd (niet email.received): type=", payload.type);
+      console.log("[webhooks/resend] Event genegeerd: type=", payload.type);
       return NextResponse.json({ received: true });
     }
 

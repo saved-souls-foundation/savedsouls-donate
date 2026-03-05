@@ -3,6 +3,9 @@ import { Resend } from "resend";
 /** From-adres moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan. */
 const DEFAULT_FROM = "Saved Souls Website <info@savedsouls-foundation.com>";
 
+/** Reply-to voor Resend Inbound: antwoorden komen binnen via webhook (reply@woonjonie.resend.app). */
+const DEFAULT_REPLY_TO = process.env.RESEND_INBOUND_REPLY_TO ?? "reply@woonjonie.resend.app";
+
 function getFrom(): string {
   return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || DEFAULT_FROM;
 }
@@ -38,7 +41,7 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
     const result = await client.emails.send({
       from,
       to,
-      replyTo: options.replyTo,
+      replyTo: options.replyTo ?? DEFAULT_REPLY_TO,
       subject: options.subject,
       text: options.text,
       ...(options.html && { html: options.html }),

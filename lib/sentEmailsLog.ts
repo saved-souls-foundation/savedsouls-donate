@@ -10,39 +10,81 @@ type SentEmailPayload = {
   meta?: Record<string, unknown> | null;
 };
 
+function isSchemaError(err: { code?: string; message?: string }): boolean {
+  return (err.code === "PGRST204" || /column|schema|cache|does not exist/i.test(err.message ?? "")) ?? false;
+}
+
 /**
- * Schrijft een regel in sent_emails. Probeert eerst Engelse kolommen (migratie 20250305),
- * bij schemafout Nederlandse kolommen (productie kan afwijken).
+ * Schrijft een regel in sent_emails. Probeert meerdere schema-varianten (EN, NL, minimaal)
+ * zodat het werkt ongeacht productie-migraties.
  * @returns true als gelogd, false bij fout (mail is dan wel verstuurd)
  */
 export async function logSentEmail(admin: SupabaseClient, payload: SentEmailPayload): Promise<boolean> {
   const { type, to, subject, bodyPreview, referenceId, referenceType, meta } = payload;
-  const insertEn = {
+  const refId = referenceId ?? null;
+  const refType = referenceType ?? null;
+  const metaVal = meta ?? {};
+
+  // 1) Volledig Engels (migratie 20250305)
+  let res = await admin.from("sent_emails").insert({
     type,
     to_email: to,
     subject,
     body_preview: bodyPreview,
-    reference_id: referenceId ?? null,
-    reference_type: referenceType ?? null,
-    meta: meta ?? {},
-  };
-  let res = await admin.from("sent_emails").insert(insertEn).select("id").single();
-  if (res.error && (res.error.code === "PGRST204" || /column|schema|cache/i.test(res.error.message ?? ""))) {
-    const insertNl = {
-      type,
-      aan: to,
-      onderwerp: subject,
-      inhoud: bodyPreview,
-      verstuurd_op: new Date().toISOString(),
-      reference_id: referenceId ?? null,
-      reference_type: referenceType ?? null,
-      meta: meta ?? {},
-    };
-    res = await admin.from("sent_emails").insert(insertNl).select("id").single();
-  }
-  if (res.error) {
+    reference_id: refId,
+    reference_type: refType,
+    meta: metaVal,
+  }).select("id").single();
+  if (!res.error) return true;
+  if (!isSchemaError(res.error)) {
     console.error("[sentEmailsLog]", res.error.code, res.error.message);
     return false;
   }
-  return true;
+
+  // 2) Volledig Nederlands (productie met NL kolommen)
+  res = await admin.from("sent_emails").insert({
+    type,
+    aan: to,
+    onderwerp: subject,
+    inhoud: bodyPreview,
+    verstuurd_op: new Date().toISOString(),
+    reference_id: refId,
+    reference_type: refType,
+    meta: metaVal,
+  }).select("id").single();
+  if (!res.error) return true;
+  if (!isSchemaError(res.error)) {
+    console.error("[sentEmailsLog]", res.error.code, res.error.message);
+    return false;
+  }
+
+  // 3) Minimaal Engels (zonder body_preview, voor tabellen waar die kolom ontbreekt)
+  res = await admin.from("sent_emails").insert({
+    type,
+    to_email: to,
+    subject,
+    reference_id: refId,
+    reference_type: refType,
+    meta: metaVal,
+  }).select("id").single();
+  if (!res.error) return true;
+  if (!isSchemaError(res.error)) {
+    console.error("[sentEmailsLog]", res.error.code, res.error.message);
+    return false;
+  }
+
+  // 4) Minimaal Nederlands
+  res = await admin.from("sent_emails").insert({
+    type,
+    aan: to,
+    onderwerp: subject,
+    verstuurd_op: new Date().toISOString(),
+    reference_id: refId,
+    reference_type: refType,
+    meta: metaVal,
+  }).select("id").single();
+  if (!res.error) return true;
+
+  console.error("[sentEmailsLog] all insert attempts failed", res.error?.code, res.error?.message);
+  return false;
 }

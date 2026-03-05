@@ -90,6 +90,17 @@ Als je de fout **"554 5.7.1 : Relay access denied"** of **"Bericht niet bezorgd 
   - In Resend → **Domains** → savedsouls-foundation.com moet de status **Verified** zijn.
 - Verstuur je **naar** een eigen adres (bijv. info@savedsouls-foundation.com) en ontvang je via een forward (bijv. Porkbun → Gmail), dan moet ook de **ontvangende** kant (MX/forward) mail van Resend toestaan; soms blokkeert een hoster “relay” van externe verzenders. Controleer dan bij die provider of er restricties zijn voor inkomende mail.
 
+### Versturen naar info@ of andere ontvanger (554 of niet aangekomen)
+
+- **Mail uit het dashboard komt wel aan bij Porkbun** (info@): dan is ontvangen via Porkbun in orde.
+- **Bij een ontvanger zoals Gmail** (of een ander adres) moet de mail zonder workaround aankomen. Oplossing is altijd aan de kant van **verzender** en **ontvanger**:
+
+**Oplossing (geen workaround):**
+
+1. **Resend-domein in orde** – In Resend → **Domains** → savedsouls-foundation.com moet **Verified** staan. SPF en DKIM in DNS (bij je domeinprovider) moeten exact overeenkomen met wat Resend toont. Dan vertrouwen ontvangers (o.a. Gmail) de afzender.
+2. **Als 554 bij een specifieke ontvanger** – De server van die ontvanger (bijv. Gmail) weigert de mail. Meestal door SPF/DKIM: controleer opnieuw Resend Domains en DNS. Soms helpt een **DMARC**-record (TXT voor `_dmarc.savedsouls-foundation.com`); zie eerder in dit document.
+3. **Als de ontvanger bij Porkbun staat** – Mail uit het dashboard die bij Porkbun aankomt is goed. Ontvangt een ander adres (bijv. Gmail) de mail niet, dan ligt het aan authenticatie (punt 1) of aan de ontvangende partij (spamfilter, policy). Geen tijdelijke workaround nodig als Resend Verified is en DNS klopt; dan horen Gmail en andere providers de mail te accepteren.
+
 ## sent_emails-log mislukt (PGRST204 / body_preview)
 
 Als in de Vercel-logs staat: **"Could not find the 'body_preview' column of 'sent_emails' in the schema cache"**:

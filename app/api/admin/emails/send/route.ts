@@ -24,7 +24,7 @@ function wrapHtml(body: string): string {
 /**
  * Verstuur een nieuwe e-mail (niet gekoppeld aan inkomende mail, of als antwoord met optional incoming_email_id).
  * POST body: { to_email, subject, body, incoming_email_id? }
- * Logt in sent_emails met Nederlandse kolommen: aan, onderwerp, inhoud, verstuurd_op.
+ * Logt in sent_emails (lib/sentEmailsLog: probeert EN/NL/minimaal schema). Bij log-falen: altijd 200 + success: true (mail is verstuurd).
  */
 export async function POST(request: NextRequest) {
   try {
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       referenceId: incoming_email_id ?? null,
       referenceType: incoming_email_id ? "incoming_email" : null,
     });
-    if (!logged) return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt." }, { status: 500 });
+    if (!logged) console.error("[admin/emails/send] Mail verzonden maar sent_emails-log mislukt (zie Supabase-schema).");
     return NextResponse.json({ success: true });
   } catch (e) {
     console.error("[admin/emails/send] Unexpected error:", e);
