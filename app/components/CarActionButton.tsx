@@ -9,6 +9,7 @@ export default function CarActionButton() {
   const t = useTranslations("home");
   const pathname = usePathname();
   if (pathname === "/" || pathname === "") return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/portal")) return null;
 
   return (
     <Link

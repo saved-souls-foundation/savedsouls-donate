@@ -159,7 +159,7 @@ export function DashboardClient({
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full max-w-full min-w-0">
       {/* RUN 3 — Welcome banner */}
       <div className="bg-gradient-to-r from-[#2aa348] to-[#166534] rounded-2xl p-6 text-white mb-6">
         <div className="flex items-start justify-between">
