@@ -80,6 +80,10 @@ Om inkomende e-mail in het admin-dashboard (E-mailassistent) te tonen:
 4. Na aanmaken: kopieer het **Signing Secret** (`whsec_...`) en zet dat in Vercel als **RESEND_WEBHOOK_SECRET**.
 5. Zonder **RESEND_WEBHOOK_SECRET** geeft de route 500; zonder **RESEND_API_KEY** kan de body van de mail niet worden opgehaald (alleen metadata wordt opgeslagen).
 
+### Directe mail naar info@ komt niet in het dashboard
+
+Als de MX-record voor savedsouls-foundation.com naar een andere server wijst (bijv. `inbound-smtp.eu-west-1.amazonaws.com`) en je krijgt "Relay access denied" of mail naar info@ verschijnt niet in de E-mailassistent: gebruik **Resend Inbound** voor je eigen domein. Vervang de MX bij je DNS-provider (Porkbun) door het MX-record dat Resend toont wanneer je het domein bij Resend → Inbound toevoegt. Zie **docs/RESEND-INBOUND-SETUP.md**, sectie "Directe mail naar info@savedsouls-foundation.com in het dashboard".
+
 ## 554 5.7.1 Relay access denied
 
 Als je de fout **"554 5.7.1 : Relay access denied"** of **"Bericht niet bezorgd … externe server onjuist geconfigureerd"** ziet:

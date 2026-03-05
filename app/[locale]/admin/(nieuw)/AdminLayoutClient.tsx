@@ -208,11 +208,11 @@ export default function AdminLayoutClient({
               {t("brandName")}
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-sm text-gray-500 border border-gray-200"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors text-sm text-gray-500 border border-gray-200 shrink-0"
             >
               <span>🔍</span>
               <span className="hidden lg:inline text-xs">Zoeken</span>
@@ -220,7 +220,9 @@ export default function AdminLayoutClient({
                 ⌘K
               </kbd>
             </button>
-            <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+            <div className="shrink-0">
+              <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+            </div>
           </div>
         </div>
         <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1" style={{ background: "rgba(42,157,143,.2)", color: ADM_ACCENT }}>
@@ -384,7 +386,7 @@ export default function AdminLayoutClient({
             {t("adminPanelTitle")}
           </span>
         </div>
-        <div className="flex items-center gap-0.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 ml-1">
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
@@ -393,7 +395,9 @@ export default function AdminLayoutClient({
           >
             <span className="text-lg">🔍</span>
           </button>
-          <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+          <div className="shrink-0">
+            <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+          </div>
         </div>
       </header>
       <main className="flex-1 min-w-0 w-full max-w-full overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 pb-20 md:pb-8">

@@ -7,6 +7,7 @@
     "ariaLabel": "Cookie consent"
   },
   "turnstile": {
+    "label": "Beveiligingscontrole",
     "errorBeforeEmail": "De beveiligingscontrole kon niet worden geladen (Cloudflare). Dit kan komen door een probleem met challenges.cloudflare.com.",
     "errorSteps": "Wat u kunt doen: probeer het later opnieuw (tijdelijke storing), schakel adblockers uit voor deze site, of neem contact op via ",
     "errorAfterEmail": ". Vermeld bij contact de pagina waarop u deze fout zag.",

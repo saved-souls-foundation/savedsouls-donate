@@ -60,7 +60,7 @@ export default function TurnstileWidget({
 
   const envSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const [siteKey, setSiteKey] = useState<string | null>(null);
-  const [containerVisible, setContainerVisible] = useState(false);
+  const [containerVisible, setContainerVisible] = useState(true);
 
   // Op localhost geeft de productie-key error 110200 (domain not allowed). Gebruik dan Cloudflares test-key.
   useEffect(() => {
@@ -73,22 +73,14 @@ export default function TurnstileWidget({
     setSiteKey(isLocalhost ? TURNSTILE_TEST_SITE_KEY : envSiteKey);
   }, [envSiteKey]);
 
-  // Start widget al wanneer het formulier bijna in beeld is (grotere rootMargin = sneller klaar wanneer gebruiker daar is).
+  // Retry als script na 4s nog niet geladen is (vaak op mobiel).
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") {
-      setContainerVisible(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) setContainerVisible(true);
-      },
-      { rootMargin: "400px", threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [retryKey]);
+    if (!containerVisible || loaded || !siteKey) return;
+    const t = setTimeout(() => {
+      setWidgetError((e) => (e ? e : true));
+    }, 4000);
+    return () => clearTimeout(t);
+  }, [containerVisible, loaded, siteKey, retryKey]);
 
   useEffect(() => {
     if (!loaded || !siteKey || !containerVisible || !containerRef.current || !window.turnstile) return;
@@ -143,6 +135,7 @@ export default function TurnstileWidget({
       <div
         ref={containerRef}
         className="flex justify-center my-4 min-h-[65px] w-full min-w-[280px] sm:min-w-[300px] max-w-full overflow-visible"
+        aria-label={t("label")}
       />
       {widgetError && (
         <div className="text-amber-600 dark:text-amber-400 text-sm mt-2 text-center space-y-2">

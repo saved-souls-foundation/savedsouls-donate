@@ -28,10 +28,25 @@
 - `woonjonie.resend.app` is een **Resend-subdomein**. Resend regelt daar zelf de MX; mail die naar `reply@woonjonie.resend.app` gaat, komt bij Resend binnen en triggert de webhook.
 - De huidige MX voor **savedsouls-foundation.com** (bijv. `inbound-smtp.eu-west-1.amazonaws.com`) gaat over mail die **rechtstreeks naar jouw domein** gaat (bijv. info@savedsouls-foundation.com). Die MX gebruik je alleen als je op dat eigen domein wilt ontvangen. Voor de flow “antwoorden op onze mails → reply@woonjonie.resend.app → webhook” is **geen MX-wijziging** nodig.
 
-**Als je later mail op je eigen domein via Resend Inbound wilt ontvangen:**
+**Directe mail naar info@savedsouls-foundation.com in het dashboard (minimale DNS-wijziging)**
 
-- Voeg in Resend het domein savedsouls-foundation.com (of een subdomein) toe voor Inbound.
-- Resend toont dan het **MX-record** dat je bij Porkbun moet zetten (bijv. prioriteit 10, host `mx.resend.com` of wat Resend aangeeft). Dan zou je de bestaande MX voor dat (sub)domein kunnen vervangen door het door Resend gegeven MX-record.
+Als de MX-record nu naar `inbound-smtp.eu-west-1.amazonaws.com` (of een andere AWS-host) wijst en je krijgt "Relay access denied", ontvangt die server de mail maar staat geen relay toe. Om directe mails op info@ in het dashboard te krijgen met minimale wijziging:
+
+1. **Resend Dashboard → Inbound / Domains**
+   - Voeg het domein **savedsouls-foundation.com** toe voor Inbound (of gebruik een subdomein zoals `mail.savedsouls-foundation.com` als je de root-MX niet wilt aanpassen).
+   - Resend toont het **MX-record** dat je moet gebruiken (bijv. `inbound-smtp.us-east-1.amazonaws.com` of de host die Resend aangeeft, prioriteit meestal 10).
+
+2. **Porkbun DNS**
+   - Verwijder of pas de bestaande MX voor `savedsouls-foundation.com` aan.
+   - Voeg het door Resend getoonde MX-record toe (zelfde prioriteit als Resend aangeeft, bijv. 10). Zo gaat alle mail naar jouw domein naar Resend in plaats van naar de oude AWS-host.
+
+3. **Webhook**
+   - De webhook-URL `https://savedsouls-foundation.com/api/webhooks/resend` met event **email.received** staat al goed. Resend stuurt ontvangen mail naar deze endpoint; de app slaat ze op in `incoming_emails` met `bron: "inkomend"` en ze verschijnen in de E-mailassistent.
+
+4. **Verificatie**
+   - Na het wijzigen van de MX kan het 5–30 minuten duren tot DNS is doorgepropageerd. Stuur daarna een testmail naar info@savedsouls-foundation.com; die zou in Resend → Receiving en in het dashboard onder E-mail moeten verschijnen.
+
+**Als je de root-MX niet wilt wijzigen** (bijv. omdat je daar al andere mail afhandelt), gebruik dan een subdomein voor Inbound (bijv. `mail.savedsouls-foundation.com`) en zet alleen voor dat subdomein een MX naar Resend. Mail naar info@savedsouls-foundation.com gaat dan nog naar de oude server; alleen mail naar `iets@mail.savedsouls-foundation.com` komt in Resend. Voor info@ op het hoofddomein is het vervangen van de bestaande MX door Resends MX de eenvoudigste oplossing.
 
 ---
 

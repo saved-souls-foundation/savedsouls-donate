@@ -390,9 +390,12 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <div className="flex gap-4">
-          <Link href="/admin/emails/verzonden" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
-            {t("sentEmails")}
+        <div className="flex gap-3 items-center">
+          <Link
+            href="/admin/emails/verzonden"
+            className="px-3 py-2 rounded-lg text-sm font-semibold border-2 border-[#2aa348] bg-green-50 text-[#2aa348] hover:bg-green-100 transition-colors"
+          >
+            📤 {t("sentEmails")}
           </Link>
           <Link href="/admin/emails/templates" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>
             {t("templates")}
@@ -416,7 +419,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
           className={`flex flex-col border-gray-200 bg-white ${selectedEmail ? "hidden md:flex md:w-[38%] border-r" : "w-full md:w-[38%] md:border-r"}`}
         >
           {/* Tabs */}
-          <div className="flex border-b border-gray-200 shrink-0">
+          <div className="flex border-b border-gray-200 shrink-0 flex-wrap">
             {[
               { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
               { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
@@ -439,6 +442,12 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 {tab.label} {tab.count != null && tab.count > 0 ? `(${tab.count})` : ""}
               </button>
             ))}
+            <Link
+              href="/admin/emails/verzonden"
+              className="px-3 py-2.5 text-sm font-semibold border-b-2 border-transparent text-[#2aa348] hover:bg-green-50 -mb-px transition-colors"
+            >
+              📤 Verzonden
+            </Link>
           </div>
 
           <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100 items-center">

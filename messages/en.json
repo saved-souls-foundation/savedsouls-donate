@@ -7,6 +7,7 @@
     "ariaLabel": "Cookie consent"
   },
   "turnstile": {
+    "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
     "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
