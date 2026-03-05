@@ -3,10 +3,13 @@ import AdminEmailsClient from "./AdminEmailsClient";
 
 export default async function AdminEmailsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ id?: string }>;
 }) {
   const { locale } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale);
-  return <AdminEmailsClient />;
+  return <AdminEmailsClient initialEmailId={sp?.id ?? undefined} />;
 }

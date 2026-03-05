@@ -22,17 +22,29 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  // Ophalen via admin client (RLS omzeild); Nederlandse kolommen: aan, onderwerp, inhoud, verstuurd_op
+  // English columns: to_email, subject, body_preview, sent_at (frontend krijgt aan, onderwerp, inhoud, verstuurd_op)
   const admin = createAdminClient();
   let q = admin
     .from("sent_emails")
-    .select("id, type, aan, onderwerp, inhoud, verstuurd_op, reference_id, meta", { count: "exact" })
-    .order("verstuurd_op", { ascending: false })
+    .select("id, type, to_email, subject, body_preview, sent_at, reference_id, meta", { count: "exact" })
+    .order("sent_at", { ascending: false })
     .range(from, from + limit - 1);
 
   if (type === "step_notify" || type === "email_assistant") q = q.eq("type", type);
 
-  const { data, error: e, count } = await q;
+  const { data: raw, error: e, count } = await q;
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ data: data ?? [], total: count ?? 0, page, limit });
+
+  const data = (raw ?? []).map((row: Record<string, unknown>) => ({
+    id: row.id,
+    type: row.type,
+    aan: row.to_email ?? "",
+    onderwerp: row.subject ?? "",
+    inhoud: row.body_preview ?? null,
+    verstuurd_op: row.sent_at ?? "",
+    reference_id: row.reference_id ?? null,
+    meta: row.meta ?? null,
+  }));
+
+  return NextResponse.json({ data, total: count ?? 0, page, limit });
 }

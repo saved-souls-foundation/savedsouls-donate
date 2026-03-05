@@ -188,10 +188,10 @@ export async function POST(request: NextRequest) {
           try {
             await admin.from("sent_emails").insert({
               type: "email_assistant",
-              aan: to,
-              onderwerp: replySubject,
-              inhoud: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-              verstuurd_op: new Date().toISOString(),
+              to_email: to,
+              subject: replySubject,
+              body_preview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+              sent_at: new Date().toISOString(),
               reference_id: incomingId,
               reference_type: "incoming_email",
             });

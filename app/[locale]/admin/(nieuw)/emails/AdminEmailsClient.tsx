@@ -71,7 +71,9 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
-export default function AdminEmailsClient() {
+type AdminEmailsClientProps = { initialEmailId?: string };
+
+export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientProps = {}) {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
   const router = useRouter();
@@ -135,6 +137,12 @@ export default function AdminEmailsClient() {
   useEffect(() => {
     fetchList();
   }, [fetchList]);
+
+  // Open specifieke email vanaf dashboard-link (/admin/emails?id=xxx)
+  useEffect(() => {
+    if (!initialEmailId || selectedEmail != null) return;
+    fetchEmailDetail(initialEmailId);
+  }, [initialEmailId]);
 
   const fetchStats = useCallback(async () => {
     const res = await fetch("/api/admin/emails/stats");

@@ -276,7 +276,7 @@ export function DashboardClient({
               recenteEmails.map((email) => (
                 <Link
                   key={email.id}
-                  href="/admin/emails"
+                  href={`/admin/emails?id=${encodeURIComponent(email.id)}`}
                   className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50 transition-colors"
                 >
                   <Avatar name={email.from_name ?? email.from_email ?? "?"} />

@@ -123,10 +123,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             const admin = createAdminClient();
             await admin.from("sent_emails").insert({
               type: "email_assistant",
-              aan: to,
-              onderwerp: subject,
-              inhoud: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-              verstuurd_op: new Date().toISOString(),
+              to_email: to,
+              subject,
+              body_preview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+              sent_at: new Date().toISOString(),
               reference_id: id,
               reference_type: "incoming_email",
             });

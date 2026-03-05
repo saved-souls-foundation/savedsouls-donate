@@ -75,10 +75,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const admin = createAdminClient();
       await admin.from("sent_emails").insert({
         type: "email_assistant",
-        aan: to,
-        onderwerp: subject,
-        inhoud: reply_text.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-        verstuurd_op: new Date().toISOString(),
+        to_email: to,
+        subject,
+        body_preview: reply_text.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+        sent_at: new Date().toISOString(),
         reference_id: id,
         reference_type: "incoming_email",
       });

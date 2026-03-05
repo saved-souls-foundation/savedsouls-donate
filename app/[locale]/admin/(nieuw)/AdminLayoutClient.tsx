@@ -334,7 +334,7 @@ export default function AdminLayoutClient({
 
   return (
     <div
-      className="min-h-screen flex w-full max-w-full min-w-0 overflow-x-hidden"
+      className="min-h-screen flex flex-col md:flex-row w-full max-w-full min-w-0 overflow-x-hidden"
       style={{
         background: ADM_BG,
         color: ADM_TEXT,
@@ -366,7 +366,7 @@ export default function AdminLayoutClient({
         </div>
       )}
       <header
-        className="md:hidden flex items-center justify-between gap-2 shrink-0 min-h-[52px] px-3 py-2 border-b"
+        className="md:hidden flex items-center justify-between gap-2 shrink-0 min-h-[52px] w-full max-w-full px-3 py-2 border-b"
         style={{ borderColor: ADM_BORDER, background: ADM_SIDEBAR }}
       >
         <button

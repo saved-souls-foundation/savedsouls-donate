@@ -93,17 +93,15 @@ export async function POST(request: NextRequest) {
         .eq("id", incoming_email_id);
     }
 
-    const verstuurdOp = new Date().toISOString();
     const insertData = {
       type: "email_assistant" as const,
-      aan: to_email,
-      onderwerp: subject,
-      inhoud: bodyText,
-      verstuurd_op: verstuurdOp,
+      to_email,
+      subject,
+      body_preview: bodyText.slice(0, 500) || null,
+      sent_at: new Date().toISOString(),
       reference_id: incoming_email_id ?? null,
       reference_type: incoming_email_id ? "incoming_email" : null,
     };
-    console.log("[admin/emails/send] Poging tot opslaan in DB:", insertData);
     const { data: insertedRow, error: insertErr } = await admin.from("sent_emails").insert(insertData).select("id").single();
     console.log("[admin/emails/send] Resultaat van DB:", { error: insertErr, insertedId: insertedRow?.id });
     if (insertErr) {

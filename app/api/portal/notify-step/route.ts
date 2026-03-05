@@ -55,10 +55,10 @@ export async function POST(request: Request) {
         const supabase = createAdminClient();
         await supabase.from("sent_emails").insert({
           type: "step_notify",
-          aan: email,
-          onderwerp: subject,
-          inhoud: bodyHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500) || null,
-          verstuurd_op: new Date().toISOString(),
+          to_email: email,
+          subject,
+          body_preview: bodyHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500) || null,
+          sent_at: new Date().toISOString(),
           meta: { naam: name, stepLabel, role: role ?? null, dierNaam: dierNaam ?? null, dierInfo: dierInfo ?? null },
         });
       } catch (logErr) {
