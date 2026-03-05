@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
 import { sendMail } from "@/lib/sendMail";
 import { logSentEmail } from "@/lib/sentEmailsLog";
+import { getEmailFooterHtml } from "@/lib/emailFooter";
 
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
 const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
@@ -174,7 +175,8 @@ export async function POST(request: NextRequest) {
       if (shouldAutoSend) {
         const to = (van_email ?? "").trim();
         const replySubject = `Re: ${subject || "Your message"}`;
-        const html = wrapHtml(ai_gegenereerd_antwoord.replace(/\n/g, "<br>\n"));
+        const bodyContent = wrapHtml(ai_gegenereerd_antwoord.replace(/\n/g, "<br>\n"));
+        const html = bodyContent.replace("</body></html>", getEmailFooterHtml() + "</body></html>");
         const sendResult = await sendMail({
           from: RESEND_FROM,
           to,

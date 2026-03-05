@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getEmailFooterHtml } from "@/lib/emailFooter";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -167,6 +168,7 @@ function buildNotificationHtml(name: string, email: string, subject: string, mes
       <div style="line-height:1.5;color:#333;">${msg}</div>
     </div>
   </div>
+  ${getEmailFooterHtml()}
 </div></body></html>`;
 }
 
