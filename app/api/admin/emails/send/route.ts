@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/sendMail";
+import { logSentEmail } from "@/lib/sentEmailsLog";
 
 /** From moet formaat "Name <email@domain.com>" hebben voor Resend (geverifieerd domein). */
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
@@ -93,22 +94,15 @@ export async function POST(request: NextRequest) {
         .eq("id", incoming_email_id);
     }
 
-    const insertData = {
-      type: "email_assistant" as const,
-      to_email,
-      subject,
-      body_preview: bodyText.slice(0, 500) || null,
-      sent_at: new Date().toISOString(),
-      reference_id: incoming_email_id ?? null,
-      reference_type: incoming_email_id ? "incoming_email" : null,
-    };
-    const { data: insertedRow, error: insertErr } = await admin.from("sent_emails").insert(insertData).select("id").single();
-    console.log("[admin/emails/send] Resultaat van DB:", { error: insertErr, insertedId: insertedRow?.id });
-    if (insertErr) {
-      console.error("[admin/emails/send] sent_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
-      return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt" }, { status: 500 });
-    }
-
+    const logged = await logSentEmail(admin, {
+      type: "email_assistant",
+      to: to_email.trim(),
+      subject: subject.trim(),
+      bodyPreview: bodyText.slice(0, 500).trim() || null,
+      referenceId: incoming_email_id ?? null,
+      referenceType: incoming_email_id ? "incoming_email" : null,
+    });
+    if (!logged) return NextResponse.json({ error: "Mail verstuurd maar opslaan in log mislukt." }, { status: 500 });
     return NextResponse.json({ success: true });
   } catch (e) {
     console.error("[admin/emails/send] Unexpected error:", e);

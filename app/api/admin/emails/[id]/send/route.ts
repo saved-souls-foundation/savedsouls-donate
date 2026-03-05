@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/sendMail";
+import { logSentEmail } from "@/lib/sentEmailsLog";
 
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
 
@@ -71,20 +72,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (updateErr) return NextResponse.json({ error: updateErr.message }, { status: 500 });
 
   if (isSupabaseAdminConfigured()) {
-    try {
-      const admin = createAdminClient();
-      await admin.from("sent_emails").insert({
-        type: "email_assistant",
-        to_email: to,
-        subject,
-        body_preview: reply_text.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-        sent_at: new Date().toISOString(),
-        reference_id: id,
-        reference_type: "incoming_email",
-      });
-    } catch (logErr) {
-      console.error("[emails/send] sent_emails insert failed:", logErr);
-    }
+    const admin = createAdminClient();
+    await logSentEmail(admin, {
+      type: "email_assistant",
+      to,
+      subject,
+      bodyPreview: reply_text.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+      referenceId: id,
+      referenceType: "incoming_email",
+    });
   }
 
   return NextResponse.json({ success: true });

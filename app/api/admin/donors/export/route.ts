@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const search = searchParams.get("search")?.trim() ?? "";
   const country = searchParams.get("country")?.trim() ?? "";
-  let q = supabase!.from("donors").select("id, voornaam, achternaam, email, telefoon, type, bedrijfsnaam, land, notities").eq("verwijderd", false);
+  let q = supabase!.from("donors").select("id, voornaam, achternaam, email, telefoon, type, bedrijfsnaam, land, notities");
   if (search) q = q.or(`voornaam.ilike.%${search}%,achternaam.ilike.%${search}%,email.ilike.%${search}%`);
   if (country) q = q.eq("land", country);
   q = q.order("achternaam");

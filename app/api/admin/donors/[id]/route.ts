@@ -18,7 +18,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   const { id } = await params;
   const { data: donor, error: e } = await supabase!.from("donors").select("*").eq("id", id).maybeSingle();
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  if (!donor || (donor as { verwijderd?: boolean }).verwijderd) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!donor) return NextResponse.json({ error: "Not found" }, { status: 404 });
   const { data: donations } = await supabase!.from("donations").select("id, bedrag, valuta, methode, status, donatie_datum, betalingskenmerk, anoniem, campagne, created_at").eq("donor_id", id).order("donatie_datum", { ascending: false });
   const { data: recurring } = await supabase!.from("recurring_donations").select("*").eq("donor_id", id).maybeSingle();
   const totalDonated = (donations ?? []).filter((d: { status: string }) => d.status === "voltooid").reduce((s: number, d: { bedrag: number }) => s + Number(d.bedrag), 0);
@@ -57,7 +57,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
   const { error, supabase } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
-  const { data, error: e } = await supabase!.from("donors").update({ verwijderd: true }).eq("id", id).select().single();
+  const { error: e } = await supabase!.from("donors").delete().eq("id", id);
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json(data);
+  return NextResponse.json({ ok: true });
 }

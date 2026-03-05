@@ -40,8 +40,7 @@ export async function GET(request: NextRequest) {
     }
     let q = supabase!
       .from("donors")
-      .select("id, voornaam, achternaam, email, land", { count: "exact" })
-      .eq("verwijderd", false);
+      .select("id, voornaam, achternaam, email, land", { count: "exact" });
     if (donorIdsFilter) q = q.in("id", donorIdsFilter);
     if (search) q = q.or(`voornaam.ilike.%${search}%,achternaam.ilike.%${search}%,email.ilike.%${search}%`);
     if (country) q = q.eq("land", country);
@@ -83,7 +82,7 @@ export async function GET(request: NextRequest) {
   const recList = recs ?? [];
   const donorIds = [...new Set(recList.map((r: { donor_id: string }) => r.donor_id))];
   if (donorIds.length === 0) return NextResponse.json({ data: [], total: 0, page, limit, tab: "recurring" });
-  let dq = supabase!.from("donors").select("id, voornaam, achternaam, email, land").in("id", donorIds).eq("verwijderd", false);
+  let dq = supabase!.from("donors").select("id, voornaam, achternaam, email, land").in("id", donorIds);
   if (search) dq = dq.or(`voornaam.ilike.%${search}%,achternaam.ilike.%${search}%,email.ilike.%${search}%`);
   const { data: donorList } = await dq;
   const donorMap: Record<string, { id: string; voornaam: string | null; achternaam: string | null; email: string | null; land: string | null }> = {};

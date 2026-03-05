@@ -79,3 +79,20 @@ Om inkomende e-mail in het admin-dashboard (E-mailassistent) te tonen:
 3. **Events:** vink **email.received** aan.
 4. Na aanmaken: kopieer het **Signing Secret** (`whsec_...`) en zet dat in Vercel als **RESEND_WEBHOOK_SECRET**.
 5. Zonder **RESEND_WEBHOOK_SECRET** geeft de route 500; zonder **RESEND_API_KEY** kan de body van de mail niet worden opgehaald (alleen metadata wordt opgeslagen).
+
+## 554 5.7.1 Relay access denied
+
+Als je de fout **"554 5.7.1 : Relay access denied"** of **"Bericht niet bezorgd … externe server onjuist geconfigureerd"** ziet:
+
+- De **ontvangende server** (bijv. Gmail, of de server van info@savedsouls-foundation.com) weigert de mail omdat het **afzenderdomein** niet goed is geautoriseerd.
+- **Oplossing:** Zorg dat voor **savedsouls-foundation.com** de DNS-records kloppen die Resend toont onder **Domains**:
+  - **SPF** en **DKIM** moeten correct zijn ingesteld bij je domeinprovider.
+  - In Resend → **Domains** → savedsouls-foundation.com moet de status **Verified** zijn.
+- Verstuur je **naar** een eigen adres (bijv. info@savedsouls-foundation.com) en ontvang je via een forward (bijv. Porkbun → Gmail), dan moet ook de **ontvangende** kant (MX/forward) mail van Resend toestaan; soms blokkeert een hoster “relay” van externe verzenders. Controleer dan bij die provider of er restricties zijn voor inkomende mail.
+
+## sent_emails-log mislukt (PGRST204 / body_preview)
+
+Als in de Vercel-logs staat: **"Could not find the 'body_preview' column of 'sent_emails' in the schema cache"**:
+
+- De **productie-database** heeft de tabel `sent_emails` met **Nederlandse** kolomnamen (`aan`, `onderwerp`, `inhoud`, `verstuurd_op`) in plaats van de Engelse (`to_email`, `subject`, `body_preview`, `sent_at`).
+- De applicatie schrijft en leest nu met de Nederlandse kolommen, zodat het zowel met die schema's werkt. Na deploy zou de fout weg moeten zijn.

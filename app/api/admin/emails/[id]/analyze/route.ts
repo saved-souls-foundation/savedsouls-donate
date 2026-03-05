@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
 import { sendMail } from "@/lib/sendMail";
+import { logSentEmail } from "@/lib/sentEmailsLog";
 
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
 const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
@@ -119,20 +120,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           .eq("id", id);
         autoSent = true;
         if (isSupabaseAdminConfigured()) {
-          try {
-            const admin = createAdminClient();
-            await admin.from("sent_emails").insert({
-              type: "email_assistant",
-              to_email: to,
-              subject,
-              body_preview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-              sent_at: new Date().toISOString(),
-              reference_id: id,
-              reference_type: "incoming_email",
-            });
-          } catch (logErr) {
-            console.error("[emails/analyze] sent_emails insert failed:", logErr);
-          }
+          const admin = createAdminClient();
+          await logSentEmail(admin, {
+            type: "email_assistant",
+            to,
+            subject,
+            bodyPreview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+            referenceId: id,
+            referenceType: "incoming_email",
+          });
         }
       }
     }

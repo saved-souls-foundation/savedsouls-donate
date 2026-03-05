@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 const SUBJECT = "💛 New donation inquiry - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -40,6 +41,22 @@ export async function POST(req: NextRequest) {
     ]
       .filter(Boolean)
       .join("\n");
+
+    if (isSupabaseAdminConfigured()) {
+      try {
+        const admin = createAdminClient();
+        await admin.from("incoming_emails").insert({
+          van_email: email,
+          van_naam: name,
+          onderwerp: `Donatie-inquiry: ${name}`,
+          inhoud: text,
+          bron: "donatie_formulier",
+          status: "in_behandeling",
+        });
+      } catch (e) {
+        console.error("[donate] incoming_emails insert failed", e);
+      }
+    }
 
     const autoReply = await sendMail({
       to: email,

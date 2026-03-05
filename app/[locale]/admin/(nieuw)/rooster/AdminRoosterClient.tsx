@@ -714,22 +714,22 @@ export default function AdminRoosterClient({
       {/* DIENST TOEVOEGEN MODAL */}
       {addingShift && (
         <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 pb-0"
           onClick={() => setAddingShift(false)}
           role="dialog"
           aria-modal="true"
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-md"
+            className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[92vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-5 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
+            <div className="p-5 border-b border-gray-100 bg-gray-50 rounded-t-2xl shrink-0">
               <h2 className="font-extrabold text-gray-900">Dienst toevoegen</h2>
               <p className="text-xs text-gray-500 mt-0.5">
                 Week van {currentWeekStart}
               </p>
             </div>
-            <div className="p-5 space-y-4">
+            <div className="p-5 space-y-4 overflow-y-auto flex-1 min-h-0">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                   Vrijwilliger
@@ -838,7 +838,10 @@ export default function AdminRoosterClient({
                 />
               </div>
             </div>
-            <div className="p-4 border-t border-gray-100 flex gap-2 rounded-b-2xl">
+            <div
+              className="p-4 pt-3 pb-8 border-t border-gray-100 flex gap-2 rounded-b-2xl shrink-0 bg-white"
+              style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
+            >
               <button
                 type="button"
                 onClick={() => setAddingShift(false)}

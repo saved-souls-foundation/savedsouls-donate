@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
 import { sendMail } from "@/lib/sendMail";
+import { logSentEmail } from "@/lib/sentEmailsLog";
 
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
 const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
@@ -185,19 +186,14 @@ export async function POST(request: NextRequest) {
               verwerkt_op: new Date().toISOString(),
             })
             .eq("id", incomingId);
-          try {
-            await admin.from("sent_emails").insert({
-              type: "email_assistant",
-              to_email: to,
-              subject: replySubject,
-              body_preview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-              sent_at: new Date().toISOString(),
-              reference_id: incomingId,
-              reference_type: "incoming_email",
-            });
-          } catch (logErr) {
-            console.error("[webhooks/resend] sent_emails insert failed:", logErr);
-          }
+          await logSentEmail(admin, {
+            type: "email_assistant",
+            to,
+            subject: replySubject,
+            bodyPreview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
+            referenceId: incomingId,
+            referenceType: "incoming_email",
+          });
           console.log("[webhooks/resend] Auto-reply sent to", to, "confidence=", confidence);
         } else {
           console.error("[webhooks/resend] Auto-reply send failed:", sendResult.error);

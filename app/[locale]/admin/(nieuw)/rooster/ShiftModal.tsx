@@ -130,7 +130,7 @@ export default function ShiftModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-lg max-w-lg w-full max-h-[90vh] overflow-auto p-4"
+        className="bg-white rounded-xl shadow-lg max-w-lg w-full max-h-[90vh] overflow-auto p-4 pb-28"
         style={{ borderColor: ADM_BORDER }}
         onClick={(e) => e.stopPropagation()}
       >

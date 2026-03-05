@@ -60,7 +60,6 @@ export default function GlobalSearch({
           .from("donors")
           .select("id, voornaam, achternaam, email")
           .or(`voornaam.ilike.%${q}%,achternaam.ilike.%${q}%,email.ilike.%${q}%`)
-          .eq("verwijderd", false)
           .limit(3),
         supabase
           .from("volunteer_onboarding")

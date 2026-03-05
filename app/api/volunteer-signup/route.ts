@@ -117,8 +117,16 @@ export async function POST(req: NextRequest) {
           motivation,
           step: 1,
         });
+        await supabase.from("incoming_emails").insert({
+          van_email: email,
+          van_naam: name,
+          onderwerp: subjectLine,
+          inhoud: text,
+          bron: "vrijwilliger_aanmelding",
+          status: "in_behandeling",
+        });
       } catch (e) {
-        console.error("Supabase volunteer_applications insert failed:", e);
+        console.error("Supabase volunteer_applications or incoming_emails insert failed:", e);
       }
     }
 

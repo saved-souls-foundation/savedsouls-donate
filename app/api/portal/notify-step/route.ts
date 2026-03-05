@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { sendMail } from "@/lib/sendMail";
 import { wrapEmailWithHeaderFooter } from "@/lib/emailLayout";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { logSentEmail } from "@/lib/sentEmailsLog";
 
 export async function POST(request: Request) {
   try {
@@ -51,19 +52,14 @@ export async function POST(request: Request) {
     }
 
     if (isSupabaseAdminConfigured()) {
-      try {
-        const supabase = createAdminClient();
-        await supabase.from("sent_emails").insert({
-          type: "step_notify",
-          to_email: email,
-          subject,
-          body_preview: bodyHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500) || null,
-          sent_at: new Date().toISOString(),
-          meta: { naam: name, stepLabel, role: role ?? null, dierNaam: dierNaam ?? null, dierInfo: dierInfo ?? null },
-        });
-      } catch (logErr) {
-        console.error("[notify-step] sent_emails insert failed:", logErr);
-      }
+      const supabase = createAdminClient();
+      await logSentEmail(supabase, {
+        type: "step_notify",
+        to: email,
+        subject,
+        bodyPreview: bodyHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500) || null,
+        meta: { naam: name, stepLabel, role: role ?? null, dierNaam: dierNaam ?? null, dierInfo: dierInfo ?? null },
+      });
     }
 
     return NextResponse.json({ ok: true });

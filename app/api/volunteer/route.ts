@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 const SUBJECT = "🌟 New volunteer signup - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.com";
@@ -55,6 +56,22 @@ export async function POST(req: NextRequest) {
     ]
       .filter(Boolean)
       .join("\n");
+
+    if (isSupabaseAdminConfigured()) {
+      try {
+        const admin = createAdminClient();
+        await admin.from("incoming_emails").insert({
+          van_email: email,
+          van_naam: name,
+          onderwerp: `Vrijwilliger: ${name}`,
+          inhoud: text,
+          bron: "vrijwilliger",
+          status: "in_behandeling",
+        });
+      } catch (e) {
+        console.error("[volunteer] incoming_emails insert failed", e);
+      }
+    }
 
     const autoReply = await sendMail({
       to: email,
