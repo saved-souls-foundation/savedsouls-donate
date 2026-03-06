@@ -194,23 +194,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    for (const id of dogs) {
-      entries.push({
-        url: `${BASE_URL}${localePrefix}/adopt/dog/${id}`,
-        lastModified: now,
-        changeFrequency: "weekly",
-        priority: 0.6,
-      });
-    }
-
-    for (const id of cats) {
-      entries.push({
-        url: `${BASE_URL}${localePrefix}/adopt/cat/${id}`,
-        lastModified: now,
-        changeFrequency: "weekly",
-        priority: 0.6,
-      });
-    }
+    // Adopt profile pages are noindex + blocked in robots.txt; only overview is in sitemap via STATIC_PATHS
 
     for (const id of sponsorDogs) {
       entries.push({
