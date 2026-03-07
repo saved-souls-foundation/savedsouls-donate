@@ -5,9 +5,12 @@ import { Link, usePathname } from "@/i18n/navigation";
 
 const BUTTON_BLUE = "#2563eb";
 
-export default function CarActionButton() {
+type Props = { hide?: boolean };
+
+export default function CarActionButton({ hide = false }: Props) {
   const t = useTranslations("home");
   const pathname = usePathname();
+  if (hide) return null;
   if (pathname === "/" || pathname === "") return null;
   if (pathname.startsWith("/admin") || pathname.startsWith("/portal")) return null;
 

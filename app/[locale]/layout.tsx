@@ -5,7 +5,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
-import CarActionButton from "@/app/components/CarActionButton";
+import CarActionButtonWrapper from "@/app/components/CarActionButtonWrapper";
 import AuthErrorRedirect from "./AuthErrorRedirect";
 
 type Props = {
@@ -117,7 +117,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       />
       <AuthErrorRedirect />
       {children}
-      <CarActionButton />
+      <CarActionButtonWrapper />
     </NextIntlClientProvider>
   );
 }

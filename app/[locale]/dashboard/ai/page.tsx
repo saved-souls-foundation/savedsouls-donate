@@ -213,7 +213,10 @@ export default function DashboardAiPage() {
             </div>
           ) : data ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              <div className="rounded-xl border border-gray-200 bg-white p-4 md:p-5">
+              <Link
+                href={`/${locale}/dashboard/ai#spotlight-beheer`}
+                className="rounded-xl border border-gray-200 bg-white p-4 md:p-5 min-h-[44px] flex flex-col cursor-pointer hover:border-stone-300 transition-colors"
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm font-semibold text-stone-700">Adoptie Spotlight</span>
                   <span
@@ -225,10 +228,14 @@ export default function DashboardAiPage() {
                 <p className="text-sm text-stone-900">
                   {data.spotlightToday} {data.spotlightToday === 1 ? "post" : "posts"} vandaag geplaatst
                 </p>
-                <div className="mt-3">
+                <div className="mt-3" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
-                    onClick={handleStopSpotlight}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleStopSpotlight();
+                    }}
                     disabled={spotlightStopping}
                     className="text-sm font-medium py-3 px-3 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 min-h-[44px] disabled:opacity-50"
                   >
@@ -238,9 +245,12 @@ export default function DashboardAiPage() {
                 {sectionErrors.spotlight && (
                   <p className="text-xs text-red-600 mt-1">{sectionErrors.spotlight}</p>
                 )}
-              </div>
+              </Link>
 
-              <div className="rounded-xl border border-gray-200 bg-white p-4 md:p-5">
+              <Link
+                href={`/${locale}/admin/emails`}
+                className="rounded-xl border border-gray-200 bg-white p-4 md:p-5 min-h-[44px] flex flex-col cursor-pointer hover:border-stone-300 transition-colors"
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm font-semibold text-stone-700">Auto Email</span>
                   <span
@@ -252,31 +262,37 @@ export default function DashboardAiPage() {
                 <p className="text-sm text-stone-900">
                   {data.emailsToday} {data.emailsToday === 1 ? "mail" : "mails"} beantwoord vandaag
                 </p>
-              </div>
+              </Link>
 
-              <div className="rounded-xl border border-gray-200 bg-white p-4 md:p-5">
+              <Link
+                href={`/${locale}/admin/sociale-media`}
+                className="rounded-xl border border-gray-200 bg-white p-4 md:p-5 min-h-[44px] flex flex-col cursor-pointer hover:border-stone-300 transition-colors"
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm font-semibold text-stone-700">Blog Generator</span>
                 </div>
                 <p className="text-sm text-stone-900">
                   {data.blogThisWeek} {data.blogThisWeek === 1 ? "post" : "posts"} deze week
                 </p>
-              </div>
+              </Link>
 
-              <div className="rounded-xl border border-gray-200 bg-white p-4 md:p-5">
+              <Link
+                href={`/${locale}/dashboard/ai#recente-activiteit`}
+                className="rounded-xl border border-gray-200 bg-white p-4 md:p-5 min-h-[44px] flex flex-col cursor-pointer hover:border-stone-300 transition-colors"
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm font-semibold text-stone-700">AI Kosten</span>
                 </div>
                 <p className="text-sm text-stone-900">
                   € {data.costThisMonth.toFixed(2)} deze maand
                 </p>
-              </div>
+              </Link>
             </div>
           ) : null}
         </section>
 
         {/* Sectie 2: Recente activiteit */}
-        <section className="mb-8">
+        <section id="recente-activiteit" className="mb-8 scroll-mt-4">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-stone-500 mb-4">
             Recente AI-activiteit
           </h2>
@@ -322,7 +338,7 @@ export default function DashboardAiPage() {
         </section>
 
         {/* Sectie 3: Spotlight beheer */}
-        <section className="mb-8">
+        <section id="spotlight-beheer" className="mb-8 scroll-mt-4">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-stone-500 mb-4">
             Spotlight beheer
           </h2>
