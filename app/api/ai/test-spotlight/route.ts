@@ -3,6 +3,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { callClaude } from "@/lib/ai/claude-client";
 import { fetchAnimalsFromApi, type AnimalRecord } from "@/lib/animals-api";
 
+export const maxDuration = 120;
+
 /** Zelfde logica als in app/api/blog/route.ts */
 function slugify(text: string): string {
   return text
@@ -14,15 +16,16 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-export async function POST(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+function checkCronAuth(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) return false;
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.replace(/^Bearer\s+/i, "").trim() ?? "";
+  return token === cronSecret;
+}
 
-  if (!cronSecret || token !== cronSecret) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+/** Draait één spotlight-post (gebruikt door POST en GET voor Vercel cron). */
+async function runOneSpotlightPost() {
   const admin = createAdminClient();
 
   const startOfToday = new Date();
@@ -157,4 +160,19 @@ Schrijf in het Nederlands. Warm, persoonlijk, geen clichés.`;
     postsToday: newCount,
     remaining: 48 - newCount,
   });
+}
+
+export async function POST(request: NextRequest) {
+  if (!checkCronAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return runOneSpotlightPost();
+}
+
+/** GET voor Vercel Cron (elke 30 min); zelfde auth als POST. */
+export async function GET(request: NextRequest) {
+  if (!checkCronAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return runOneSpotlightPost();
 }
