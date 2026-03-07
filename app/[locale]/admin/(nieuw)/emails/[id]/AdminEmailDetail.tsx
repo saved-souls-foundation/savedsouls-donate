@@ -26,6 +26,7 @@ type Email = {
   ai_confidence: number | null;
   ai_gegenereerd_antwoord: string | null;
   ai_suggestie_template_id: string | null;
+  ai_urgency: string | null;
   status: string;
 };
 
@@ -42,6 +43,12 @@ type Template = {
   inhoud_fr?: string | null;
 };
 
+function tomorrowISO(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
 export default function AdminEmailDetail({ id }: { id: string }) {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
@@ -56,6 +63,13 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   const [templateOverride, setTemplateOverride] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [autoSentBanner, setAutoSentBanner] = useState(false);
+  const [toast, setToast] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [urgencyLoading, setUrgencyLoading] = useState(false);
+  const [agendaModalOpen, setAgendaModalOpen] = useState(false);
+  const [agendaTitle, setAgendaTitle] = useState("");
+  const [agendaDate, setAgendaDate] = useState("");
+  const [agendaTime, setAgendaTime] = useState("10:00");
+  const [agendaSaving, setAgendaSaving] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -125,6 +139,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
     if (!email) return;
     setSending(true);
     setError(null);
+    setToast(null);
     try {
       const res = await fetch(`/api/admin/emails/${id}/send`, {
         method: "POST",
@@ -134,8 +149,10 @@ export default function AdminEmailDetail({ id }: { id: string }) {
       if (!res.ok) throw new Error("Send failed");
       setEmail((prev) => prev ? { ...prev, status: "verstuurd" } : null);
       setShowEdit(false);
+      setToast({ type: "success", text: t("toastSuccess") });
     } catch {
       setError(t("saveError"));
+      setToast({ type: "error", text: t("saveError") });
     } finally {
       setSending(false);
     }
@@ -148,8 +165,80 @@ export default function AdminEmailDetail({ id }: { id: string }) {
       const res = await fetch(`/api/admin/emails/${id}/ignore`, { method: "PUT" });
       if (!res.ok) throw new Error();
       setEmail((prev) => prev ? { ...prev, status: "geneigeerd" } : null);
+      setToast({ type: "success", text: t("toastSuccess") });
+    } catch {
+      setToast({ type: "error", text: t("saveError") });
     } finally {
       setIgnoring(false);
+    }
+  }
+
+  const isUrgent = email?.ai_urgency === "hoog";
+  async function handleUrgencyToggle() {
+    if (!email) return;
+    setUrgencyLoading(true);
+    setToast(null);
+    try {
+      const res = await fetch(`/api/admin/emails/${id}/urgency`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ai_urgency: isUrgent ? "normaal" : "hoog" }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? t("saveError"));
+      }
+      const data = await res.json();
+      setEmail((prev) => prev ? { ...prev, ai_urgency: data.ai_urgency ?? null } : null);
+      setToast({ type: "success", text: isUrgent ? t("toastUrgencyNormal") : t("toastUrgencyMarked") });
+    } catch (e) {
+      setToast({ type: "error", text: e instanceof Error ? e.message : t("saveError") });
+    } finally {
+      setUrgencyLoading(false);
+    }
+  }
+
+  function openAgendaModal() {
+    const naam = email?.van_naam?.trim() || email?.van_email || t("noValue");
+    setAgendaTitle(`Opvolging: ${naam}`);
+    setAgendaDate(tomorrowISO());
+    setAgendaTime("10:00");
+    setAgendaModalOpen(true);
+  }
+
+  async function handleAgendaConfirm() {
+    if (!email) return;
+    setAgendaSaving(true);
+    setToast(null);
+    try {
+      const [y, m, d] = agendaDate.split("-").map(Number);
+      const [hh, mm] = agendaTime.split(":").map(Number);
+      const start = new Date(y, m - 1, d, hh, mm, 0, 0);
+      const start_time = start.toISOString();
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      const end_time = end.toISOString();
+      const description = `Email opvolging: ${email.onderwerp ?? ""}`.trim() || `Email opvolging (id: ${email.id})`;
+      const res = await fetch("/api/admin/agenda/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: agendaTitle.trim() || `Opvolging: ${email.van_naam ?? email.van_email ?? ""}`,
+          description,
+          category: "afspraak",
+          start_time,
+          end_time,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? t("saveError"));
+      }
+      setToast({ type: "success", text: t("toastAgendaAdded") });
+      setAgendaModalOpen(false);
+    } catch (e) {
+      setToast({ type: "error", text: e instanceof Error ? e.message : t("saveError") });
+    } finally {
+      setAgendaSaving(false);
     }
   }
 
@@ -199,7 +288,56 @@ export default function AdminEmailDetail({ id }: { id: string }) {
 
   return (
     <div className="space-y-6">
-      <Link href="/admin/emails" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("backToList")}</Link>
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <Link href="/admin/emails" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("backToList")}</Link>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleUrgencyToggle}
+            disabled={urgencyLoading}
+            title={isUrgent ? t("tooltipUrgentMarked") : t("tooltipUrgent")}
+            className="p-2 rounded-lg border transition-colors disabled:opacity-50"
+            style={{ borderColor: ADM_BORDER, color: isUrgent ? ADM_RED : ADM_MUTED }}
+          >
+            🚨
+          </button>
+          <Link
+            href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
+            title={t("tooltipAdoptanten")}
+            className="p-2 rounded-lg border transition-colors"
+            style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+          >
+            🐾
+          </Link>
+          <button
+            type="button"
+            onClick={openAgendaModal}
+            title={t("tooltipAgenda")}
+            className="p-2 rounded-lg border transition-colors"
+            style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+          >
+            📅
+          </button>
+        </div>
+      </div>
+
+      {agendaModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => !agendaSaving && setAgendaModalOpen(false)}>
+          <div className="rounded-xl border p-4 w-full max-w-md shadow-lg" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-sm font-semibold mb-3" style={{ color: ADM_TEXT }}>{t("agendaModalTitle")}</h3>
+            <label className="block text-xs font-medium mt-2 mb-1" style={{ color: ADM_MUTED }}>{t("agendaModalTitleLabel")}</label>
+            <input type="text" value={agendaTitle} onChange={(e) => setAgendaTitle(e.target.value)} className="w-full px-3 py-2 rounded-lg border text-sm mb-2" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
+            <label className="block text-xs font-medium mt-2 mb-1" style={{ color: ADM_MUTED }}>{t("agendaModalDateLabel")}</label>
+            <input type="date" value={agendaDate} onChange={(e) => setAgendaDate(e.target.value)} className="w-full px-3 py-2 rounded-lg border text-sm mb-2" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
+            <label className="block text-xs font-medium mt-2 mb-1" style={{ color: ADM_MUTED }}>{t("agendaModalTimeLabel")}</label>
+            <input type="time" value={agendaTime} onChange={(e) => setAgendaTime(e.target.value)} className="w-full px-3 py-2 rounded-lg border text-sm mb-4" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} />
+            <div className="flex gap-2 justify-end">
+              <button type="button" onClick={() => setAgendaModalOpen(false)} disabled={agendaSaving} className="px-3 py-1.5 rounded-lg border text-sm" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("cancel")}</button>
+              <button type="button" onClick={handleAgendaConfirm} disabled={agendaSaving} className="px-3 py-1.5 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: ADM_ACCENT }}>{agendaSaving ? t("loading") : t("agendaModalConfirm")}</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
@@ -301,6 +439,12 @@ export default function AdminEmailDetail({ id }: { id: string }) {
           )}
         </div>
       </div>
+
+      {toast && (
+        <div className="rounded-lg border px-4 py-3 text-sm" style={{ borderColor: toast.type === "success" ? ADM_GREEN : ADM_RED, background: toast.type === "success" ? "rgba(22,163,74,.1)" : "rgba(220,38,38,.1)", color: toast.type === "success" ? ADM_GREEN : ADM_RED }}>
+          {toast.text}
+        </div>
+      )}
     </div>
   );
 }
