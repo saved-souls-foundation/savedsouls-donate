@@ -284,6 +284,7 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
     const footnoteText = getFootnote(language);
     const footnoteHtml = escapeHtml(footnoteText).replace(/\n/g, "<br>\n");
     const html = buildAutoReplyStyleHtml(bodyHtml, footnoteHtml, language);
+    console.log("Sending email to:", vanEmail);
     const result = await sendMail({
       to: vanEmail,
       subject: replySubject,
@@ -291,6 +292,7 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       html,
       replyTo: process.env.RESEND_FROM_EMAIL,
     });
+    console.log("sendMail result:", JSON.stringify(result));
     if (result.success) {
       try {
         await admin
@@ -304,8 +306,22 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       } catch (e) {
         console.error("[email-processor] update beantwoord_op failed (migration needed?):", e);
       }
+      await admin.from("ai_usage_log").insert({
+        model: "resend",
+        input_tokens: 0,
+        output_tokens: 0,
+        task: "email-sent",
+        estimated_cost_usd: null,
+      });
     } else {
       console.error("[email-processor] sendMail failed (AI processing still marked success):", result.error);
+      await admin.from("ai_usage_log").insert({
+        model: "resend",
+        input_tokens: 0,
+        output_tokens: 0,
+        task: "email-send-failed",
+        estimated_cost_usd: null,
+      });
     }
   }
 
