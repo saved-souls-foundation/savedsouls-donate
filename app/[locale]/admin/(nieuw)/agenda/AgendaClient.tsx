@@ -391,9 +391,11 @@ export default function AgendaClient() {
                         {date.getDate()}
                         {isCompact && dayEvents.length > 0 && (
                           <span className="flex gap-0.5">
-                            {dayEvents.slice(0, 3).map((ev) => (
-                              <span key={ev.id} className="w-1.5 h-1.5 rounded-full" style={{ background: EVENT_CATEGORIES[ev.category as EventCategory].color }} />
-                            ))}
+                            {dayEvents.slice(0, 3).map((ev) => {
+                              const cat = EVENT_CATEGORIES[ev.category as EventCategory];
+                              const color = cat?.color ?? "#6b7280";
+                              return <span key={ev.id} className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />;
+                            })}
                             {dayEvents.length > 3 && <span className="text-xs" style={{ color: ADM_MUTED }}>+{dayEvents.length - 3}</span>}
                           </span>
                         )}
@@ -402,6 +404,8 @@ export default function AgendaClient() {
                         <div className="flex-1 flex flex-col gap-0.5 p-1 overflow-hidden">
                           {dayEvents.slice(0, 3).map((ev) => {
                             const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                            const color = cfg?.color ?? "#6b7280";
+                            const icon = cfg?.icon ?? "📌";
                             const vol = volunteers.find((v) => v.name === ev.assigned_to);
                             const showLine = vol && (vol.line_id || vol.telefoon);
                             return (
@@ -411,12 +415,12 @@ export default function AgendaClient() {
                                   onClick={() => setEventModal({ open: true, event: ev })}
                                   className="text-left flex-1 min-w-0 px-1.5 py-0.5 rounded text-xs truncate border-l-2"
                                   style={{
-                                    background: `${cfg.color}30`,
-                                    borderLeftColor: cfg.color,
+                                    background: `${color}30`,
+                                    borderLeftColor: color,
                                     color: ADM_TEXT,
                                   }}
                                 >
-                                  {cfg.icon} {ev.title.slice(0, 20)}{ev.title.length > 20 ? "…" : ""}
+                                  {icon} {ev.title.slice(0, 20)}{ev.title.length > 20 ? "…" : ""}
                                 </button>
                                 {showLine && (
                                   <a
@@ -467,6 +471,8 @@ export default function AgendaClient() {
               <div className="p-4 space-y-2">
                 {(eventsByDate[mobileDayPanel] ?? []).map((ev) => {
                   const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  const color = cfg?.color ?? "#6b7280";
+                  const icon = cfg?.icon ?? "📌";
                   const vol = volunteers.find((v) => v.name === ev.assigned_to);
                   const showLine = vol && (vol.line_id || vol.telefoon);
                   return (
@@ -475,9 +481,9 @@ export default function AgendaClient() {
                       type="button"
                       onClick={() => { setEventModal({ open: true, event: ev }); setMobileDayPanel(null); }}
                       className="w-full text-left p-3 rounded-lg border-l-4"
-                      style={{ borderColor: cfg.color, background: `${cfg.color}15` }}
+                      style={{ borderColor: color, background: `${color}15` }}
                     >
-                      <span>{cfg.icon} {ev.title}</span>
+                      <span>{icon} {ev.title}</span>
                       <span className="text-xs block mt-1 flex items-center gap-2 flex-wrap" style={{ color: ADM_MUTED }}>
                         {new Date(ev.start_time).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}
                         {showLine && (
@@ -586,6 +592,9 @@ export default function AgendaClient() {
             <span className="text-xs font-medium">Legenda:</span>
             {EVENT_CATEGORY_IDS.map((id) => {
               const cfg = EVENT_CATEGORIES[id];
+              const color = cfg?.color ?? "#6b7280";
+              const icon = cfg?.icon ?? "📌";
+              const label = cfg?.label ?? "Overig";
               const hidden = hiddenCategories.has(id);
               return (
                 <button
@@ -594,16 +603,16 @@ export default function AgendaClient() {
                   onClick={() => toggleCategory(id)}
                   className="flex items-center gap-1.5 px-2 py-1 rounded text-xs border transition-opacity"
                   style={{
-                    borderColor: hidden ? ADM_BORDER : cfg.color,
-                    background: hidden ? "#f1f5f9" : `${cfg.color}20`,
+                    borderColor: hidden ? ADM_BORDER : color,
+                    background: hidden ? "#f1f5f9" : `${color}20`,
                     opacity: hidden ? 0.6 : 1,
                     textDecoration: hidden ? "line-through" : "none",
                     color: hidden ? ADM_MUTED : ADM_TEXT,
                   }}
                 >
-                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: cfg.color }} />
-                  <span>{cfg.icon}</span>
-                  <span>{cfg.label}</span>
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
+                  <span>{icon}</span>
+                  <span>{label}</span>
                 </button>
               );
             })}
@@ -669,6 +678,8 @@ export default function AgendaClient() {
               <ul className="space-y-2">
                 {upcomingEvents.map((ev) => {
                   const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                  const color = cfg?.color ?? "#6b7280";
+                  const icon = cfg?.icon ?? "📌";
                   const vol = volunteers.find((v) => v.name === ev.assigned_to);
                   const showLine = vol && (vol.line_id || vol.telefoon);
                   return (
@@ -679,8 +690,8 @@ export default function AgendaClient() {
                         className="w-full text-left flex items-center gap-2 p-2 rounded-lg border hover:bg-stone-50"
                         style={{ borderColor: ADM_BORDER }}
                       >
-                        <span className="w-2 h-2 rounded-full shrink-0" style={{ background: cfg.color }} />
-                        <span className="text-lg">{cfg.icon}</span>
+                        <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
+                        <span className="text-lg">{icon}</span>
                         <span className="text-sm truncate flex-1" style={{ color: ADM_TEXT }}>
                           {ev.title}
                         </span>
