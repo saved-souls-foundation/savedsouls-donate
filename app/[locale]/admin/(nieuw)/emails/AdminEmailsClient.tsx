@@ -39,6 +39,21 @@ type EmailDetail = EmailRow & { inhoud?: string | null };
 type TemplateInfo = { id: string; naam: string | null };
 type Stats = { pending: number; sentToday: number; ignored: number };
 
+type AiProcessedRow = {
+  id: string;
+  van_naam: string | null;
+  van_email: string | null;
+  onderwerp: string | null;
+  ontvangen_op: string;
+  inhoud: string | null;
+  ai_category: string | null;
+  ai_urgency: string | null;
+  ai_language: string | null;
+  ai_suggested_reply: string | null;
+  ai_used_template: boolean | null;
+  ai_processed_at: string | null;
+};
+
 const cats: Record<string, [string, string, string, string]> = {
   adoptie: ["bg-blue-50", "text-blue-700", "border-blue-200", "🏠 Adoptie"],
   donatie: ["bg-green-50", "text-green-700", "border-green-200", "💰 Donatie"],
@@ -104,6 +119,10 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   const [sentSuccess, setSentSuccess] = useState(false);
   const [replyComposeOpen, setReplyComposeOpen] = useState(false);
   const [composeOpen, setComposeOpen] = useState(false);
+  const [aiProcessedData, setAiProcessedData] = useState<AiProcessedRow[]>([]);
+  const [aiProcessedLoading, setAiProcessedLoading] = useState(false);
+  const [expandedAiReplyIds, setExpandedAiReplyIds] = useState<Set<string>>(new Set());
+  const [expandedOriginalIds, setExpandedOriginalIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!toastError) return;
@@ -162,6 +181,16 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
+
+  useEffect(() => {
+    if (statusFilter !== "ai_beantwoord") return;
+    setAiProcessedLoading(true);
+    fetch("/api/emails/ai-processed", { credentials: "include" })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: AiProcessedRow[]) => setAiProcessedData(Array.isArray(data) ? data : []))
+      .catch(() => setAiProcessedData([]))
+      .finally(() => setAiProcessedLoading(false));
+  }, [statusFilter]);
 
   useEffect(() => {
     fetch("/api/admin/email-templates")
@@ -393,12 +422,33 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
 
   // Beantwoord-tab: alleen beantwoorde (verstuurd) tonen; client-side filter als extra zekerheid
   const displayData =
-    statusFilter === "all"
-      ? data
-      : data.filter((row) => row.status === statusFilter);
+    statusFilter === "ai_beantwoord"
+      ? []
+      : statusFilter === "all"
+        ? data
+        : data.filter((row) => row.status === statusFilter);
 
   if (statusFilter === "verstuurd") {
     console.log("[Beantwoord-tab] Aantal zichtbare emails (alleen beantwoorde):", displayData.length);
+  }
+
+  const isAiBeantwoordTab = statusFilter === "ai_beantwoord";
+
+  function toggleAiReply(id: string) {
+    setExpandedAiReplyIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+  function toggleOriginal(id: string) {
+    setExpandedOriginalIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   return (
@@ -441,6 +491,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
             {[
               { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
               { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
+              { id: "ai_beantwoord", label: "🤖 AI Beantwoord", count: null as number | null },
               { id: "geneigeerd", label: "Geneigeerd", count: tabCounts.ignored },
               { id: "all", label: "Alles", count: tabCounts.all },
             ].map((tab) => (
@@ -450,6 +501,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 onClick={() => {
                   setStatusFilter(tab.id === "all" ? "all" : tab.id);
                   setPage(1);
+                  if (tab.id === "ai_beantwoord") setSelectedEmail(null);
                 }}
                 className={`px-3 py-2.5 text-sm font-semibold border-b-2 transition-colors -mb-px ${
                   (tab.id === "all" && statusFilter === "all") || statusFilter === tab.id
@@ -463,6 +515,8 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
           </div>
 
           <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100 items-center">
+            {!isAiBeantwoordTab && (
+              <>
             <input
               type="search"
               placeholder={t("search")}
@@ -495,10 +549,89 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 </button>
               </>
             )}
+              </>
+            )}
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            {loading ? (
+            {isAiBeantwoordTab ? (
+              aiProcessedLoading ? (
+                <div className="p-6 text-center text-gray-500 min-h-[60px]">{t("loading")}</div>
+              ) : aiProcessedData.length === 0 ? (
+                <div className="p-6 text-center text-sm text-gray-500 min-h-[60px]">{t("noResults")}</div>
+              ) : (
+                aiProcessedData.map((row) => {
+                  const sender = row.van_naam || row.van_email || "—";
+                  const urgencyHigh = (row.ai_urgency ?? "").toLowerCase() === "hoog";
+                  const lang = (row.ai_language ?? "").toUpperCase().slice(0, 2) || "—";
+                  const replyOpen = expandedAiReplyIds.has(row.id);
+                  const originalOpen = expandedOriginalIds.has(row.id);
+                  return (
+                    <div
+                      key={row.id}
+                      className="border-b border-gray-100 p-4 min-h-[60px] flex flex-col gap-2"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <div className="font-semibold text-sm text-gray-900 break-words">
+                          {sender}
+                        </div>
+                        <div className="text-xs text-gray-500 break-all">{row.van_email ?? "—"}</div>
+                      </div>
+                      <div className="text-sm font-medium text-gray-800 break-words">{row.onderwerp ?? "—"}</div>
+                      <div className="text-xs text-gray-500">
+                        {formatDate(row.ontvangen_op)}
+                      </div>
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <CategoryBadge category={row.ai_category} />
+                        <span
+                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                            urgencyHigh ? "bg-red-50 text-red-700 border-red-200" : "bg-gray-100 text-gray-600 border-gray-200"
+                          }`}
+                        >
+                          {urgencyHigh ? "Hoog" : "Normaal"}
+                        </span>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-gray-50 text-gray-700 border-gray-200">
+                          {lang}
+                        </span>
+                        {row.ai_used_template && (
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200">
+                            Template gebruikt
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-1">
+                        <button
+                          type="button"
+                          onClick={() => toggleAiReply(row.id)}
+                          className="text-xs font-medium text-[#2aa348] hover:underline py-2 min-h-[44px] flex items-center"
+                        >
+                          {replyOpen ? "▼ Verberg AI-antwoord" : "▶ Toon AI-antwoord"}
+                        </button>
+                        {replyOpen && row.ai_suggested_reply && (
+                          <div className="text-sm text-gray-700 whitespace-pre-wrap break-words rounded-lg border border-gray-200 bg-gray-50 p-3 mt-1">
+                            {stripHtml(row.ai_suggested_reply) || "—"}
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => toggleOriginal(row.id)}
+                          className="text-xs font-medium text-gray-600 hover:underline py-2 min-h-[44px] flex items-center"
+                        >
+                          {originalOpen ? "▼ Verberg originele email" : "▶ Toon originele email"}
+                        </button>
+                        {originalOpen && (
+                          <div className="text-sm text-gray-700 whitespace-pre-wrap break-words rounded-lg border border-gray-200 bg-gray-50 p-3 mt-1">
+                            {stripHtml(row.inhoud ?? "") || "—"}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              )
+            ) : loading ? (
               <div className="p-6 text-center text-gray-500">{t("loading")}</div>
             ) : displayData.length === 0 ? (
               <div className="p-6 text-center text-sm text-gray-500">{t("noResults")}</div>
@@ -866,7 +999,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
         </div>
       </div>
 
-      {totalPages > 1 && (
+      {!isAiBeantwoordTab && totalPages > 1 && (
         <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2 rounded-b-xl border border-t-0" style={{ borderColor: ADM_BORDER }}>
           <span className="text-sm" style={{ color: ADM_MUTED }}>
             {total}
