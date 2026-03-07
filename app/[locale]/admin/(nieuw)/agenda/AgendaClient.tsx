@@ -112,16 +112,17 @@ export default function AgendaClient() {
     mq.addEventListener("change", fn);
     return () => mq.removeEventListener("change", fn);
   }, []);
-  const [hiddenCategories, setHiddenCategories] = useState<Set<EventCategory>>(() => {
-    if (typeof window === "undefined") return new Set();
+  const [hiddenCategories, setHiddenCategories] = useState<Set<EventCategory>>(new Set());
+
+  useEffect(() => {
     try {
       const s = localStorage.getItem("agenda_hidden_categories");
       const arr = s ? JSON.parse(s) : [];
-      return new Set(Array.isArray(arr) ? arr : []);
+      setHiddenCategories(new Set(Array.isArray(arr) ? arr : []));
     } catch {
-      return new Set();
+      setHiddenCategories(new Set());
     }
-  });
+  }, []);
 
   const fetchEvents = useCallback(async () => {
     setLoading(true);
