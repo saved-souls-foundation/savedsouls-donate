@@ -124,7 +124,7 @@ function NotificationBell({ locale, count, recentUnread }: { locale: string; cou
               recentUnread.map((mail) => (
                 <Link
                   key={mail.id}
-                  href={`/${locale}/admin/emails/${mail.id}`}
+                  href={`/${locale}/admin/emails`}
                   className="flex items-start gap-3 p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 block"
                   onClick={() => setOpen(false)}
                 >
