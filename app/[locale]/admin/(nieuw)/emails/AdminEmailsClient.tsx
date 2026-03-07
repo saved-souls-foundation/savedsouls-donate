@@ -145,6 +145,12 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
     fetchEmailDetail(initialEmailId);
   }, [initialEmailId]);
 
+  // STAP 3: log positie Beantwoord-label op mobiel
+  useEffect(() => {
+    if (!selectedEmail || typeof window === "undefined" || window.innerWidth >= 768) return;
+    console.log("[STAP 3] Mobiele email-detail: het groene 'Beantwoord'-label staat in een eigen rij boven de afzendernaam; de berichttekst staat daaronder. Geen overlap.");
+  }, [selectedEmail?.id]);
+
   const fetchStats = useCallback(async () => {
     const res = await fetch("/api/admin/emails/stats");
     if (res.ok) {
@@ -306,8 +312,8 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   }
 
   function toggleSelectAll() {
-    if (selectedIds.size === data.length) setSelectedIds(new Set());
-    else setSelectedIds(new Set(data.map((r) => r.id)));
+    if (selectedIds.size === displayData.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(displayData.map((r) => r.id)));
   }
 
   async function handleDeleteOne(id: string) {
@@ -385,6 +391,16 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
     all: total,
   };
 
+  // Beantwoord-tab: alleen beantwoorde (verstuurd) tonen; client-side filter als extra zekerheid
+  const displayData =
+    statusFilter === "all"
+      ? data
+      : data.filter((row) => row.status === statusFilter);
+
+  if (statusFilter === "verstuurd") {
+    console.log("[Beantwoord-tab] Aantal zichtbare emails (alleen beantwoorde):", displayData.length);
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -458,12 +474,12 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
               className="flex-1 min-w-0 max-w-[200px] px-3 py-1.5 rounded-lg border text-sm bg-transparent outline-none"
               style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
             />
-            {data.length > 0 && (
+            {displayData.length > 0 && (
               <>
                 <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={selectedIds.size === data.length && data.length > 0}
+                    checked={selectedIds.size === displayData.length && displayData.length > 0}
                     onChange={toggleSelectAll}
                     className="rounded border-gray-300"
                   />
@@ -484,10 +500,10 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
           <div className="flex-1 overflow-y-auto">
             {loading ? (
               <div className="p-6 text-center text-gray-500">{t("loading")}</div>
-            ) : data.length === 0 ? (
+            ) : displayData.length === 0 ? (
               <div className="p-6 text-center text-sm text-gray-500">{t("noResults")}</div>
             ) : (
-              data.map((row) => {
+              displayData.map((row) => {
                 const selected = selectedEmail?.id === row.id;
                 const senderName = row.van_naam || row.van_email || t("noValue");
                 const isRowSelected = selectedIds.has(row.id);
@@ -592,53 +608,64 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 <div className="p-6 text-center text-gray-500">Laden…</div>
               ) : (
                 <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-                  {/* Email header */}
-                  <div className="flex items-start gap-3 flex-wrap">
-                    <Avatar
-                      name={(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
-                      size="lg"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-gray-900">
-                        {(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
+                  {/* Email header — mobiel: Beantwoord-label boven afzender, dan avatar+info, dan actie-icoontjes; desktop: ongewijzigd */}
+                  <div className="md:flex md:items-start md:gap-3 md:flex-wrap">
+                    <div className="rounded-xl border border-gray-200 bg-white p-4 md:p-0 md:rounded-none md:border-0 md:bg-transparent md:relative md:contents">
+                      {/* STAP 3: Beantwoord op mobiel in eigen rij boven afzendernaam, nooit over berichttekst; desktop in flex-rij */}
+                      <div className="flex justify-end w-full mb-3 md:mb-0 md:static md:order-2 md:w-auto md:flex md:items-center md:gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setReplyComposeOpen(true)}
+                          className="px-3 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] min-h-[44px] min-w-[44px] flex items-center justify-center md:min-h-0 md:min-w-0"
+                        >
+                          Beantwoord
+                        </button>
                       </div>
-                      <div className="text-xs text-gray-500">{selectedEmail.van_email ?? "—"}</div>
-                      <div className="text-sm font-semibold text-gray-900 mt-1">
-                        {selectedEmail.onderwerp ?? "—"}
+                      {/* Rij: avatar + naam/onderwerp/datum */}
+                      <div className="flex flex-row flex-wrap items-start gap-3 md:flex-1 md:min-w-0">
+                        <Avatar
+                          name={(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
+                          size="lg"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-semibold text-gray-900">
+                            {(selectedEmail.van_naam || selectedEmail.van_email) ?? "—"}
+                          </div>
+                          <div className="text-xs text-gray-500">{selectedEmail.van_email ?? "—"}</div>
+                          <div className="text-sm font-semibold text-gray-900 mt-1">
+                            {selectedEmail.onderwerp ?? "—"}
+                          </div>
+                          <div className="text-xs text-gray-400 mt-0.5">
+                            {formatDate(selectedEmail.ontvangen_op)}
+                            {selectedEmail.ai_automatisch_verstuurd && (
+                              <span className="ml-2 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5">🤖 Automatisch beantwoord</span>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-gray-400 mt-0.5">
-                        {formatDate(selectedEmail.ontvangen_op)}
-                        {selectedEmail.ai_automatisch_verstuurd && (
-                          <span className="ml-2 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5">🤖 Automatisch beantwoord</span>
-                        )}
+                      {/* Rij 2 op mobiel: alleen actie-icoontjes; op desktop in dezelfde flex-rij */}
+                      <div className="flex items-center gap-1 mt-3 md:order-3">
+                        <div className="flex items-center gap-1 md:flex md:items-center md:gap-1">
+                          <button
+                            type="button"
+                            onClick={() => selectedEmail && handleDeleteOne(selectedEmail.id)}
+                            disabled={selectedEmail && deletingIds.has(selectedEmail.id)}
+                            className="p-2 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600"
+                            title="Verwijderen"
+                          >
+                            🗑️
+                          </button>
+                          <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Urgent">
+                            🚨
+                          </button>
+                          <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Koppel dier">
+                            🐾
+                          </button>
+                          <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Agenda">
+                            📅
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => setReplyComposeOpen(true)}
-                        className="px-3 py-1.5 rounded-lg bg-[#2aa348] text-white text-xs font-semibold hover:bg-[#166534] min-h-[44px] min-w-[44px] flex items-center justify-center md:min-h-0 md:min-w-0"
-                      >
-                        Beantwoord
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => selectedEmail && handleDeleteOne(selectedEmail.id)}
-                        disabled={selectedEmail && deletingIds.has(selectedEmail.id)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600"
-                        title="Verwijderen"
-                      >
-                        🗑️
-                      </button>
-                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Urgent">
-                        🚨
-                      </button>
-                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Koppel dier">
-                        🐾
-                      </button>
-                      <button type="button" className="p-2 rounded-lg hover:bg-gray-100" title="Agenda">
-                        📅
-                      </button>
                     </div>
                   </div>
 

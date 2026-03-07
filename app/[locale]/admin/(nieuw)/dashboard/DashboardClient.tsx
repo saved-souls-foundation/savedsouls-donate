@@ -158,6 +158,24 @@ export function DashboardClient({
     { icon: "📬", label: "Openstaande e-mails", count: attention.pendingEmails, href: "/admin/emails" },
   ];
 
+  // STAP 4: log volledige greeting zoals weergegeven
+  useEffect(() => {
+    const dateStr = new Date().toLocaleDateString("nl-NL", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const line1 = `${dateStr} · Ban Khok Ngam 🇹🇭`;
+    const line2 = "Goedemorgen! 👋";
+    const line3 = recenteEmails.length
+      ? `${recenteEmails.length} emails wachten op antwoord · ${aantalOpenAdopties || 0} adopties in behandeling`
+      : `Geen onbeantwoorde emails · ${aantalOpenAdopties || 0} adopties in behandeling`;
+    console.log("[STAP 4] Dashboard greeting:", { line1, line2, line3, full: `${line1}\n${line2}\n${line3}` });
+  }, [recenteEmails.length, aantalOpenAdopties]);
+
+  // Volgorde blokken (gelijk op mobiel + desktop): 1 Welkom, 2 Mail (Recente emails), 3 Aandacht vereist, 4 Stat cards, 5 Snelkoppelingen, …
+
   return (
     <div className="space-y-8 w-full max-w-full min-w-0">
       {/* RUN 3 — Welcome banner */}
@@ -171,7 +189,7 @@ export function DashboardClient({
                 month: "long",
                 year: "numeric",
               })}{" "}
-              · Chiang Mai 🇹🇭
+              · Ban Khok Ngam 🇹🇭
             </p>
             <h1 className="text-2xl font-extrabold mb-2">Goedemorgen! 👋</h1>
             <p className="text-sm opacity-85">
@@ -188,7 +206,92 @@ export function DashboardClient({
         </div>
       </div>
 
-      {/* RUN 3 — Stat cards */}
+      {/* 2 — Mail (Recente emails);zelfde volgorde mobiel + desktop */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 flex items-center justify-between">
+          <div>
+            <h2 className="font-extrabold text-gray-900">📧 Recente emails</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Onbeantwoorde berichten</p>
+          </div>
+          <Link href="/admin/emails" className="text-xs font-semibold text-[#2aa348] hover:underline">
+            Alles bekijken →
+          </Link>
+        </div>
+        <div className="divide-y divide-gray-100">
+          {recenteEmails.length > 0 ? (
+            recenteEmails.map((email) => (
+              <Link
+                key={email.id}
+                href={`/admin/emails?id=${encodeURIComponent(email.id)}`}
+                className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50 transition-colors"
+              >
+                <Avatar name={email.from_name ?? email.from_email ?? "?"} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-900 truncate">
+                      {email.from_name ?? email.from_email ?? "–"}
+                    </span>
+                    <span className="text-xs text-gray-400 shrink-0 ml-2">
+                      {timeAgo(email.created_at)}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <div className="px-5 py-8 text-center text-sm text-gray-400">Geen onbeantwoorde emails 🎉</div>
+          )}
+        </div>
+      </div>
+
+      {/* 3 — Aandacht vereist;zelfde volgorde mobiel + desktop */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
+          <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
+          <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
+        </div>
+        <div className="p-4 space-y-3">
+          {recenteEmails.length > 0 && (
+            <MeldingRij
+              type="warning"
+              icon="📧"
+              tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`}
+              actie="Beantwoorden"
+              href="/admin/emails"
+            />
+          )}
+          {verlopendeSponsorcontracten.map((s) => (
+            <MeldingRij
+              key={s.id}
+              type="danger"
+              icon="📄"
+              tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`}
+              actie="Bekijken"
+              href={`/admin/sponsoren/${s.id}`}
+            />
+          ))}
+          {aantalOpenAdopties > 0 && (
+            <MeldingRij
+              type="info"
+              icon="🏠"
+              tekst={`${aantalOpenAdopties} adoptie${aantalOpenAdopties > 1 ? "s" : ""} wacht${aantalOpenAdopties === 1 ? "" : "en"} op verwerking`}
+              actie="Bekijken"
+              href="/admin/adoptanten"
+            />
+          )}
+          {recenteEmails.length === 0 &&
+            verlopendeSponsorcontracten.length === 0 &&
+            aantalOpenAdopties === 0 && (
+              <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-200">
+                <span className="text-xl">✅</span>
+                <span className="text-sm font-semibold text-green-700">Alles is in orde!</span>
+              </div>
+            )}
+        </div>
+      </div>
+
+      {/* 4 — Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard icon="🐾" label="Dieren in opvang" value={aantalDieren} sub="actief in shelter" />
         <StatCard
@@ -212,92 +315,6 @@ export function DashboardClient({
           sub="binnen 30 dagen"
           accentColor="red"
         />
-      </div>
-
-      {/* RUN 3 — 2-koloms: Urgente meldingen + Recente emails (1 kolom op mobiel) */}
-      <div className="grid grid-cols-1 min-w-0 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
-            <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
-            <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
-          </div>
-          <div className="p-4 space-y-3">
-            {recenteEmails.length > 0 && (
-              <MeldingRij
-                type="warning"
-                icon="📧"
-                tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`}
-                actie="Beantwoorden"
-                href="/admin/emails"
-              />
-            )}
-            {verlopendeSponsorcontracten.map((s) => (
-              <MeldingRij
-                key={s.id}
-                type="danger"
-                icon="📄"
-                tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`}
-                actie="Bekijken"
-                href={`/admin/sponsoren/${s.id}`}
-              />
-            ))}
-            {aantalOpenAdopties > 0 && (
-              <MeldingRij
-                type="info"
-                icon="🏠"
-                tekst={`${aantalOpenAdopties} adoptie${aantalOpenAdopties > 1 ? "s" : ""} wacht${aantalOpenAdopties === 1 ? "" : "en"} op verwerking`}
-                actie="Bekijken"
-                href="/admin/adoptanten"
-              />
-            )}
-            {recenteEmails.length === 0 &&
-              verlopendeSponsorcontracten.length === 0 &&
-              aantalOpenAdopties === 0 && (
-                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-200">
-                  <span className="text-xl">✅</span>
-                  <span className="text-sm font-semibold text-green-700">Alles is in orde!</span>
-                </div>
-              )}
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 flex items-center justify-between">
-            <div>
-              <h2 className="font-extrabold text-gray-900">📧 Recente emails</h2>
-              <p className="text-xs text-gray-500 mt-0.5">Onbeantwoorde berichten</p>
-            </div>
-            <Link href="/admin/emails" className="text-xs font-semibold text-[#2aa348] hover:underline">
-              Alles bekijken →
-            </Link>
-          </div>
-          <div className="divide-y divide-gray-100">
-            {recenteEmails.length > 0 ? (
-              recenteEmails.map((email) => (
-                <Link
-                  key={email.id}
-                  href={`/admin/emails?id=${encodeURIComponent(email.id)}`}
-                  className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50 transition-colors"
-                >
-                  <Avatar name={email.from_name ?? email.from_email ?? "?"} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-gray-900 truncate">
-                        {email.from_name ?? email.from_email ?? "–"}
-                      </span>
-                      <span className="text-xs text-gray-400 shrink-0 ml-2">
-                        {timeAgo(email.created_at)}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="px-5 py-8 text-center text-sm text-gray-400">Geen onbeantwoorde emails 🎉</div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* RUN 3 — Snelkoppelingen */}

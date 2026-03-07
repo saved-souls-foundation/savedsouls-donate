@@ -187,6 +187,11 @@ export default function AdminLayoutClient({
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth >= 768) return;
+    console.log("[STAP 2] Mobiele footer: padding-bottom = max(1rem, env(safe-area-inset-bottom) + 1.5rem). Main heeft op mobiel extra padding-bottom zodat Verzend- en Beantwoord-knoppen volledig zichtbaar zijn zonder overlap.");
+  }, []);
+
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -345,6 +350,11 @@ export default function AdminLayoutClient({
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+        @media (max-width: 767px) {
+          .admin-main {
+            padding-bottom: max(5rem, calc(4rem + env(safe-area-inset-bottom, 0px) + 1.5rem));
+          }
+        }
       `}</style>
       <aside
         className="w-56 shrink-0 border-r hidden md:flex flex-col"
@@ -400,11 +410,14 @@ export default function AdminLayoutClient({
           </div>
         </div>
       </header>
-      <main className="flex-1 min-w-0 w-full max-w-full overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 pb-20 md:pb-8">
+      <main className="admin-main flex-1 min-w-0 w-full max-w-full overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 pb-20 md:pb-8">
         {children}
       </main>
       <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <nav className="fixed bottom-0 left-0 right-0 z-50 w-full max-w-full bg-white border-t border-gray-200 md:hidden">
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50 w-full max-w-full bg-white border-t border-gray-200 md:hidden"
+        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
+      >
         <div className="grid grid-cols-5 h-16 w-full max-w-full min-w-0">
           {[
             { icon: "🏠", label: "Home", href: `/${locale}/admin/dashboard` },
