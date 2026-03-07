@@ -53,6 +53,7 @@ export default function BlogPostPage() {
             titel: row.titel,
             inhoud: row.inhoud,
             gepubliceerd_op: row.gepubliceerd_op,
+            hero_image: row.hero_image ?? null,
           }));
           setFetchStatus("found");
         } else {
@@ -245,7 +246,7 @@ export default function BlogPostPage() {
             <>
               <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
               <p className="text-stone-600 dark:text-stone-400 mb-6">
-                {isFacebook ? t("ctaSubtitle") : t(`posts.${slug}.ctaText`)}
+                {isFacebook ? t("ctaSubtitle") : isDb ? t("ctaSubtitle") : t(`posts.${slug}.ctaText`)}
               </p>
               <button
                 onClick={handleDonate}

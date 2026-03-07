@@ -16,7 +16,7 @@ export async function GET(
     const admin = createAdminClient();
     const { data: row, error } = await admin
       .from("posts")
-      .select("id, slug, titel, inhoud, gepubliceerd_op, body_en, body_th, category, source")
+      .select("id, slug, titel, inhoud, gepubliceerd_op, body_en, body_th, category, source, hero_image")
       .or("status.eq.published,status.eq.Gepubliceerd")
       .eq("slug", slug)
       .maybeSingle();
@@ -38,6 +38,7 @@ export async function GET(
         gepubliceerd_op: row.gepubliceerd_op,
         category: row.category,
         source: row.source,
+        hero_image: row.hero_image ?? null,
       },
     });
   } catch (e) {

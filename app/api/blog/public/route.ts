@@ -11,7 +11,7 @@ export async function GET() {
     const admin = createAdminClient();
     const { data: rows, error } = await admin
       .from("posts")
-      .select("id, slug, titel, inhoud, gepubliceerd_op, category, source")
+      .select("id, slug, titel, inhoud, gepubliceerd_op, category, source, hero_image")
       .or("status.eq.published,status.eq.Gepubliceerd")
       .order("gepubliceerd_op", { ascending: false, nullsFirst: false });
 
@@ -31,6 +31,7 @@ export async function GET() {
       gepubliceerd_op: row.gepubliceerd_op,
       category: row.category,
       source: row.source,
+      hero_image: row.hero_image ?? null,
     }));
 
     return NextResponse.json({ posts });

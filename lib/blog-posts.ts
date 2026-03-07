@@ -97,10 +97,11 @@ export function isDbPost(post: BlogPostOrFacebook): post is DbPost {
 
 const DEFAULT_BLOG_IMAGE = "/savedsoul-logo-bg.webp";
 
-/** Maakt een DbPost van een API-response (titel, inhoud, gepubliceerd_op) */
-export function toDbPost(row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null }): DbPost {
+/** Maakt een DbPost van een API-response (titel, inhoud, gepubliceerd_op, optioneel hero_image) */
+export function toDbPost(row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null; hero_image?: string | null }): DbPost {
   const iso = row.gepubliceerd_op ?? new Date().toISOString();
   const date = iso.slice(0, 10);
+  const hero = row.hero_image?.trim() || DEFAULT_BLOG_IMAGE;
   return {
     id: row.id,
     slug: row.slug ?? row.id,
@@ -108,8 +109,8 @@ export function toDbPost(row: { id: string; slug: string | null; titel: string |
     inhoud: row.inhoud,
     gepubliceerd_op: row.gepubliceerd_op,
     date,
-    heroImage: DEFAULT_BLOG_IMAGE,
-    listingImage: DEFAULT_BLOG_IMAGE,
+    heroImage: hero,
+    listingImage: hero,
     source: "database",
   };
 }

@@ -133,6 +133,7 @@ Schrijf in het Nederlands. Warm, persoonlijk, geen clichés.`;
       animal_id: animal.id,
       type: "spotlight",
       slug,
+      hero_image: animal.image ?? null,
     })
     .select("id")
     .single();
