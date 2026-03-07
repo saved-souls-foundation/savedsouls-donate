@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
   const admin = createAdminClient();
   const { data: email, error: fetchError } = await admin
     .from("incoming_emails")
-    .select("id, onderwerp, inhoud, van_naam, van_email")
+    .select("id, onderwerp, inhoud, van_naam, van_email, ai_processed_at")
     .eq("id", emailId)
     .maybeSingle();
 
@@ -177,6 +177,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Email not found" },
       { status: 404 }
+    );
+  }
+  if (email.ai_processed_at != null) {
+    return NextResponse.json(
+      { skipped: true, reason: "already processed" },
+      { status: 200 }
     );
   }
 
@@ -258,7 +264,6 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       ai_language: language,
       ai_suggested_reply: suggestedReply,
       ai_used_template: usedTemplate,
-      ai_processed_at: new Date().toISOString(),
     })
     .eq("id", emailId);
 
@@ -293,6 +298,7 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
           .update({
             status: "beantwoord",
             beantwoord_op: new Date().toISOString(),
+            ai_processed_at: new Date().toISOString(),
           } as Record<string, unknown>)
           .eq("id", emailId);
       } catch (e) {
