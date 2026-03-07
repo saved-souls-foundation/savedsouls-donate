@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
@@ -35,6 +36,20 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
     aantalDieren = count ?? 0;
   } catch {
     aantalDieren = 0;
+  }
+
+  let userName: string | undefined;
+  try {
+    const serverSupabase = await createClient();
+    const { data: { user } } = await serverSupabase.auth.getUser();
+    if (user?.id) {
+      const { data: profile } = await serverSupabase.from("profiles").select("voornaam, achternaam").eq("id", user.id).single();
+      if (profile?.voornaam || profile?.achternaam) {
+        userName = [profile.voornaam, profile.achternaam].filter(Boolean).join(" ").trim() || undefined;
+      }
+    }
+  } catch {
+    userName = undefined;
   }
 
   const [
@@ -384,6 +399,7 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
       <DashboardClient
         locale={locale}
         dateLocale={dateLocale}
+        userName={userName}
         overview={{
           volunteers: volunteersCount ?? 0,
           adoptants: adoptantsCount ?? 0,

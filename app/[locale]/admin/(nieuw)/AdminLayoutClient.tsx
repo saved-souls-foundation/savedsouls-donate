@@ -163,10 +163,12 @@ export default function AdminLayoutClient({
   children,
   pendingEmailsCount = 0,
   recentUnreadEmails = [],
+  aantalDieren = 0,
 }: {
   children: React.ReactNode;
   pendingEmailsCount?: number;
   recentUnreadEmails?: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string }[];
+  aantalDieren?: number;
 }) {
   const t = useTranslations("admin");
   const pathname = usePathname();
@@ -335,6 +337,9 @@ export default function AdminLayoutClient({
         />
       </nav>
       <div className="p-2 border-t shrink-0" style={{ borderColor: ADM_BORDER }}>
+        <p className="px-3 py-1.5 text-xs text-gray-500" aria-hidden>
+          🐾 {aantalDieren} dieren in opvang
+        </p>
         <button
           type="button"
           onClick={handleLogout}
@@ -365,7 +370,7 @@ export default function AdminLayoutClient({
         }
       `}</style>
       <aside
-        className="w-56 shrink-0 border-r hidden md:flex flex-col"
+        className="w-56 shrink-0 border-r hidden md:flex flex-col relative z-10"
         style={{ background: ADM_SIDEBAR, borderColor: ADM_BORDER }}
       >
         {sidebar}
@@ -418,7 +423,7 @@ export default function AdminLayoutClient({
           </div>
         </div>
       </header>
-      <main className="admin-main flex-1 min-w-0 w-full max-w-full overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 pb-20 md:pb-8">
+      <main className="admin-main flex-1 min-w-0 w-full max-w-full overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 pb-20 md:pb-8 relative z-0">
         {children}
       </main>
       <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} />

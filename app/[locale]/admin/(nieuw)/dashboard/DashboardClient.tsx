@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { StatCard, Avatar } from "../components/ui/design-system";
@@ -48,6 +48,7 @@ export type VerlopendeSponsor = {
 type Props = {
   locale: string;
   dateLocale: string;
+  userName?: string;
   overview: Overview;
   attention: Attention;
   recentVolunteers: RecentVolunteer[];
@@ -62,6 +63,24 @@ type Props = {
   groupBRecent?: ReactNode;
   groupBAutoReplies?: ReactNode;
 };
+
+function getDayPart(): "morgen" | "middag" | "avond" {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) return "morgen";
+  if (h >= 12 && h < 17) return "middag";
+  return "avond";
+}
+
+function weatherIcon(code: number): string {
+  if (code === 0) return "☀️";
+  if (code >= 1 && code <= 3) return "⛅";
+  if (code >= 45 && code <= 48) return "🌫️";
+  if (code >= 51 && code <= 67) return "🌧️";
+  if (code >= 71 && code <= 77) return "❄️";
+  if (code >= 80 && code <= 82) return "🌦️";
+  if (code >= 95 && code <= 99) return "⛈️";
+  return "⛅";
+}
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -129,6 +148,7 @@ function AnimatedNumber({ value, format = "number" }: { value: number; format?: 
 export function DashboardClient({
   locale,
   dateLocale,
+  userName,
   overview,
   attention,
   recentVolunteers,
@@ -144,8 +164,45 @@ export function DashboardClient({
   groupBAutoReplies,
 }: Props) {
   const t = useTranslations("admin");
+  const router = useRouter();
   const attentionTotal = attention.pendingEmails + attention.volunteersStep12 + attention.expiredSponsors;
   const showAttentionSection = attentionTotal > 0;
+
+  const [weather, setWeather] = useState<{ temp: number; code: number } | null>(null);
+  const [tijd, setTijd] = useState({ thai: "", adam: "" });
+
+  useEffect(() => {
+    const update = () => {
+      setTijd({
+        thai: new Intl.DateTimeFormat("nl-NL", {
+          timeZone: "Asia/Bangkok",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date()),
+        adam: new Intl.DateTimeFormat("nl-NL", {
+          timeZone: "Europe/Amsterdam",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date()),
+      });
+    };
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=16.43&longitude=102.82&current=temperature_2m,weather_code&timezone=Asia/Bangkok";
+    fetch(url)
+      .then((r) => r.json())
+      .then((data: { current?: { temperature_2m?: number; weather_code?: number } }) => {
+        const cur = data?.current;
+        if (cur != null && typeof cur.temperature_2m === "number" && typeof cur.weather_code === "number") {
+          setWeather({ temp: cur.temperature_2m, code: cur.weather_code });
+        }
+      })
+      .catch(() => setWeather(null));
+  }, []);
 
   const overviewCardsA: { icon: string; labelKey: string; value: number; valueFormatted?: string; href: string }[] = [
     { icon: "🤝", labelKey: "volunteersRegistered", value: overview.volunteers, href: "/admin/vrijwilligers" },
@@ -158,141 +215,122 @@ export function DashboardClient({
     { icon: "📬", label: "Openstaande e-mails", count: attention.pendingEmails, href: "/admin/emails" },
   ];
 
-  // STAP 4: log volledige greeting zoals weergegeven
-  useEffect(() => {
-    const dateStr = new Date().toLocaleDateString("nl-NL", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    const line1 = `${dateStr} · Ban Khok Ngam 🇹🇭`;
-    const line2 = "Goedemorgen! 👋";
-    const line3 = recenteEmails.length
-      ? `${recenteEmails.length} emails wachten op antwoord · ${aantalOpenAdopties || 0} adopties in behandeling`
-      : `Geen onbeantwoorde emails · ${aantalOpenAdopties || 0} adopties in behandeling`;
-    console.log("[STAP 4] Dashboard greeting:", { line1, line2, line3, full: `${line1}\n${line2}\n${line3}` });
-  }, [recenteEmails.length, aantalOpenAdopties]);
-
-  // Volgorde blokken (gelijk op mobiel + desktop): 1 Welkom, 2 Mail (Recente emails), 3 Aandacht vereist, 4 Stat cards, 5 Snelkoppelingen, …
+  const dayPart = getDayPart();
+  const greetingKey = dayPart === "morgen" ? "Goedemorgen" : dayPart === "middag" ? "Goedemiddag" : "Goedeavond";
+  const greeting = userName ? `${greetingKey} ${userName} 👋` : `${greetingKey} 👋`;
+  const firstAttentionHref =
+    recenteEmails.length > 0
+      ? "/admin/emails"
+      : verlopendeSponsorcontracten.length > 0
+        ? `/admin/sponsoren/${verlopendeSponsorcontracten[0].id}`
+        : aantalOpenAdopties > 0
+          ? "/admin/adoptanten"
+          : null;
 
   return (
     <div className="space-y-8 w-full max-w-full min-w-0">
-      {/* RUN 3 — Welcome banner */}
-      <div className="bg-gradient-to-r from-[#2aa348] to-[#166534] rounded-2xl p-6 text-white mb-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm opacity-80 mb-1">
-              {new Date().toLocaleDateString("nl-NL", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}{" "}
-              · Ban Khok Ngam 🇹🇭
-            </p>
-            <h1 className="text-2xl font-extrabold mb-2">Goedemorgen! 👋</h1>
-            <p className="text-sm opacity-85">
-              {recenteEmails.length
-                ? `${recenteEmails.length} emails wachten op antwoord · `
-                : "Geen onbeantwoorde emails · "}
-              {aantalOpenAdopties || 0} adopties in behandeling
-            </p>
+      {/* Compacte header met begroeting + weer */}
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-stone-200 rounded-t-xl">
+        <div>
+          <div className="text-base font-semibold text-stone-800">{greeting}</div>
+          <div className="text-xs text-stone-500">
+            {new Date().toLocaleDateString(dateLocale === "en-GB" ? "en-GB" : "nl-NL", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}{" "}
+            · Ban Khok Ngam 🇹🇭
           </div>
-          <div className="bg-white/20 rounded-xl px-5 py-3 text-center shrink-0">
-            <div className="text-3xl font-extrabold">{aantalDieren}</div>
-            <div className="text-xs opacity-80 mt-0.5">dieren in opvang</div>
+          <div className="text-xs text-stone-400 mt-0.5">
+            🇹🇭 {tijd.thai} · 🇳🇱 Amsterdam: {tijd.adam}
           </div>
+        </div>
+        <div className="text-right text-sm text-stone-600 shrink-0 max-w-[100px] md:max-w-none leading-tight">
+          {weather != null ? (
+            <span className="whitespace-nowrap">{weatherIcon(weather.code)} {Math.round(weather.temp)}°C</span>
+          ) : (
+            <span className="text-stone-400">...</span>
+          )}
         </div>
       </div>
 
-      {/* 2 — Mail (Recente emails);zelfde volgorde mobiel + desktop */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* 2 — Mail (Recente emails); hele kaart klikbaar → /admin/emails */}
+      <Link
+        href="/admin/emails"
+        className="block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px] cursor-pointer hover:bg-stone-50 transition-colors"
+      >
         <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 flex items-center justify-between">
           <div>
             <h2 className="font-extrabold text-gray-900">📧 Recente emails</h2>
             <p className="text-xs text-gray-500 mt-0.5">Onbeantwoorde berichten</p>
           </div>
-          <Link href="/admin/emails" className="text-xs font-semibold text-[#2aa348] hover:underline">
-            Alles bekijken →
-          </Link>
+          <span className="text-xs font-semibold text-[#2aa348] hover:underline">Alles bekijken →</span>
         </div>
         <div className="divide-y divide-gray-100">
           {recenteEmails.length > 0 ? (
             recenteEmails.map((email) => (
-              <Link
-                key={email.id}
-                href={`/admin/emails?id=${encodeURIComponent(email.id)}`}
-                className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50 transition-colors"
-              >
+              <span key={email.id} className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50/50 transition-colors block">
                 <Avatar name={email.from_name ?? email.from_email ?? "?"} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-gray-900 truncate">
                       {email.from_name ?? email.from_email ?? "–"}
                     </span>
-                    <span className="text-xs text-gray-400 shrink-0 ml-2">
-                      {timeAgo(email.created_at)}
-                    </span>
+                    <span className="text-xs text-gray-400 shrink-0 ml-2">{timeAgo(email.created_at)}</span>
                   </div>
                   <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
                 </div>
-              </Link>
+              </span>
             ))
           ) : (
             <div className="px-5 py-8 text-center text-sm text-gray-400">Geen onbeantwoorde emails 🎉</div>
           )}
         </div>
-      </div>
+      </Link>
 
-      {/* 3 — Aandacht vereist;zelfde volgorde mobiel + desktop */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
-          <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
-        </div>
-        <div className="p-4 space-y-3">
-          {recenteEmails.length > 0 && (
-            <MeldingRij
-              type="warning"
-              icon="📧"
-              tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`}
-              actie="Beantwoorden"
-              href="/admin/emails"
-            />
-          )}
-          {verlopendeSponsorcontracten.map((s) => (
-            <MeldingRij
-              key={s.id}
-              type="danger"
-              icon="📄"
-              tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`}
-              actie="Bekijken"
-              href={`/admin/sponsoren/${s.id}`}
-            />
-          ))}
-          {aantalOpenAdopties > 0 && (
-            <MeldingRij
-              type="info"
-              icon="🏠"
-              tekst={`${aantalOpenAdopties} adoptie${aantalOpenAdopties > 1 ? "s" : ""} wacht${aantalOpenAdopties === 1 ? "" : "en"} op verwerking`}
-              actie="Bekijken"
-              href="/admin/adoptanten"
-            />
-          )}
-          {recenteEmails.length === 0 &&
-            verlopendeSponsorcontracten.length === 0 &&
-            aantalOpenAdopties === 0 && (
-              <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-200">
-                <span className="text-xl">✅</span>
-                <span className="text-sm font-semibold text-green-700">Alles is in orde!</span>
-              </div>
+      {/* 3 — Aandacht vereist; hele kaart klikbaar naar eerste item als er items zijn */}
+      {firstAttentionHref ? (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => router.push(firstAttentionHref)}
+          onKeyDown={(e) => e.key === "Enter" && router.push(firstAttentionHref)}
+          className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px] cursor-pointer hover:bg-stone-50 transition-colors"
+        >
+          <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
+            <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
+          </div>
+          <div className="p-4 space-y-3" onClick={(e) => e.stopPropagation()}>
+            {recenteEmails.length > 0 && (
+              <MeldingRij type="warning" icon="📧" tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`} actie="Beantwoorden" href="/admin/emails" />
             )}
+            {verlopendeSponsorcontracten.map((s) => (
+              <MeldingRij key={s.id} type="danger" icon="📄" tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`} actie="Bekijken" href={`/admin/sponsoren/${s.id}`} />
+            ))}
+            {aantalOpenAdopties > 0 && (
+              <MeldingRij type="info" icon="🏠" tekst={`${aantalOpenAdopties} adoptie${aantalOpenAdopties > 1 ? "s" : ""} wacht${aantalOpenAdopties === 1 ? "" : "en"} op verwerking`} actie="Bekijken" href="/admin/adoptanten" />
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px]">
+          <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
+            <h2 className="font-extrabold text-gray-900">🚨 Aandacht vereist</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
+          </div>
+          <div className="p-4">
+            <div className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-200">
+              <span className="text-xl">✅</span>
+              <span className="text-sm font-semibold text-green-700">Alles is in orde!</span>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* 4 — Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      {/* 4 — Stat cards (geen link, alleen cijfers; Overzicht-kaarten hieronder zijn wel klikbaar) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 min-h-[60px]">
         <StatCard icon="🐾" label="Dieren in opvang" value={aantalDieren} sub="actief in shelter" />
         <StatCard
           icon="🤝"
@@ -330,7 +368,7 @@ export function DashboardClient({
           <Link
             key={item.href}
             href={item.href}
-            className="bg-white rounded-xl border border-gray-200 p-4 hover:border-[#2aa348] hover:shadow-md transition-all duration-200 group"
+            className="bg-white rounded-xl border border-gray-200 p-4 min-h-[60px] flex flex-col justify-center cursor-pointer hover:bg-stone-50 hover:border-[#2aa348] hover:shadow-md transition-all duration-200 group"
           >
             <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-200 inline-block">
               {item.icon}
@@ -351,7 +389,7 @@ export function DashboardClient({
             <Link
               key={card.labelKey}
               href={card.href}
-              className="rounded-xl border p-4 block cursor-pointer hover:shadow-md transition"
+              className="rounded-xl border p-4 block min-h-[60px] cursor-pointer hover:bg-stone-50 hover:shadow-md transition"
               style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
             >
               <span className="text-2xl">{card.icon}</span>

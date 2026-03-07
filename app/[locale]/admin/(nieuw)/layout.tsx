@@ -16,9 +16,16 @@ export default async function AdminNieuwLayout({
   const { locale } = await params;
   setRequestLocale(locale);
   let pendingEmailsCount = 0;
+  let aantalDieren = 0;
   let recentUnreadEmails: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string }[] = [];
   try {
     const admin = createAdminClient();
+    try {
+      const { count } = await admin.from("dieren").select("*", { count: "exact", head: true }).eq("status", "in_opvang");
+      aantalDieren = count ?? 0;
+    } catch {
+      aantalDieren = 0;
+    }
     const baseCount = admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling");
     const baseList = admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").order("ontvangen_op", { ascending: false }).limit(3);
     const [countRes, listRes] = await Promise.all([baseCount.eq("gelezen", false), baseList.eq("gelezen", false)]);
@@ -50,7 +57,7 @@ export default async function AdminNieuwLayout({
   }
 
   return (
-    <AdminLayoutClient pendingEmailsCount={pendingEmailsCount} recentUnreadEmails={recentUnreadEmails}>
+    <AdminLayoutClient pendingEmailsCount={pendingEmailsCount} recentUnreadEmails={recentUnreadEmails} aantalDieren={aantalDieren}>
       {children}
     </AdminLayoutClient>
   );
