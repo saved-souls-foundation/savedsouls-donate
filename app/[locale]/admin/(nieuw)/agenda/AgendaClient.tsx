@@ -38,6 +38,8 @@ export type CalendarEvent = {
 };
 
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 7); // 07:00 - 22:00
+/** Vaste datum voor eerste render (geen Date() in render → voorkomt hydration mismatch). */
+const FALLBACK_DATE = new Date(2000, 0, 1);
 
 function getMonthDays(year: number, month: number) {
   const first = new Date(year, month, 1);
@@ -74,7 +76,9 @@ function getWeekDays(anchor: Date) {
 export default function AgendaClient() {
   const t = useTranslations("admin.agenda");
   const [view, setView] = useState<"month" | "week" | "day">("week");
-  const [current, setCurrent] = useState(() => new Date());
+  const [current, setCurrent] = useState<Date | null>(null);
+  const [todayIso, setTodayIso] = useState<string | null>(null);
+  const [todayStart, setTodayStart] = useState<Date | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -84,10 +88,10 @@ export default function AgendaClient() {
   const [mobileDayPanel, setMobileDayPanel] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [sideTab, setSideTab] = useState<"upcoming" | "lab">("upcoming");
-  const supabase = createClient();
   const [volunteers, setVolunteers] = useState<{ id: string; name: string | null; line_id?: string | null; telefoon?: string | null }[]>([]);
 
   useEffect(() => {
+    const supabase = createClient();
     supabase
       .from("volunteers")
       .select("id, name, line_id, telefoon")
@@ -97,8 +101,8 @@ export default function AgendaClient() {
       });
   }, []);
 
-  const year = current.getFullYear();
-  const month = current.getMonth();
+  const year = current ? current.getFullYear() : FALLBACK_DATE.getFullYear();
+  const month = current ? current.getMonth() : FALLBACK_DATE.getMonth();
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 480px)");
@@ -115,6 +119,12 @@ export default function AgendaClient() {
   const [hiddenCategories, setHiddenCategories] = useState<Set<EventCategory>>(new Set());
 
   useEffect(() => {
+    const now = new Date();
+    setCurrent(now);
+    setTodayIso(now.toISOString().slice(0, 10));
+    const start = new Date(now);
+    start.setHours(0, 0, 0, 0);
+    setTodayStart(start);
     try {
       const s = localStorage.getItem("agenda_hidden_categories");
       const arr = s ? JSON.parse(s) : [];
@@ -163,11 +173,11 @@ export default function AgendaClient() {
     return () => { supabase.removeChannel(channel); };
   }, [fetchEvents]);
 
-  const monthLabel = current.toLocaleDateString("nl-NL", { month: "long", year: "numeric" });
-  const todayIso = new Date().toISOString().slice(0, 10);
+  const monthLabel = current ? current.toLocaleDateString("nl-NL", { month: "long", year: "numeric" }) : "";
+  const todayIsoStr = todayIso ?? "";
 
   const monthDays = useMemo(() => getMonthDays(year, month), [year, month]);
-  const weekDays = useMemo(() => getWeekDays(current), [current]);
+  const weekDays = useMemo(() => getWeekDays(current ?? FALLBACK_DATE), [current]);
 
   const visibleEvents = useMemo(
     () => events.filter((e) => !hiddenCategories.has(e.category as EventCategory)),
@@ -201,8 +211,8 @@ export default function AgendaClient() {
   const VOLUNTEER_CATEGORIES: EventCategory[] = ["vrijwilligers", "adoptanten", "evenement"];
 
   const upcomingEventsAll = useMemo(() => {
-    const from = new Date();
-    from.setHours(0, 0, 0, 0);
+    if (!todayStart) return [];
+    const from = todayStart;
     const to = new Date(from);
     to.setDate(to.getDate() + 14);
     return visibleEvents
@@ -211,7 +221,7 @@ export default function AgendaClient() {
         return t >= from.getTime() && t < to.getTime();
       })
       .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
-  }, [visibleEvents]);
+  }, [visibleEvents, todayStart]);
 
   const upcomingEvents = useMemo(() => {
     let list = upcomingEventsAll;
@@ -227,15 +237,26 @@ export default function AgendaClient() {
   );
 
   function goPrev() {
+    if (!current) return;
     if (view === "month") setCurrent(new Date(year, month - 1));
     else setCurrent(new Date(current.getTime() - (view === "week" ? 7 : 1) * 86400000));
   }
   function goNext() {
+    if (!current) return;
     if (view === "month") setCurrent(new Date(year, month + 1));
     else setCurrent(new Date(current.getTime() + (view === "week" ? 7 : 1) * 86400000));
   }
   function goToday() {
     setCurrent(new Date());
+  }
+
+  // Eerste render (server + eerste client): geen kalender tonen tot current gezet is (voorkomt hydration mismatch)
+  if (current === null) {
+    return (
+      <div className="flex min-h-[300px] items-center justify-center p-8" style={{ color: ADM_MUTED }}>
+        {t("month")}…
+      </div>
+    );
   }
 
   return (
@@ -347,7 +368,7 @@ export default function AgendaClient() {
                 {monthDays.map(({ date, isCurrentMonth, iso }) => {
                   const dayEvents = eventsByDate[iso] ?? [];
                   const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-                  const isToday = iso === todayIso;
+                  const isToday = iso === todayIsoStr;
                   const isCompact = isMobile;
                   return (
                     <div
@@ -539,7 +560,7 @@ export default function AgendaClient() {
               ) : (
                 <>
               <div className="p-2 border-b text-center font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
-                {current.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                {current ? current.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : ""}
               </div>
               <div className="flex">
                 <div className="w-14 shrink-0 border-r py-2" style={{ borderColor: ADM_BORDER }}>
