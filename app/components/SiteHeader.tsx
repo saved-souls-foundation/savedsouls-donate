@@ -2,7 +2,7 @@
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -85,8 +85,10 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const isHomePage = !!scrollToSection;
-  const isOverlay = isHomePage && scrollY < 80;
+  const isOverlay = mounted && isHomePage && scrollY < 80;
 
   const textOverlay = "text-white hover:text-white/90";
   const textScrolled = "text-[#1a1a1a] dark:text-stone-100 hover:text-stone-600 dark:hover:text-stone-300";
@@ -128,14 +130,12 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0 overflow-visible">
           <Link
             href="/story"
-            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("ourStory")}
           </Link>
           <Link
             href="/about-us"
-            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("aboutUs")}
@@ -164,7 +164,6 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           />
           <Link
             href="/contact"
-            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("contact")}

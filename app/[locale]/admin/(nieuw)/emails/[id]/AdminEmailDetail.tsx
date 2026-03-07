@@ -175,6 +175,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
 
   const isUrgent = email?.ai_urgency === "hoog";
   async function handleUrgencyToggle() {
+    console.log("[AdminEmailDetail] handleUrgencyToggle called", { id, isUrgent });
     if (!email) return;
     setUrgencyLoading(true);
     setToast(null);
@@ -199,6 +200,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   }
 
   function openAgendaModal() {
+    console.log("[AdminEmailDetail] openAgendaModal called", { id });
     const naam = email?.van_naam?.trim() || email?.van_email || t("noValue");
     setAgendaTitle(`Opvolging: ${naam}`);
     setAgendaDate(tomorrowISO());
@@ -287,38 +289,46 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   const replyToSend = showEdit ? editReply : (email.ai_gegenereerd_antwoord ?? "");
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <Link href="/admin/emails" className="text-sm font-medium" style={{ color: ADM_ACCENT }}>{t("backToList")}</Link>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleUrgencyToggle}
-            disabled={urgencyLoading}
-            title={isUrgent ? t("tooltipUrgentMarked") : t("tooltipUrgent")}
-            className="p-2 rounded-lg border transition-colors disabled:opacity-50"
-            style={{ borderColor: ADM_BORDER, color: isUrgent ? ADM_RED : ADM_MUTED }}
-          >
-            🚨
-          </button>
-          <Link
-            href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
-            title={t("tooltipAdoptanten")}
-            className="p-2 rounded-lg border transition-colors"
-            style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
-          >
-            🐾
-          </Link>
-          <button
-            type="button"
-            onClick={openAgendaModal}
-            title={t("tooltipAgenda")}
-            className="p-2 rounded-lg border transition-colors"
-            style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
-          >
-            📅
-          </button>
-        </div>
+    <div className="space-y-6 overflow-visible">
+      <Link href="/admin/emails" className="text-sm font-medium block" style={{ color: ADM_ACCENT }}>{t("backToList")}</Link>
+
+      {/* Header: naam + email + datum */}
+      <div className="overflow-visible" style={{ color: ADM_TEXT }}>
+        <p className="text-sm"><strong>{t("from")}:</strong> {email.van_naam ?? ""} &lt;{email.van_email ?? ""}&gt;</p>
+        <p className="text-sm mt-1"><strong>{t("subject")}:</strong> {email.onderwerp ?? t("noValue")}</p>
+        <p className="text-sm mt-1" style={{ color: ADM_MUTED }}><strong>{t("received")}:</strong> {formatDate(email.ontvangen_op)}</p>
+      </div>
+
+      {/* Icon-knoppen: direct onder header, voor content grid; altijd zichtbaar */}
+      <div className="flex items-center gap-2 overflow-visible relative z-10">
+        <button
+          type="button"
+          onClick={() => { console.log("knop geklikt"); handleUrgencyToggle(); }}
+          disabled={urgencyLoading}
+          title={isUrgent ? t("tooltipUrgentMarked") : t("tooltipUrgent")}
+          className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors disabled:opacity-50 flex items-center justify-center"
+          style={{ borderColor: ADM_BORDER, color: isUrgent ? ADM_RED : ADM_MUTED }}
+        >
+          🚨
+        </button>
+        <Link
+          href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
+          title={t("tooltipAdoptanten")}
+          onClick={() => console.log("knop geklikt")}
+          className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors flex items-center justify-center"
+          style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+        >
+          🐾
+        </Link>
+        <button
+          type="button"
+          onClick={() => { console.log("knop geklikt"); openAgendaModal(); }}
+          title={t("tooltipAgenda")}
+          className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors flex items-center justify-center"
+          style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+        >
+          📅
+        </button>
       </div>
 
       {agendaModalOpen && (
@@ -339,8 +349,8 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-visible">
+        <div className="rounded-xl border p-4 overflow-visible" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
           <h2 className="text-sm font-semibold mb-3" style={{ color: ADM_MUTED }}>{t("originalEmail")}</h2>
           <p className="text-sm" style={{ color: ADM_TEXT }}><strong>{t("from")}:</strong> {email.van_naam ?? ""} &lt;{email.van_email ?? ""}&gt;</p>
           <p className="text-sm mt-1" style={{ color: ADM_TEXT }}><strong>{t("subject")}:</strong> {email.onderwerp ?? t("noValue")}</p>
