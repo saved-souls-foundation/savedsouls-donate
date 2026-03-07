@@ -215,16 +215,18 @@ export async function POST(request: NextRequest) {
     .select("id, naam, categorie, inhoud_nl, inhoud_en, inhoud_es, inhoud_ru, inhoud_th, inhoud_de, inhoud_fr")
     .eq("categorie", category)
     .eq("actief", true)
+    .not("naam", "ilike", "%ontvangen%")
+    .order("naam", { ascending: true })
     .limit(1);
 
   const templateRow = templates?.[0] as Record<string, unknown> | undefined;
   const templateText = templateRow ? getTemplateText(templateRow, language) : null;
 
   if (templateText) {
-    const adapterPrompt = `Pas deze sjabloontekst aan voor deze specifieke email.
-Vul [NAAM] in als je de naam kent uit de email, anders laat weg.
-Vertaal naar ${language} als de sjabloon niet in die taal is.
-Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
+    const adapterPrompt = `Gebruik onderstaande sjabloon als STIJLGIDS. Schrijf een ECHT inhoudelijk antwoord op de vraag van de afzender; niet alleen de sjabloon overschrijven.
+Beantwoord de specifieke vraag van de afzender inhoudelijk. Ga in op wat er gevraagd wordt.
+Vervang [NAAM] en {{naam}} door de naam van de afzender als die bekend is, anders laat weg.
+Schrijf in taal: ${language}. Sjabloon (stijlgids): ${templateText}`;
     try {
       suggestedReply = await callClaude(adapterPrompt, {
         model: "haiku",
@@ -255,6 +257,11 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       );
     }
   }
+
+  const vanNaam = (email.van_naam ?? "").toString().trim();
+  suggestedReply = suggestedReply
+    .replace(/\[NAAM\]/g, vanNaam)
+    .replace(/\{\{naam\}\}/gi, vanNaam);
 
   const { error: updateError } = await admin
     .from("incoming_emails")

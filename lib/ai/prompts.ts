@@ -41,6 +41,8 @@ export function EMAIL_REPLY_PROMPT(
 
   return `Schrijf een warm, persoonlijk antwoord namens Saved Souls Foundation (dierenopvang in Thailand, Ban Khok Ngam).
 
+Beantwoord de specifieke vraag van de afzender inhoudelijk. Gebruik de template als stijlgids maar schrijf een persoonlijk antwoord dat ingaat op wat er gevraagd wordt. Vervang [NAAM] door de naam van de afzender.
+
 Categorie: ${category}
 Taal: Schrijf in exact ${langNote}.
 ${animalLine}
