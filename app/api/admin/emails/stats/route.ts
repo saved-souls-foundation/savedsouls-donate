@@ -24,15 +24,18 @@ export async function GET(_request: NextRequest) {
     { count: pending },
     { count: sentToday },
     { count: ignored },
+    { count: onbeantwoord },
   ] = await Promise.all([
     supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"),
     supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "verstuurd").gte("verwerkt_op", todayStr),
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "genegeerd"),
+    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "geneigeerd"),
+    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false"),
   ]);
 
   return NextResponse.json({
     pending: pending ?? 0,
     sentToday: sentToday ?? 0,
     ignored: ignored ?? 0,
+    onbeantwoord: onbeantwoord ?? 0,
   });
 }

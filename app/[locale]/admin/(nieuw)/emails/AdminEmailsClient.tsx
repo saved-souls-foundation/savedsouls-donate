@@ -31,6 +31,7 @@ type EmailRow = {
   ai_automatisch_verstuurd?: boolean | null;
   status: string;
   taal: string | null;
+  ai_language: string | null;
   bron?: string | null;
   ai_urgency?: string | null;
 };
@@ -38,7 +39,7 @@ type EmailRow = {
 type EmailDetail = EmailRow & { inhoud?: string | null };
 
 type TemplateInfo = { id: string; naam: string | null };
-type Stats = { pending: number; sentToday: number; ignored: number };
+type Stats = { pending: number; sentToday: number; ignored: number; onbeantwoord: number };
 
 type AiProcessedRow = {
   id: string;
@@ -73,24 +74,10 @@ const LANGUAGE_FLAGS: Record<string, string> = {
   ru: "🇷🇺",
 };
 
-/** Fallback: taal uit e-maildomein als taal onbekend is (.nl → nl, .de → de, .com → en, etc.). */
-function getLanguageFromEmailDomain(van_email: string | null): string | null {
-  if (!van_email || typeof van_email !== "string") return null;
-  const domain = van_email.split("@")[1]?.toLowerCase();
-  if (!domain) return null;
-  if (domain.endsWith(".nl")) return "nl";
-  if (domain.endsWith(".de")) return "de";
-  if (domain.endsWith(".fr")) return "fr";
-  if (domain.endsWith(".es")) return "es";
-  if (domain.endsWith(".ru")) return "ru";
-  if (domain.endsWith(".th")) return "th";
-  if (domain.endsWith(".co.uk") || domain.endsWith(".com") || domain.endsWith(".org") || domain.endsWith(".net") || domain.endsWith(".eu")) return "en";
-  return null;
-}
-
-function getLanguageFlag(taal: string | null, van_email?: string | null): string | null {
-  const key = (taal && typeof taal === "string" ? taal : getLanguageFromEmailDomain(van_email ?? null))?.toLowerCase().slice(0, 2);
-  if (!key) return null;
+/** Alleen ai_language gebruiken: nl/en/de/fr/th/es/ru → vlag; leeg/null → geen vlag. */
+function getLanguageFlag(ai_language: string | null): string | null {
+  if (!ai_language || typeof ai_language !== "string") return null;
+  const key = ai_language.toLowerCase().slice(0, 2);
   return LANGUAGE_FLAGS[key] ?? null;
 }
 
@@ -130,14 +117,14 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
-type AdminEmailsClientProps = { initialEmailId?: string };
+type AdminEmailsClientProps = { initialEmailId?: string; initialTab?: string };
 
-export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientProps = {}) {
+export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminEmailsClientProps = {}) {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(initialTab === "onbeantwoord" ? "onbeantwoord" : "all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [languageFilter, setLanguageFilter] = useState("all");
   const [page, setPage] = useState(1);
@@ -267,6 +254,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   const inboxCount = stats?.pending ?? 0;
   const sentCount = stats?.sentToday ?? 0;
   const ignoredCount = stats?.ignored ?? 0;
+  const onbeantwoordCount = stats?.onbeantwoord ?? 0;
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -458,17 +446,18 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   }
 
   const tabCounts = {
+    onbeantwoord: onbeantwoordCount,
     inbox: inboxCount,
     sent: sentCount,
     ignored: ignoredCount,
     all: total,
   };
 
-  // Beantwoord-tab: alleen beantwoorde (verstuurd) tonen; client-side filter als extra zekerheid
+  // Onbeantwoord: API filtert al; Beantwoord-tab: alleen beantwoorde (verstuurd); rest op status
   const displayData =
     statusFilter === "ai_beantwoord"
       ? []
-      : statusFilter === "all"
+      : statusFilter === "all" || statusFilter === "onbeantwoord"
         ? data
         : data.filter((row) => row.status === statusFilter);
 
@@ -533,6 +522,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
           {/* Tabs */}
           <div className="flex border-b border-gray-200 shrink-0 flex-wrap">
             {[
+              { id: "onbeantwoord", label: "📬 Onbeantwoord", count: tabCounts.onbeantwoord },
               { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
               { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
               { id: "ai_beantwoord", label: "🤖 AI Beantwoord", count: null as number | null },
@@ -687,7 +677,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 const senderName = row.van_naam || row.van_email || t("noValue");
                 const isRowSelected = selectedIds.has(row.id);
                 const isDeleting = deletingIds.has(row.id);
-                const langFlag = getLanguageFlag(row.taal, row.van_email);
+                const langFlag = getLanguageFlag(row.ai_language);
                 const isUrgent = (row.ai_urgency ?? "").toLowerCase() === "hoog";
                 return (
                   <div

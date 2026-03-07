@@ -6,10 +6,10 @@ export default async function AdminEmailsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ id?: string }>;
+  searchParams: Promise<{ id?: string; tab?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
   setRequestLocale(locale);
-  return <AdminEmailsClient initialEmailId={sp?.id ?? undefined} />;
+  return <AdminEmailsClient initialEmailId={sp?.id ?? undefined} initialTab={sp?.tab ?? undefined} />;
 }

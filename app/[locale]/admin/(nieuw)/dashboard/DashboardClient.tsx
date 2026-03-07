@@ -304,7 +304,7 @@ export function DashboardClient({
           </div>
           <div className="p-4 space-y-3" onClick={(e) => e.stopPropagation()}>
             {recenteEmails.length > 0 && (
-              <MeldingRij type="warning" icon="📧" tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`} actie="Beantwoorden" href="/admin/emails" />
+              <MeldingRij type="warning" icon="📧" tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`} actie="Beantwoorden" href="/admin/emails?tab=onbeantwoord" />
             )}
             {verlopendeSponsorcontracten.map((s) => (
               <MeldingRij key={s.id} type="danger" icon="📄" tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`} actie="Bekijken" href={`/admin/sponsoren/${s.id}`} />
