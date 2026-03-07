@@ -128,12 +128,14 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0 overflow-visible">
           <Link
             href="/story"
+            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("ourStory")}
           </Link>
           <Link
             href="/about-us"
+            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("aboutUs")}
@@ -162,6 +164,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           />
           <Link
             href="/contact"
+            suppressHydrationWarning
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("contact")}

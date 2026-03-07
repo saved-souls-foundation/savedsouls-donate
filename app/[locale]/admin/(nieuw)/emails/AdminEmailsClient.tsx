@@ -32,6 +32,7 @@ type EmailRow = {
   status: string;
   taal: string | null;
   bron?: string | null;
+  ai_urgency?: string | null;
 };
 
 type EmailDetail = EmailRow & { inhoud?: string | null };
@@ -62,24 +63,52 @@ const cats: Record<string, [string, string, string, string]> = {
   overig: ["bg-gray-50", "text-gray-600", "border-gray-200", "📨 Overig"],
 };
 
+const LANGUAGE_FLAGS: Record<string, string> = {
+  nl: "🇳🇱",
+  en: "🇬🇧",
+  de: "🇩🇪",
+  fr: "🇫🇷",
+  th: "🇹🇭",
+  es: "🇪🇸",
+  ru: "🇷🇺",
+};
+
+function getLanguageFlag(taal: string | null): string | null {
+  if (!taal || typeof taal !== "string") return null;
+  const key = taal.toLowerCase().slice(0, 2);
+  return LANGUAGE_FLAGS[key] ?? null;
+}
+
 function CategoryBadge({ category }: { category: string | null }) {
-  const [bg, text, border, label] = cats[category ?? ""] ?? cats.overig;
+  if (!category || category === "overig") return null;
+  const [bg, text, border, label] = cats[category] ?? cats.overig;
   return (
     <span
-      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${bg} ${text} ${border}`}
+      className={`text-xs font-semibold py-0.5 px-2 rounded-full border ${bg} ${text} ${border}`}
     >
       {label}
     </span>
   );
 }
 
-function timeAgo(dateStr: string) {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m geleden`;
+function timeDisplay(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = Date.now();
+  const diffMs = now - date.getTime();
+  const mins = Math.floor(diffMs / 60000);
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}u geleden`;
-  return `${Math.floor(hrs / 24)}d geleden`;
+  const days = Math.floor(hrs / 24);
+  if (mins < 1) return "Zojuist";
+  if (mins < 60) return `${mins} min geleden`;
+  if (hrs < 24) return `${hrs} uur geleden`;
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (date.toDateString() === yesterday.toDateString()) return "Gisteren";
+  const d = date.getDate();
+  const m = date.getMonth() + 1;
+  const y = date.getFullYear();
+  return `${String(d).padStart(2, "0")}-${String(m).padStart(2, "0")}-${y}`;
 }
 
 function stripHtml(html: string): string {
@@ -454,9 +483,9 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
+        <div className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
-        </h1>
+        </div>
         <div className="flex gap-3 items-center">
           <button
             type="button"
@@ -643,6 +672,8 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 const senderName = row.van_naam || row.van_email || t("noValue");
                 const isRowSelected = selectedIds.has(row.id);
                 const isDeleting = deletingIds.has(row.id);
+                const langFlag = getLanguageFlag(row.taal);
+                const isUrgent = (row.ai_urgency ?? "").toLowerCase() === "hoog";
                 return (
                   <div
                     key={row.id}
@@ -665,39 +696,37 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                       />
                       <Avatar name={senderName} size="md" />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-semibold text-gray-900 truncate">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-sm font-semibold text-gray-900 truncate min-w-0 flex items-center gap-0.5 flex-1">
                             {senderName}
+                            {langFlag && (
+                              <span className="text-sm shrink-0" aria-hidden>{langFlag}</span>
+                            )}
+                            {isUrgent && (
+                              <span className="w-2 h-2 rounded-full bg-red-500 inline-block shrink-0 ml-1" aria-label="Urgent" />
+                            )}
                           </span>
-                          <span className="text-xs text-gray-400 ml-2 shrink-0">
-                            {timeAgo(row.ontvangen_op)}
+                          <span className="text-xs text-gray-400 shrink-0">
+                            {timeDisplay(row.ontvangen_op)}
                           </span>
                         </div>
                         <div className="text-xs text-gray-600 mt-0.5 truncate font-medium">
                           {row.onderwerp ?? "—"}
                         </div>
-                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                          {row.bron === "contact_formulier" && (
-                            <span className="text-[10px] font-semibold text-gray-600 bg-gray-100 border border-gray-200 rounded-full px-1.5 py-0.5">Contact</span>
-                          )}
+                        <div className="flex items-center gap-2 mt-1.5 flex-nowrap overflow-x-auto min-w-0">
                           {row.bron === "aanvraag" && (
-                            <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-full px-1.5 py-0.5">Aanvraag</span>
+                            <span className="text-xs font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-full py-0.5 px-2 shrink-0">Aanvraag</span>
                           )}
                           {(row.bron === "inkomend" || row.bron === "resend_webhook") && (
-                            <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-1.5 py-0.5">Inkomend</span>
+                            <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full py-0.5 px-2 shrink-0">Inkomend</span>
                           )}
                           {row.bron === "line" && (
-                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5" title="Line bericht">💬 Line</span>
+                            <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full py-0.5 px-2 shrink-0" title="Line bericht">💬 Line</span>
                           )}
                           {row.ai_automatisch_verstuurd && (
-                            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-1.5 py-0.5" title="Automatisch beantwoord door AI">🤖 AI</span>
+                            <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full py-0.5 px-2 shrink-0" title="Automatisch beantwoord door AI">🤖 AI</span>
                           )}
                           <CategoryBadge category={row.ai_categorie} />
-                          {row.status === "in_behandeling" && (
-                            <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 rounded-full px-1.5 py-0.5">
-                              URGENT
-                            </span>
-                          )}
                         </div>
                       </div>
                       <button
