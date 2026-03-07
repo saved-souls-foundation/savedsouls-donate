@@ -492,7 +492,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
               { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
               { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
               { id: "ai_beantwoord", label: "🤖 AI Beantwoord", count: null as number | null },
-              { id: "geneigeerd", label: "Geneigeerd", count: tabCounts.ignored },
+              { id: "geneigeerd", label: "Genegeerd", count: tabCounts.ignored },
               { id: "all", label: "Alles", count: tabCounts.all },
             ].map((tab) => (
               <button
@@ -505,7 +505,9 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 }}
                 className={`px-3 py-2.5 text-sm font-semibold border-b-2 transition-colors -mb-px ${
                   (tab.id === "all" && statusFilter === "all") || statusFilter === tab.id
-                    ? "border-[#2aa348] text-[#2aa348]"
+                    ? tab.id === "geneigeerd"
+                      ? "border-red-600 text-red-600"
+                      : "border-[#2aa348] text-[#2aa348]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >

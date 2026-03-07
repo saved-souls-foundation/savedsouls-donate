@@ -222,7 +222,7 @@ export default function BlogPostPage() {
 
           </article>
 
-        <section className="mt-16 rounded-2xl p-8 md:p-10 text-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600 overflow-hidden relative min-h-[140px] flex items-center justify-center">
+        <section className="mt-16 rounded-2xl p-8 md:p-10 bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600 overflow-hidden relative min-h-[140px] flex flex-col md:flex-row items-center justify-center gap-4">
           {isAdoptLayout ? (
             <>
               <span className="absolute left-[10%] top-[20%] text-2xl md:text-3xl font-bold text-amber-600/80 dark:text-amber-400/70 animate-money-float-1" aria-hidden>฿</span>
@@ -244,17 +244,19 @@ export default function BlogPostPage() {
             </>
           ) : (
             <>
-              <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
-              <p className="text-stone-600 dark:text-stone-400 mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 text-center md:text-left w-full">{t("ctaTitle")}</h2>
+              <p className="text-stone-600 dark:text-stone-400 text-center md:text-left w-full">
                 {isFacebook ? t("ctaSubtitle") : isDb ? t("ctaSubtitle") : t(`posts.${slug}.ctaText`)}
               </p>
-              <button
-                onClick={handleDonate}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
-                style={{ backgroundColor: BUTTON_ORANGE }}
-              >
-                {tCommon("donate")} 🙏
-              </button>
+              <div className="w-full flex justify-center md:justify-start mt-4">
+                <button
+                  onClick={handleDonate}
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
+                  style={{ backgroundColor: BUTTON_ORANGE }}
+                >
+                  {tCommon("donate")} 🙏
+                </button>
+              </div>
             </>
           )}
         </section>

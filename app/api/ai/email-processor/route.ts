@@ -2,6 +2,92 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { callClaude } from "@/lib/ai/claude-client";
 import { EMAIL_CLASSIFY_PROMPT, EMAIL_REPLY_PROMPT } from "@/lib/ai/prompts";
+import { sendMail } from "@/lib/sendMail";
+
+const ACCENT_GREEN = "#2aa348";
+const BASE_URL = "https://www.savedsouls-foundation.com";
+const FOOTER_BG = "#1a3d2b";
+const ORG_NAME = "Saved Souls Foundation";
+
+const FOOTER_SOCIALS = [
+  { name: "Facebook", href: "https://www.facebook.com/SavedSoulsFoundation/" },
+  { name: "Instagram", href: "https://www.instagram.com/savedsoulsfoundation" },
+  { name: "YouTube", href: "https://www.youtube.com/@savedsoulsfoundation" },
+  { name: "TikTok", href: "https://www.tiktok.com/@savedsoulsfoundation" },
+];
+
+const REPLY_HEADER_TITLE: Record<string, string> = {
+  nl: "Antwoord op uw bericht",
+  en: "Response to your message",
+  th: "ตอบกลับข้อความของคุณ",
+  de: "Antwort auf Ihre Nachricht",
+  fr: "Réponse à votre message",
+  es: "Respuesta a su mensaje",
+  ru: "Ответ на ваше сообщение",
+};
+
+const FOOTNOTE_BY_LANG: Record<string, string> = {
+  nl: "---\nDit is een automatisch gegenereerd antwoord. Heeft u nog vragen of wilt u persoonlijk contact? Stuur dan een email naar info@savedsouls-foundation.org",
+  en: "---\nThis is an automatically generated response. If you have further questions or would like personal contact, please email info@savedsouls-foundation.org",
+  th: "---\nนี่คือการตอบกลับอัตโนมัติ หากมีคำถามเพิ่มเติม กรุณาติดต่อ info@savedsouls-foundation.org",
+  de: "---\nDies ist eine automatisch generierte Antwort. Bei weiteren Fragen wenden Sie sich bitte an info@savedsouls-foundation.org",
+  fr: "---\nCeci est une réponse générée automatiquement. Pour toute question, contactez info@savedsouls-foundation.org",
+  es: "---\nEsta es una respuesta generada automáticamente. Para más preguntas contacte info@savedsouls-foundation.org",
+  ru: "---\nЭто автоматически сгенерированный ответ. По вопросам пишите на info@savedsouls-foundation.org",
+};
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function getReplyHeaderTitle(lang: string): string {
+  const key = (lang || "nl").slice(0, 2).toLowerCase();
+  return REPLY_HEADER_TITLE[key] ?? REPLY_HEADER_TITLE.nl;
+}
+
+function getFootnote(lang: string): string {
+  const key = (lang || "nl").slice(0, 2).toLowerCase();
+  return FOOTNOTE_BY_LANG[key] ?? FOOTNOTE_BY_LANG.nl;
+}
+
+function buildAutoReplyStyleHtml(bodyHtml: string, footnoteHtml: string, lang: string): string {
+  const title = getReplyHeaderTitle(lang);
+  const sigHtml = "Het Saved Souls Team, Khon Kaen, Thailand".replace(/, /g, "<br>");
+  const contactPageUrl = `${BASE_URL}/${lang === "nl" ? "nl" : lang === "de" ? "de" : lang === "es" ? "es" : lang === "th" ? "th" : lang === "ru" ? "ru" : "en"}/contact`;
+  const contactHintHtml = `Voor adres, openingstijden en telefoon: <a href="${escapeHtml(contactPageUrl)}" style="color:${ACCENT_GREEN};">${escapeHtml(contactPageUrl)}</a>`;
+  const socialLinksHtml = FOOTER_SOCIALS.map(
+    (s) => `<a href="${escapeHtml(s.href)}" style="color:#fff;text-decoration:none;font-size:13px;opacity:0.9;">${escapeHtml(s.name)}</a>`
+  ).join(" &nbsp;·&nbsp; ");
+  const footerMission = "Sinds 2010 geven wij gebroken zielen een tweede kans — in Khon Kaen, Thailand.";
+  const websiteLinkHtml = `<a href="${BASE_URL}" style="color:#fff;text-decoration:underline;opacity:0.95;">${escapeHtml(BASE_URL)}</a>`;
+  return `<!DOCTYPE html><html><body style="margin:0;font-family:sans-serif;background:#f5f5f5;padding:24px;">
+<div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+  <div style="background:${ACCENT_GREEN};color:#fff;padding:24px;">
+    <h1 style="margin:0;font-size:22px;font-weight:600;">${escapeHtml(title)}</h1>
+    <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">${escapeHtml(ORG_NAME)}</p>
+  </div>
+  <div style="padding:24px;line-height:1.6;color:#333;">
+    ${bodyHtml}
+    <div style="margin-top:20px;color:#888;font-size:12px;line-height:1.4;">${footnoteHtml}</div>
+  </div>
+  <div style="padding:16px 24px;background:#f9f9f9;font-size:13px;color:#666;">
+    ${sigHtml}
+  </div>
+  <div style="padding:12px 24px;border-top:1px solid #eee;font-size:13px;color:#555;">
+    ${contactHintHtml}
+  </div>
+  <div style="background:${FOOTER_BG};color:#fff;padding:20px 24px;text-align:center;font-size:13px;">
+    <p style="margin:0 0 4px;font-weight:600;">${escapeHtml(ORG_NAME)}</p>
+    <p style="margin:0 0 10px;opacity:0.85;line-height:1.4;">${escapeHtml(footerMission)}</p>
+    <p style="margin:0 0 12px;font-size:12px;">${websiteLinkHtml}</p>
+    <p style="margin:0;font-size:12px;">${socialLinksHtml}</p>
+  </div>
+</div></body></html>`;
+}
 
 const INHOUD_BY_LANG: Record<string, string> = {
   nl: "inhoud_nl",
@@ -181,6 +267,40 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       { error: updateError.message },
       { status: 500 }
     );
+  }
+
+  const vanEmail = (email.van_email ?? "").toString().trim();
+  if (vanEmail) {
+    const replySubject = "Re: " + (subject || "Your message");
+    const bodyHtml =
+      suggestedReply.includes("<") && suggestedReply.includes(">")
+        ? suggestedReply
+        : escapeHtml(suggestedReply).replace(/\n/g, "<br>\n");
+    const footnoteText = getFootnote(language);
+    const footnoteHtml = escapeHtml(footnoteText).replace(/\n/g, "<br>\n");
+    const html = buildAutoReplyStyleHtml(bodyHtml, footnoteHtml, language);
+    const result = await sendMail({
+      to: vanEmail,
+      subject: replySubject,
+      text: suggestedReply.replace(/<[^>]+>/g, "").trim() + "\n\n" + footnoteText,
+      html,
+      replyTo: process.env.RESEND_FROM_EMAIL,
+    });
+    if (result.success) {
+      try {
+        await admin
+          .from("incoming_emails")
+          .update({
+            status: "beantwoord",
+            beantwoord_op: new Date().toISOString(),
+          } as Record<string, unknown>)
+          .eq("id", emailId);
+      } catch (e) {
+        console.error("[email-processor] update beantwoord_op failed (migration needed?):", e);
+      }
+    } else {
+      console.error("[email-processor] sendMail failed (AI processing still marked success):", result.error);
+    }
   }
 
   return NextResponse.json({
