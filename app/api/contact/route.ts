@@ -27,7 +27,10 @@ const FOOTER_SOCIALS = [
 type AutoReplyContent = {
   subject: string;
   title: string;
+  /** Greeting zonder naam (bijv. "Beste,") */
   greeting: string;
+  /** Prefix voor greeting mét naam (bijv. "Beste ") → "Beste [naam]," */
+  greetingPrefix: string;
   body1: string;
   body2: string;
   buttonText: string;
@@ -41,7 +44,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   en: {
     subject: "We received your message – Saved Souls Foundation",
     title: "We received your message",
-    greeting: "Dear friend,",
+    greeting: "Dear,",
+    greetingPrefix: "Dear ",
     body1: "Thank you for contacting Saved Souls Foundation. We have received your message and will get back to you within 48 hours.",
     body2: "If your inquiry is urgent, you can also reach us at info@savedsouls-foundation.org.",
     buttonText: "Support our work – Donate",
@@ -52,7 +56,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   nl: {
     subject: "We hebben je bericht ontvangen – Saved Souls Foundation",
     title: "We hebben je bericht ontvangen",
-    greeting: "Beste vriend/vriendin,",
+    greeting: "Beste,",
+    greetingPrefix: "Beste ",
     body1: "Bedankt voor je bericht aan Saved Souls Foundation. We hebben het ontvangen en nemen binnen 48 uur contact met je op.",
     body2: "Bij spoed kun je ons ook bereiken op info@savedsouls-foundation.org.",
     buttonText: "Steun ons werk – Doneer",
@@ -63,7 +68,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   de: {
     subject: "Wir haben Ihre Nachricht erhalten – Saved Souls Foundation",
     title: "Wir haben Ihre Nachricht erhalten",
-    greeting: "Liebe/r Freund/in,",
+    greeting: "Guten Tag,",
+    greetingPrefix: "Guten Tag, ",
     body1: "Vielen Dank für Ihre Kontaktaufnahme mit der Saved Souls Foundation. Wir haben Ihre Nachricht erhalten und melden uns innerhalb von 48 Stunden.",
     body2: "Bei Dringlichkeit erreichen Sie uns auch unter info@savedsouls-foundation.org.",
     buttonText: "Unser Projekt unterstützen – Spenden",
@@ -74,7 +80,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   es: {
     subject: "Hemos recibido tu mensaje – Saved Souls Foundation",
     title: "Hemos recibido tu mensaje",
-    greeting: "Estimado/a amigo/a,",
+    greeting: "Estimado/a,",
+    greetingPrefix: "Estimado/a ",
     body1: "Gracias por contactar con Saved Souls Foundation. Hemos recibido tu mensaje y te responderemos en 48 horas.",
     body2: "Si es urgente, también puedes escribirnos a info@savedsouls-foundation.org.",
     buttonText: "Apoya nuestro trabajo – Donar",
@@ -86,6 +93,7 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
     subject: "เราได้รับข้อความของคุณแล้ว – Saved Souls Foundation",
     title: "เราได้รับข้อความของคุณแล้ว",
     greeting: "สวัสดีครับ/ค่ะ",
+    greetingPrefix: "สวัสดีครับ/ค่ะ ",
     body1: "ขอบคุณที่ติดต่อ Saved Souls Foundation เราได้รับข้อความแล้วและจะติดต่อกลับภายใน 48 ชั่วโมง",
     body2: "หากเร่งด่วน สามารถติดต่อเราได้ที่ info@savedsouls-foundation.org",
     buttonText: "สนับสนุนเรา – บริจาค",
@@ -96,7 +104,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   ru: {
     subject: "Мы получили ваше сообщение – Saved Souls Foundation",
     title: "Мы получили ваше сообщение",
-    greeting: "Дорогой друг,",
+    greeting: "Дорогой,",
+    greetingPrefix: "Дорогой ",
     body1: "Спасибо за обращение в Saved Souls Foundation. Мы получили ваше сообщение и ответим в течение 48 часов.",
     body2: "В срочных случаях пишите на info@savedsouls-foundation.org.",
     buttonText: "Поддержать нас – Пожертвовать",
@@ -172,10 +181,16 @@ function buildNotificationHtml(name: string, email: string, subject: string, mes
 </div></body></html>`;
 }
 
-function buildAutoReplyText(content: AutoReplyContent, locale: string): string {
+function getGreeting(content: AutoReplyContent, name: string | undefined): string {
+  const n = (name ?? "").trim();
+  return n ? `${content.greetingPrefix}${n},` : content.greeting;
+}
+
+function buildAutoReplyText(content: AutoReplyContent, locale: string, name?: string): string {
+  const greeting = getGreeting(content, name);
   const contactPageUrl = getContactPageUrl(locale);
   const socialLine = FOOTER_SOCIALS.map((s) => `${s.name}: ${s.href}`).join(" · ");
-  return `${content.greeting}
+  return `${greeting}
 
 ${content.body1}
 
@@ -193,8 +208,9 @@ ${BASE_URL}
 Follow us: ${socialLine}`;
 }
 
-function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): string {
+function buildAutoReplyHtml(locale: string, includeDonateButton: boolean, name?: string): string {
   const c = getAutoReplyContent(locale);
+  const greeting = getGreeting(c, name);
   const donateUrl = getDonateUrl(locale);
   const contactPageUrl = getContactPageUrl(locale);
   const contactLink = `<a href="mailto:${escapeHtml(CONTACT_EMAIL)}" style="color:${ACCENT_GREEN};">${escapeHtml(CONTACT_EMAIL)}</a>`;
@@ -218,7 +234,7 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean): strin
     <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">${escapeHtml(ORG_NAME)}</p>
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
-    <p style="margin:0 0 16px;">${escapeHtml(c.greeting)}</p>
+    <p style="margin:0 0 16px;">${escapeHtml(greeting)}</p>
     <p style="margin:0 0 16px;">${escapeHtml(c.body1)}</p>
     ${buttonBlock}
   </div>
@@ -272,7 +288,7 @@ export async function POST(req: NextRequest) {
     }
 
     const autoReplyContent = getAutoReplyContent(locale);
-    const confirmationText = buildAutoReplyText(autoReplyContent, locale);
+    const confirmationText = buildAutoReplyText(autoReplyContent, locale, name);
 
     const text =
       "Name: " +
@@ -288,7 +304,7 @@ export async function POST(req: NextRequest) {
       to: email,
       subject: autoReplyContent.subject,
       text: confirmationText,
-      html: buildAutoReplyHtml(locale, true),
+      html: buildAutoReplyHtml(locale, true, name),
       replyTo: REPLY_TO,
     });
     if (!autoReplyVisitor.success) {
@@ -300,7 +316,7 @@ export async function POST(req: NextRequest) {
         to: AUTO_REPLY_CC,
         subject: autoReplyContent.subject,
         text: confirmationText,
-        html: buildAutoReplyHtml(locale, false),
+        html: buildAutoReplyHtml(locale, false, name),
         replyTo: REPLY_TO,
       });
       if (!autoReplyMike.success) {

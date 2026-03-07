@@ -43,6 +43,8 @@ export function EMAIL_REPLY_PROMPT(
 
 Beantwoord de specifieke vraag van de afzender inhoudelijk. Gebruik de template als stijlgids maar schrijf een persoonlijk antwoord dat ingaat op wat er gevraagd wordt. Vervang [NAAM] door de naam van de afzender.
 
+Schrijf een volledig ingevuld antwoord zonder placeholders zoals [SPECIFIEKE VRAAG], [INHOUDELIJK ANTWOORD] of vergelijkbare haakjes-teksten. Beantwoord de vraag van de afzender direct, persoonlijk en inhoudelijk op basis van de emailinhoud.
+
 Categorie: ${category}
 Taal: Schrijf in exact ${langNote}.
 ${animalLine}

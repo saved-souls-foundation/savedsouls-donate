@@ -160,6 +160,12 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 : { href: "/#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }
             }
           />
+          <Link
+            href="/contact"
+            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
+          >
+            {t("contact")}
+          </Link>
         </div>
 
         {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) – vaste gaps tegen hydration mismatch */}
