@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Mail, Heart, Building, Inbox, Share2, Calendar } from "lucide-react";
+import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles } from "lucide-react";
 import GlobalSearch from "./components/GlobalSearch";
 
 const ADM_BG = "#f1f5f9";
@@ -325,6 +325,14 @@ export default function AdminLayoutClient({
           locale={locale}
           onClick={() => setMobileOpen(false)}
         />
+        <NavLink
+          href="/dashboard/ai"
+          icon={<Sparkles className="w-[18px] h-[18px]" />}
+          label={t("ai")}
+          isActive={pathname?.includes("dashboard/ai") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
       </nav>
       <div className="p-2 border-t shrink-0" style={{ borderColor: ADM_BORDER }}>
         <button
@@ -418,13 +426,14 @@ export default function AdminLayoutClient({
         className="fixed bottom-0 left-0 right-0 z-50 w-full max-w-full bg-white border-t border-gray-200 md:hidden"
         style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
       >
-        <div className="grid grid-cols-5 h-16 w-full max-w-full min-w-0">
+        <div className="grid grid-cols-6 h-16 w-full max-w-full min-w-0">
           {[
             { icon: "🏠", label: "Home", href: `/${locale}/admin/dashboard` },
             { icon: "🐾", label: "Dieren", href: `/${locale}/admin/adoptanten` },
             { icon: "📧", label: "Email", href: `/${locale}/admin/emails` },
             { icon: "💰", label: "Donateurs", href: `/${locale}/admin/donateurs` },
             { icon: "📅", label: "Agenda", href: `/${locale}/admin/agenda` },
+            { icon: "✨", label: "AI", href: `/${locale}/dashboard/ai` },
           ].map((item) => (
             <Link
               key={item.href}
