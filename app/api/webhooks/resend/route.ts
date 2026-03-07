@@ -1,35 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
-import { sendMail } from "@/lib/sendMail";
-import { logSentEmail } from "@/lib/sentEmailsLog";
-import { getEmailFooterHtml } from "@/lib/emailFooter";
-
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
-const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
-
-const LANG_KEYS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
-
-function getTemplateContent(template: Record<string, unknown>, taal: string): { onderwerp: string; inhoud: string } {
-  const lang = LANG_KEYS.includes(taal as (typeof LANG_KEYS)[number]) ? taal : "nl";
-  const inhoudKey = `inhoud_${lang}`;
-  const onderwerpKey = `onderwerp_${lang}`;
-  const inhoud = (template[inhoudKey] as string) ?? (template.inhoud_nl as string) ?? (template.inhoud_en as string) ?? "";
-  const onderwerp = (template[onderwerpKey] as string) ?? (template.onderwerp as string) ?? "";
-  return { onderwerp, inhoud };
-}
-
-function replacePlaceholders(text: string, naam: string | null, dier: string | null): string {
-  return text
-    .replace(/\{\{naam\}\}/g, naam ?? "")
-    .replace(/\{\{dier\}\}/g, dier ?? "")
-    .replace(/\{\{organisatie\}\}/g, "Saved Souls Foundation");
-}
-
-function wrapHtml(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;line-height:1.5;">${body}</body></html>`;
-}
 
 /** Parse "Name <email@domain.com>" of "email@domain.com" → { name, email } */
 function parseFrom(from: string): { van_naam: string | null; van_email: string | null } {
@@ -141,75 +112,7 @@ export async function POST(request: NextRequest) {
       console.error("[webhooks/resend] incoming_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
       return NextResponse.json({ error: "Failed to store email" }, { status: 500 });
     }
-    const incomingId = inserted?.id;
-    console.log("[webhooks/resend] Saved to incoming_emails id=", incomingId);
-
-    // AI-analyse + optioneel automatisch antwoord (confidence >= 60%)
-    try {
-      const { data: templates } = await admin.from("email_templates").select("id, naam, categorie").eq("actief", true);
-      const list = (templates ?? []).map((t: { id: string; naam: string | null; categorie: string | null }) => ({ id: t.id, naam: t.naam, categorie: t.categorie }));
-      const result = await analyzeIncomingEmail(van_naam, van_email, subject || null, inhoud, list);
-      const { taal, categorie, template_id, confidence, personalisatie } = result;
-      let ai_gegenereerd_antwoord = "";
-      if (template_id) {
-        const { data: template } = await admin.from("email_templates").select("*").eq("id", template_id).maybeSingle();
-        if (template) {
-          const { inhoud: templateInhoud } = getTemplateContent(template as Record<string, unknown>, taal);
-          const naam = personalisatie?.naam ?? (van_naam ?? "").split(/\s+/)[0] ?? null;
-          const dier = personalisatie?.dier ?? null;
-          ai_gegenereerd_antwoord = replacePlaceholders(templateInhoud, naam, dier);
-        }
-      }
-      await admin
-        .from("incoming_emails")
-        .update({
-          ai_categorie: categorie,
-          ai_suggestie_template_id: template_id || null,
-          ai_confidence: confidence,
-          ai_gegenereerd_antwoord: ai_gegenereerd_antwoord || null,
-          taal: taal || null,
-        })
-        .eq("id", incomingId);
-
-      const shouldAutoSend = confidence >= AUTO_SEND_CONFIDENCE_THRESHOLD && ai_gegenereerd_antwoord.trim().length > 0 && (van_email ?? "").trim().length > 0;
-      if (shouldAutoSend) {
-        const to = (van_email ?? "").trim();
-        const replySubject = `Re: ${subject || "Your message"}`;
-        const bodyContent = wrapHtml(ai_gegenereerd_antwoord.replace(/\n/g, "<br>\n"));
-        const html = bodyContent.replace("</body></html>", getEmailFooterHtml() + "</body></html>");
-        const sendResult = await sendMail({
-          from: RESEND_FROM,
-          to,
-          subject: replySubject,
-          text: ai_gegenereerd_antwoord.replace(/<[^>]+>/g, ""),
-          html,
-        });
-        if (sendResult.success) {
-          await admin
-            .from("incoming_emails")
-            .update({
-              status: "verstuurd",
-              ai_automatisch_verstuurd: true,
-              verwerkt_op: new Date().toISOString(),
-            })
-            .eq("id", incomingId);
-          await logSentEmail(admin, {
-            type: "email_assistant",
-            to,
-            subject: replySubject,
-            bodyPreview: ai_gegenereerd_antwoord.replace(/\s+/g, " ").trim().slice(0, 500) || null,
-            referenceId: incomingId,
-            referenceType: "incoming_email",
-          });
-          console.log("[webhooks/resend] Auto-reply sent to", to, "confidence=", confidence);
-        } else {
-          console.error("[webhooks/resend] Auto-reply send failed:", sendResult.error);
-        }
-      }
-    } catch (aiErr) {
-      console.error("[webhooks/resend] AI analysis or auto-reply error (email already saved):", aiErr);
-      // Mail is already in DB; do not fail the webhook
-    }
+    console.log("[webhooks/resend] Saved to incoming_emails id=", inserted?.id);
 
     return NextResponse.json({ received: true });
   } catch (e) {

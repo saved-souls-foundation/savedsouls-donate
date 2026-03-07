@@ -264,6 +264,9 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
       ai_language: language,
       ai_suggested_reply: suggestedReply,
       ai_used_template: usedTemplate,
+      ai_categorie: category,
+      taal: language,
+      ai_gegenereerd_antwoord: suggestedReply,
     })
     .eq("id", emailId);
 
@@ -298,9 +301,11 @@ Wijzig verder NIETS aan de inhoud. Sjabloon: ${templateText}`;
         await admin
           .from("incoming_emails")
           .update({
-            status: "beantwoord",
+            status: "verstuurd",
             beantwoord_op: new Date().toISOString(),
             ai_processed_at: new Date().toISOString(),
+            ai_automatisch_verstuurd: true,
+            verwerkt_op: new Date().toISOString(),
           } as Record<string, unknown>)
           .eq("id", emailId);
       } catch (e) {

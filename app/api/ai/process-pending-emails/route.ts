@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     .from("incoming_emails")
     .select("id")
     .is("ai_processed_at", null)
-    .neq("status", "spam")
+    .eq("status", "in_behandeling")
     .limit(10);
 
   if (fetchError) {
