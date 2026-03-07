@@ -41,9 +41,58 @@ export function EMAIL_REPLY_PROMPT(
 
   return `Schrijf een warm, persoonlijk antwoord namens Saved Souls Foundation (dierenopvang in Thailand, Ban Khok Ngam).
 
-Beantwoord de specifieke vraag van de afzender inhoudelijk. Gebruik de template als stijlgids maar schrijf een persoonlijk antwoord dat ingaat op wat er gevraagd wordt. Vervang [NAAM] door de naam van de afzender.
+Beantwoord ALTIJD de specifieke vraag uit de email. Voorbeelden:
 
-Schrijf een volledig ingevuld antwoord zonder placeholders zoals [SPECIFIEKE VRAAG], [INHOUDELIJK ANTWOORD] of vergelijkbare haakjes-teksten. Beantwoord de vraag van de afzender direct, persoonlijk en inhoudelijk op basis van de emailinhoud.
+ADOPTIE:
+- Kat/hond adopteren → leg adoptieproces uit, verwijs naar adoptie pagina
+- Beschikbare dieren → vertel over huidige dieren, verwijs naar website
+- Kosten adoptie → geef info over adoptiebijdrage en wat inbegrepen is
+- Adoptie vanuit buitenland → leg internationaal adoptieproces uit
+- Adoptie opvolging → geef info over nazorg en contact na adoptie
+- Specifiek dier vragen → geef info over dat dier, karakter, gezondheid
+
+VRIJWILLIGER:
+- Vrijwilligerswerk → leg uit hoe aanmelden, wat verwacht wordt, hoe lang
+- Kosten vrijwilliger → geef info over bijdrage, verblijf, eten
+- Wat doet een vrijwilliger → beschrijf dagelijkse taken
+- Leeftijd/ervaring vereisten → geef info over vereisten
+
+FINANCIEEL:
+- Doneren → leg donatiemogelijkheden uit, maandelijks of eenmalig
+- Sponsoren → uitleg sponsorpakketten en wat het oplevert
+- Hoe wordt geld besteed → transparantie over kosten opvang
+- Belastingaftrek donatie → geef info over ANBI status
+
+DIEREN:
+- Dier in nood/gevonden dier → geef direct advies, verwijs naar dierenarts
+- Ziek of gewond dier → geef eerste hulp advies, verwijs naar opvang
+- Hoeveel dieren in opvang → vertel huidig aantal en situatie
+- Hoe gaat het in de opvang → vertel warm verhaal dagelijks leven
+
+ALGEMEEN:
+- Locatie/bezoek → geef info Ban Khok Ngam, bezoek mogelijk na afspraak
+- Samenwerking voorstel → bedank, vraag meer informatie
+- Media/pers vraag → verwijs naar info@savedsouls-foundation.org
+- Klacht of probleem → erken probleem, bied oplossing, excuses
+- Algemene info vraag → beantwoord vriendelijk en volledig
+- Vraag in andere taal → beantwoord in DEZELFDE taal als de vraag
+- Compliment of bedankje → reageer warm en dankbaar
+
+Schrijf altijd een VOLLEDIG antwoord zonder placeholders.
+Max 250 woorden. Vriendelijk, warm en persoonlijk.
+Verwijs waar relevant naar: https://savedsouls-foundation.com
+
+BELANGRIJK VOOR TALEN:
+Detecteer de taal van de inkomende email en beantwoord ALTIJD in dezelfde taal als de afzender.
+- Nederlands → antwoord in Nederlands
+- Engels → antwoord in Engels
+- Thai → antwoord in Thai
+- Duits → antwoord in Duits
+- Frans → antwoord in Frans
+- Spaans → antwoord in Spaans
+- Russisch → antwoord in Russisch
+- Andere taal → antwoord in die taal of Engels als fallback
+De toon blijft altijd warm, vriendelijk en persoonlijk ongeacht de taal.
 
 Categorie: ${category}
 Taal: Schrijf in exact ${langNote}.
@@ -52,7 +101,7 @@ ${animalLine}
 E-mail om op te reageren:
 ${bodySnippet}
 
-Regels: Maximaal 150 woorden. Warm en persoonlijk. Eindig altijd met een passende afsluiting en "Saved Souls Foundation". Geen onderwerpregel, alleen de antwoordtekst.`;
+Eindig altijd met een passende afsluiting en "Saved Souls Foundation". Geen onderwerpregel, alleen de antwoordtekst.`;
 }
 
 export const EMAIL_TEMPLATES: Record<string, string> = {
