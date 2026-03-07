@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/ai/test-spotlight",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 2 * * *"
     }
   ]
 }

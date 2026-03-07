@@ -73,9 +73,24 @@ const LANGUAGE_FLAGS: Record<string, string> = {
   ru: "🇷🇺",
 };
 
-function getLanguageFlag(taal: string | null): string | null {
-  if (!taal || typeof taal !== "string") return null;
-  const key = taal.toLowerCase().slice(0, 2);
+/** Fallback: taal uit e-maildomein als taal onbekend is (.nl → nl, .de → de, .com → en, etc.). */
+function getLanguageFromEmailDomain(van_email: string | null): string | null {
+  if (!van_email || typeof van_email !== "string") return null;
+  const domain = van_email.split("@")[1]?.toLowerCase();
+  if (!domain) return null;
+  if (domain.endsWith(".nl")) return "nl";
+  if (domain.endsWith(".de")) return "de";
+  if (domain.endsWith(".fr")) return "fr";
+  if (domain.endsWith(".es")) return "es";
+  if (domain.endsWith(".ru")) return "ru";
+  if (domain.endsWith(".th")) return "th";
+  if (domain.endsWith(".co.uk") || domain.endsWith(".com") || domain.endsWith(".org") || domain.endsWith(".net") || domain.endsWith(".eu")) return "en";
+  return null;
+}
+
+function getLanguageFlag(taal: string | null, van_email?: string | null): string | null {
+  const key = (taal && typeof taal === "string" ? taal : getLanguageFromEmailDomain(van_email ?? null))?.toLowerCase().slice(0, 2);
+  if (!key) return null;
   return LANGUAGE_FLAGS[key] ?? null;
 }
 
@@ -672,7 +687,7 @@ export default function AdminEmailsClient({ initialEmailId }: AdminEmailsClientP
                 const senderName = row.van_naam || row.van_email || t("noValue");
                 const isRowSelected = selectedIds.has(row.id);
                 const isDeleting = deletingIds.has(row.id);
-                const langFlag = getLanguageFlag(row.taal);
+                const langFlag = getLanguageFlag(row.taal, row.van_email);
                 const isUrgent = (row.ai_urgency ?? "").toLowerCase() === "hoog";
                 return (
                   <div
