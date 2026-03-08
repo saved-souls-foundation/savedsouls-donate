@@ -175,7 +175,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
 
   const isUrgent = email?.ai_urgency === "hoog";
   async function handleUrgencyToggle() {
-    console.log("[AdminEmailDetail] handleUrgencyToggle called", { id, isUrgent });
+    console.log("urgent clicked", id);
     if (!email) return;
     setUrgencyLoading(true);
     setToast(null);
@@ -200,7 +200,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
   }
 
   function openAgendaModal() {
-    console.log("[AdminEmailDetail] openAgendaModal called", { id });
+    console.log("agenda clicked");
     const naam = email?.van_naam?.trim() || email?.van_email || t("noValue");
     setAgendaTitle(`Opvolging: ${naam}`);
     setAgendaDate(tomorrowISO());
@@ -299,11 +299,11 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         <p className="text-sm mt-1" style={{ color: ADM_MUTED }}><strong>{t("received")}:</strong> {formatDate(email.ontvangen_op)}</p>
       </div>
 
-      {/* Icon-knoppen: direct onder header, voor content grid; altijd zichtbaar */}
+      {/* Icon-knoppen: Urgent, Pootjes (adoptanten), Agenda */}
       <div className="flex items-center gap-2 overflow-visible relative z-10">
         <button
           type="button"
-          onClick={() => { console.log("knop geklikt"); handleUrgencyToggle(); }}
+          onClick={() => handleUrgencyToggle()}
           disabled={urgencyLoading}
           title={isUrgent ? t("tooltipUrgentMarked") : t("tooltipUrgent")}
           className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors disabled:opacity-50 flex items-center justify-center"
@@ -314,7 +314,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         <Link
           href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
           title={t("tooltipAdoptanten")}
-          onClick={() => console.log("knop geklikt")}
+          onClick={() => console.log("pootjes link clicked", `/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`)}
           className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors flex items-center justify-center"
           style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
         >
@@ -322,7 +322,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         </Link>
         <button
           type="button"
-          onClick={() => { console.log("knop geklikt"); openAgendaModal(); }}
+          onClick={() => openAgendaModal()}
           title={t("tooltipAgenda")}
           className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors flex items-center justify-center"
           style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}

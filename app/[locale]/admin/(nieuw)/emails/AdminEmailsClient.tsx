@@ -23,6 +23,7 @@ type EmailRow = {
   van_email: string | null;
   van_naam: string | null;
   onderwerp: string | null;
+  inhoud?: string | null;
   ontvangen_op: string;
   ai_categorie: string | null;
   ai_confidence: number | null;
@@ -74,11 +75,29 @@ const LANGUAGE_FLAGS: Record<string, string> = {
   ru: "🇷🇺",
 };
 
-/** Alleen ai_language gebruiken: nl/en/de/fr/th/es/ru → vlag; leeg/null → geen vlag. */
-function getLanguageFlag(ai_language: string | null): string | null {
-  if (!ai_language || typeof ai_language !== "string") return null;
-  const key = ai_language.toLowerCase().slice(0, 2);
-  return LANGUAGE_FLAGS[key] ?? null;
+/** Detecteer taal uit tekst voor emails zonder ai_language. */
+function detectLanguageFromContent(text: string | null | undefined): string {
+  const raw = (text ?? "").toLowerCase();
+  if (!raw.trim()) return "🇬🇧";
+  // Thaise tekens (Unicode \u0E00-\u0E7F)
+  if (/[\u0E00-\u0E7F]/.test(raw)) return "🇹🇭";
+  // Duitse woorden
+  const deWords = /\b(ich|die|der|das|und|nicht|auch|mit|dem)\b/;
+  if (deWords.test(raw)) return "🇩🇪";
+  // Nederlandse woorden
+  const nlWords = /\b(de|het|een|van|zijn|hebben|voor|niet|met|aan)\b/;
+  if (nlWords.test(raw)) return "🇳🇱";
+  return "🇬🇧";
+}
+
+/** ai_language → vlag; bij lege ai_language: detectie uit van_bericht/inhoud. */
+function getLanguageFlag(ai_language: string | null, content?: string | null): string | null {
+  if (ai_language && typeof ai_language === "string") {
+    const key = ai_language.toLowerCase().slice(0, 2);
+    const flag = LANGUAGE_FLAGS[key] ?? null;
+    if (flag) return flag;
+  }
+  return detectLanguageFromContent(content);
 }
 
 function CategoryBadge({ category }: { category: string | null }) {
@@ -677,7 +696,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
                 const senderName = row.van_naam || row.van_email || t("noValue");
                 const isRowSelected = selectedIds.has(row.id);
                 const isDeleting = deletingIds.has(row.id);
-                const langFlag = getLanguageFlag(row.ai_language);
+                const langFlag = getLanguageFlag(row.ai_language, row.inhoud);
                 const isUrgent = (row.ai_urgency ?? "").toLowerCase() === "hoog";
                 return (
                   <div
