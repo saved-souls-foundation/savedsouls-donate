@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { sendMail, delay } from "@/lib/sendMail";
+import { wrapAutoReplyEmail } from "@/lib/emailLayout";
 
 const MAX_RECIPIENTS = 100;
 const MAX_EMAILS_PER_DAY = 200;
@@ -48,8 +49,22 @@ function replacePlaceholders(text: string, naam: string): string {
     .replace(/\{\{organisatie\}\}/g, ORGANISATIE);
 }
 
-function wrapHtml(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;line-height:1.5;">${body}</body></html>`;
+function contentToHtml(text: string): string {
+  return text
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/\n/g, "<br>")
+    .replace(/^/, "<p>")
+    .replace(/$/, "</p>");
+}
+
+/** Wrap body HTML in groene header + footer (zelfde als contactbevestiging). */
+function contentToEmailHtml(content: string, subject: string): { html: string; text: string } {
+  const bodyHtml = contentToHtml(content);
+  return wrapAutoReplyEmail({
+    bodyHtml,
+    title: subject || ORGANISATIE,
+    includeDonateButton: false,
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -124,8 +139,7 @@ export async function POST(request: NextRequest) {
     const { naam, email } = normalized[i];
     const subject = replacePlaceholders(subjectBase, naam);
     const content = replacePlaceholders(contentBase, naam);
-    const html = wrapHtml(content);
-    const text = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    const { html, text } = contentToEmailHtml(content, subject);
 
     const mailOptions = {
       from: getFromEmail(),

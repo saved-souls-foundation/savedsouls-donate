@@ -296,7 +296,7 @@ export default function AdminEmailTemplatesClient() {
               const cat = (tm.categorie ?? "algemeen") as keyof typeof CATEGORY_ICONS;
               const icon = CATEGORY_ICONS[cat] ?? "📧";
               const color = CATEGORY_COLORS[cat] ?? ADM_MUTED;
-              const preview = stripHtml(tm.inhoud_nl ?? "").slice(0, 100);
+              const preview = stripHtml(tm.inhoud_nl ?? "").replace(/\\n/g, " ").substring(0, 100);
               return (
                 <div
                   key={tm.id}
