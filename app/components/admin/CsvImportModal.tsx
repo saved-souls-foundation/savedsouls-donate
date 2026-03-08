@@ -119,7 +119,11 @@ export default function CsvImportModal({
     return rows.map((row) => {
       const out: Record<string, string> = {};
       for (const [fileCol, targetKey] of Object.entries(columnMapping)) {
-        if (targetKey && targetKey !== SKIP_KEY) out[targetKey] = (row[fileCol] ?? "").trim();
+        if (targetKey && targetKey !== SKIP_KEY) {
+          const normalizedKey =
+            targetKey.toLowerCase() === "e-mail" || targetKey.toLowerCase() === "email" ? "email" : targetKey;
+          out[normalizedKey] = (row[fileCol] ?? "").trim();
+        }
       }
       return out;
     });
@@ -220,8 +224,8 @@ export default function CsvImportModal({
   }, [exampleCsvContent, exampleFilename]);
 
   const defaultValidate = useCallback((row: Record<string, string>) => {
-    const naam = (row.naam ?? "").trim();
     const email = (row.email ?? "").trim().toLowerCase();
+    const naam = (row.naam ?? "").trim();
     if (!email) return "E-mail is verplicht";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Ongeldig e-mailadres";
     if (!naam) return "Naam is verplicht";
@@ -232,7 +236,12 @@ export default function CsvImportModal({
 
   const handleConfirmImport = useCallback(async () => {
     const toSend = getMappedRows();
-    const invalid = toSend.map((r, i) => ({ row: i + 2, err: validate(r) })).filter((x) => x.err != null);
+    const invalid = toSend
+      .map((r, i) => {
+        console.log("validating row:", r);
+        return { row: i + 2, err: validate(r) };
+      })
+      .filter((x) => x.err != null);
     if (invalid.length > 0) {
       setParseError(`Rij ${invalid[0].row}: ${invalid[0].err}. Pas de koppeling of gegevens aan.`);
       return;
