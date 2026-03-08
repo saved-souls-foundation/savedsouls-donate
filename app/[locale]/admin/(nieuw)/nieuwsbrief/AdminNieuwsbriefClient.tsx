@@ -230,7 +230,7 @@ export default function AdminNieuwsbriefClient() {
 
   function name(row: SubscriberRow) {
     const volledigeNaam = [row.voornaam, row.achternaam].filter(Boolean).join(" ").trim();
-    return volledigeNaam || row.naam ?? noVal;
+    return volledigeNaam || (row.naam ?? noVal);
   }
   function taalVlag(taal: string | null) {
     if (!taal) return "🌐";

@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(process.cwd()),
   },
+  async redirects() {
+    return [
+      { source: "/pressПресса", destination: "/nl/press", permanent: true },
+    ];
+  },
   // Cache voor build-bestanden (hashes in naam → veilig lang cachen, geen stale content)
   async headers() {
     return [

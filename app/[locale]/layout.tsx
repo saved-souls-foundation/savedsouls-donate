@@ -19,10 +19,19 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+const LOCALE_PREFIX = /^\/(nl|en|de|es|th|ru|fr)(\/|$)/;
+function stripLeadingLocales(path: string): string {
+  let p = path || "/";
+  while (LOCALE_PREFIX.test(p)) {
+    p = p.replace(LOCALE_PREFIX, "$2") || "/";
+  }
+  return p || "/";
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const headersList = await headers();
-  const pathWithoutLocale = headersList.get("x-path-without-locale") ?? "/";
+  const pathWithoutLocale = stripLeadingLocales(headersList.get("x-path-without-locale") ?? "/");
   const t = await getTranslations({ locale, namespace: "seo" });
   const title = t("title");
   const description = t("description");

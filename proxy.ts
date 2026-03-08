@@ -62,7 +62,13 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  const pathWithoutLocale = pathname.replace(/^\/(nl|en|de|es|th|ru|fr)(\/|$)/, "$2") || "/";
+  // Strip alle vooraan staande locale-segmenten (voorkomt dubbele-locale hreflang zoals /de/es/...)
+  const localeSegment = /^\/(nl|en|de|es|th|ru|fr)(\/|$)/;
+  let pathWithoutLocale = pathname;
+  while (localeSegment.test(pathWithoutLocale)) {
+    pathWithoutLocale = pathWithoutLocale.replace(localeSegment, "$2") || "/";
+  }
+  if (!pathWithoutLocale || pathWithoutLocale === "") pathWithoutLocale = "/";
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-path-without-locale", pathWithoutLocale);
   const modifiedRequest = new NextRequest(request.url, { headers: requestHeaders });
