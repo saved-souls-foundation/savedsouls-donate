@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const MAX_ROWS = 1000;
+const BATCH_SIZE = 5;
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -40,6 +41,17 @@ export async function POST(request: NextRequest) {
   let success = 0;
   const details: string[] = [];
 
+  type ParsedRow = {
+    rowIndex: number;
+    voornaam: string;
+    achternaam: string;
+    email: string;
+    land: string | null;
+    bedragStr: string;
+    datum: string | null;
+  };
+
+  const parsed: ParsedRow[] = [];
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
     const naam = (r.naam ?? "").trim();
@@ -56,46 +68,42 @@ export async function POST(request: NextRequest) {
     const land = (r.land ?? "").trim() || null;
     const bedragStr = (r.bedrag ?? "").trim();
     const datum = (r.datum ?? "").trim() || null;
+    parsed.push({ rowIndex: i + 2, voornaam, achternaam, email, land, bedragStr, datum });
+  }
 
-    const { data: existing } = await admin!.from("donors").select("id").eq("email", email).maybeSingle();
-    if (existing) {
-      await admin!.from("donors").update({ voornaam, achternaam, land }).eq("id", existing.id);
-      success++;
-      if (bedragStr && datum) {
-        const bedrag = parseFloat(bedragStr.replace(",", ".")) || 0;
+  for (let b = 0; b < parsed.length; b += BATCH_SIZE) {
+    const batch = parsed.slice(b, b + BATCH_SIZE);
+    const upsertRows = batch.map((p) => ({
+      voornaam: p.voornaam,
+      achternaam: p.achternaam,
+      email: p.email,
+      land: p.land ?? "NL",
+    }));
+    const { data: upserted, error: e } = await admin!
+      .from("donors")
+      .upsert(upsertRows, { onConflict: "email" })
+      .select("id, email");
+    if (e) {
+      batch.forEach((p) => details.push(`Rij ${p.rowIndex}: ${e.message}`));
+      continue;
+    }
+    success += batch.length;
+    const emailToId = new Map<string, string>((upserted ?? []).map((row) => [row.email, row.id]));
+    for (const p of batch) {
+      if (p.bedragStr && p.datum) {
+        const bedrag = parseFloat(p.bedragStr.replace(",", ".")) || 0;
         if (bedrag > 0) {
-          await admin!.from("donations").insert({
-            donor_id: existing.id,
-            bedrag,
-            valuta: "EUR",
-            methode: "overig",
-            status: "voltooid",
-            donatie_datum: datum.includes("T") ? datum : `${datum}T12:00:00Z`,
-          });
-        }
-      }
-    } else {
-      const { data: inserted, error: insertErr } = await admin!
-        .from("donors")
-        .insert({ voornaam, achternaam, email, land: land ?? "NL" })
-        .select("id")
-        .single();
-      if (insertErr) {
-        details.push(`Rij ${i + 2}: ${insertErr.message}`);
-        continue;
-      }
-      success++;
-      if (inserted && bedragStr && datum) {
-        const bedrag = parseFloat(bedragStr.replace(",", ".")) || 0;
-        if (bedrag > 0) {
-          await admin!.from("donations").insert({
-            donor_id: inserted.id,
-            bedrag,
-            valuta: "EUR",
-            methode: "overig",
-            status: "voltooid",
-            donatie_datum: datum.includes("T") ? datum : `${datum}T12:00:00Z`,
-          });
+          const donorId = emailToId.get(p.email);
+          if (donorId) {
+            await admin!.from("donations").insert({
+              donor_id: donorId,
+              bedrag,
+              valuta: "EUR",
+              methode: "overig",
+              status: "voltooid",
+              donatie_datum: p.datum.includes("T") ? p.datum : `${p.datum}T12:00:00Z`,
+            });
+          }
         }
       }
     }

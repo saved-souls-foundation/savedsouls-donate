@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const MAX_ROWS = 1000;
+const BATCH_SIZE = 5;
 const NIVEAU_VALUES = ["platinum", "gold", "silver", "bronze"] as const;
 
 async function requireAdmin() {
@@ -33,6 +34,19 @@ export async function POST(request: NextRequest) {
   let success = 0;
   const details: string[] = [];
 
+  type ParsedRow = {
+    rowIndex: number;
+    bedrijfsnaam: string;
+    contactpersoon_naam: string;
+    contactpersoon_email: string;
+    bedrag_per_maand: number | null;
+    contract_start: string;
+    contract_eind: string | null;
+    niveau: (typeof NIVEAU_VALUES)[number];
+    status: string;
+  };
+
+  const parsed: ParsedRow[] = [];
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
     const naam = (r.naam ?? "").trim();
@@ -45,9 +59,6 @@ export async function POST(request: NextRequest) {
       details.push(`Rij ${i + 2}: Naam is verplicht`);
       continue;
     }
-    const bedrijfsnaam = naam;
-    const contactpersoon_naam = naam;
-    const contactpersoon_email = email;
     const bedragStr = (r.bedrag ?? "").trim();
     const bedrag_per_maand = bedragStr ? parseFloat(bedragStr.replace(",", ".")) || null : null;
     const startdatum = (r.startdatum ?? "").trim() || null;
@@ -59,50 +70,41 @@ export async function POST(request: NextRequest) {
       if (s === "active" || s === "actief") return "actief";
       if (s === "inactive" || s === "inactief") return "inactief";
       if (s === "verlopen" || s === "expired") return "verlopen";
-      return "actief"; // default
+      return "actief";
     })();
+    parsed.push({
+      rowIndex: i + 2,
+      bedrijfsnaam: naam,
+      contactpersoon_naam: naam,
+      contactpersoon_email: email,
+      bedrag_per_maand,
+      contract_start: startdatum || new Date().toISOString().slice(0, 10),
+      contract_eind,
+      niveau,
+      status,
+    });
+  }
 
-    const { data: existing } = await admin!
+  for (let b = 0; b < parsed.length; b += BATCH_SIZE) {
+    const batch = parsed.slice(b, b + BATCH_SIZE);
+    const upsertRows = batch.map((p) => ({
+      bedrijfsnaam: p.bedrijfsnaam,
+      contactpersoon_naam: p.contactpersoon_naam,
+      contactpersoon_email: p.contactpersoon_email,
+      bedrag_per_maand: p.bedrag_per_maand,
+      contract_start: p.contract_start,
+      contract_eind: p.contract_eind,
+      niveau: p.niveau,
+      status: p.status,
+      updated_at: new Date().toISOString(),
+    }));
+    const { error: e } = await admin!
       .from("sponsors")
-      .select("id")
-      .eq("contactpersoon_email", email)
-      .neq("status", "verwijderd")
-      .maybeSingle();
-
-    if (existing) {
-      await admin!
-        .from("sponsors")
-        .update({
-          bedrijfsnaam,
-          contactpersoon_naam,
-          contactpersoon_email,
-          bedrag_per_maand,
-          contract_start: startdatum || new Date().toISOString().slice(0, 10),
-          contract_eind,
-          niveau,
-          status,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
-      success++;
+      .upsert(upsertRows, { onConflict: "contactpersoon_email" });
+    if (e) {
+      batch.forEach((p) => details.push(`Rij ${p.rowIndex}: ${e.message}`));
     } else {
-      const { error: insertErr } = await admin!
-        .from("sponsors")
-        .insert({
-          bedrijfsnaam,
-          contactpersoon_naam,
-          contactpersoon_email,
-          bedrag_per_maand,
-          contract_start: startdatum || new Date().toISOString().slice(0, 10),
-          contract_eind,
-          niveau,
-          status,
-        });
-      if (insertErr) {
-        details.push(`Rij ${i + 2}: ${insertErr.message}`);
-        continue;
-      }
-      success++;
+      success += batch.length;
     }
   }
 
