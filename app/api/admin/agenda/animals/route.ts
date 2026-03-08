@@ -14,13 +14,14 @@ export async function GET() {
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("dieren")
-    .select("id, naam, soort")
+    .select("id, naam, soort, foto_url")
     .order("naam");
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   const list = (data ?? []).map((d) => ({
     id: d.id,
     name: d.naam ?? "",
     type: (d.soort === "kat" ? "cat" : "dog") as "dog" | "cat",
+    image: (d as { foto_url?: string | null }).foto_url ?? undefined,
   }));
   return NextResponse.json({ dogs: list.filter((a) => a.type === "dog"), cats: list.filter((a) => a.type === "cat"), all: list });
 }

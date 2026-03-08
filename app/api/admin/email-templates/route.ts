@@ -27,9 +27,29 @@ export async function GET(_request: NextRequest) {
     const id = (row as { ai_suggestie_template_id: string | null }).ai_suggestie_template_id;
     if (id) usageByTemplate[id] = (usageByTemplate[id] ?? 0) + 1;
   }
+  let sendCountByTemplate: Record<string, number> = {};
+  let lastSentByTemplate: Record<string, string> = {};
+  try {
+    const { data: sendLogRows } = await supabase!
+      .from("template_send_log")
+      .select("template_id, verstuurd_op")
+      .eq("status", "verstuurd");
+    for (const row of sendLogRows ?? []) {
+      const id = (row as { template_id: string; verstuurd_op: string }).template_id;
+      if (id) {
+        sendCountByTemplate[id] = (sendCountByTemplate[id] ?? 0) + 1;
+        const op = (row as { verstuurd_op: string }).verstuurd_op;
+        if (!lastSentByTemplate[id] || op > lastSentByTemplate[id]) lastSentByTemplate[id] = op;
+      }
+    }
+  } catch {
+    // template_send_log table may not exist yet
+  }
   const result = (templates ?? []).map((t: { id: string }) => ({
     ...t,
     usage_count: usageByTemplate[t.id] ?? 0,
+    send_count: sendCountByTemplate[t.id] ?? 0,
+    last_sent_at: lastSentByTemplate[t.id] ?? null,
   }));
   return NextResponse.json(result);
 }

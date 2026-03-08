@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import SendTemplateModal from "./SendTemplateModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -34,6 +35,8 @@ type Template = {
   actief: boolean;
   inhoud_nl?: string | null;
   usage_count?: number;
+  send_count?: number;
+  last_sent_at?: string | null;
 };
 
 type SentEmail = {
@@ -55,6 +58,7 @@ export default function AdminEmailTemplatesClient() {
   const [bulkSaving, setBulkSaving] = useState(false);
   const [sentEmails, setSentEmails] = useState<SentEmail[]>([]);
   const [loadingSent, setLoadingSent] = useState(false);
+  const [sendModalTemplate, setSendModalTemplate] = useState<Template | null>(null);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -166,6 +170,18 @@ export default function AdminEmailTemplatesClient() {
     return locale === "en"
       ? new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
       : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function formatLastSent(iso: string): string {
+    const d = new Date(iso);
+    const now = new Date();
+    const diffMs = now.getTime() - d.getTime();
+    const diffDays = Math.floor(diffMs / (24 * 60 * 60 * 1000));
+    if (diffDays === 0) return "vandaag";
+    if (diffDays === 1) return "1 dag geleden";
+    if (diffDays < 7) return `${diffDays} dagen geleden`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} week geleden`;
+    return `${Math.floor(diffDays / 30)} maand geleden`;
   }
 
   return (
@@ -315,9 +331,19 @@ export default function AdminEmailTemplatesClient() {
                       {(tm.inhoud_nl ?? "").length > 100 ? "…" : ""}
                     </p>
                   )}
-                  {tm.usage_count != null && tm.usage_count > 0 && (
+                  {(tm.usage_count != null && tm.usage_count > 0) && (
                     <p className="text-xs mt-2" style={{ color: ADM_MUTED }}>
                       {t("usageCount", { count: tm.usage_count })}
+                    </p>
+                  )}
+                  {(tm.send_count != null && tm.send_count > 0) && (
+                    <p className="text-xs mt-1" style={{ color: ADM_MUTED }}>
+                      Aantal keer verstuurd: {tm.send_count}
+                    </p>
+                  )}
+                  {tm.last_sent_at && (
+                    <p className="text-xs mt-1" style={{ color: ADM_MUTED }}>
+                      Laatst verstuurd: {formatLastSent(tm.last_sent_at)}
                     </p>
                   )}
                   <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t" style={{ borderColor: ADM_BORDER }}>
@@ -333,19 +359,38 @@ export default function AdminEmailTemplatesClient() {
                         {tm.actief ? t("active") : t("inactive")}
                       </span>
                     </label>
-                    <Link
-                      href={`/admin/emails/templates/${tm.id}`}
-                      className="text-sm font-medium"
-                      style={{ color: ADM_ACCENT }}
-                    >
-                      {t("editTemplate")}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setSendModalTemplate(tm)}
+                        className="text-sm font-medium"
+                        style={{ color: ADM_ACCENT }}
+                      >
+                        ✉️ Verstuur
+                      </button>
+                      <Link
+                        href={`/admin/emails/templates/${tm.id}`}
+                        className="text-sm font-medium"
+                        style={{ color: ADM_ACCENT }}
+                      >
+                        {t("editTemplate")}
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
         </>
+      )}
+
+      {sendModalTemplate && (
+        <SendTemplateModal
+          template={sendModalTemplate}
+          locale={locale}
+          onClose={() => setSendModalTemplate(null)}
+          onSent={() => { fetchList(); fetchSentEmails(); }}
+        />
       )}
 
       <section className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
