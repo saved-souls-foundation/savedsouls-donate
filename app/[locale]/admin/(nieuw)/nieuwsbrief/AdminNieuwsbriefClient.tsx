@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -55,6 +56,7 @@ export default function AdminNieuwsbriefClient() {
   const [addType, setAddType] = useState<string>("persoon");
   const [addSaving, setAddSaving] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toastError, setToastError] = useState<string | null>(null);
 
@@ -254,7 +256,15 @@ export default function AdminNieuwsbriefClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCsvImportOpen(true)}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          >
+            Importeer CSV
+          </button>
           <button
             type="button"
             onClick={() => { setAddModalOpen(true); setAddError(null); setAddVoornaam(""); setAddAchternaam(""); setAddEmail(""); setAddLanguage("nl"); setAddType("persoon"); }}
@@ -279,6 +289,29 @@ export default function AdminNieuwsbriefClient() {
           </Link>
         </div>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Nieuwsbrief abonnees importeren"
+          columns={[
+            { key: "naam", label: "Naam" },
+            { key: "email", label: "E-mail" },
+            { key: "taal", label: "Taal" },
+            { key: "datum_aangemeld", label: "Datum aangemeld" },
+            { key: "actief", label: "Actief (true/false)" },
+          ]}
+          exampleCsvContent={`naam,email,taal,datum_aangemeld,actief\n"Jan Jansen",jan@example.com,nl,2024-01-15,true\n"Marie Pieters",marie@example.com,en,2024-02-01,false`}
+          exampleFilename="nieuwsbrief-abonnees-voorbeeld.csv"
+          apiEndpoint="/api/admin/nieuwsbrief/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); fetchSubscribers(); if (activeCount != null) fetch("/api/admin/newsletter?status=actief&limit=1").then((r) => r.ok ? r.json() : { total: 0 }).then((json) => setActiveCount(json.total ?? 0)); }}
+          validateRow={(row) => {
+            const email = (row.email ?? "").trim().toLowerCase();
+            if (!email) return "E-mail is verplicht";
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Ongeldig e-mailadres";
+            return null;
+          }}
+        />
+      )}
 
       {activeCount != null && (
         <p className="text-sm" style={{ color: ADM_MUTED }}>

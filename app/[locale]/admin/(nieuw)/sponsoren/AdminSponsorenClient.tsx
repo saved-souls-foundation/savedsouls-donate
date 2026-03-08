@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -61,6 +62,7 @@ export default function AdminSponsorenClient() {
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState<SponsorRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -168,10 +170,39 @@ export default function AdminSponsorenClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <Link href="/admin/sponsoren/nieuw" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: ADM_ACCENT }}>
-          {t("addSponsor")}
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setCsvImportOpen(true)}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          >
+            Importeer CSV
+          </button>
+          <Link href="/admin/sponsoren/nieuw" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: ADM_ACCENT }}>
+            {t("addSponsor")}
+          </Link>
+        </div>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Sponsoren importeren"
+          columns={[
+            { key: "naam", label: "Naam" },
+            { key: "email", label: "E-mail" },
+            { key: "bedrag", label: "Bedrag" },
+            { key: "startdatum", label: "Startdatum" },
+            { key: "einddatum", label: "Einddatum" },
+            { key: "pakket", label: "Pakket" },
+            { key: "notities", label: "Notities" },
+          ]}
+          exampleCsvContent={`naam,email,bedrag,startdatum,einddatum,pakket,notities\n"Bedrijf BV",contact@bedrijf.nl,500,2024-01-01,2025-12-31,gold,Sponsor overeenkomst`}
+          exampleFilename="sponsoren-voorbeeld.csv"
+          apiEndpoint="/api/admin/sponsoren/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); fetchList(); }}
+        />
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard

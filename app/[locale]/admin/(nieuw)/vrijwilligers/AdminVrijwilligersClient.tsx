@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import type { VolunteerRow } from "./page";
 import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -44,6 +45,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
   const [deleting, setDeleting] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addSaving, setAddSaving] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [addForm, setAddForm] = useState({
     voornaam: "",
     achternaam: "",
@@ -184,15 +186,45 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           className="flex-1 max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
-        <button
-          type="button"
-          onClick={() => { setAddModalOpen(true); setError(""); setAddForm({ voornaam: "", achternaam: "", email: "", phone: "", city: "", area: "", language: "nl" }); }}
-          className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white shrink-0"
-          style={{ background: ADM_ACCENT }}
-        >
-          + Vrijwilliger toevoegen
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setCsvImportOpen(true)}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border shrink-0"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          >
+            Importeer CSV
+          </button>
+          <button
+            type="button"
+            onClick={() => { setAddModalOpen(true); setError(""); setAddForm({ voornaam: "", achternaam: "", email: "", phone: "", city: "", area: "", language: "nl" }); }}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white shrink-0"
+            style={{ background: ADM_ACCENT }}
+          >
+            + Vrijwilliger toevoegen
+          </button>
+        </div>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Vrijwilligers importeren"
+          columns={[
+            { key: "naam", label: "Naam" },
+            { key: "email", label: "E-mail" },
+            { key: "telefoon", label: "Telefoon" },
+            { key: "land", label: "Land" },
+            { key: "startdatum", label: "Startdatum" },
+            { key: "einddatum", label: "Einddatum" },
+            { key: "taken", label: "Taken" },
+            { key: "notities", label: "Notities" },
+          ]}
+          exampleCsvContent={`naam,email,telefoon,land,startdatum,einddatum,taken,notities\n"Anna Bakker",anna@example.com,0612345678,NL,2024-01-01,,Thailand,Vrijwilliger`}
+          exampleFilename="vrijwilligers-voorbeeld.csv"
+          apiEndpoint="/api/admin/vrijwilligers/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); window.location.reload(); }}
+        />
+      )}
 
       {error && (
         <p className="text-sm" style={{ color: ADM_ERROR }}>

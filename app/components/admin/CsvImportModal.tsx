@@ -1,0 +1,326 @@
+"use client";
+
+import React, { useState, useCallback } from "react";
+
+const ADM_CARD = "#ffffff";
+const ADM_BORDER = "#e2e8f0";
+const ADM_TEXT = "#1e293b";
+const ADM_MUTED = "#64748b";
+const ADM_ACCENT = "#0d9488";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_ROWS = 1000;
+const PREVIEW_ROWS = 5;
+
+export type CsvColumn = { key: string; label: string };
+
+type Props = {
+  title: string;
+  columns: CsvColumn[];
+  exampleCsvContent: string;
+  exampleFilename: string;
+  apiEndpoint: string;
+  onClose: () => void;
+  onImported: () => void;
+  /** Validate row: return error string or null. Required: naam + email (or email-only for newsletter). */
+  validateRow?: (row: Record<string, string>) => string | null;
+};
+
+function parseCsv(text: string): Record<string, string>[] {
+  const lines = text.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  if (lines.length < 2) return [];
+  const header = parseCsvLine(lines[0]);
+  const rows: Record<string, string>[] = [];
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCsvLine(lines[i]);
+    const row: Record<string, string> = {};
+    header.forEach((h, idx) => {
+      row[h] = values[idx] ?? "";
+    });
+    rows.push(row);
+  }
+  return rows;
+}
+
+function parseCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let i = 0;
+  while (i < line.length) {
+    if (line[i] === '"') {
+      let val = "";
+      i++;
+      while (i < line.length) {
+        if (line[i] === '"') {
+          i++;
+          if (line[i] === '"') {
+            val += '"';
+            i++;
+          } else break;
+        } else {
+          val += line[i];
+          i++;
+        }
+      }
+      out.push(val);
+    } else {
+      let val = "";
+      while (i < line.length && line[i] !== ",") {
+        val += line[i];
+        i++;
+      }
+      out.push(val.trim());
+      if (line[i] === ",") i++;
+    }
+  }
+  return out;
+}
+
+export default function CsvImportModal({
+  title,
+  columns,
+  exampleCsvContent,
+  exampleFilename,
+  apiEndpoint,
+  onClose,
+  onImported,
+  validateRow,
+}: Props) {
+  const [step, setStep] = useState<"upload" | "preview" | "result">("upload");
+  const [file, setFile] = useState<File | null>(null);
+  const [rows, setRows] = useState<Record<string, string>[]>([]);
+  const [parseError, setParseError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [result, setResult] = useState<{ success: number; errors: number; details?: string[] } | null>(null);
+
+  const handleFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (f.size > MAX_FILE_SIZE) {
+      setParseError(`Bestand te groot (max ${MAX_FILE_SIZE / 1024 / 1024} MB)`);
+      setFile(null);
+      setRows([]);
+      return;
+    }
+    setParseError(null);
+    setFile(f);
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const text = String(reader.result ?? "");
+        const parsed = parseCsv(text);
+        if (parsed.length > MAX_ROWS) {
+          setParseError(`Maximaal ${MAX_ROWS} rijen toegestaan. Gevonden: ${parsed.length}`);
+          setRows([]);
+        } else {
+          setRows(parsed);
+          setStep("preview");
+        }
+      } catch (err) {
+        setParseError(err instanceof Error ? err.message : "CSV kon niet worden gelezen");
+        setRows([]);
+      }
+    };
+    reader.readAsText(f, "utf-8");
+  }, []);
+
+  const handleDownloadExample = useCallback(() => {
+    const blob = new Blob([exampleCsvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = exampleFilename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [exampleCsvContent, exampleFilename]);
+
+  const defaultValidate = useCallback((row: Record<string, string>) => {
+    const naam = (row.naam ?? "").trim();
+    const email = (row.email ?? "").trim().toLowerCase();
+    if (!email) return "E-mail is verplicht";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Ongeldig e-mailadres";
+    if (!naam) return "Naam is verplicht";
+    return null;
+  }, []);
+
+  const validate = validateRow ?? defaultValidate;
+
+  const handleConfirmImport = useCallback(async () => {
+    const invalid = rows.map((r, i) => ({ row: i + 2, err: validate(r) })).filter((x) => x.err != null);
+    if (invalid.length > 0) {
+      setParseError(`Rij ${invalid[0].row}: ${invalid[0].err}. Corrigeer de CSV.`);
+      return;
+    }
+    setParseError(null);
+    setImporting(true);
+    try {
+      const res = await fetch(apiEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setResult({ success: 0, errors: rows.length, details: [data.error ?? "Import mislukt"] });
+      } else {
+        setResult({
+          success: data.success ?? 0,
+          errors: data.errors ?? 0,
+          details: data.details,
+        });
+        if ((data.success ?? 0) > 0) {
+          onImported();
+        }
+      }
+      setStep("result");
+    } catch (err) {
+      setResult({
+        success: 0,
+        errors: rows.length,
+        details: [err instanceof Error ? err.message : "Netwerkfout"],
+      });
+      setStep("result");
+    } finally {
+      setImporting(false);
+    }
+  }, [rows, apiEndpoint, validate, onImported]);
+
+  const headers = columns.map((c) => c.key);
+  const previewRows = rows.slice(0, PREVIEW_ROWS);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,.4)" }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-lg rounded-xl border p-6 shadow-lg"
+        style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold" style={{ color: ADM_TEXT }}>
+            {title}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-xl leading-none p-1"
+            style={{ color: ADM_MUTED }}
+            aria-label="Sluiten"
+          >
+            ×
+          </button>
+        </div>
+
+        {step === "upload" && (
+          <>
+            <div className="space-y-3">
+              <button
+                type="button"
+                onClick={handleDownloadExample}
+                className="w-full py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                📥 Download voorbeeld-CSV
+              </button>
+              <p className="text-xs" style={{ color: ADM_MUTED }}>
+                Vereiste kolommen: {columns.map((c) => c.label).join(", ")}
+              </p>
+              <label className="block">
+                <span className="sr-only">CSV kiezen</span>
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFile}
+                  className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:cursor-pointer"
+                  style={{ color: ADM_TEXT }}
+                />
+              </label>
+            </div>
+          </>
+        )}
+
+        {step === "preview" && (
+          <>
+            {parseError && (
+              <p className="text-sm mb-3" style={{ color: "#dc2626" }}>
+                {parseError}
+              </p>
+            )}
+            <p className="text-sm mb-2" style={{ color: ADM_MUTED }}>
+              Eerste {PREVIEW_ROWS} rijen ({rows.length} totaal):
+            </p>
+            <div className="overflow-x-auto border rounded-lg mb-4 max-h-48 overflow-y-auto" style={{ borderColor: ADM_BORDER }}>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr style={{ color: ADM_MUTED }}>
+                    {headers.map((h) => (
+                      <th key={h} className="text-left p-2 whitespace-nowrap">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {previewRows.map((row, i) => (
+                    <tr key={i} className="border-t" style={{ borderColor: ADM_BORDER }}>
+                      {headers.map((h) => (
+                        <td key={h} className="p-2 truncate max-w-[120px]" style={{ color: ADM_TEXT }}>
+                          {row[h] ?? "—"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setStep("upload"); setFile(null); setRows([]); setParseError(null); }}
+                className="px-4 py-2 rounded-lg border text-sm"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                Ander bestand
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmImport}
+                disabled={importing}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ACCENT }}
+              >
+                {importing ? "Bezig…" : "Bevestig import"}
+              </button>
+            </div>
+          </>
+        )}
+
+        {step === "result" && result && (
+          <>
+            <p className="text-sm mb-2" style={{ color: ADM_TEXT }}>
+              <strong>{result.success}</strong> succesvol geïmporteerd, <strong>{result.errors}</strong> fouten.
+            </p>
+            {result.details && result.details.length > 0 && (
+              <ul className="text-xs mb-4 list-disc pl-4 max-h-32 overflow-y-auto" style={{ color: ADM_MUTED }}>
+                {result.details.slice(0, 20).map((d, i) => (
+                  <li key={i}>{d}</li>
+                ))}
+                {result.details.length > 20 && <li>… en {result.details.length - 20} meer</li>}
+              </ul>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full py-2 rounded-lg text-sm font-medium text-white"
+              style={{ background: ADM_ACCENT }}
+            >
+              Sluiten
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

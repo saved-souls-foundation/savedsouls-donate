@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { EmptyState, StatCard, TableWrapper, Avatar, StatusBadge, QuickActions } from "../components/ui/design-system";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -65,6 +66,7 @@ export default function AdminDonateursClient() {
   const [stats, setStats] = useState<{ activeCount: number; totalMonthlyAmount: number; paymentIssuesCount: number } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
 
   useEffect(() => {
     if (!toastError) return;
@@ -221,10 +223,39 @@ export default function AdminDonateursClient() {
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
         </h1>
-        <Link href="/admin/donateurs/nieuw" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: ADM_ACCENT }}>
-          {t("addDonor")}
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setCsvImportOpen(true)}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border"
+            style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+          >
+            Importeer CSV
+          </button>
+          <Link href="/admin/donateurs/nieuw" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white" style={{ background: ADM_ACCENT }}>
+            {t("addDonor")}
+          </Link>
+        </div>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Donateurs importeren"
+          columns={[
+            { key: "naam", label: "Naam" },
+            { key: "email", label: "E-mail" },
+            { key: "bedrag", label: "Bedrag" },
+            { key: "datum", label: "Datum" },
+            { key: "type", label: "Type (eenmalig/maandelijks)" },
+            { key: "land", label: "Land" },
+            { key: "notities", label: "Notities" },
+          ]}
+          exampleCsvContent={`naam,email,bedrag,datum,type,land,notities\n"Jan Jansen",jan@example.com,50,2024-01-15,eenmalig,NL,Donatie\n"Marie Pieters",marie@example.com,25,2024-02-01,maandelijks,BE,Maandelijkse gift`}
+          exampleFilename="donateurs-voorbeeld.csv"
+          apiEndpoint="/api/admin/donateurs/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); tab === "onetime" ? fetchOnetime() : fetchRecurring(); }}
+        />
+      )}
 
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

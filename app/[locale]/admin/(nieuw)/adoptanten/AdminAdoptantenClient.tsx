@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import type { AdoptantRow } from "./page";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ANIMALS_BASE_URL = "https://db.savedsouls-foundation.org";
 const PLACEHOLDER_ANIMAL = "/icons/paw.svg";
@@ -37,6 +38,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
   const [detailAnimalType, setDetailAnimalType] = useState<"dog" | "cat" | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<AdoptantRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -160,7 +162,7 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
         {t("adoptantenIntro")}
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
         <input
           type="search"
           placeholder={t("searchPlaceholderAd")}
@@ -169,7 +171,35 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
           className="flex-1 max-w-md px-4 py-2 rounded-lg border bg-transparent outline-none"
           style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
         />
+        <button
+          type="button"
+          onClick={() => setCsvImportOpen(true)}
+          className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium border shrink-0"
+          style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+        >
+          Importeer CSV
+        </button>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Adoptanten importeren"
+          columns={[
+            { key: "naam", label: "Naam" },
+            { key: "email", label: "E-mail" },
+            { key: "telefoon", label: "Telefoon" },
+            { key: "land", label: "Land" },
+            { key: "stad", label: "Stad" },
+            { key: "dier_naam", label: "Dier naam" },
+            { key: "adoptiedatum", label: "Adoptiedatum" },
+            { key: "notities", label: "Notities" },
+          ]}
+          exampleCsvContent={`naam,email,telefoon,land,stad,dier_naam,adoptiedatum,notities\n"Jan de Vries",jan@example.com,0612345678,NL,Amsterdam,Max,2024-01-15,Adoptie notities`}
+          exampleFilename="adoptanten-voorbeeld.csv"
+          apiEndpoint="/api/admin/adoptanten/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); window.location.reload(); }}
+        />
+      )}
 
       {error && (
         <p className="text-sm" style={{ color: ADM_ERROR }}>
