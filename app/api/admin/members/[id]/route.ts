@@ -63,10 +63,18 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
   const { error, supabase } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
-  const { error: e } = await supabase!
-    .from("members")
-    .update({ status: "verwijderd" })
-    .eq("id", id);
-  if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json({ success: true });
+  try {
+    const { error: e } = await supabase!
+      .from("members")
+      .delete()
+      .eq("id", id);
+    if (e) {
+      console.error("[DELETE member] error:", e);
+      return NextResponse.json({ error: e.message }, { status: 500 });
+    }
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("[DELETE member] error:", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
 }

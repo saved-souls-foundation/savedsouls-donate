@@ -54,6 +54,13 @@ export async function POST(request: NextRequest) {
     const contract_eind = (r.einddatum ?? "").trim() || null;
     const pakket = (r.pakket ?? "").trim().toLowerCase();
     const niveau = NIVEAU_VALUES.includes(pakket as (typeof NIVEAU_VALUES)[number]) ? (pakket as (typeof NIVEAU_VALUES)[number]) : "bronze";
+    const status = (() => {
+      const s = (r.status ?? "").toLowerCase().trim();
+      if (s === "active" || s === "actief") return "actief";
+      if (s === "inactive" || s === "inactief") return "inactief";
+      if (s === "verlopen" || s === "expired") return "verlopen";
+      return "actief"; // default
+    })();
 
     const { data: existing } = await admin!
       .from("sponsors")
@@ -73,6 +80,7 @@ export async function POST(request: NextRequest) {
           contract_start: startdatum || new Date().toISOString().slice(0, 10),
           contract_eind,
           niveau,
+          status,
           updated_at: new Date().toISOString(),
         })
         .eq("id", existing.id);
@@ -88,7 +96,7 @@ export async function POST(request: NextRequest) {
           contract_start: startdatum || new Date().toISOString().slice(0, 10),
           contract_eind,
           niveau,
-          status: "in_onderhandeling",
+          status,
         });
       if (insertErr) {
         details.push(`Rij ${i + 2}: ${insertErr.message}`);
