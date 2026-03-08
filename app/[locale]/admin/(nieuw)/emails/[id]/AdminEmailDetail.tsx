@@ -314,9 +314,9 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         </button>
         {/* pootjes link */}
         <Link
-          href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
+          href={`/admin/adoptanten?email=${encodeURIComponent(email?.van_email ?? "")}`}
           title={t("tooltipAdoptanten")}
-          onClick={() => console.log("pootjes link clicked", `/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`)}
+          onClick={() => console.log("pootjes link clicked", `/admin/adoptanten?email=${encodeURIComponent(email?.van_email ?? "")}`)}
           className="min-h-[44px] min-w-[44px] p-2 rounded-lg border transition-colors flex items-center justify-center"
           style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
         >
