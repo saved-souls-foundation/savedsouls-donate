@@ -5,8 +5,11 @@ import { sendMail, delay } from "@/lib/sendMail";
 
 const MAX_RECIPIENTS = 100;
 const MAX_EMAILS_PER_DAY = 200;
-const FROM_EMAIL = "info@savedsouls-foundation.org";
 const ORGANISATIE = "Saved Souls Foundation";
+
+function getFromEmail(): string {
+  return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
+}
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -108,7 +111,8 @@ export async function POST(request: NextRequest) {
     console.error("send-template: template fetch failed", { templateErr: templateErr?.message, templateId });
     return NextResponse.json({ error: "Template niet gevonden" }, { status: 404 });
   }
-  console.log("send-template: template loaded", { templateId, naam: (template as { naam?: string }).naam, locale });
+  const templateKeys = Object.keys(template as Record<string, unknown>);
+  console.log("send-template: template loaded", { templateId, naam: (template as { naam?: string }).naam, locale, templateColumnNames: templateKeys });
 
   const { subject: subjectBase, content: contentBase } = getSubjectAndContent(template as Record<string, unknown>, locale);
   console.log("send-template: subject and content length", { subjectLength: subjectBase.length, contentLength: contentBase.length });
@@ -124,7 +128,7 @@ export async function POST(request: NextRequest) {
     const text = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
     const mailOptions = {
-      from: FROM_EMAIL,
+      from: getFromEmail(),
       to: email,
       subject,
       text,
