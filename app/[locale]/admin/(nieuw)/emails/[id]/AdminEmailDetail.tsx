@@ -299,8 +299,9 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         <p className="text-sm mt-1" style={{ color: ADM_MUTED }}><strong>{t("received")}:</strong> {formatDate(email.ontvangen_op)}</p>
       </div>
 
-      {/* Icon-knoppen: Urgent, Pootjes (adoptanten), Agenda */}
+      {false && (
       <div className="flex items-center gap-2 overflow-visible relative z-10">
+        {/* urgent knop */}
         <button
           type="button"
           onClick={() => handleUrgencyToggle()}
@@ -311,6 +312,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         >
           🚨
         </button>
+        {/* pootjes link */}
         <Link
           href={`/admin/adoptanten?email=${encodeURIComponent(email.van_email ?? "")}`}
           title={t("tooltipAdoptanten")}
@@ -320,6 +322,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
         >
           🐾
         </Link>
+        {/* agenda knop */}
         <button
           type="button"
           onClick={() => openAgendaModal()}
@@ -330,6 +333,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
           📅
         </button>
       </div>
+      )}
 
       {agendaModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => !agendaSaving && setAgendaModalOpen(false)}>

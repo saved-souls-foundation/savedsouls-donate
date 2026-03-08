@@ -43,23 +43,35 @@ function getSubjectAndContent(
   return { subject, content };
 }
 
-function replacePlaceholders(text: string, naam: string): string {
+function replacePlaceholders(
+  text: string,
+  recipient: { naam: string; email: string; dier?: string }
+): string {
   return text
-    .replace(/\{\{naam\}\}/g, naam || " ")
-    .replace(/\{\{organisatie\}\}/g, ORGANISATIE);
+    .replace(/\{\{naam\}\}/gi, recipient.naam || "daar")
+    .replace(/\{\{organisatie\}\}/gi, ORGANISATIE)
+    .replace(/\{\{dier\}\}/gi, recipient.dier ?? "het dier")
+    .replace(/\{\{jaar\}\}/gi, String(new Date().getFullYear()))
+    .replace(/\{\{datum\}\}/gi, new Date().toLocaleDateString("nl-NL"));
 }
 
 function contentToHtml(text: string): string {
-  return text
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/\n/g, "<br>")
-    .replace(/^/, "<p>")
-    .replace(/$/, "</p>");
+  return (
+    "<p>" +
+    text
+      .replace(/\\n\\n/g, "</p><p>")
+      .replace(/\\n/g, "<br>")
+      .replace(/\n\n/g, "</p><p>")
+      .replace(/\n/g, "<br>") +
+    "</p>"
+  );
 }
 
 /** Wrap body HTML in groene header + footer (zelfde als contactbevestiging). */
 function contentToEmailHtml(content: string, subject: string): { html: string; text: string } {
+  console.log("content before:", content.substring(0, 200));
   const bodyHtml = contentToHtml(content);
+  console.log("content after:", bodyHtml.substring(0, 200));
   return wrapAutoReplyEmail({
     bodyHtml,
     title: subject || ORGANISATIE,
@@ -71,7 +83,11 @@ export async function POST(request: NextRequest) {
   const { error, admin } = await requireAdmin();
   if (error) return error;
 
-  let body: { templateId?: string; recipients?: Array<{ naam?: string; email?: string }>; locale?: string };
+  let body: {
+    templateId?: string;
+    recipients?: Array<{ naam?: string; email?: string; dier?: string }>;
+    locale?: string;
+  };
   try {
     body = await request.json();
   } catch {
@@ -89,13 +105,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `Max ${MAX_RECIPIENTS} ontvangers per keer` }, { status: 400 });
   }
 
-  const normalized: Array<{ naam: string; email: string }> = [];
+  const normalized: Array<{ naam: string; email: string; dier?: string }> = [];
   for (const r of recipients) {
     const email = typeof r.email === "string" ? r.email.trim().toLowerCase() : "";
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
     normalized.push({
       naam: typeof r.naam === "string" ? r.naam.trim() : "",
       email,
+      dier: typeof r.dier === "string" ? r.dier.trim() : undefined,
     });
   }
   if (normalized.length === 0) return NextResponse.json({ error: "Geen geldige ontvangers" }, { status: 400 });
@@ -136,9 +153,10 @@ export async function POST(request: NextRequest) {
   let errors = 0;
 
   for (let i = 0; i < normalized.length; i++) {
-    const { naam, email } = normalized[i];
-    const subject = replacePlaceholders(subjectBase, naam);
-    const content = replacePlaceholders(contentBase, naam);
+    const recipient = normalized[i];
+    const { naam, email } = recipient;
+    const subject = replacePlaceholders(subjectBase, recipient);
+    const content = replacePlaceholders(contentBase, recipient);
     const { html, text } = contentToEmailHtml(content, subject);
 
     const mailOptions = {
