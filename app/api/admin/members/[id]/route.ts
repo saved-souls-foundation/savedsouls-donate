@@ -63,12 +63,10 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
   const { error, supabase } = await requireAdmin();
   if (error) return error;
   const { id } = await params;
-  const { data, error: e } = await supabase!
+  const { error: e } = await supabase!
     .from("members")
     .update({ status: "verwijderd" })
-    .eq("id", id)
-    .select()
-    .single();
+    .eq("id", id);
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });
-  return NextResponse.json(data);
+  return NextResponse.json({ success: true });
 }

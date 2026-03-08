@@ -51,15 +51,10 @@ export async function POST(request: NextRequest) {
     const bedragStr = (r.bedrag ?? "").trim();
     const bedrag_per_maand = bedragStr ? parseFloat(bedragStr.replace(",", ".")) || null : null;
     const startdatum = (r.startdatum ?? "").trim() || null;
-    const einddatum = (r.einddatum ?? "").trim() || null;
+    const contract_eind = (r.einddatum ?? "").trim() || null;
     const pakket = (r.pakket ?? "").trim().toLowerCase();
     const niveau = NIVEAU_VALUES.includes(pakket as (typeof NIVEAU_VALUES)[number]) ? (pakket as (typeof NIVEAU_VALUES)[number]) : "bronze";
     const notities = (r.notities ?? "").trim() || null;
-
-    if (!einddatum) {
-      details.push(`Rij ${i + 2}: Einddatum is verplicht`);
-      continue;
-    }
 
     const { data: existing } = await admin!
       .from("sponsors")
@@ -77,7 +72,7 @@ export async function POST(request: NextRequest) {
           contactpersoon_email,
           bedrag_per_maand,
           contract_start: startdatum || new Date().toISOString().slice(0, 10),
-          contract_eind: einddatum,
+          contract_eind,
           niveau,
           notities,
           updated_at: new Date().toISOString(),
@@ -93,7 +88,7 @@ export async function POST(request: NextRequest) {
           contactpersoon_email,
           bedrag_per_maand,
           contract_start: startdatum || new Date().toISOString().slice(0, 10),
-          contract_eind: einddatum,
+          contract_eind,
           niveau,
           status: "in_onderhandeling",
           notities,

@@ -54,13 +54,12 @@ export async function POST(request: NextRequest) {
     }
     const { voornaam, achternaam } = splitNaam(naam);
     const land = (r.land ?? "").trim() || null;
-    const notities = (r.notities ?? "").trim() || null;
     const bedragStr = (r.bedrag ?? "").trim();
     const datum = (r.datum ?? "").trim() || null;
 
     const { data: existing } = await admin!.from("donors").select("id").eq("email", email).maybeSingle();
     if (existing) {
-      await admin!.from("donors").update({ voornaam, achternaam, land, notities }).eq("id", existing.id);
+      await admin!.from("donors").update({ voornaam, achternaam, land }).eq("id", existing.id);
       success++;
       if (bedragStr && datum) {
         const bedrag = parseFloat(bedragStr.replace(",", ".")) || 0;
@@ -78,7 +77,7 @@ export async function POST(request: NextRequest) {
     } else {
       const { data: inserted, error: insertErr } = await admin!
         .from("donors")
-        .insert({ voornaam, achternaam, email, land: land ?? "NL", notities })
+        .insert({ voornaam, achternaam, email, land: land ?? "NL" })
         .select("id")
         .single();
       if (insertErr) {

@@ -431,14 +431,13 @@ export default function AdminLayoutClient({
         className="fixed bottom-0 left-0 right-0 z-50 w-full max-w-full bg-white border-t border-gray-200 md:hidden"
         style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
       >
-        <div className="grid grid-cols-5 h-16 w-full max-w-full min-w-0">
+        <div className="grid grid-cols-6 h-16 w-full max-w-full min-w-0">
           {[
             { icon: "🏠", label: "Home", href: `/${locale}/admin/dashboard` },
             { icon: "🐾", label: "Dieren", href: `/${locale}/admin/adoptanten` },
             { icon: "📧", label: "Email", href: `/${locale}/admin/emails` },
             { icon: "💰", label: "Donateurs", href: `/${locale}/admin/donateurs` },
-            // Agenda tijdelijk uitgezet i.v.m. applicatie error op mobiel
-            // { icon: "📅", label: "Agenda", href: `/${locale}/admin/agenda` },
+            { icon: "📅", label: "Agenda", href: `/${locale}/admin/agenda` },
             { icon: "✨", label: "AI", href: `/${locale}/dashboard/ai` },
           ].map((item) => (
             <Link

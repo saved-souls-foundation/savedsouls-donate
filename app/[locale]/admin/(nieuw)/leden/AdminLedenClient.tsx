@@ -135,7 +135,11 @@ export default function AdminLedenClient() {
     setToastError(null);
     try {
       const res = await fetch(`/api/admin/members/${row.id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error();
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        console.log("[handleDelete] status:", res.status, "body:", body);
+        throw new Error();
+      }
       setDeleteConfirm(null);
       setData((prev) => prev.filter((x) => x.id !== row.id));
       setTotal((prev) => Math.max(0, prev - 1));
