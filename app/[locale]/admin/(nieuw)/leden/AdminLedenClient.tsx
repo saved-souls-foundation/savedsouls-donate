@@ -138,6 +138,7 @@ export default function AdminLedenClient() {
       const body = await res.json().catch(() => ({}));
       if (!res.ok) {
         console.log("[handleDelete] status:", res.status, "body:", body);
+        alert(`Status: ${res.status}`);
         throw new Error();
       }
       setDeleteConfirm(null);
