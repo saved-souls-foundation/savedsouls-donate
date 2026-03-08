@@ -72,8 +72,8 @@ export default function EventModal({ initialDate, initialEvent, volunteers = [],
   }, []);
 
   const filteredAnimals = useMemo(() => {
-    if (!animalSearch.trim()) return animals.slice(0, 20);
-    const q = animalSearch.toLowerCase();
+    const q = animalSearch.trim().toLowerCase();
+    if (q.length < 2) return [];
     return animals.filter((a) => a.name.toLowerCase().includes(q)).slice(0, 20);
   }, [animals, animalSearch]);
 
@@ -253,19 +253,56 @@ export default function EventModal({ initialDate, initialEvent, volunteers = [],
             <label className="block text-sm font-medium mb-1" style={{ color: ADM_MUTED }}>
               Dier betrokken
             </label>
+            {animalId && animalName ? (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  {(() => {
+                    const a = animals.find((x) => x.id === animalId);
+                    const img = a?.image;
+                    return (
+                      <>
+                        {img && (
+                          <img
+                            src={img.startsWith("http") ? img : `https://db.savedsouls-foundation.org${img.startsWith("/") ? "" : "/"}${img}`}
+                            alt=""
+                            className="w-6 h-6 rounded object-cover"
+                          />
+                        )}
+                        <span>{animalName}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setAnimalId(null);
+                            setAnimalName("");
+                            setAnimalSearch("");
+                          }}
+                          className="ml-1 leading-none text-lg font-bold hover:opacity-80"
+                          style={{ color: ADM_MUTED }}
+                          aria-label="Verwijderen"
+                        >
+                          ×
+                        </button>
+                      </>
+                    );
+                  })()}
+                </span>
+              </div>
+            ) : null}
             <input
               type="text"
-              value={animalSearch || animalName}
+              value={animalSearch}
               onChange={(e) => {
                 setAnimalSearch(e.target.value);
-                if (!e.target.value) setAnimalId(null);
-                setAnimalName(e.target.value);
+                if (!e.target.value.trim()) setAnimalId(null);
               }}
-              placeholder="Zoek op naam…"
-              className="w-full px-3 py-2 rounded-lg border bg-transparent"
+              placeholder="Min. 2 letters om te zoeken…"
+              className="w-full mt-1 px-3 py-2 rounded-lg border bg-transparent"
               style={{ borderColor: ADM_BORDER }}
             />
-            {animalSearch && filteredAnimals.length > 0 && (
+            {animalSearch.trim().length >= 2 && filteredAnimals.length > 0 && (
               <ul className="mt-1 border rounded-lg overflow-hidden max-h-40 overflow-y-auto" style={{ borderColor: ADM_BORDER }}>
                 {filteredAnimals.map((a) => (
                   <li key={a.id}>
@@ -279,9 +316,15 @@ export default function EventModal({ initialDate, initialEvent, volunteers = [],
                       className="w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-stone-50 text-sm"
                       style={{ color: ADM_TEXT }}
                     >
-                      {a.image && <img src={a.image.startsWith("http") ? a.image : `https://db.savedsouls-foundation.org${a.image}`} alt="" className="w-8 h-8 rounded object-cover" />}
+                      {a.image && (
+                        <img
+                          src={a.image.startsWith("http") ? a.image : `https://db.savedsouls-foundation.org${a.image.startsWith("/") ? "" : "/"}${a.image}`}
+                          alt=""
+                          className="w-8 h-8 rounded object-cover"
+                        />
+                      )}
                       <span>{a.name}</span>
-                      <span className="text-xs" style={{ color: ADM_MUTED }}>{a.type}</span>
+                      <span className="text-xs" style={{ color: ADM_MUTED }}>{a.type === "cat" ? "kat" : "hond"}</span>
                     </button>
                   </li>
                 ))}

@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
   const recipients = Array.isArray(body.recipients) ? body.recipients : [];
   const locale = typeof body.locale === "string" ? body.locale.trim() || "nl" : "nl";
 
+  console.log("send-template called", { templateId, recipients });
+
   if (!templateId) return NextResponse.json({ error: "templateId is required" }, { status: 400 });
   if (recipients.length === 0) return NextResponse.json({ error: "recipients is required" }, { status: 400 });
   if (recipients.length > MAX_RECIPIENTS) {
@@ -101,11 +103,16 @@ export async function POST(request: NextRequest) {
     .select("*")
     .eq("id", templateId)
     .maybeSingle();
+
   if (templateErr || !template) {
+    console.error("send-template: template fetch failed", { templateErr: templateErr?.message, templateId });
     return NextResponse.json({ error: "Template niet gevonden" }, { status: 404 });
   }
+  console.log("send-template: template loaded", { templateId, naam: (template as { naam?: string }).naam, locale });
 
   const { subject: subjectBase, content: contentBase } = getSubjectAndContent(template as Record<string, unknown>, locale);
+  console.log("send-template: subject and content length", { subjectLength: subjectBase.length, contentLength: contentBase.length });
+
   let success = 0;
   let errors = 0;
 
@@ -116,13 +123,25 @@ export async function POST(request: NextRequest) {
     const html = wrapHtml(content);
     const text = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
-    const result = await sendMail({
+    const mailOptions = {
       from: FROM_EMAIL,
       to: email,
       subject,
       text,
       html,
-    });
+    };
+    console.log("send-template: sending mail", { to: email, subject: subject.slice(0, 50), hasHtml: !!html });
+
+    let result: { success: boolean; error?: string };
+    try {
+      result = await sendMail(mailOptions);
+      if (!result.success) {
+        console.error("sendMail error (returned):", result.error);
+      }
+    } catch (err) {
+      console.error("sendMail error:", err);
+      result = { success: false, error: err instanceof Error ? err.message : String(err) };
+    }
 
     await admin!.from("template_send_log").insert({
       template_id: templateId,
