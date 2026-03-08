@@ -6,6 +6,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
+import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -63,6 +64,7 @@ export default function AdminLedenClient() {
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState<MemberRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [csvImportOpen, setCsvImportOpen] = useState(false);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -234,6 +236,14 @@ export default function AdminLedenClient() {
           <option value="persoon">{t("persoon")}</option>
           <option value="bedrijf">{t("bedrijf")}</option>
         </select>
+        <button
+          type="button"
+          onClick={() => setCsvImportOpen(true)}
+          className="inline-flex items-center justify-center px-4 py-2 rounded-lg border text-sm font-medium"
+          style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+        >
+          Importeer CSV
+        </button>
         <a
           href={exportUrl}
           download="members.csv"
@@ -243,6 +253,35 @@ export default function AdminLedenClient() {
           {t("exportCsv")}
         </a>
       </div>
+      {csvImportOpen && (
+        <CsvImportModal
+          title="Leden importeren"
+          columns={[
+            { key: "voornaam", label: "Voornaam" },
+            { key: "achternaam", label: "Achternaam" },
+            { key: "email", label: "E-mail" },
+            { key: "telefoon", label: "Telefoon" },
+            { key: "geboortedatum", label: "Geboortedatum" },
+            { key: "lid_sinds", label: "Lid sinds" },
+            { key: "notities", label: "Notities" },
+          ]}
+          exampleCsvContent={`voornaam,achternaam,email,telefoon,geboortedatum,lid_sinds,notities\nJan,Jansen,jan@example.com,0612345678,1985-03-15,2024-01-01,Lid sinds 2024\nMarie,Pieters,marie@example.com,,,2024-06-01,`}
+          exampleFilename="leden-voorbeeld.csv"
+          apiEndpoint="/api/admin/members/import"
+          onClose={() => setCsvImportOpen(false)}
+          onImported={() => { setCsvImportOpen(false); fetchMembers(); }}
+          validateRow={(row) => {
+            const voornaam = (row.voornaam ?? "").trim();
+            const achternaam = (row.achternaam ?? "").trim();
+            const email = (row.email ?? "").trim().toLowerCase();
+            if (!email) return "E-mail is verplicht";
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Ongeldig e-mailadres";
+            if (!voornaam) return "Voornaam is verplicht";
+            if (!achternaam) return "Achternaam is verplicht";
+            return null;
+          }}
+        />
+      )}
 
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
         {loading ? (

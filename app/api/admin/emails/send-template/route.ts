@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 
   let body: {
     templateId?: string;
-    recipients?: Array<{ naam?: string; email?: string; dier?: string }>;
+    recipients?: Array<{ naam?: string; email?: string; dier?: string; incoming_email_id?: string }>;
     locale?: string;
   };
   try {
@@ -105,14 +105,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `Max ${MAX_RECIPIENTS} ontvangers per keer` }, { status: 400 });
   }
 
-  const normalized: Array<{ naam: string; email: string; dier?: string }> = [];
+  const normalized: Array<{ naam: string; email: string; dier?: string; incoming_email_id?: string }> = [];
   for (const r of recipients) {
     const email = typeof r.email === "string" ? r.email.trim().toLowerCase() : "";
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
+    const incomingEmailId = typeof r.incoming_email_id === "string" ? r.incoming_email_id.trim() || undefined : undefined;
     normalized.push({
       naam: typeof r.naam === "string" ? r.naam.trim() : "",
       email,
       dier: typeof r.dier === "string" ? r.dier.trim() : undefined,
+      incoming_email_id: incomingEmailId,
     });
   }
   if (normalized.length === 0) return NextResponse.json({ error: "Geen geldige ontvangers" }, { status: 400 });
@@ -154,9 +156,20 @@ export async function POST(request: NextRequest) {
 
   for (let i = 0; i < normalized.length; i++) {
     const recipient = normalized[i];
+    let effectiveDier = recipient.dier;
+    if (!effectiveDier && recipient.incoming_email_id) {
+      const { data: incomingRow } = await admin!
+        .from("incoming_emails")
+        .select("ai_dier_naam")
+        .eq("id", recipient.incoming_email_id)
+        .maybeSingle();
+      const aiDier = (incomingRow as { ai_dier_naam?: string | null } | null)?.ai_dier_naam;
+      if (typeof aiDier === "string" && aiDier.trim()) effectiveDier = aiDier.trim();
+    }
+    const recipientWithDier = { ...recipient, dier: effectiveDier };
     const { naam, email } = recipient;
-    const subject = replacePlaceholders(subjectBase, recipient);
-    const content = replacePlaceholders(contentBase, recipient);
+    const subject = replacePlaceholders(subjectBase, recipientWithDier);
+    const content = replacePlaceholders(contentBase, recipientWithDier);
     const { html, text } = contentToEmailHtml(content, subject);
 
     const mailOptions = {

@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
     .select("id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, ai_urgency, status, taal, ai_language, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord, ai_automatisch_verstuurd", { count: "exact" });
   if (status && status !== "all") {
     if (status === "onbeantwoord") {
-      q = q.eq("status", "in_behandeling").or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
+      q = q
+        .eq("status", "in_behandeling")
+        .is("beantwoord_op", null)
+        .or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
     } else {
       q = q.eq("status", status);
     }

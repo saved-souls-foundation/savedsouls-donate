@@ -121,6 +121,32 @@ function parseClassifyResponse(raw: string): {
   }
 }
 
+/** Bij adoptie-emails: extraheer diernaam uit inhoud voor {{dier}} in templates. */
+function extractDierNaamFromAdoptieEmail(text: string): string | null {
+  const raw = (text ?? "").trim();
+  if (!raw) return null;
+  const patterns: RegExp[] = [
+    /\bvoor\s+([^\n,.\])]+?)(?=\s*[.\n,]|$)/i,
+    /\badoptie\s+van\s+([^\n,.\])]+?)(?=\s*[.\n,]|$)/i,
+    /\binteresse\s+in\s+([^\n,.\])]+?)(?=\s*[.\n,]|$)/i,
+    /\banimal\s*:\s*([^\n,.\])]+?)(?=\s*[.\n,]|$)/i,
+    /\bdier\s*:\s*([^\n,.\])]+?)(?=\s*[.\n,]|$)/i,
+  ];
+  for (const re of patterns) {
+    const m = raw.match(re);
+    if (m && m[1]) {
+      const naam = m[1].trim();
+      if (naam.length > 0 && naam.length < 80) return naam;
+    }
+  }
+  const idMatch = raw.match(/([^\n,(]+?)\s*\(\s*ID\s*:\s*\d+\s*\)/i);
+  if (idMatch && idMatch[1]) {
+    const naam = idMatch[1].trim();
+    if (naam.length > 0 && naam.length < 80) return naam;
+  }
+  return null;
+}
+
 function getTemplateText(
   template: Record<string, unknown>,
   language: string
@@ -207,6 +233,11 @@ export async function POST(request: NextRequest) {
 
   const { category, urgency, language } = parseClassifyResponse(classifyRaw);
 
+  let aiDierNaam: string | null = null;
+  if (category === "adoptie") {
+    aiDierNaam = extractDierNaamFromAdoptieEmail(emailBody);
+  }
+
   let suggestedReply: string;
   let usedTemplate = false;
 
@@ -274,6 +305,7 @@ Schrijf in taal: ${language}. Sjabloon (stijlgids): ${templateText}`;
       ai_categorie: category,
       taal: language,
       ai_gegenereerd_antwoord: suggestedReply,
+      ai_dier_naam: aiDierNaam,
     })
     .eq("id", emailId);
 

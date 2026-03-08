@@ -29,7 +29,7 @@ export async function GET(_request: NextRequest) {
     supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"),
     supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "verstuurd").gte("verwerkt_op", todayStr),
     supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "geneigeerd"),
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false"),
+    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false"),
   ]);
 
   return NextResponse.json({

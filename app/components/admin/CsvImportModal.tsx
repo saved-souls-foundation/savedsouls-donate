@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import * as XLSX from "xlsx";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -103,24 +104,66 @@ export default function CsvImportModal({
     }
     setParseError(null);
     setFile(f);
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const text = String(reader.result ?? "");
-        const parsed = parseCsv(text);
-        if (parsed.length > MAX_ROWS) {
-          setParseError(`Maximaal ${MAX_ROWS} rijen toegestaan. Gevonden: ${parsed.length}`);
+    const name = (f.name ?? "").toLowerCase();
+    const isExcel = name.endsWith(".xlsx") || name.endsWith(".xls");
+
+    if (isExcel) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          const workbook = XLSX.read(arrayBuffer, { type: "array" });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const rawRows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" }) as (string | number)[][];
+          if (rawRows.length < 2) {
+            setParseError("Excel-bestand heeft geen data (minimaal header + 1 rij)");
+            setRows([]);
+            return;
+          }
+          const header = rawRows[0].map((c) => String(c ?? "").trim());
+          const parsed: Record<string, string>[] = [];
+          for (let i = 1; i < rawRows.length; i++) {
+            const row: Record<string, string> = {};
+            header.forEach((h, idx) => {
+              const val = rawRows[i][idx];
+              row[h] = val != null ? String(val).trim() : "";
+            });
+            parsed.push(row);
+          }
+          if (parsed.length > MAX_ROWS) {
+            setParseError(`Maximaal ${MAX_ROWS} rijen toegestaan. Gevonden: ${parsed.length}`);
+            setRows([]);
+          } else {
+            setRows(parsed);
+            setStep("preview");
+          }
+        } catch (err) {
+          setParseError(err instanceof Error ? err.message : "Excel kon niet worden gelezen");
           setRows([]);
-        } else {
-          setRows(parsed);
-          setStep("preview");
         }
-      } catch (err) {
-        setParseError(err instanceof Error ? err.message : "CSV kon niet worden gelezen");
-        setRows([]);
-      }
-    };
-    reader.readAsText(f, "utf-8");
+      };
+      reader.readAsArrayBuffer(f);
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const text = String(reader.result ?? "");
+          const parsed = parseCsv(text);
+          if (parsed.length > MAX_ROWS) {
+            setParseError(`Maximaal ${MAX_ROWS} rijen toegestaan. Gevonden: ${parsed.length}`);
+            setRows([]);
+          } else {
+            setRows(parsed);
+            setStep("preview");
+          }
+        } catch (err) {
+          setParseError(err instanceof Error ? err.message : "CSV kon niet worden gelezen");
+          setRows([]);
+        }
+      };
+      reader.readAsText(f, "utf-8");
+    }
   }, []);
 
   const handleDownloadExample = useCallback(() => {
@@ -231,7 +274,7 @@ export default function CsvImportModal({
                 <span className="sr-only">CSV kiezen</span>
                 <input
                   type="file"
-                  accept=".csv"
+                  accept=".csv,.xlsx,.xls"
                   onChange={handleFile}
                   className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:cursor-pointer"
                   style={{ color: ADM_TEXT }}
