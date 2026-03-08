@@ -60,12 +60,20 @@ export default function AdminNieuwsbriefClient() {
   const [csvImportOpen, setCsvImportOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toastError, setToastError] = useState<string | null>(null);
+  const [toastSuccess, setToastSuccess] = useState<string | null>(null);
+  const [testingEmailId, setTestingEmailId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!toastError) return;
     const tid = setTimeout(() => setToastError(null), 4000);
     return () => clearTimeout(tid);
   }, [toastError]);
+
+  useEffect(() => {
+    if (!toastSuccess) return;
+    const tid = setTimeout(() => setToastSuccess(null), 4000);
+    return () => clearTimeout(tid);
+  }, [toastSuccess]);
 
   const fetchSubscribers = useCallback(async () => {
     setLoading(true);
@@ -162,6 +170,32 @@ export default function AdminNieuwsbriefClient() {
       if (wasActief && activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
     } else {
       setToastError("Verwijderen mislukt");
+    }
+  }
+
+  async function handleTestEmail(row: SubscriberRow) {
+    const email = row.email?.trim();
+    if (!email) {
+      setToastError("Geen e-mailadres");
+      return;
+    }
+    setTestingEmailId(row.id);
+    setToastError(null);
+    setToastSuccess(null);
+    try {
+      const res = await fetch("/api/admin/nieuwsbrief/test-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, naam: name(row) }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setToastError(data?.error ?? "Test e-mail verzenden mislukt");
+        return;
+      }
+      setToastSuccess(`Test e-mail verzonden naar ${email}`);
+    } finally {
+      setTestingEmailId(null);
     }
   }
 
@@ -331,6 +365,11 @@ export default function AdminNieuwsbriefClient() {
           {toastError}
         </div>
       )}
+      {toastSuccess && (
+        <div className="rounded-lg border px-4 py-3 text-sm border-green-200 bg-green-50 text-green-700">
+          {toastSuccess}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard
@@ -490,7 +529,7 @@ export default function AdminNieuwsbriefClient() {
                           {
                             icon: "📧",
                             label: "Test email",
-                            onClick: () => {},
+                            onClick: () => handleTestEmail(r),
                           },
                           {
                             icon: "⛔",
