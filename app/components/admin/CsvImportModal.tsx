@@ -15,6 +15,8 @@ const PREVIEW_ROWS = 5;
 
 export type CsvColumn = { key: string; label: string };
 
+const SKIP_KEY = "__skip__";
+
 type Props = {
   title: string;
   columns: CsvColumn[];
@@ -25,6 +27,8 @@ type Props = {
   onImported: () => void;
   /** Validate row: return error string or null. Required: naam + email (or email-only for newsletter). */
   validateRow?: (row: Record<string, string>) => string | null;
+  /** Keys that are required (shown with * in mapping dropdown). */
+  requiredKeys?: string[];
 };
 
 function parseCsv(text: string): Record<string, string>[] {
@@ -41,6 +45,20 @@ function parseCsv(text: string): Record<string, string>[] {
     rows.push(row);
   }
   return rows;
+}
+
+function normalizeHeader(h: string): string {
+  return (h ?? "").toLowerCase().replace(/\s+/g, "").replace(/-/g, "");
+}
+
+function suggestMapping(fileHeader: string, columns: CsvColumn[]): string {
+  const n = normalizeHeader(fileHeader);
+  if (!n) return SKIP_KEY;
+  for (const c of columns) {
+    if (normalizeHeader(c.key) === n || normalizeHeader(c.label) === n) return c.key;
+    if (n.includes(normalizeHeader(c.key)) || normalizeHeader(c.key).includes(n)) return c.key;
+  }
+  return SKIP_KEY;
 }
 
 function parseCsvLine(line: string): string[] {
@@ -85,13 +103,30 @@ export default function CsvImportModal({
   onClose,
   onImported,
   validateRow,
+  requiredKeys = [],
 }: Props) {
-  const [step, setStep] = useState<"upload" | "preview" | "result">("upload");
+  const [step, setStep] = useState<"upload" | "mapping" | "preview" | "result">("upload");
   const [file, setFile] = useState<File | null>(null);
   const [rows, setRows] = useState<Record<string, string>[]>([]);
+  const [columnMapping, setColumnMapping] = useState<Record<string, string>>({});
   const [parseError, setParseError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<{ success: number; errors: number; details?: string[] } | null>(null);
+
+  const fileHeaders = rows.length > 0 ? Object.keys(rows[0]) : [];
+
+  const getMappedRows = useCallback((): Record<string, string>[] => {
+    return rows.map((row) => {
+      const out: Record<string, string> = {};
+      for (const [fileCol, targetKey] of Object.entries(columnMapping)) {
+        if (targetKey && targetKey !== SKIP_KEY) out[targetKey] = (row[fileCol] ?? "").trim();
+      }
+      return out;
+    });
+  }, [rows, columnMapping]);
+
+  const mappedRows = step === "preview" || step === "result" ? getMappedRows() : [];
+  const previewHeaderKeys = [...new Set(Object.values(columnMapping).filter((k) => k && k !== SKIP_KEY))];
 
   const handleFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -136,7 +171,11 @@ export default function CsvImportModal({
             setRows([]);
           } else {
             setRows(parsed);
-            setStep("preview");
+            const headers = parsed.length > 0 ? Object.keys(parsed[0]) : [];
+            const initial: Record<string, string> = {};
+            headers.forEach((h) => { initial[h] = suggestMapping(h, columns); });
+            setColumnMapping(initial);
+            setStep("mapping");
           }
         } catch (err) {
           setParseError(err instanceof Error ? err.message : "Excel kon niet worden gelezen");
@@ -155,7 +194,11 @@ export default function CsvImportModal({
             setRows([]);
           } else {
             setRows(parsed);
-            setStep("preview");
+            const headers = parsed.length > 0 ? Object.keys(parsed[0]) : [];
+            const initial: Record<string, string> = {};
+            headers.forEach((h) => { initial[h] = suggestMapping(h, columns); });
+            setColumnMapping(initial);
+            setStep("mapping");
           }
         } catch (err) {
           setParseError(err instanceof Error ? err.message : "CSV kon niet worden gelezen");
@@ -164,7 +207,7 @@ export default function CsvImportModal({
       };
       reader.readAsText(f, "utf-8");
     }
-  }, []);
+  }, [columns]);
 
   const handleDownloadExample = useCallback(() => {
     const blob = new Blob([exampleCsvContent], { type: "text/csv;charset=utf-8;" });
@@ -188,9 +231,10 @@ export default function CsvImportModal({
   const validate = validateRow ?? defaultValidate;
 
   const handleConfirmImport = useCallback(async () => {
-    const invalid = rows.map((r, i) => ({ row: i + 2, err: validate(r) })).filter((x) => x.err != null);
+    const toSend = getMappedRows();
+    const invalid = toSend.map((r, i) => ({ row: i + 2, err: validate(r) })).filter((x) => x.err != null);
     if (invalid.length > 0) {
-      setParseError(`Rij ${invalid[0].row}: ${invalid[0].err}. Corrigeer de CSV.`);
+      setParseError(`Rij ${invalid[0].row}: ${invalid[0].err}. Pas de koppeling of gegevens aan.`);
       return;
     }
     setParseError(null);
@@ -199,11 +243,11 @@ export default function CsvImportModal({
       const res = await fetch(apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rows }),
+        body: JSON.stringify({ rows: toSend }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setResult({ success: 0, errors: rows.length, details: [data.error ?? "Import mislukt"] });
+        setResult({ success: 0, errors: toSend.length, details: [data.error ?? "Import mislukt"] });
       } else {
         setResult({
           success: data.success ?? 0,
@@ -218,17 +262,31 @@ export default function CsvImportModal({
     } catch (err) {
       setResult({
         success: 0,
-        errors: rows.length,
+        errors: toSend.length,
         details: [err instanceof Error ? err.message : "Netwerkfout"],
       });
       setStep("result");
     } finally {
       setImporting(false);
     }
-  }, [rows, apiEndpoint, validate, onImported]);
+  }, [getMappedRows, apiEndpoint, validate, onImported]);
 
-  const headers = columns.map((c) => c.key);
-  const previewRows = rows.slice(0, PREVIEW_ROWS);
+  const resetToUpload = useCallback(() => {
+    setStep("upload");
+    setFile(null);
+    setRows([]);
+    setColumnMapping({});
+    setParseError(null);
+  }, []);
+
+  const dropdownOptions = [
+    { value: SKIP_KEY, label: "Overslaan" },
+    ...columns.map((c) => ({
+      value: c.key,
+      label: c.label + (requiredKeys.includes(c.key) ? " *" : ""),
+    })),
+  ];
+  const previewRows = mappedRows.slice(0, PREVIEW_ROWS);
 
   return (
     <div
@@ -284,6 +342,54 @@ export default function CsvImportModal({
           </>
         )}
 
+        {step === "mapping" && (
+          <>
+            <p className="text-sm mb-3" style={{ color: ADM_MUTED }}>
+              Koppel de kolommen uit je bestand aan de velden. Niet relevante kolommen kun je overslaan.
+            </p>
+            <div className="space-y-2 mb-4 max-h-56 overflow-y-auto">
+              {fileHeaders.map((fileCol) => (
+                <div key={fileCol} className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm shrink-0 min-w-[100px] truncate" style={{ color: ADM_TEXT }} title={fileCol}>
+                    {fileCol}
+                  </span>
+                  <span className="text-xs" style={{ color: ADM_MUTED }}>→</span>
+                  <select
+                    value={columnMapping[fileCol] ?? SKIP_KEY}
+                    onChange={(e) => setColumnMapping((prev) => ({ ...prev, [fileCol]: e.target.value }))}
+                    className="flex-1 min-w-[140px] px-2 py-1.5 rounded border text-sm"
+                    style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                  >
+                    {dropdownOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={resetToUpload}
+                className="px-4 py-2 rounded-lg border text-sm"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                Ander bestand
+              </button>
+              <button
+                type="button"
+                onClick={() => setStep("preview")}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white"
+                style={{ background: ADM_ACCENT }}
+              >
+                Volgende
+              </button>
+            </div>
+          </>
+        )}
+
         {step === "preview" && (
           <>
             {parseError && (
@@ -292,15 +398,15 @@ export default function CsvImportModal({
               </p>
             )}
             <p className="text-sm mb-2" style={{ color: ADM_MUTED }}>
-              Eerste {PREVIEW_ROWS} rijen ({rows.length} totaal):
+              Eerste {PREVIEW_ROWS} rijen ({mappedRows.length} totaal, gemapte kolommen):
             </p>
             <div className="overflow-x-auto border rounded-lg mb-4 max-h-48 overflow-y-auto" style={{ borderColor: ADM_BORDER }}>
               <table className="w-full text-xs">
                 <thead>
                   <tr style={{ color: ADM_MUTED }}>
-                    {headers.map((h) => (
-                      <th key={h} className="text-left p-2 whitespace-nowrap">
-                        {h}
+                    {previewHeaderKeys.map((k) => (
+                      <th key={k} className="text-left p-2 whitespace-nowrap">
+                        {columns.find((c) => c.key === k)?.label ?? k}
                       </th>
                     ))}
                   </tr>
@@ -308,9 +414,9 @@ export default function CsvImportModal({
                 <tbody>
                   {previewRows.map((row, i) => (
                     <tr key={i} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                      {headers.map((h) => (
-                        <td key={h} className="p-2 truncate max-w-[120px]" style={{ color: ADM_TEXT }}>
-                          {row[h] ?? "—"}
+                      {previewHeaderKeys.map((k) => (
+                        <td key={k} className="p-2 truncate max-w-[120px]" style={{ color: ADM_TEXT }}>
+                          {row[k] ?? "—"}
                         </td>
                       ))}
                     </tr>
@@ -321,7 +427,15 @@ export default function CsvImportModal({
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => { setStep("upload"); setFile(null); setRows([]); setParseError(null); }}
+                onClick={() => setStep("mapping")}
+                className="px-4 py-2 rounded-lg border text-sm"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                Terug
+              </button>
+              <button
+                type="button"
+                onClick={resetToUpload}
                 className="px-4 py-2 rounded-lg border text-sm"
                 style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
               >
