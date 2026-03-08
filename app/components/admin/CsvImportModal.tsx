@@ -115,22 +115,35 @@ export default function CsvImportModal({
 
   const fileHeaders = rows.length > 0 ? Object.keys(rows[0]) : [];
 
+  /** Resolve targetKey (may be label or key) to the canonical column key from schema. */
+  const getOutputKey = useCallback(
+    (targetKey: string): string => {
+      const found = columns.find((c) => c.key === targetKey || c.label === targetKey);
+      return found ? found.key : targetKey;
+    },
+    [columns]
+  );
+
   const getMappedRows = useCallback((): Record<string, string>[] => {
     return rows.map((row) => {
       const out: Record<string, string> = {};
-      for (const [fileCol, targetKey] of Object.entries(columnMapping)) {
-        if (targetKey && targetKey !== SKIP_KEY) {
-          const normalizedKey =
-            targetKey.toLowerCase() === "e-mail" || targetKey.toLowerCase() === "email" ? "email" : targetKey;
-          out[normalizedKey] = (row[fileCol] ?? "").trim();
-        }
+      for (const [fileHeader, targetKey] of Object.entries(columnMapping)) {
+        if (!targetKey || targetKey === SKIP_KEY) continue;
+        const outputKey = getOutputKey(targetKey);
+        out[outputKey] = (row[fileHeader] ?? "").trim();
       }
       return out;
     });
-  }, [rows, columnMapping]);
+  }, [rows, columnMapping, getOutputKey]);
 
   const mappedRows = step === "preview" || step === "result" ? getMappedRows() : [];
-  const previewHeaderKeys = [...new Set(Object.values(columnMapping).filter((k) => k && k !== SKIP_KEY))];
+  const previewHeaderKeys = [
+    ...new Set(
+      Object.values(columnMapping)
+        .filter((k) => k && k !== SKIP_KEY)
+        .map((k) => getOutputKey(k))
+    ),
+  ];
 
   const handleFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -238,8 +251,11 @@ export default function CsvImportModal({
     const toSend = getMappedRows();
     const invalid = toSend
       .map((r, i) => {
-        console.log("validating row:", r);
-        return { row: i + 2, err: validate(r) };
+        const mappedRow = r;
+        console.log("validating mapped row:", JSON.stringify(mappedRow));
+        console.log("checking email field:", mappedRow["email"]);
+        console.log("all keys:", Object.keys(mappedRow));
+        return { row: i + 2, err: validate(mappedRow) };
       })
       .filter((x) => x.err != null);
     if (invalid.length > 0) {
