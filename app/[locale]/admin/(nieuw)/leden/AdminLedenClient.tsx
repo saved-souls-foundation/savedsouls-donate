@@ -268,6 +268,7 @@ export default function AdminLedenClient() {
           exampleCsvContent={`voornaam,achternaam,email,telefoon,geboortedatum,lid_sinds,notities\nJan,Jansen,jan@example.com,0612345678,1985-03-15,2024-01-01,Lid sinds 2024\nMarie,Pieters,marie@example.com,,,2024-06-01,`}
           exampleFilename="leden-voorbeeld.csv"
           apiEndpoint="/api/admin/members/import"
+          requiredKeys={["voornaam", "achternaam", "email"]}
           onClose={() => setCsvImportOpen(false)}
           onImported={() => { setCsvImportOpen(false); fetchMembers(); }}
           validateRow={(row) => {

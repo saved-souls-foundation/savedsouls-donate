@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
     const { voornaam, achternaam } = splitNaam(naam);
     const taal = (r.taal ?? "").trim().toLowerCase();
     const language = LANG_VALUES.includes(taal as (typeof LANG_VALUES)[number]) ? (taal as (typeof LANG_VALUES)[number]) : "nl";
-    const datumAangemeld = (r.datum_aangemeld ?? "").trim() || null;
+    const datumAangemeldRaw = (r.datum_aangemeld ?? "").trim() || (r.aangemeld_op ?? "").trim() || new Date().toISOString().split("T")[0];
+    const datumAangemeld = datumAangemeldRaw.includes("T") ? datumAangemeldRaw : `${datumAangemeldRaw}T12:00:00Z`;
     const actiefStr = (r.actief ?? "true").trim().toLowerCase();
     const actief = actiefStr === "false" || actiefStr === "0" || actiefStr === "nee" ? false : true;
 
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
           achternaam,
           language,
           actief,
-          ...(datumAangemeld && { aangemeld_op: datumAangemeld.includes("T") ? datumAangemeld : `${datumAangemeld}T12:00:00Z` }),
+          aangemeld_op: datumAangemeld,
         })
         .eq("id", existing.id);
       success++;
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
           language,
           actief,
           unsubscribe_token,
-          aangemeld_op: datumAangemeld && (datumAangemeld.includes("T") ? datumAangemeld : `${datumAangemeld}T12:00:00Z`),
+          aangemeld_op: datumAangemeld,
         });
       if (insertErr) {
         details.push(`Rij ${i + 2}: ${insertErr.message}`);
