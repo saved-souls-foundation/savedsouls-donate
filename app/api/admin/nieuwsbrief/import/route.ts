@@ -50,9 +50,15 @@ export async function POST(request: NextRequest) {
     }
     const naam = (r.naam ?? "").trim();
     const { voornaam, achternaam } = splitNaam(naam);
-    const taal = (r.taal ?? "").trim().toLowerCase();
+    const taal = (r.taal ?? r.language ?? "").trim().toLowerCase();
     const language = LANG_VALUES.includes(taal as (typeof LANG_VALUES)[number]) ? (taal as (typeof LANG_VALUES)[number]) : "nl";
-    const datumAangemeldRaw = (r.datum_aangemeld ?? "").trim() || (r.aangemeld_op ?? "").trim() || new Date().toISOString().split("T")[0];
+    const datumAangemeldRaw =
+      (r.datum_aangemeld ?? "").trim() ||
+      (r.aangemeld_op ?? "").trim() ||
+      (r.datum ?? "").trim() ||
+      (r.date ?? "").trim() ||
+      (r.aangemeld ?? "").trim() ||
+      new Date().toISOString().split("T")[0];
     const datumAangemeld = datumAangemeldRaw.includes("T") ? datumAangemeldRaw : `${datumAangemeldRaw}T12:00:00Z`;
     const actiefStr = (r.actief ?? "true").trim().toLowerCase();
     const actief = actiefStr === "false" || actiefStr === "0" || actiefStr === "nee" ? false : true;

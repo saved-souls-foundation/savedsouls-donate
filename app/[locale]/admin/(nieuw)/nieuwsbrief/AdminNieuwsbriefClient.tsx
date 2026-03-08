@@ -21,6 +21,7 @@ type SubscriberRow = {
   email: string | null;
   voornaam: string | null;
   achternaam: string | null;
+  naam?: string | null;
   type: string | null;
   language: string | null;
   actief: boolean;
@@ -228,7 +229,8 @@ export default function AdminNieuwsbriefClient() {
   }
 
   function name(row: SubscriberRow) {
-    return [row.voornaam, row.achternaam].filter(Boolean).join(" ").trim() || noVal;
+    const volledigeNaam = [row.voornaam, row.achternaam].filter(Boolean).join(" ").trim();
+    return volledigeNaam || row.naam ?? noVal;
   }
   function taalVlag(taal: string | null) {
     if (!taal) return "🌐";
