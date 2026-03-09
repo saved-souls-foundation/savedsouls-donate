@@ -44,22 +44,21 @@ Je mag alleen **verzenden vanaf** een adres op dat domein (bijv. `info@savedsoul
 Als de **auto-reply** wél aankomt bij de bezoeker maar de **notificatiemail** (naar info@savedsouls-foundation.com) niet bij jullie forwarder aankomt:
 
 - Resend **verstuurt** de mail naar info@…; waar die mail **aankomt** wordt bepaald door de **MX-records** van savedsouls-foundation.com.
-- In **Porkbun** moet **ontvangen** van mail voor dat domein goed staan:
-  1. **MX-records** voor `savedsouls-foundation.com` moeten wijzen naar de mailservers die de post ontvangen (bijv. Porkbun’s eigen servers als je daar forwarding gebruikt). Zonder juiste MX komt binnenkomende mail niet bij Porkbun.
-  2. **Forwarder** instellen: info@savedsouls-foundation.com → jullie Gmail (of ander eindadres).
+- **Huidige setup in Porkbun:** MX voor `@` (root) → `inbound-smtp.eu-west-1.amazonaws.com` met prioriteit 9 (Resend Inbound). Binnenkomende mail voor info@ komt zo bij Resend binnen en wordt via de webhook in het E-mailassistent-dashboard getoond.
+- Voor forwarding: **Forwarder** instellen in Porkbun (info@savedsouls-foundation.com → Gmail of ander eindadres), of ontvangen via Resend Inbound + webhook.
 
-Porkbun-docs: Email Forwarding en MX-records voor het domein. Zodra MX naar de juiste ontvangende server wijst en de forwarder aan staat, zou de notificatiemail bij de forwarder binnen moeten komen.
+Porkbun-docs: Email Forwarding en MX-records voor het domein.
 
-## DMARC (aanbevolen voor betere levering)
+## DMARC (huidige setup in Porkbun)
 
-In Porkbun: DNS voor savedsouls-foundation.com → TXT-record voor host `_dmarc` aanpassen.
+In Porkbun staat voor savedsouls-foundation.com een TXT-record voor host `_dmarc`:
 
-**Aanbevolen waarde (quarantine i.p.v. none):**
+**Huidige waarde (correct):**
 ```text
-v=DMARC1; p=quarantine; rua=mailto:info@savedsouls-foundation.com
+v=DMARC1; p=none; rua=mailto:info@savedsouls-foundation.com
 ```
 
-- `p=quarantine` – mail die DMARC faalt komt in spam/quarantine (beter voor reputatie dan `p=none`).
+- `p=none` – alleen rapporten, geen actie op falende mail. **Belangrijk:** Met `p=quarantine` kwamen mails niet aan bij Outlook/Hotmail. **Verander DMARC nooit terug naar `p=quarantine`** zonder expliciete instructie.
 - `rua=` – rapporten gaan naar info@.com.
 
 ## Environment variables (Vercel)
@@ -82,16 +81,14 @@ Om inkomende e-mail in het admin-dashboard (E-mailassistent) te tonen:
 
 ### Directe mail naar info@ komt niet in het dashboard
 
-Als de MX-record voor savedsouls-foundation.com naar een andere server wijst (bijv. `inbound-smtp.eu-west-1.amazonaws.com`) en je krijgt "Relay access denied" of mail naar info@ verschijnt niet in de E-mailassistent: gebruik **Resend Inbound** voor je eigen domein. Vervang de MX bij je DNS-provider (Porkbun) door het MX-record dat Resend toont wanneer je het domein bij Resend → Inbound toevoegt. Zie **docs/RESEND-INBOUND-SETUP.md**, sectie "Directe mail naar info@savedsouls-foundation.com in het dashboard".
+**Huidige setup:** MX voor savedsouls-foundation.com (host `@`) staat in Porkbun op `inbound-smtp.eu-west-1.amazonaws.com` met prioriteit 9 (Resend Inbound). Mail naar info@ komt daarmee bij Resend binnen en verschijnt in de E-mailassistent. Als je ooit "Relay access denied" ziet of mail niet in het dashboard: controleer of dit MX-record nog correct staat. Zie **docs/RESEND-INBOUND-SETUP.md** en **docs/EMAIL-DNS-PORKBUN-OUTLOOK.md**.
 
 ## 554 5.7.1 Relay access denied
 
 Als je de fout **"554 5.7.1 : Relay access denied"** of **"Bericht niet bezorgd … externe server onjuist geconfigureerd"** ziet:
 
 - De **ontvangende server** (bijv. Gmail, of de server van info@savedsouls-foundation.com) weigert de mail omdat het **afzenderdomein** niet goed is geautoriseerd.
-- **Oplossing:** Zorg dat voor **savedsouls-foundation.com** de DNS-records kloppen die Resend toont onder **Domains**:
-  - **SPF** en **DKIM** moeten correct zijn ingesteld bij je domeinprovider.
-  - In Resend → **Domains** → savedsouls-foundation.com moet de status **Verified** zijn.
+- **Oplossing:** Zorg dat voor **savedsouls-foundation.com** de DNS-records kloppen. **Huidige correcte setup in Porkbun:** SPF (root) `v=spf1 include:amazonses.com include:_spf.porkbun.com include:resend.com ~all`, DKIM `resend._domainkey` geverifieerd via Resend, DMARC `_dmarc` met `p=none`. Zie **docs/EMAIL-DNS-PORKBUN-OUTLOOK.md**. In Resend → **Domains** → savedsouls-foundation.com moet de status **Verified** zijn.
 - Verstuur je **naar** een eigen adres (bijv. info@savedsouls-foundation.com) en ontvang je via een forward (bijv. Porkbun → Gmail), dan moet ook de **ontvangende** kant (MX/forward) mail van Resend toestaan; soms blokkeert een hoster “relay” van externe verzenders. Controleer dan bij die provider of er restricties zijn voor inkomende mail.
 
 ### Versturen naar info@ of andere ontvanger (554 of niet aangekomen)
@@ -102,7 +99,7 @@ Als je de fout **"554 5.7.1 : Relay access denied"** of **"Bericht niet bezorgd 
 **Oplossing (geen workaround):**
 
 1. **Resend-domein in orde** – In Resend → **Domains** → savedsouls-foundation.com moet **Verified** staan. SPF en DKIM in DNS (bij je domeinprovider) moeten exact overeenkomen met wat Resend toont. Dan vertrouwen ontvangers (o.a. Gmail) de afzender.
-2. **Als 554 bij een specifieke ontvanger** – De server van die ontvanger (bijv. Gmail) weigert de mail. Meestal door SPF/DKIM: controleer opnieuw Resend Domains en DNS. Soms helpt een **DMARC**-record (TXT voor `_dmarc.savedsouls-foundation.com`); zie eerder in dit document.
+2. **Als 554 bij een specifieke ontvanger** – De server van die ontvanger (bijv. Gmail) weigert de mail. Meestal door SPF/DKIM: controleer opnieuw Resend Domains en DNS. DMARC staat op `p=none` (zie eerder in dit document); wijzig dit niet naar `p=quarantine` – dat veroorzaakte niet-aankomen bij Outlook/Hotmail.
 3. **Als de ontvanger bij Porkbun staat** – Mail uit het dashboard die bij Porkbun aankomt is goed. Ontvangt een ander adres (bijv. Gmail) de mail niet, dan ligt het aan authenticatie (punt 1) of aan de ontvangende partij (spamfilter, policy). Geen tijdelijke workaround nodig als Resend Verified is en DNS klopt; dan horen Gmail en andere providers de mail te accepteren.
 
 ## sent_emails-log mislukt (PGRST204 / body_preview)

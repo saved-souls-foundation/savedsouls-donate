@@ -102,4 +102,6 @@ Beide gebruiken dezelfde `analyzeIncomingEmail`-functie (waarschijnlijk Claude/A
   - In `incoming_emails`: optioneel `parent_incoming_id` of `reply_to_sent_id` toevoegen (migratie).  
   - In `app/api/webhooks/resend/route.ts`: bij nieuwe inkomende mail headers `In-Reply-To` / `References` (en evt. opgeslagen Message-Ids in `sent_emails`) gebruiken om de nieuwe rij te koppelen aan de juiste eerdere mail; daarna in het dashboard een “conversatie”-view bouwen die op dit veld filtert/grouped.
 
-Geen AWS nodig; Resend + bestaande webhook + Supabase volstaan. DNS: alleen wat Resend voor het domein vraagt (MX voor Inbound; SPF/DKIM voor verzenden).
+Geen AWS nodig; Resend + bestaande webhook + Supabase volstaan.
+
+**DNS (Porkbun, huidige situatie):** Zie **docs/EMAIL-DNS-PORKBUN-OUTLOOK.md** voor de actuele records. Kort: SPF op root (`include:amazonses.com`, `include:_spf.porkbun.com`, `include:resend.com`), DKIM `resend._domainkey` (geverifieerd via Resend), DMARC `_dmarc` met **p=none** (niet wijzigen naar p=quarantine – dat brak levering naar Outlook/Hotmail), MX voor inbound: `@` → `inbound-smtp.eu-west-1.amazonaws.com` prioriteit 9.
