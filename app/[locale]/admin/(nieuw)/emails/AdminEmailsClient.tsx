@@ -357,6 +357,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       fetchList();
       if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), sentToday: stats.sentToday + 1 });
       setSentSuccess(true);
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch {
       setToastError(t("saveError"));
     } finally {
@@ -375,6 +376,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       setSelectedEmail(null);
       setReplyText("");
       setAiSuggestion("");
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch {
       setToastError(t("saveError"));
     } finally {
@@ -419,6 +421,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       setData((prev) => prev.filter((r) => r.id !== id));
       setTotal((prev) => Math.max(0, prev - 1));
       fetchStats();
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch (err) {
       setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
     } finally {
@@ -457,6 +460,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       setTotal((prev) => Math.max(0, prev - deletedSet.size));
       setSelectedIds(new Set());
       fetchStats();
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch (err) {
       setToastError(err instanceof Error ? err.message : "Verwijderen mislukt");
     } finally {
@@ -865,6 +869,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
                         setSentSuccess(true);
                         fetchList();
                         router.refresh();
+                        window.dispatchEvent(new CustomEvent("admin-emails-updated"));
                       }}
                       initialTo={selectedEmail.van_email ?? ""}
                       initialSubject={`RE: ${selectedEmail.onderwerp ?? "Your message"}`}
@@ -1093,6 +1098,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
             setComposeOpen(false);
             fetchList();
             router.refresh();
+            window.dispatchEvent(new CustomEvent("admin-emails-updated"));
           }}
         />
       )}

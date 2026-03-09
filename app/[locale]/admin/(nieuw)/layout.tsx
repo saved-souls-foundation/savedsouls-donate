@@ -26,9 +26,10 @@ export default async function AdminNieuwLayout({
     } catch {
       aantalDieren = 0;
     }
-    const baseCount = admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling");
-    const baseList = admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").order("ontvangen_op", { ascending: false }).limit(3);
-    const [countRes, listRes] = await Promise.all([baseCount.eq("gelezen", false), baseList.eq("gelezen", false)]);
+    // Zelfde definitie als Onbeantwoord-tab: in_behandeling, nog niet beantwoord, niet door AI verstuurd
+    const onbeantwoordCount = admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
+    const onbeantwoordList = admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false").order("ontvangen_op", { ascending: false }).limit(3);
+    const [countRes, listRes] = await Promise.all([onbeantwoordCount, onbeantwoordList]);
     if (!countRes.error && !listRes.error) {
       pendingEmailsCount = countRes.count ?? 0;
       recentUnreadEmails = (listRes.data ?? []).map((r) => ({
@@ -39,17 +40,17 @@ export default async function AdminNieuwLayout({
         ontvangen_op: r.ontvangen_op,
       }));
     } else {
-      const { count } = await admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling");
+      const { count } = await admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
       pendingEmailsCount = count ?? 0;
-      const { data: rows } = await admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").order("ontvangen_op", { ascending: false }).limit(3);
+      const { data: rows } = await admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false").order("ontvangen_op", { ascending: false }).limit(3);
       recentUnreadEmails = (rows ?? []).map((r) => ({ id: r.id, onderwerp: r.onderwerp ?? null, van_email: r.van_email ?? null, van_naam: r.van_naam ?? null, ontvangen_op: r.ontvangen_op }));
     }
   } catch {
     try {
       const admin = createAdminClient();
-      const { count } = await admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling");
+      const { count } = await admin.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
       pendingEmailsCount = count ?? 0;
-      const { data: rows } = await admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").order("ontvangen_op", { ascending: false }).limit(3);
+      const { data: rows } = await admin.from("incoming_emails").select("id, onderwerp, van_email, van_naam, ontvangen_op").eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false").order("ontvangen_op", { ascending: false }).limit(3);
       recentUnreadEmails = (rows ?? []).map((r) => ({ id: r.id, onderwerp: r.onderwerp ?? null, van_email: r.van_email ?? null, van_naam: r.van_naam ?? null, ontvangen_op: r.ontvangen_op }));
     } catch {
       recentUnreadEmails = [];

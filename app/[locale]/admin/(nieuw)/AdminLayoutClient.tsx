@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
@@ -159,6 +159,26 @@ function NotificationBell({ locale, count, recentUnread }: { locale: string; cou
   );
 }
 
+const ADMIN_EMAILS_UPDATED = "admin-emails-updated";
+
+async function fetchOnbeantwoordNotification(): Promise<{ count: number; recent: UnreadEmail[] }> {
+  const [statsRes, listRes] = await Promise.all([
+    fetch("/api/admin/emails/stats"),
+    fetch("/api/admin/emails?status=onbeantwoord&limit=3"),
+  ]);
+  const count = statsRes.ok ? ((await statsRes.json().catch(() => ({}))).onbeantwoord ?? 0) : 0;
+  const listData = listRes.ok ? await listRes.json().catch(() => ({})) : {};
+  const rows = Array.isArray(listData.data) ? listData.data : [];
+  const recent: UnreadEmail[] = rows.map((r: { id: string; onderwerp?: string | null; van_email?: string | null; van_naam?: string | null; ontvangen_op?: string }) => ({
+    id: r.id,
+    onderwerp: r.onderwerp ?? null,
+    van_email: r.van_email ?? null,
+    van_naam: r.van_naam ?? null,
+    ontvangen_op: r.ontvangen_op ?? "",
+  }));
+  return { count, recent };
+}
+
 export default function AdminLayoutClient({
   children,
   pendingEmailsCount = 0,
@@ -176,7 +196,26 @@ export default function AdminLayoutClient({
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [bellCount, setBellCount] = useState<number | null>(null);
+  const [bellRecent, setBellRecent] = useState<UnreadEmail[] | null>(null);
   const isLogin = pathname?.endsWith("/admin/login") ?? false;
+
+  const refreshNotification = useCallback(() => {
+    fetchOnbeantwoordNotification().then(({ count, recent }) => {
+      setBellCount(count);
+      setBellRecent(recent);
+    });
+  }, []);
+
+  useEffect(() => {
+    refreshNotification();
+  }, [refreshNotification]);
+
+  useEffect(() => {
+    const handler = () => refreshNotification();
+    window.addEventListener(ADMIN_EMAILS_UPDATED, handler);
+    return () => window.removeEventListener(ADMIN_EMAILS_UPDATED, handler);
+  }, [refreshNotification]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -228,7 +267,7 @@ export default function AdminLayoutClient({
               </kbd>
             </button>
             <div className="shrink-0 ml-3 w-10 flex items-center justify-center">
-              <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+              <NotificationBell locale={locale} count={bellCount ?? pendingEmailsCount} recentUnread={bellRecent ?? recentUnreadEmails} />
             </div>
           </div>
         </div>
@@ -317,7 +356,7 @@ export default function AdminLayoutClient({
           isActive={pathname?.includes("admin/emails") ?? false}
           locale={locale}
           onClick={() => setMobileOpen(false)}
-          badge={pendingEmailsCount}
+          badge={bellCount ?? pendingEmailsCount}
         />
         <NavLink
           href="/admin/sociale-media"
@@ -419,7 +458,7 @@ export default function AdminLayoutClient({
             <span className="text-lg">🔍</span>
           </button>
           <div className="shrink-0">
-            <NotificationBell locale={locale} count={pendingEmailsCount} recentUnread={recentUnreadEmails} />
+            <NotificationBell locale={locale} count={bellCount ?? pendingEmailsCount} recentUnread={bellRecent ?? recentUnreadEmails} />
           </div>
         </div>
       </header>

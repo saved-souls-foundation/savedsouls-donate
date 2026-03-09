@@ -69,7 +69,7 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
     withTimeout(Promise.resolve(supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true))),
     withTimeout(
       Promise.resolve(
-        supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").eq("gelezen", false)
+        supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false")
       )
     ).catch(() => ({ count: 0 })),
     withTimeout(
@@ -78,7 +78,8 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
           .from("incoming_emails")
           .select("id, onderwerp, van_email, van_naam, ontvangen_op, ai_categorie")
           .eq("status", "in_behandeling")
-          .eq("gelezen", false)
+          .is("beantwoord_op", null)
+          .or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false")
           .order("ontvangen_op", { ascending: false })
           .limit(3)
       )

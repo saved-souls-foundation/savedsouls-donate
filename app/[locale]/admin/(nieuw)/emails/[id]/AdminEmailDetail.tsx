@@ -150,6 +150,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
       setEmail((prev) => prev ? { ...prev, status: "verstuurd" } : null);
       setShowEdit(false);
       setToast({ type: "success", text: t("toastSuccess") });
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch {
       setError(t("saveError"));
       setToast({ type: "error", text: t("saveError") });
@@ -166,6 +167,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
       if (!res.ok) throw new Error();
       setEmail((prev) => prev ? { ...prev, status: "geneigeerd" } : null);
       setToast({ type: "success", text: t("toastSuccess") });
+      window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch {
       setToast({ type: "error", text: t("saveError") });
     } finally {
