@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  let success = 0;
+  let updated = 0;
+  let inserted = 0;
   const details: string[] = [];
 
   for (let i = 0; i < rows.length; i++) {
@@ -63,16 +64,25 @@ export async function POST(request: NextRequest) {
       .from("profiles")
       .select("id")
       .eq("email", email)
-      .eq("role", "adoptant")
-      .or("verwijderd.eq.false,verwijderd.is.null")
       .maybeSingle();
 
     if (existing) {
-      await admin!
+      const { error: updateErr } = await admin!
         .from("profiles")
-        .update({ voornaam, achternaam, notities, updated_at: new Date().toISOString() })
+        .update({
+          voornaam,
+          achternaam,
+          notities,
+          role: "adoptant",
+          verwijderd: false,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", existing.id);
-      success++;
+      if (updateErr) {
+        details.push(`Rij ${i + 2}: ${updateErr.message}`);
+        continue;
+      }
+      updated++;
     } else {
       const id = crypto.randomUUID();
       const { error: insertErr } = await admin!
@@ -88,16 +98,14 @@ export async function POST(request: NextRequest) {
           aangemeld_op: new Date().toISOString(),
         });
       if (insertErr) {
-        if (insertErr.code === "23505") {
-          details.push(`Rij ${i + 2}: E-mail bestaat al`);
-        } else {
-          details.push(`Rij ${i + 2}: ${insertErr.message}`);
-        }
+        details.push(`Rij ${i + 2}: ${insertErr.message}`);
         continue;
       }
-      success++;
+      inserted++;
     }
   }
 
-  return NextResponse.json({ success, errors: rows.length - success, details });
+  const success = updated + inserted;
+  const message = `${success} succesvol geïmporteerd (waarvan ${updated} updates, ${inserted} nieuw)`;
+  return NextResponse.json({ success, errors: rows.length - success, details, updated, inserted, message });
 }

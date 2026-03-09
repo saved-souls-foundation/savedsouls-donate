@@ -60,12 +60,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   const { data: { user } } = await supabase!.auth.getUser();
+  const now = new Date().toISOString();
   const { error: updateErr } = await supabase!
     .from("incoming_emails")
     .update({
       status: "verstuurd",
+      beantwoord_op: now,
       verwerkt_door: user?.id ?? null,
-      verwerkt_op: new Date().toISOString(),
+      verwerkt_op: now,
     })
     .eq("id", id);
 

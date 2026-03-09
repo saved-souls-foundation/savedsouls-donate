@@ -186,6 +186,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  console.log("[email-processor] Auto-reply gestart voor email", emailId);
   const admin = createAdminClient();
   const { data: email, error: fetchError } = await admin
     .from("incoming_emails")
@@ -194,12 +195,14 @@ export async function POST(request: NextRequest) {
     .maybeSingle();
 
   if (fetchError) {
+    console.error("[email-processor] Fout:", fetchError.message);
     return NextResponse.json(
       { error: fetchError.message },
       { status: 500 }
     );
   }
   if (!email) {
+    console.error("[email-processor] Fout: Email not found", emailId);
     return NextResponse.json(
       { error: "Email not found" },
       { status: 404 }
@@ -224,9 +227,10 @@ export async function POST(request: NextRequest) {
       taskName: "email-classify",
     });
   } catch (e) {
-    console.error("[email-processor] classify error:", e);
+    const errMsg = e instanceof Error ? e.message : String(e);
+    console.error("[email-processor] Fout:", errMsg);
     return NextResponse.json(
-      { error: e instanceof Error ? e.message : "Classify failed" },
+      { error: errMsg },
       { status: 500 }
     );
   }
@@ -266,7 +270,7 @@ Schrijf in taal: ${language}. Sjabloon (stijlgids): ${templateText}`;
       });
       usedTemplate = true;
     } catch (e) {
-      console.error("[email-processor] template adapt error:", e);
+      console.error("[email-processor] Fout (template adapt):", e instanceof Error ? e.message : e);
       suggestedReply = templateText;
       usedTemplate = true;
     }
@@ -281,9 +285,10 @@ Schrijf in taal: ${language}. Sjabloon (stijlgids): ${templateText}`;
         }
       );
     } catch (e) {
-      console.error("[email-processor] reply error:", e);
+      const errMsg = e instanceof Error ? e.message : "Reply generation failed";
+      console.error("[email-processor] Fout:", errMsg);
       return NextResponse.json(
-        { error: e instanceof Error ? e.message : "Reply generation failed" },
+        { error: errMsg },
         { status: 500 }
       );
     }
@@ -336,36 +341,43 @@ Schrijf in taal: ${language}. Sjabloon (stijlgids): ${templateText}`;
     });
     console.log("sendMail result:", JSON.stringify(result));
     if (result.success) {
-      try {
-        await admin
-          .from("incoming_emails")
-          .update({
-            status: "verstuurd",
-            beantwoord_op: new Date().toISOString(),
-            ai_processed_at: new Date().toISOString(),
-            ai_automatisch_verstuurd: true,
-            verwerkt_op: new Date().toISOString(),
-          } as Record<string, unknown>)
-          .eq("id", emailId);
-      } catch (e) {
-        console.error("[email-processor] update beantwoord_op failed (migration needed?):", e);
+      const { error: updateErr } = await admin
+        .from("incoming_emails")
+        .update({
+          status: "verstuurd",
+          beantwoord_op: new Date().toISOString(),
+          ai_processed_at: new Date().toISOString(),
+          ai_automatisch_verstuurd: true,
+          verwerkt_op: new Date().toISOString(),
+        } as Record<string, unknown>)
+        .eq("id", emailId);
+      if (updateErr) {
+        console.error("[email-processor] Fout: status update mislukt:", updateErr.message);
       }
-      await admin.from("ai_usage_log").insert({
+      try {
+        await admin.from("ai_usage_log").insert({
         model: "resend",
         input_tokens: 0,
         output_tokens: 0,
         task: "email-sent",
         estimated_cost_usd: null,
       });
+      } catch (logErr) {
+        console.error("[email-processor] ai_usage_log insert failed:", logErr);
+      }
     } else {
-      console.error("[email-processor] sendMail failed (AI processing still marked success):", result.error);
-      await admin.from("ai_usage_log").insert({
+      console.error("[email-processor] Fout: sendMail failed:", result.error);
+      try {
+        await admin.from("ai_usage_log").insert({
         model: "resend",
         input_tokens: 0,
         output_tokens: 0,
         task: "email-send-failed",
         estimated_cost_usd: null,
       });
+      } catch (logErr) {
+        console.error("[email-processor] ai_usage_log insert failed:", logErr);
+      }
     }
   }
 

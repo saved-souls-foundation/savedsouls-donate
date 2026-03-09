@@ -84,12 +84,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (incoming_email_id) {
+      const now = new Date().toISOString();
       await admin
         .from("incoming_emails")
         .update({
           status: "verstuurd",
+          beantwoord_op: now,
           verwerkt_door: verwerktDoor,
-          verwerkt_op: new Date().toISOString(),
+          verwerkt_op: now,
         })
         .eq("id", incoming_email_id);
     }

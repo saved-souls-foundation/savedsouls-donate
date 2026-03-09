@@ -111,7 +111,7 @@ export default function CsvImportModal({
   const [columnMapping, setColumnMapping] = useState<Record<string, string>>({});
   const [parseError, setParseError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
-  const [result, setResult] = useState<{ success: number; errors: number; details?: string[] } | null>(null);
+  const [result, setResult] = useState<{ success: number; errors: number; details?: string[]; message?: string } | null>(null);
 
   const fileHeaders = rows.length > 0 ? Object.keys(rows[0]) : [];
 
@@ -278,6 +278,7 @@ export default function CsvImportModal({
           success: data.success ?? 0,
           errors: data.errors ?? 0,
           details: data.details,
+          message: data.message,
         });
         if ((data.success ?? 0) > 0) {
           onImported();
@@ -482,7 +483,11 @@ export default function CsvImportModal({
         {step === "result" && result && (
           <>
             <p className="text-sm mb-2" style={{ color: ADM_TEXT }}>
-              <strong>{result.success}</strong> succesvol geïmporteerd, <strong>{result.errors}</strong> fouten.
+              {result.message ?? (
+                <>
+                  <strong>{result.success}</strong> succesvol geïmporteerd, <strong>{result.errors}</strong> fouten.
+                </>
+              )}
             </p>
             {result.details && result.details.length > 0 && (
               <ul className="text-xs mb-4 list-disc pl-4 max-h-32 overflow-y-auto" style={{ color: ADM_MUTED }}>
