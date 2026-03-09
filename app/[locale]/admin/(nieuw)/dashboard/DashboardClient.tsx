@@ -212,7 +212,7 @@ export function DashboardClient({
   ];
 
   const attentionItemsA: { icon: string; label: string; count: number; href: string }[] = [
-    { icon: "📬", label: "Openstaande e-mails", count: attention.pendingEmails, href: "/admin/emails" },
+    { icon: "📬", label: "Openstaande e-mails", count: attention.pendingEmails, href: "/admin/emails?tab=onbeantwoord" },
   ];
 
   const dayPart = getDayPart();
@@ -220,7 +220,7 @@ export function DashboardClient({
   const greeting = userName ? `${greetingKey} ${userName} 👋` : `${greetingKey} 👋`;
   const firstAttentionHref =
     recenteEmails.length > 0
-      ? "/admin/emails"
+      ? "/admin/emails?tab=onbeantwoord"
       : verlopendeSponsorcontracten.length > 0
         ? `/admin/sponsoren/${verlopendeSponsorcontracten[0].id}`
         : aantalOpenAdopties > 0
@@ -255,9 +255,9 @@ export function DashboardClient({
         </div>
       </div>
 
-      {/* 2 — Mail (Recente emails); hele kaart klikbaar → /admin/emails */}
+      {/* 2 — Mail (Recente emails); hele kaart klikbaar → Onbeantwoord-tab */}
       <Link
-        href="/admin/emails"
+        href="/admin/emails?tab=onbeantwoord"
         className="block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px] cursor-pointer hover:bg-stone-50 transition-colors"
       >
         <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 flex items-center justify-between">
@@ -359,7 +359,7 @@ export function DashboardClient({
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
         {[
           { icon: "🐾", label: "Dier toevoegen", sub: "Nieuw dier registreren", href: "/admin/dieren/nieuw" },
-          { icon: "📧", label: "Emails beantwoorden", sub: "Inbox bekijken", href: "/admin/emails" },
+          { icon: "📧", label: "Emails beantwoorden", sub: "Inbox bekijken", href: "/admin/emails?tab=onbeantwoord" },
           { icon: "💰", label: "Donateur toevoegen", sub: "Nieuwe donatie", href: "/admin/donateurs" },
           { icon: "🏠", label: "Adoptie verwerken", sub: "Aanvragen bekijken", href: "/admin/adoptanten" },
           { icon: "📅", label: "Rooster bekijken", sub: "Vrijwilligers plannen", href: "/admin/rooster" },
