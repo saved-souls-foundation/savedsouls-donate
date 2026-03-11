@@ -7,9 +7,11 @@
     "ariaLabel": "Consentement cookies"
   },
   "turnstile": {
-    "errorBeforeEmail": "La vérification de sécurité n'a pas pu être chargée (Cloudflare). Réessayez, désactivez les bloqueurs de publicité ou contactez-nous à ",
-    "errorAfterEmail": ".",
-    "retryButton": "Réessayer la vérification de sécurité"
+    "label": "Security check",
+    "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
+    "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
+    "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
+    "retryButton": "Retry security check"
   },
   "seo": {
     "title": "SavedSouls Foundation — Sauvetage Animal Thaïlande",
@@ -1763,6 +1765,7 @@
     "amount": "Montant",
     "customAmount": "Autre montant",
     "payWithPaypal": "Payer avec PayPal",
+    "monthlyDescription": "Donnez une fois ou configurez un don mensuel via PayPal.",
     "thankYou": "Merci beaucoup pour votre don !",
     "thankYouBody": "Votre contribution fait une différence directe pour nos animaux.",
     "chooseAmount": "Veuillez choisir un montant.",

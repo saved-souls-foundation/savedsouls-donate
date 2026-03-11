@@ -7,9 +7,11 @@
     "ariaLabel": "Consentimiento de cookies"
   },
   "turnstile": {
-    "errorBeforeEmail": "No se pudo cargar la comprobación de seguridad (Cloudflare). Inténtelo de nuevo, desactive los bloqueadores de anuncios o contáctenos en ",
-    "errorAfterEmail": ".",
-    "retryButton": "Reintentar comprobación de seguridad"
+    "label": "Security check",
+    "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
+    "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
+    "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
+    "retryButton": "Retry security check"
   },
   "seo": {
     "title": "SavedSouls Foundation — Rescate Animal Tailandia",
@@ -899,6 +901,32 @@
     "menuOpen": "Abrir menú",
     "menuClose": "Cerrar menú"
   },
+  "contactPage": {
+    "title": "Contacto",
+    "subtitle": "¿Preguntas generales, visita o adopción? Contáctanos.",
+    "openingHours": "Horario: 13:30 – 15:30. Ponte en contacto para concertar una cita.",
+    "emailHeading": "Correo electrónico",
+    "emailLinkBefore": "Para consultas generales o usa el ",
+    "emailLinkLabel": "formulario de contacto en nuestra página principal",
+    "emailLinkAfter": ".",
+    "phoneHeading": "Teléfono",
+    "phoneThai": "(tailandés)",
+    "phoneEnglish": "(inglés)",
+    "officeHours": "Horario de oficina: 8:00 – 16:00",
+    "bankHeading": "Datos bancarios (donaciones)",
+    "thaiBankAccount": "Cuenta bancaria tailandesa",
+    "swissBankAccount": "Cuenta bancaria suiza",
+    "accountHolder": "Titular de la cuenta",
+    "bank": "Banco",
+    "account": "Cuenta",
+    "orDonateViaBefore": "O dona a través de ",
+    "orDonateViaLink": "PayPal en nuestra página principal",
+    "orDonateViaAfter": ".",
+    "sendEmail": "Enviar correo",
+    "contactFormHomepage": "Formulario de contacto en la página principal",
+    "sendMessageHeading": "Envíanos un mensaje",
+    "sendMessageSubtitle": "Completa el formulario y nos pondremos en contacto contigo lo antes posible."
+  },
   "feedAYear": {
     "title": "Feed for a year",
     "subtitle": "€169 = one dog or cat fed for a whole year",
@@ -1070,10 +1098,10 @@
     "ratingOutOf": "de 5",
     "basedOnReviews": "Basado en 49 reseñas de Google",
     "readAllReviews": "Leer todas las reseñas en Google",
-    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review1Text": "Organización de rescate fantástica. Hice voluntariado aquí dos semanas y fue genial. El personal cuida de los animales de maravilla. Incluso tienen un programa de adopción internacional. ¡Muy recomendable!",
     "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
     "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
-    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+    "review4Text": "Saved Souls Foundation es un lugar precioso, un placer para la vista y el corazón. Es la experiencia más bonita de mi vida y me cambió para siempre 💚 PS: El refugio depende totalmente de donaciones."
   },
   "donationCta": {
     "headline": "¿Te llegó al corazón? Ayúdanos a continuar.",
@@ -1414,6 +1442,7 @@
     "amount": "Importe",
     "customAmount": "Otro importe",
     "payWithPaypal": "Pagar con PayPal",
+    "monthlyDescription": "Dona una vez o configura una donación mensual vía PayPal.",
     "thankYou": "¡Muchas gracias por su donación!",
     "thankYouBody": "Su contribución hace una diferencia directa para nuestros animales.",
     "chooseAmount": "Elija un importe.",

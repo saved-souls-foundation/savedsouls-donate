@@ -7,9 +7,11 @@
     "ariaLabel": "Согласие на cookie"
   },
   "turnstile": {
-    "errorBeforeEmail": "Проверка безопасности не загрузилась (Cloudflare). Попробуйте снова, отключите блокировщики рекламы или напишите нам на ",
-    "errorAfterEmail": ".",
-    "retryButton": "Повторить проверку безопасности"
+    "label": "Security check",
+    "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
+    "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
+    "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
+    "retryButton": "Retry security check"
   },
   "seo": {
     "title": "SavedSouls Foundation — Спасение животных Таиланд",
@@ -899,6 +901,32 @@
     "menuOpen": "Открыть меню",
     "menuClose": "Закрыть меню"
   },
+  "contactPage": {
+    "title": "Контакты",
+    "subtitle": "Общие вопросы, визит или усыновление? Свяжитесь с нами.",
+    "openingHours": "Часы работы: 13:30 – 15:30. Свяжитесь с нами, чтобы договориться о встрече.",
+    "emailHeading": "Электронная почта",
+    "emailLinkBefore": "По общим вопросам или используйте ",
+    "emailLinkLabel": "контактную форму на главной странице",
+    "emailLinkAfter": ".",
+    "phoneHeading": "Телефон",
+    "phoneThai": "(тайский)",
+    "phoneEnglish": "(английский)",
+    "officeHours": "Часы офиса: 8:00 – 16:00",
+    "bankHeading": "Банковские реквизиты (пожертвования)",
+    "thaiBankAccount": "Тайский банковский счёт",
+    "swissBankAccount": "Швейцарский банковский счёт",
+    "accountHolder": "Владелец счёта",
+    "bank": "Банк",
+    "account": "Счёт",
+    "orDonateViaBefore": "Или пожертвуйте через ",
+    "orDonateViaLink": "PayPal на главной странице",
+    "orDonateViaAfter": ".",
+    "sendEmail": "Написать письмо",
+    "contactFormHomepage": "Контактная форма на главной",
+    "sendMessageHeading": "Напишите нам",
+    "sendMessageSubtitle": "Заполните форму, и мы свяжемся с вами как можно скорее."
+  },
   "feedAYear": {
     "title": "Корм на год",
     "subtitle": "€169 = одна собака или кошка накормлена целый год",
@@ -1070,10 +1098,10 @@
     "ratingOutOf": "из 5",
     "basedOnReviews": "На основе 49 отзывов в Google",
     "readAllReviews": "Читать все отзывы в Google",
-    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review1Text": "Потрясающая организация по спасению. Я две недели волонтёрствовал здесь — всё было замечательно. Сотрудники прекрасно заботятся о животных. У них даже есть международная программа усыновления. Очень рекомендую!",
     "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
     "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
-    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+    "review4Text": "Saved Souls Foundation — прекрасное место, радует и глаз, и душу. Это лучший опыт в моей жизни, он изменил меня навсегда 💚 PS: Приют полностью зависит от пожертвований."
   },
   "donationCta": {
     "headline": "Тронуты прочитанным? Помогите нам продолжать.",
@@ -1414,6 +1442,7 @@
     "amount": "Сумма",
     "customAmount": "Другая сумма",
     "payWithPaypal": "Оплатить через PayPal",
+    "monthlyDescription": "Пожертвуйте один раз или настройте ежемесячное пожертвование через PayPal.",
     "thankYou": "Большое спасибо за ваше пожертвование!",
     "thankYouBody": "Ваш вклад напрямую помогает нашим животным.",
     "chooseAmount": "Выберите сумму.",

@@ -109,17 +109,6 @@ export default function DonatePage() {
         scrollY={scrollY}
       />
 
-      {/* Kliniek actie – opvallende geanimeerde button */}
-      <Link
-        href="/clinic-renovation"
-        className="fixed bottom-6 right-6 z-30 flex items-center gap-2 px-5 py-4 rounded-2xl font-bold text-white shadow-xl animate-star-pulse hover:scale-105 transition-transform"
-        style={{ backgroundColor: BUTTON_ORANGE }}
-        aria-label={tHome("clinicActionCta")}
-      >
-        <span className="text-2xl" aria-hidden>⭐</span>
-        <span className="text-base md:text-lg">{tHome("clinicActionCta")}</span>
-      </Link>
-
       {/* Hero – static fullscreen, desktop AND mobile, scroll-triggered fade-in */}
       <header>
         <HeroFadeIn className="relative flex min-h-[100svh] md:min-h-[100vh] flex-col items-center justify-center text-center px-6">

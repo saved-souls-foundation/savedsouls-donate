@@ -2132,6 +2132,7 @@
     "amount": "Amount",
     "customAmount": "Custom amount",
     "payWithPaypal": "Pay with PayPal",
+    "monthlyDescription": "Give once or set up a monthly donation via PayPal.",
     "thankYou": "Thank you for your donation!",
     "thankYouBody": "Your contribution makes a direct difference for our animals.",
     "chooseAmount": "Please select an amount.",

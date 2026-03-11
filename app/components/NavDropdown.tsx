@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ChevronDown, ChevronRight, Heart, type LucideIcon } from "lucide-react";
 
@@ -42,6 +42,8 @@ type NavDropdownProps = {
   /** Controlled open (parent ensures only one dropdown open) */
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Optional style for the dropdown panel (e.g. zIndex) */
+  dropdownStyle?: React.CSSProperties;
 };
 
 const ICON_GREEN = "#2d7a3a";
@@ -72,9 +74,9 @@ export default function NavDropdown({
   bottomCta,
   open: controlledOpen,
   onOpenChange,
+  dropdownStyle,
 }: NavDropdownProps) {
   const t = useTranslations("common");
-  const router = useRouter();
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
   const open = isControlled ? controlledOpen : internalOpen;
@@ -117,11 +119,9 @@ export default function NavDropdown({
     }
   }, [isMobile, open, setOpen]);
 
-  const handleItemClick = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
+  const handleItemClick = () => {
     onItemClick?.();
     setOpen(false);
-    router.push(href);
   };
 
   const dropdownClass = `absolute top-full mt-2 min-w-[280px] rounded-2xl bg-white p-3 shadow-xl shadow-black/10 border border-[#f0f0f0] z-[120] animate-dropdown-open origin-top ${
@@ -145,6 +145,7 @@ export default function NavDropdown({
       {open && (
         <div
           className={dropdownClass}
+          style={dropdownStyle}
           onMouseLeave={handlePanelMouseLeave}
         >
           {layout === "adopt" ? (
@@ -156,7 +157,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={(e) => handleItemClick(e, item.href)}
+                    onClick={() => handleItemClick()}
                     className="rounded-2xl border border-gray-100 shadow-sm bg-white p-4 flex flex-col items-center gap-2 hover:shadow-md hover:scale-[1.02] transition-all duration-200"
                   >
                     <div
@@ -179,21 +180,24 @@ export default function NavDropdown({
                 const isHighlight = item.highlight ?? item.href === "/influencers";
                 const isOverview = item.href === "/get-involved";
                 const isYellow = item.highlightYellow ?? item.href === "/gidsen";
+                const isRed = item.href === "/donate";
                 const badgeText = isHighlight ? (item.badgeLabel || t("menuNewBadge")) : isYellow ? (item.badgeLabel || t("menuInformativeBadge")) : item.badgeLabel || null;
                 const badge = badgeText ? String(badgeText).trim() : null;
                 return (
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={(e) => handleItemClick(e, item.href)}
+                    onClick={() => handleItemClick()}
                     className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
                         : isYellow
                           ? "min-h-[56px] px-3 py-2.5 bg-amber-100 hover:bg-amber-200/60 border border-amber-300 rounded-xl"
-                          : isOverview
-                            ? "px-3 py-2.5 bg-green-50/70 hover:bg-green-50 border border-green-100/80"
-                            : "px-3 py-2.5 hover:bg-gray-50"
+                          : isRed
+                            ? "px-3 py-2.5 bg-red-50 hover:bg-red-100/80 text-red-600"
+                            : isOverview
+                              ? "px-3 py-2.5 bg-green-50/70 hover:bg-green-50 border border-green-100/80"
+                              : "px-3 py-2.5 hover:bg-gray-50"
                     }`}
                   >
                     {badge && (
@@ -208,15 +212,15 @@ export default function NavDropdown({
                     {Icon && (
                       <div
                         className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-                          isHighlight ? "bg-purple-100" : isYellow ? "bg-amber-100" : "bg-green-50"
+                          isHighlight ? "bg-purple-100" : isYellow ? "bg-amber-100" : isRed ? "bg-red-100" : "bg-green-50"
                         }`}
                       >
-                        <Icon size={16} color={isHighlight ? ICON_PURPLE : isYellow ? "#b45309" : ICON_GREEN} aria-hidden />
+                        <Icon size={16} color={isHighlight ? ICON_PURPLE : isYellow ? "#b45309" : isRed ? "#dc2626" : ICON_GREEN} aria-hidden />
                       </div>
                     )}
                     <div className="flex-1 min-w-0 pr-8">
                       <div
-                        className={`font-medium text-sm ${isHighlight ? "text-[#6d28d9]" : isYellow ? "text-amber-900" : "text-gray-800"}`}
+                        className={`font-medium text-sm ${isHighlight ? "text-[#6d28d9]" : isYellow ? "text-amber-900" : isRed ? "text-red-600" : "text-gray-800"}`}
                         style={isHighlight ? { fontWeight: 600 } : undefined}
                       >
                         {item.label}
@@ -254,7 +258,7 @@ export default function NavDropdown({
               ) : (
                 <Link
                   href={bottomCta.href}
-                  onClick={(e) => handleItemClick(e, bottomCta.href)}
+                  onClick={() => handleItemClick()}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-red-50 hover:bg-red-100/80 transition-colors duration-100"
                 >
                   <Heart size={16} fill="#E53E3E" color="#E53E3E" aria-hidden />

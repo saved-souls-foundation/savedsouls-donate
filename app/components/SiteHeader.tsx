@@ -1,8 +1,8 @@
 "use client";
 
-import { Link, usePathname } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
-import { useState, useEffect, useMemo } from "react";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -18,12 +18,23 @@ import {
   Cat,
   Megaphone,
   Smile,
+  HelpCircle,
+  Globe,
+  PawPrint,
 } from "lucide-react";
-import LanguageSwitcher from "./LanguageSwitcher";
 import NavDropdown from "./NavDropdown";
 import type { NavDropdownItem } from "./NavDropdown";
 import SiteSearch from "./SiteSearch";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { showSponsor } from "@/lib/features";
+
+// Zorg dat LanguageSwitcher in de bundle blijft (voorkomt ReferenceError in client chunk)
+const _languageSwitcherInBundle = LanguageSwitcher;
+void _languageSwitcherInBundle;
+
+/** Adopt dropdown icons: expliciet van lucide-react om verwarring met andere componenten te voorkomen */
+const AdoptDogIcon = Home;
+const AdoptCatIcon = Cat;
 
 type SiteHeaderProps = {
   scrollToSection?: (id: string) => void;
@@ -37,11 +48,54 @@ const CHEVRON_GRAY = "#d1d5db";
 const HEADER_RIGHT_WRAPPER = "flex items-center gap-3 md:gap-6 shrink-0";
 const HEADER_DESKTOP_ACTIONS = "hidden md:flex items-center gap-6 lg:gap-8";
 
+const LOCALE_LABELS: Record<string, string> = {
+  nl: "Nederlands",
+  en: "English",
+  de: "Deutsch",
+  es: "Español",
+  th: "ภาษาไทย",
+  ru: "Русский",
+  fr: "Français",
+};
+const LOCALE_FLAGS: Record<string, string> = {
+  nl: "🇳🇱",
+  en: "🇬🇧",
+  de: "🇩🇪",
+  es: "🇪🇸",
+  th: "🇹🇭",
+  ru: "🇷🇺",
+  fr: "🇫🇷",
+};
+
 export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [langOpen, setLangOpen] = useState(false);
+  const langRefDesktop = useRef<HTMLDivElement>(null);
+  const langRefMobile = useRef<HTMLDivElement>(null);
   const t = useTranslations("common");
   const tHome = useTranslations("home");
+
+  const isOverOnsOpen = openMenu === "over-ons";
+
+  const overOnsItems: NavDropdownItem[] = useMemo(() => [
+    { href: "/story", label: locale === "nl" ? "Ons verhaal" : locale === "de" ? "Unsere Geschichte" : "Our story", icon: BookOpen },
+    { href: "/about-us", label: locale === "nl" ? "Ons werk" : locale === "de" ? "Unsere Arbeit" : "Our work", icon: PawPrint },
+    { href: "/faq", label: "FAQ", description: locale === "nl" ? "Veelgestelde vragen" : locale === "de" ? "Häufige Fragen" : "Frequently asked questions", icon: HelpCircle },
+    { href: "/donate", label: locale === "nl" ? "Doneer nu" : locale === "de" ? "Jetzt spenden" : "Donate now", icon: Heart },
+  ], [locale]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (!langRefDesktop.current?.contains(target) && !langRefMobile.current?.contains(target)) setLangOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
     const all: NavDropdownItem[] = [
@@ -128,27 +182,26 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
 
         {/* Center: Nav links (desktop only) – overflow-visible zodat dropdowns niet worden afgeknipt */}
         <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0 overflow-visible">
-          <Link
-            href="/story"
-            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
-          >
-            {t("ourStory")}
-          </Link>
-          <Link
-            href="/about-us"
-            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
-          >
-            {t("aboutUs")}
-          </Link>
+          <NavDropdown
+            label={locale === "nl" ? "Over ons" : locale === "de" ? "Über uns" : "About us"}
+            layout="involved"
+            items={overOnsItems}
+            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            align="left"
+            open={isOverOnsOpen}
+            onOpenChange={(open) => setOpenMenu(open ? "over-ons" : null)}
+            dropdownStyle={{ zIndex: 200 }}
+          />
           <NavDropdown
             label={t("adopt")}
             layout="adopt"
             items={[
-              { href: "/adopt", label: t("menuAdoptMain"), description: t("menuAdoptDogSubtext"), icon: Home, iconBg: "#fff7ed" },
-              { href: "/adopt?type=cat", label: t("menuAdoptCat"), description: t("menuAdoptCatSubtext"), icon: Cat, iconBg: "#f0f7ff" },
+              { href: "/adopt", label: t("menuAdoptMain"), description: t("menuAdoptDogSubtext"), icon: AdoptDogIcon, iconBg: "#fff7ed" },
+              { href: "/adopt?type=cat", label: t("menuAdoptCat"), description: t("menuAdoptCatSubtext"), icon: AdoptCatIcon, iconBg: "#f0f7ff" },
             ]}
             buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="left"
+            dropdownStyle={{ zIndex: 200 }}
           />
           <NavDropdown
             label={t("getInvolved")}
@@ -161,6 +214,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 ? { href: "#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext"), onClick: handleDonate }
                 : { href: "/#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }
             }
+            dropdownStyle={{ zIndex: 200 }}
           />
           <Link
             href="/contact"
@@ -170,21 +224,68 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           </Link>
         </div>
 
-        {/* Right: Search, Language, Donate (desktop) | Search, Language, Hamburger (mobile) – vaste gaps tegen hydration mismatch */}
+        {/* Right: Search, Language, Soul saver, Donate (desktop) | Search, Language, Hamburger (mobile) */}
         <div className={HEADER_RIGHT_WRAPPER} suppressHydrationWarning>
-          {/* Desktop: search, language, donate */}
+          {/* Desktop: search, language, soul saver, donate */}
           <div className={HEADER_DESKTOP_ACTIONS} suppressHydrationWarning>
             <SiteSearch desktopIconOnly overlay={isOverlay} />
-            <LanguageSwitcher minimal overlay={isOverlay} />
+            {/* Inline language switcher – globe + flag + dropdown */}
+            <div ref={langRefDesktop} className="relative">
+              <button
+                type="button"
+                onClick={() => setLangOpen((o) => !o)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border transition-all text-sm font-medium ${
+                  isOverlay
+                    ? "backdrop-blur-sm bg-white/10 border-white/20 text-white"
+                    : "bg-white/80 border-stone-200 text-stone-700"
+                }`}
+                aria-expanded={langOpen}
+                aria-haspopup="listbox"
+              >
+                <Globe className="w-4 h-4 shrink-0" aria-hidden />
+                <span>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
+                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${langOpen ? "rotate-180" : ""}`} aria-hidden />
+              </button>
+              {langOpen && (
+                <div
+                  className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]"
+                  role="listbox"
+                >
+                  {(["nl", "en", "de", "es", "th", "ru", "fr"] as const).map((loc) => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={() => {
+                        router.replace(pathname, { locale: loc });
+                        setLangOpen(false);
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-stone-50 text-sm w-full text-left transition-colors"
+                      role="option"
+                    >
+                      <span>{LOCALE_FLAGS[loc]}</span>
+                      <span>{LOCALE_LABELS[loc]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Link
+              href="/get-involved"
+              className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
+                isOverlay
+                  ? "backdrop-blur-sm bg-white/10 border-white/30 text-white"
+                  : "bg-emerald-50 border-emerald-200 text-emerald-700"
+              }`}
+            >
+              {locale === "nl" ? "Zielenredder worden" : locale === "de" ? "Seelenretter werden" : "Become a soul saver"}
+            </Link>
             {isHomePage ? (
               <a
                 href="#donate"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection!("donate");
-                }}
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
-                style={{ backgroundColor: "#E53E3E" }}
+                onClick={(e) => { e.preventDefault(); scrollToSection!("donate"); }}
+                className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 ${
+                  isOverlay ? "backdrop-blur-sm bg-red-500/80 border border-red-400/50 text-white" : "bg-red-500 text-white"
+                }`}
                 title={t("donateTooltip")}
               >
                 <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
@@ -193,8 +294,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             ) : (
               <Link
                 href="/#donate"
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
-                style={{ backgroundColor: "#E53E3E" }}
+                className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 ${
+                  isOverlay ? "backdrop-blur-sm bg-red-500/80 border border-red-400/50 text-white" : "bg-red-500 text-white"
+                }`}
                 title={t("donateTooltip")}
               >
                 <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
@@ -202,10 +304,40 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               </Link>
             )}
           </div>
-          {/* Mobile: search, language, hamburger (no donate in header) */}
+          {/* Mobile: search, language, hamburger */}
           <div className="flex md:hidden items-center gap-2">
             <SiteSearch mobileIcon overlay={isOverlay} />
-            <LanguageSwitcher compact overlay={isOverlay} />
+            {/* Mobile language switcher – same globe dropdown */}
+            <div ref={langRefMobile} className="relative">
+              <button
+                type="button"
+                onClick={() => setLangOpen((o) => !o)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border transition-all text-sm font-medium ${
+                  isOverlay ? "backdrop-blur-sm bg-white/10 border-white/20 text-white" : "bg-white/80 border-stone-200 text-stone-700"
+                }`}
+                aria-expanded={langOpen}
+              >
+                <Globe className="w-4 h-4 shrink-0" aria-hidden />
+                <span>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
+                <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${langOpen ? "rotate-180" : ""}`} aria-hidden />
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]" role="listbox">
+                  {(["nl", "en", "de", "es", "th", "ru", "fr"] as const).map((loc) => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={() => { router.replace(pathname, { locale: loc }); setLangOpen(false); }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-stone-50 text-sm w-full text-left"
+                      role="option"
+                    >
+                      <span>{LOCALE_FLAGS[loc]}</span>
+                      <span>{LOCALE_LABELS[loc]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               type="button"
               onClick={() => setMobileMenuOpen((o) => !o)}

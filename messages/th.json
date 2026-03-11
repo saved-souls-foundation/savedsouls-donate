@@ -7,9 +7,11 @@
     "ariaLabel": "ความยินยอมคุกกี้"
   },
   "turnstile": {
-    "errorBeforeEmail": "ไม่สามารถโหลดการตรวจสอบความปลอดภัย (Cloudflare) ได้ กรุณาลองอีกครั้ง ปิดตัวบล็อกโฆษณา หรือติดต่อเราที่ ",
-    "errorAfterEmail": "",
-    "retryButton": "ลองตรวจสอบความปลอดภัยอีกครั้ง"
+    "label": "Security check",
+    "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
+    "errorSteps": "What you can do: try again later (temporary outage), disable ad blockers for this site, or contact us at ",
+    "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
+    "retryButton": "Retry security check"
   },
   "seo": {
     "title": "SavedSouls Foundation — ช่วยเหลือสัตว์ในประเทศไทย",
@@ -899,6 +901,32 @@
     "menuOpen": "เปิดเมนู",
     "menuClose": "ปิดเมนู"
   },
+  "contactPage": {
+    "title": "ติดต่อ",
+    "subtitle": "คำถามทั่วไป การเยี่ยมชม หรือการรับเลี้ยง? ติดต่อเรา",
+    "openingHours": "เวลาเปิด: 13:30 – 15:30 น. ติดต่อเพื่อนัดหมายล่วงหน้า",
+    "emailHeading": "อีเมล",
+    "emailLinkBefore": "สำหรับคำถามทั่วไป หรือใช้ ",
+    "emailLinkLabel": "แบบฟอร์มติดต่อบนหน้าแรก",
+    "emailLinkAfter": ".",
+    "phoneHeading": "โทรศัพท์",
+    "phoneThai": "(ภาษาไทย)",
+    "phoneEnglish": "(อังกฤษ)",
+    "officeHours": "เวลาทำการ: 8:00 – 16:00 น.",
+    "bankHeading": "ข้อมูลบัญชีธนาคาร (บริจาค)",
+    "thaiBankAccount": "บัญชีธนาคารไทย",
+    "swissBankAccount": "บัญชีธนาคารสวิส",
+    "accountHolder": "เจ้าของบัญชี",
+    "bank": "ธนาคาร",
+    "account": "เลขบัญชี",
+    "orDonateViaBefore": "หรือบริจาคผ่าน ",
+    "orDonateViaLink": "PayPal บนหน้าแรก",
+    "orDonateViaAfter": ".",
+    "sendEmail": "ส่งอีเมล",
+    "contactFormHomepage": "แบบฟอร์มติดต่อบนหน้าแรก",
+    "sendMessageHeading": "ส่งข้อความถึงเรา",
+    "sendMessageSubtitle": "กรอกแบบฟอร์ม เราจะติดต่อกลับโดยเร็วที่สุด"
+  },
   "feedAYear": {
     "title": "อาหารหนึ่งปี",
     "subtitle": "€169 = ให้อาหารสุนัขหรือแมวหนึ่งตัวตลอดทั้งปี",
@@ -1070,10 +1098,10 @@
     "ratingOutOf": "จาก 5",
     "basedOnReviews": "จาก 49 รีวิวใน Google",
     "readAllReviews": "อ่านรีวิวทั้งหมดบน Google",
-    "review1Text": "Fantastische reddingsorganisatie. Ik heb hier twee weken vrijwilligerswerk gedaan en het was geweldig. De medewerkers zorgen fantastisch voor de dieren. Ze hebben zelfs een internationaal adoptieprogramma opgezet. Een echte aanrader!",
+    "review1Text": "องค์กรกู้ภัยสัตว์ที่ยอดเยี่ยม ฉันอาสาสมัครที่นี่สองสัปดาห์ และประสบการณ์ดีมาก พนักงานดูแลสัตว์ได้อย่างวิเศษ พวกเขายังมีโปรแกรมรับเลี้ยงระดับนานาชาติ แนะนำอย่างยิ่ง!",
     "review2Text": "Doing great work providing for these fine animals just looking for their forever home.",
     "review3Text": "I searched for a dog shelter in Khon Kaen and found Saved Souls Foundation. I want to visit personally and see this amazing place!",
-    "review4Text": "Saved Souls Foundation is een prachtige plek, een lust voor het oog én het hart. Saved Souls is de mooiste ervaring van mijn leven geweest en heeft me voor altijd veranderd 💚 PS: Het asiel is volledig afhankelijk van donaties!"
+    "review4Text": "Saved Souls Foundation เป็นที่ที่สวยงาม ทั้งตาและหัวใจ เป็นประสบการณ์ที่ดีที่สุดในชีวิตและเปลี่ยนฉันตลอดไป 💚 PS: ที่พักพิงขึ้นอยู่กับการบริจาคทั้งหมด"
   },
   "donationCta": {
     "headline": "感動了嗎？幫助我們繼續前行",
@@ -1414,6 +1442,7 @@
     "amount": "จำนวนเงิน",
     "customAmount": "จำนวนอื่น",
     "payWithPaypal": "ชำระด้วย PayPal",
+    "monthlyDescription": "บริจาคครั้งเดียวหรือตั้งค่าบริจาครายเดือนผ่าน PayPal",
     "thankYou": "ขอบคุณสำหรับการบริจาค!",
     "thankYouBody": "การบริจาคของคุณส่งผลโดยตรงต่อสัตว์ของเรา",
     "chooseAmount": "กรุณาเลือกจำนวนเงิน",
