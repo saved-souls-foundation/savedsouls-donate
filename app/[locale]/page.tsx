@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Heart, ChevronDown, Mail } from "lucide-react";
 import CookieConsent from "../components/CookieConsent";
@@ -85,6 +85,7 @@ export default function DonatePage() {
 
   const t = useTranslations("common");
   const tHome = useTranslations("home");
+  const locale = useLocale();
 
   return (
     <div className={`h-screen text-stone-800 dark:text-stone-200 relative overflow-hidden ${theme}`}>
@@ -145,17 +146,16 @@ export default function DonatePage() {
               <button
                 type="button"
                 onClick={() => document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-white text-base shadow-lg hover:scale-105 transition-all w-full sm:w-auto"
-                style={{ backgroundColor: "#E53E3E" }}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all hover:scale-[1.02] backdrop-blur-sm bg-red-500/80 border border-red-400/50 text-white shadow-lg"
               >
                 <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
                 {t("donate")}
               </button>
               <Link
                 href="/soul-saver"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold border-2 border-white text-white hover:bg-white hover:text-stone-900 transition-all text-center w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all hover:scale-[1.02] backdrop-blur-sm bg-white/10 border border-white/40 text-white shadow-lg hover:bg-white/20"
               >
-                {tHome("cta")}
+                {locale === "nl" ? "Zielenredder worden" : locale === "de" ? "Seelenretter werden" : "Become a soul saver"}
               </Link>
             </div>
           </div>

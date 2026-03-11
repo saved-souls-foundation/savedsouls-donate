@@ -140,127 +140,53 @@ export default function IdealDonate() {
       <p className="text-center text-stone-500 dark:text-stone-400 text-sm mb-4" style={{ color: "#2aa348" }}>
         {t("donateTagline")}
       </p>
-      {/* iDEAL · Wero + Mollie – herkenbaar voor Nederlandse bezoekers */}
-      <div className="flex items-center gap-2 mb-4">
-        <img src="/wero-logo.svg" alt="" className="h-7 w-auto dark:hidden" width={100} height={31} />
-        <img src="/wero-logo-dark.svg" alt="" className="h-7 w-auto hidden dark:block" width={100} height={31} />
-        <span className="text-sm text-stone-600 dark:text-stone-400">iDEAL · Wero</span>
-        <span className="text-stone-300 dark:text-stone-600">·</span>
-        <span className="text-[11px] text-stone-500 dark:text-stone-400">via Mollie</span>
+
+      <details className="group mb-4">
+        <summary className="text-xs text-stone-500 dark:text-stone-400 cursor-pointer hover:text-stone-600 dark:hover:text-stone-300 text-center list-none flex items-center justify-center gap-2 flex-wrap">
+          <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
+            <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
+          </a>
+          <Link href="/donate/thai#promptpay" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
+            <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-10 w-auto object-contain" />
+          </Link>
+          <span>· {t("thaiPayments")} · {t("bankTransfer")}</span>
+        </summary>
+        <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700 space-y-2 text-center">
+          <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
+            <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
+            <span className="text-xs" style={{ color: "#2aa348" }}>→</span>
+          </a>
+          <Link href="/donate/thai#promptpay" className="inline-flex items-center justify-center gap-1">
+            <Image src="/logos/promptpay-official.png" alt="PromptPay" width={71} height={40} className="h-10 w-auto object-contain" />
+            <span className="text-xs" style={{ color: "#2aa348" }}>{t("thaiPaymentsMethods")} →</span>
+          </Link>
+          <a href="#bank-transfer" className="block text-xs" style={{ color: "#2aa348" }}>{t("bankTransfer")} →</a>
+        </div>
+      </details>
+
+      {/* Donorbox */}
+      <div className="mt-6">
+        <script type="module" src="https://donorbox.org/widgets.js" async></script>
+        {/* @ts-expect-error Donorbox custom element */}
+        <dbox-widget
+          campaign="saved-souls-foundation-donation"
+          type="donation_form"
+          enable-auto-scroll="true"
+        />
       </div>
 
-      <form id="mollie-donate-form" onSubmit={handleSubmit} className="space-y-4">
-        {/* Eén regel: bedrag + valuta (valuta verborgen bij Thai); stacked on mobile */}
-        <div className="flex flex-col sm:flex-row gap-2">
-          <div className="w-full sm:flex-1 sm:min-w-0">
-            <label htmlFor="amount-select" className="sr-only">{t("idealAmount")}</label>
-            <select
-              id="amount-select"
-              value={amountSelect}
-              onChange={(e) => {
-                const v = e.target.value;
-                setAmountSelect(v);
-                if (v === "custom") {
-                  setCustomAmount("");
-                  setAmount(currency === "THB" ? 1000 : 5);
-                } else {
-                  setAmount(Number(v));
-                  setCustomAmount("");
-                }
-              }}
-              className="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-base focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-500"
-            >
-              {presets.map((a) => (
-                <option key={a} value={a}>
-                  {curr.symbol}{a.toLocaleString(currency === "THB" ? "th-TH" : "nl-NL", { maximumFractionDigits: 0 })}
-                </option>
-              ))}
-              <option value="custom">{t("idealCustom")}</option>
-            </select>
-          </div>
-          <div className="w-full sm:w-28 sm:shrink-0">
-            <label htmlFor="currency-select" className="sr-only">{t("currencyLabel")}</label>
-            <select
-              id="currency-select"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="w-full px-3 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400 dark:focus:ring-stone-500"
-            >
-              {CURRENCIES.map((c) => (
-                <option key={c.code} value={c.code}>{c.code}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {isCustomAmount && (
-          <div className="flex items-center gap-2">
-            <span className="text-stone-500 dark:text-stone-400">{curr.symbol}</span>
-            <input
-              type="number"
-              min={minAmount}
-              max={maxAmount}
-              step={currency === "THB" ? 100 : 0.01}
-              placeholder="0"
-              value={customAmount}
-              onChange={(e) => setCustomAmount(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-base"
-            />
-          </div>
-        )}
-
-        {!isThai && currency !== "EUR" && rateToEur && (
-          <p className="text-xs text-stone-500 dark:text-stone-400">≈ {Math.round(amountInEur).toLocaleString("nl-NL", { maximumFractionDigits: 0 })} EUR</p>
-        )}
-
-        {/* Impact-tekst bij gekozen bedrag (alleen bij preset, in EUR-equivalent) */}
-        {!isCustomAmount && amountInEur >= 1 && (
-          <p className="text-sm text-stone-600 dark:text-stone-400" style={{ color: "#2aa348" }}>
-            {amountInEur <= 15 ? t("donate10") : amountInEur <= 37 ? t("donate25") : amountInEur <= 75 ? t("donate50") : amountInEur <= 175 ? t("donate100") : amountInEur <= 375 ? t("donate250") : amountInEur <= 750 ? t("donate500") : amountInEur <= 7500 ? t("donate5000") : amountInEur <= 15000 ? t("donate10000") : t("donateImpactGeneric")}
-          </p>
-        )}
-
-        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-
-        {/* Primaire CTA – groot, duidelijk, zoals Apple */}
-        <button
-          type="submit"
-          disabled={loading || !isValid}
-          className="w-full py-4 rounded-xl font-semibold text-white text-lg transition-opacity hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed"
+      {/* Maandelijkse zielenredder button */}
+      <div className="mt-4">
+        <a
+          href="https://donorbox.org/saved-souls-foundation-donation"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-semibold text-white text-base transition-all hover:scale-[1.02] hover:opacity-90"
           style={{ backgroundColor: "#2aa348" }}
         >
-          {loading ? t("idealLoading") : `${t("idealCta")} · ${displayAmountStr}`}
-        </button>
-
-        {/* Trust – veiligheid + betaalmethoden */}
-        <p className="text-[11px] text-stone-400 dark:text-stone-500 text-center">
-          {t("idealSubtitle")} · {t("mollieMethods")}
-        </p>
-
-        {/* Secundaire opties – verborgen tot nodig */}
-        <details className="group">
-          <summary className="text-xs text-stone-500 dark:text-stone-400 cursor-pointer hover:text-stone-600 dark:hover:text-stone-300 text-center list-none flex items-center justify-center gap-2 flex-wrap">
-            <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
-              <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
-            </a>
-            <Link href="/donate/thai#promptpay" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
-              <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-10 w-auto object-contain" />
-            </Link>
-            <span>· {t("thaiPayments")} · {t("bankTransfer")}</span>
-          </summary>
-          <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700 space-y-2 text-center">
-            <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
-              <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
-              <span className="text-xs" style={{ color: "#2aa348" }}>→</span>
-            </a>
-            <Link href="/donate/thai#promptpay" className="inline-flex items-center justify-center gap-1">
-              <Image src="/logos/promptpay-official.png" alt="PromptPay" width={71} height={40} className="h-10 w-auto object-contain" />
-              <span className="text-xs" style={{ color: "#2aa348" }}>{t("thaiPaymentsMethods")} →</span>
-            </Link>
-            <a href="#bank-transfer" className="block text-xs" style={{ color: "#2aa348" }}>{t("bankTransfer")} →</a>
-          </div>
-        </details>
-      </form>
+          ♥ Word maandelijkse zielenredder →
+        </a>
+      </div>
     </div>
   );
 }
