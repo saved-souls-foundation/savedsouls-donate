@@ -49,7 +49,24 @@ export default function ImpactTicker() {
     ? `/${locale}${messages[index].url}`
     : DONORBOX_URL;
 
-  if (!mounted || dismissed) return null;
+  if (!mounted) return null;
+
+  if (dismissed) {
+    return (
+      <button
+        onClick={() => {
+          setDismissed(false);
+          setVisible(true);
+          sessionStorage.removeItem("tickerDismissed");
+        }}
+        className="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
+        style={{ backgroundColor: "#2aa348" }}
+        aria-label="Ticker openen"
+      >
+        🐾
+      </button>
+    );
+  }
 
   return (
     <>
