@@ -6,6 +6,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
+import ImpactTicker from "@/app/components/ImpactTicker";
 import AuthErrorRedirect from "./AuthErrorRedirect";
 
 type Props = {
@@ -127,6 +128,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <Suspense fallback={null}>
         <AuthErrorRedirect />
       </Suspense>
+      <ImpactTicker />
       {children}
     </NextIntlClientProvider>
   );
