@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(process.cwd()),
   },
+  experimental: {
+    // Uit om "Persisting failed" / SST-writefouten te voorkomen (Turbopack cache)
+    turbopackFileSystemCacheForDev: false,
+  },
   async redirects() {
     return [
       { source: "/pressПресса", destination: "/nl/press", permanent: true },

@@ -153,6 +153,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   }
 
   // Desktop: icon only, click opens full-width overlay
+  // Eén wrapper-root voorkomt hydration mismatch (Fragment + conditional overlay verschuift siblings in de header)
   if (desktopIconOnly) {
     const openSearch = (e?: React.MouseEvent | React.TouchEvent) => {
       e?.preventDefault();
@@ -160,7 +161,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
       setMobileOverlayOpen(true);
     };
     return (
-      <>
+      <div className="relative shrink-0 flex items-center">
         <button
           type="button"
           onClick={openSearch}
@@ -228,7 +229,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
             )}
           </div>
         )}
-      </>
+      </div>
     );
   }
 
