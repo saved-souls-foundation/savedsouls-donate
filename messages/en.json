@@ -4709,5 +4709,29 @@
     "validationEmail": "Please enter a valid email address.",
     "errorMessage": "Something went wrong. Please try again.",
     "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Emergency campaign — Save the land for 350 dogs",
+    "metaDescription": "We need €100,000 to buy the land where 350 dogs live. 50 are disabled. Donate via GoFundMe — every euro counts.",
+    "heroTitle": "Emergency: Save the land for 350 dogs",
+    "heroSubtitle": "We need €100,000 to buy the land where they live. Without it, they lose their home. 50 dogs are disabled — they need your help now.",
+    "progressOf": "of",
+    "goalLandTitle": "Buy the land — €100,000",
+    "goalLandDesc": "Without this we lose the land. 350 dogs would lose their home.",
+    "goalFundTitle": "Emergency fund",
+    "goalFundDesc": "Food, medicine and staff for 350 dogs.",
+    "impactTitle": "What your donation does",
+    "impactFood": "Food",
+    "impactMeds": "Medicine",
+    "impactSterilization": "Sterilization",
+    "impactEmergency": "Emergency treatment",
+    "ctaGoFundMe": "Donate via GoFundMe",
+    "shareTitle": "Share this campaign",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Urgent: Help save the land for 350 dogs at Saved Souls Foundation — €100,000 needed. Donate via GoFundMe.",
+    "photoGridAlt1": "Rescued dog at Saved Souls Foundation",
+    "photoGridAlt2": "Rescued dog at Saved Souls Foundation"
   }
 }

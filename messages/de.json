@@ -4019,5 +4019,29 @@
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "errorMessage": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "privacy": "Wir respektieren deine Privatsphäre. Kein Spam, nur Neuigkeiten von SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Notfallkampagne — Rettet das Land für 350 Hunde",
+    "metaDescription": "Wir brauchen €100.000, um das Land zu kaufen, auf dem 350 Hunde leben. 50 sind behindert. Spende über GoFundMe — jeder Euro zählt.",
+    "heroTitle": "Dringend: Rettet das Land für 350 Hunde",
+    "heroSubtitle": "Wir brauchen €100.000, um das Land zu kaufen, auf dem sie leben. Ohne das verlieren sie ihr Zuhause. 50 Hunde sind behindert — sie brauchen jetzt eure Hilfe.",
+    "progressOf": "von",
+    "goalLandTitle": "Das Land kaufen — €100.000",
+    "goalLandDesc": "Ohne das verlieren wir das Land. 350 Hunde verlieren ihr Zuhause.",
+    "goalFundTitle": "Notfallfonds",
+    "goalFundDesc": "Futter, Medikamente und Personal für 350 Hunde.",
+    "impactTitle": "Was deine Spende bewirkt",
+    "impactFood": "Futter",
+    "impactMeds": "Medikamente",
+    "impactSterilization": "Sterilisierung",
+    "impactEmergency": "Notfallbehandlung",
+    "ctaGoFundMe": "Spende über GoFundMe",
+    "shareTitle": "Kampagne teilen",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Dringend: Helft, das Land für 350 Hunde der Saved Souls Foundation zu retten — €100.000 nötig. Spende über GoFundMe.",
+    "photoGridAlt1": "Geretteter Hund bei Saved Souls Foundation",
+    "photoGridAlt2": "Geretteter Hund bei Saved Souls Foundation"
   }
 }

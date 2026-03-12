@@ -4083,5 +4083,29 @@
     "validationEmail": "Введите действительный адрес электронной почты.",
     "errorMessage": "Что-то пошло не так. Попробуйте ещё раз.",
     "privacy": "Мы уважаем вашу конфиденциальность. Никакого спама, только новости SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Срочная кампания — Спасите землю для 350 собак",
+    "metaDescription": "Нам нужно 100 000 €, чтобы купить землю, где живут 350 собак. 50 из них с ограниченными возможностями. Жертвуйте через GoFundMe — каждый евро важен.",
+    "heroTitle": "Срочно: Спасите землю для 350 собак",
+    "heroSubtitle": "Нам нужно 100 000 €, чтобы купить землю, где они живут. Без этого они потеряют дом. 50 собак с ограниченными возможностями — им нужна ваша помощь сейчас.",
+    "progressOf": "из",
+    "goalLandTitle": "Купить землю — 100 000 €",
+    "goalLandDesc": "Без этого мы потеряем землю. 350 собак потеряют дом.",
+    "goalFundTitle": "Чрезвычайный фонд",
+    "goalFundDesc": "Корм, лекарства и персонал для 350 собак.",
+    "impactTitle": "На что идёт ваше пожертвование",
+    "impactFood": "Корм",
+    "impactMeds": "Лекарства",
+    "impactSterilization": "Стерилизация",
+    "impactEmergency": "Срочное лечение",
+    "ctaGoFundMe": "Жертвовать через GoFundMe",
+    "shareTitle": "Поделиться кампанией",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Срочно: Помогите спасти землю для 350 собак в Saved Souls Foundation — нужно 100 000 €. Жертвуйте через GoFundMe.",
+    "photoGridAlt1": "Спасённая собака в Saved Souls Foundation",
+    "photoGridAlt2": "Спасённая собака в Saved Souls Foundation"
   }
 }

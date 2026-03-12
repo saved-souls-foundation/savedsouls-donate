@@ -4342,5 +4342,29 @@
     "validationEmail": "Veuillez entrer une adresse e-mail valide.",
     "errorMessage": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "privacy": "Nous respectons votre vie privée. Pas de spam, uniquement des nouvelles de SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Campagne d'urgence — Sauvez la terre pour 350 chiens",
+    "metaDescription": "Nous avons besoin de 100 000 € pour acheter la terre où vivent 350 chiens. 50 sont handicapés. Donnez via GoFundMe — chaque euro compte.",
+    "heroTitle": "Urgent : Sauvez la terre pour 350 chiens",
+    "heroSubtitle": "Nous avons besoin de 100 000 € pour acheter la terre où ils vivent. Sans cela, ils perdent leur foyer. 50 chiens sont handicapés — ils ont besoin de votre aide maintenant.",
+    "progressOf": "sur",
+    "goalLandTitle": "Acheter la terre — 100 000 €",
+    "goalLandDesc": "Sans cela nous perdons la terre. 350 chiens perdraient leur foyer.",
+    "goalFundTitle": "Fonds d'urgence",
+    "goalFundDesc": "Nourriture, médicaments et personnel pour 350 chiens.",
+    "impactTitle": "Ce que fait votre don",
+    "impactFood": "Nourriture",
+    "impactMeds": "Médicaments",
+    "impactSterilization": "Stérilisation",
+    "impactEmergency": "Traitement d'urgence",
+    "ctaGoFundMe": "Donner via GoFundMe",
+    "shareTitle": "Partager cette campagne",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Urgent : Aidez à sauver la terre pour 350 chiens à Saved Souls Foundation — 100 000 € nécessaires. Donnez via GoFundMe.",
+    "photoGridAlt1": "Chien secouru à Saved Souls Foundation",
+    "photoGridAlt2": "Chien secouru à Saved Souls Foundation"
   }
 }

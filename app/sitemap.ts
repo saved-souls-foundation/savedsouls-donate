@@ -49,6 +49,7 @@ const STATIC_PATHS = [
   "/find-out-more",
   "/soul-saver",
   "/disclaimer",
+  "/emergency",
   "/lifelong-support",
   "/full-medical-check",
   "/free-home-visit",

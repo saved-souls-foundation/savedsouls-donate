@@ -270,6 +270,16 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               )}
             </div>
             <Link
+              href="/emergency"
+              className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
+                isOverlay
+                  ? "backdrop-blur-sm bg-orange-500/80 border-orange-400/50 text-white"
+                  : "bg-orange-50 border-orange-200 text-orange-700"
+              }`}
+            >
+              {locale === "nl" ? "Noodhulp" : locale === "de" ? "Nothilfe" : "Emergency"}
+            </Link>
+            <Link
               href="/get-involved"
               className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
                 isOverlay

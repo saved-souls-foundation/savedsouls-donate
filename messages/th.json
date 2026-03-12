@@ -4083,5 +4083,29 @@
     "validationEmail": "กรุณากรอกที่อยู่อีเมลที่ถูกต้อง",
     "errorMessage": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
     "privacy": "เราเคารพความเป็นส่วนตัวของคุณ ไม่มีสแปม เพียงข่าวสารจาก SavedSouls Foundation"
+  },
+  "emergency": {
+    "metaTitle": "แคมเปญฉุกเฉิน — ช่วยซื้อที่ดินให้หมาทั้ง 350 ชีวิต",
+    "metaDescription": "เราต้องการ 100,000 ยูโรเพื่อซื้อที่ดินที่หมาทั้ง 350 ตัวอาศัยอยู่ 50 ตัวพิการ บริจาคผ่าน GoFundMe — ทุกยูโรมีค่า",
+    "heroTitle": "ฉุกเฉิน: ช่วยซื้อที่ดินให้หมาทั้ง 350 ชีวิต",
+    "heroSubtitle": "เราต้องการ 100,000 ยูโรเพื่อซื้อที่ดินที่พวกเขาอาศัยอยู่ ไม่มีแล้วพวกเขาจะไร้บ้าน 50 ตัวพิการ — พวกเขาต้องการความช่วยเหลือจากคุณตอนนี้",
+    "progressOf": "จาก",
+    "goalLandTitle": "ซื้อที่ดิน — 100,000 ยูโร",
+    "goalLandDesc": "ไม่มีแล้วเราจะเสียที่ดิน หมาทั้ง 350 ตัวจะไร้บ้าน",
+    "goalFundTitle": "กองทุนฉุกเฉิน",
+    "goalFundDesc": "อาหาร ยา และเจ้าหน้าที่สำหรับหมาทั้ง 350 ตัว",
+    "impactTitle": "เงินบริจาคของคุณทำอะไรได้",
+    "impactFood": "อาหาร",
+    "impactMeds": "ยา",
+    "impactSterilization": "ทำหมัน",
+    "impactEmergency": "การรักษาฉุกเฉิน",
+    "ctaGoFundMe": "บริจาคผ่าน GoFundMe",
+    "shareTitle": "แชร์แคมเปญนี้",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "ฉุกเฉิน: ช่วยซื้อที่ดินให้หมาทั้ง 350 ชีวิตที่ Saved Souls Foundation — ต้องการ 100,000 ยูโร บริจาคผ่าน GoFundMe",
+    "photoGridAlt1": "หมา rescued ที่ Saved Souls Foundation",
+    "photoGridAlt2": "หมา rescued ที่ Saved Souls Foundation"
   }
 }

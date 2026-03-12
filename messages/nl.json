@@ -4708,5 +4708,29 @@
     "validationEmail": "Vul een geldig e-mailadres in.",
     "errorMessage": "Er ging iets mis. Probeer het opnieuw.",
     "privacy": "We respecteren je privacy. Geen spam, alleen nieuws over SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Noodcampagne — Red het land voor 350 honden",
+    "metaDescription": "We hebben €100.000 nodig om het land te kopen waar 350 honden wonen. 50 zijn gehandicapt. Doneer via GoFundMe — elke euro telt.",
+    "heroTitle": "Urgent: Red het land voor 350 honden",
+    "heroSubtitle": "We hebben €100.000 nodig om het land te kopen waar ze wonen. Zonder dat verliezen ze hun thuis. 50 honden zijn gehandicapt — ze hebben nu je hulp nodig.",
+    "progressOf": "van",
+    "goalLandTitle": "Het land kopen — €100.000",
+    "goalLandDesc": "Zonder dit verliezen we het land. 350 honden verliezen hun thuis.",
+    "goalFundTitle": "Noodfonds",
+    "goalFundDesc": "Voedsel, medicijnen en staf voor 350 honden.",
+    "impactTitle": "Wat jouw donatie doet",
+    "impactFood": "Voer",
+    "impactMeds": "Medicijnen",
+    "impactSterilization": "Sterilisatie",
+    "impactEmergency": "Noodbehandeling",
+    "ctaGoFundMe": "Doneer via GoFundMe",
+    "shareTitle": "Deel deze campagne",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Urgent: Help het land redden voor 350 honden bij Saved Souls Foundation — €100.000 nodig. Doneer via GoFundMe.",
+    "photoGridAlt1": "Geredde hond bij Saved Souls Foundation",
+    "photoGridAlt2": "Geredde hond bij Saved Souls Foundation"
   }
 }

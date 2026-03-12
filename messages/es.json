@@ -4019,5 +4019,29 @@
     "validationEmail": "Introduce una dirección de correo válida.",
     "errorMessage": "Algo salió mal. Por favor inténtalo de nuevo.",
     "privacy": "Respetamos tu privacidad. Sin spam, solo noticias de SavedSouls Foundation."
+  },
+  "emergency": {
+    "metaTitle": "Campaña de emergencia — Salva la tierra de 350 perros",
+    "metaDescription": "Necesitamos €100.000 para comprar la tierra donde viven 350 perros. 50 tienen discapacidad. Dona vía GoFundMe — cada euro cuenta.",
+    "heroTitle": "Urgente: Salva la tierra de 350 perros",
+    "heroSubtitle": "Necesitamos €100.000 para comprar la tierra donde viven. Sin ello pierden su hogar. 50 perros tienen discapacidad — necesitan tu ayuda ahora.",
+    "progressOf": "de",
+    "goalLandTitle": "Comprar la tierra — €100.000",
+    "goalLandDesc": "Sin esto perdemos la tierra. 350 perros perderían su hogar.",
+    "goalFundTitle": "Fondo de emergencia",
+    "goalFundDesc": "Comida, medicinas y personal para 350 perros.",
+    "impactTitle": "Lo que hace tu donación",
+    "impactFood": "Comida",
+    "impactMeds": "Medicinas",
+    "impactSterilization": "Esterilización",
+    "impactEmergency": "Tratamiento de emergencia",
+    "ctaGoFundMe": "Dona vía GoFundMe",
+    "shareTitle": "Comparte esta campaña",
+    "shareFacebook": "Facebook",
+    "shareWhatsApp": "WhatsApp",
+    "shareTwitter": "X (Twitter)",
+    "shareText": "Urgente: Ayuda a salvar la tierra para 350 perros en Saved Souls Foundation — €100.000 necesarios. Dona vía GoFundMe.",
+    "photoGridAlt1": "Perro rescatado en Saved Souls Foundation",
+    "photoGridAlt2": "Perro rescatado en Saved Souls Foundation"
   }
 }
