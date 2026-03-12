@@ -45,8 +45,11 @@ export default function ImpactTicker() {
     sessionStorage.setItem("tickerDismissed", "true");
   };
 
-  const currentHref = messages[index].url
-    ? `/${locale}${messages[index].url}`
+  const url = messages[index].url;
+  const currentHref = url
+    ? url.startsWith("http")
+      ? url
+      : `/${locale}${url}`
     : DONORBOX_URL;
 
   if (!mounted) return null;
