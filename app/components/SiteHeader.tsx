@@ -263,7 +263,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                       role="option"
                     >
                       <span>{LOCALE_FLAGS[loc]}</span>
-                      <span>{LOCALE_LABELS[loc]}</span>
+                      <span className="text-stone-800">{LOCALE_LABELS[loc]}</span>
                     </button>
                   ))}
                 </div>
@@ -340,7 +340,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                       role="option"
                     >
                       <span>{LOCALE_FLAGS[loc]}</span>
-                      <span>{LOCALE_LABELS[loc]}</span>
+                      <span className="text-stone-800">{LOCALE_LABELS[loc]}</span>
                     </button>
                   ))}
                 </div>
