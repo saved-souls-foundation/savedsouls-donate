@@ -271,12 +271,10 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </div>
             <Link
               href="/emergency"
-              className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
-                isOverlay
-                  ? "backdrop-blur-sm bg-orange-500/80 border-orange-400/50 text-white"
-                  : "bg-orange-50 border-orange-200 text-orange-700"
-              }`}
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02]"
+              style={{ backgroundColor: "#ea580c" }}
             >
+              <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
               {locale === "nl" ? "Noodhulp" : locale === "de" ? "Nothilfe" : "Emergency"}
             </Link>
             <Link
@@ -421,6 +419,22 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <Mail size={18} color={ICON_GREEN} aria-hidden />
                 <span className="font-medium text-[15px] text-gray-800 flex-1">{t("contact")}</span>
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+            </div>
+            <div className="rounded-2xl border border-red-800/30 shadow-sm overflow-hidden mb-3" style={{ backgroundColor: "#dc2626" }}>
+              <Link
+                href="/emergency"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-4 py-3.5 active:opacity-90 transition-opacity text-white"
+              >
+                <Heart size={18} className="shrink-0 text-white" aria-hidden />
+                <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
+                <span className="font-medium text-[15px] text-white flex-1">
+                  {locale === "nl" ? "Noodhulp" : locale === "de" ? "Nothilfe" : "Emergency"}
+                </span>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md shrink-0" style={{ backgroundColor: "#991b1b", color: "white" }}>
+                  Urgent
+                </span>
               </Link>
             </div>
           </div>
@@ -609,7 +623,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
           </div>
 
           {/* Bottom CTA – Doneren */}
-          <div className="mt-8 pb-[env(safe-area-inset-bottom)] animate-fade-in" style={{ animationDelay: "150ms" }}>
+          <div className="mt-8 pb-20 animate-fade-in" style={{ animationDelay: "150ms" }}>
             {isHomePage ? (
               <button
                 type="button"
