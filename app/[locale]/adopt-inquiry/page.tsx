@@ -68,30 +68,13 @@ function AdoptInquiryPageContent() {
             {t("badge")}
             <span className="animate-[pulse-heart_1.5s_ease-in-out_infinite]" style={{ animationDelay: "0.5s" }}>♥</span>
           </span>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-stone-800 dark:text-stone-100 mb-4 tracking-tight">
-            {t("titlePart2") ? (
-              <>
-                {t("titlePart1")}{" "}
-                <span
-                  className="relative inline-block"
-                  style={{
-                    background: `linear-gradient(135deg, ${ACCENT_GREEN}, ${ACCENT_TEAL})`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  {t("titlePart2")}
-                </span>
-              </>
-            ) : (
-              t("titlePart1")
-            )}
+          <h1 className="text-3xl md:text-4xl font-extrabold text-stone-800 dark:text-stone-100 mb-4 tracking-tight">
+            {t("titlePart1")}
           </h1>
-          <p className="text-lg text-stone-600 dark:text-stone-400 max-w-md mx-auto mb-2">
+          <p className="text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto mb-3">
             {t("subtitle")}
           </p>
-          <p className="text-sm text-rose-400/80 dark:text-rose-300/70 font-medium">
+          <p className="text-sm text-stone-500 dark:text-stone-400 max-w-xl mx-auto mb-2">
             {t("tagline")}
           </p>
         </div>
@@ -104,7 +87,7 @@ function AdoptInquiryPageContent() {
 
         <div className="mt-12 flex flex-wrap justify-center gap-6 md:gap-10 text-sm text-stone-600 dark:text-stone-400">
           <Link
-            href="/free-home-visit"
+            href="/adoptieproces"
             className="flex items-center gap-2 hover:opacity-80 hover:underline transition-opacity group"
             style={{ color: "inherit" }}
           >
@@ -112,7 +95,7 @@ function AdoptInquiryPageContent() {
             {t("trustBadge1")}
           </Link>
           <Link
-            href="/full-medical-check"
+            href="/medische-reisvoorbereiding"
             className="flex items-center gap-2 hover:opacity-80 hover:underline transition-opacity group"
             style={{ color: "inherit" }}
           >
@@ -120,7 +103,7 @@ function AdoptInquiryPageContent() {
             {t("trustBadge2")}
           </Link>
           <Link
-            href="/lifelong-support"
+            href="/visit-and-adopt"
             className="flex items-center gap-2 hover:opacity-80 hover:underline transition-opacity group"
             style={{ color: "inherit" }}
           >

@@ -655,11 +655,11 @@
     "promoAlt2": "Geretteter Hund mit Rollstuhl in Aktion – Saved Souls Foundation"
   },
   "adoptInquiry": {
-    "badge": "Starte deine Reise",
-    "titlePart1": "Gib einer Seele eine",
-    "titlePart2": "zweite Chance",
-    "subtitle": "Füllen Sie das Formular unten aus und unser Team meldet sich innerhalb von 48 Stunden bei Ihnen.",
-    "tagline": "Jede Adoption ist eine Liebesgeschichte ♥",
+    "badge": "Starten Sie Ihre Reise",
+    "titlePart1": "Saved Souls Foundation – Adoptionsprozess 🐾",
+    "titlePart2": "",
+    "subtitle": "Unsere Rettungshunde suchen liebevolle Zuhause in Thailand und im Ausland.",
+    "tagline": "Die Adoption innerhalb Thailands ist kostenlos*, außer möglichen Reisekosten. Die Adoption ins Ausland umfasst Reise- und Vorbereitungskosten für Impfungen, Gesundheitschecks, Dokumentation und Transport.",
     "formTitle": "Adoptionsanfrage",
     "formSubtitle": "Wir können es kaum erwarten, Ihnen bei der Suche nach Ihrem perfekten Match zu helfen",
     "thankYouTitle": "Vielen Dank!",
@@ -667,9 +667,9 @@
     "thankYouTagline": "Eine neue Liebesgeschichte steht bevor ♥",
     "backToAdopt": "← Zurück zur Adoption",
     "browseMore": "Weitere Tiere ansehen →",
-    "trustBadge1": "Kostenloser Hausbesuch",
-    "trustBadge2": "Vollständige medizinische Untersuchung",
-    "trustBadge3": "Lebenslange Unterstützung",
+    "trustBadge1": "Adoptionsprozess",
+    "trustBadge2": "Medizinische & Reisevorbereitung",
+    "trustBadge3": "Besuchen & adoptieren",
     "footer": "Mit ♥ gemacht für jede gerettete Seele"
   },
   "adoptPage": {
@@ -4043,5 +4043,51 @@
     "shareText": "Dringend: Helft, das Land für 350 Hunde der Saved Souls Foundation zu retten — €100.000 nötig. Spende über GoFundMe.",
     "photoGridAlt1": "Geretteter Hund bei Saved Souls Foundation",
     "photoGridAlt2": "Geretteter Hund bei Saved Souls Foundation"
+  },
+  "freeHomeVisit": {
+    "pageTitle": "Adoptionsprozess",
+    "pageSubtitle": "Unsere Rettungshunde suchen liebevolle Zuhause in Thailand und im Ausland.",
+    "withinThailandText": "Die Adoption innerhalb Thailands ist kostenlos*, außer möglichen Reisekosten, wenn der Hund zu Ihnen transportiert werden muss.",
+    "overseasText": "Die Adoption ins Ausland umfasst Reise- und Vorbereitungskosten für Impfungen, Gesundheitschecks, Dokumentation und Transport.",
+    "step1Title": "Erste Anfrage & Matching",
+    "step1TextBefore": "Sie können",
+    "step1Link": "verfügbare Hunde und Katzen",
+    "step1TextAfter": "auf unserer Website durchsuchen oder eine Anfrage an adoption@savedsouls-foundation.org senden.",
+    "step2Title": "Interview",
+    "step2Text": "Wir planen ein Gespräch, um Sie besser kennenzulernen und sicherzustellen, dass der Hund in einer liebevollen Umgebung untergebracht wird.",
+    "step3Title": "Adoptionsvertrag",
+    "step3Text": "Nach der Genehmigung wird der Adoptionsvertrag abgeschlossen und die erste Zahlung geleistet.",
+    "step4Title": "Adoptions- & Reisevorbereitung",
+    "step4Text": "Ihr Hund beginnt den offiziellen Vorbereitungsprozess mit Impfungen, Gesundheitschecks und Reisedokumenten.",
+    "prepTimesTitle": "Geschätzte Vorbereitungszeiten:",
+    "prepEurope": "Europa: ca. 4 Monate",
+    "prepUSA": "USA: ca. 1,5 Monate",
+    "prepCanada": "Kanada: ca. 1 Monat",
+    "prepOther": "Für Adoptionen in andere Länder kontaktieren Sie uns bitte unter:",
+    "footnote": "* Transport innerhalb Thailands kann je nach Standort zusätzliche Reisekosten verursachen.",
+    "ctaButton": "Adoptionsanfrage starten →",
+    "backToAdopt": "← Zurück zur Adoption"
+  },
+  "fullMedicalCheck": {
+    "pageTitle": "Medizinische & Reisevorbereitung",
+    "pageSubtitle": "Die Adoption ins Ausland umfasst Reise- und Vorbereitungskosten für Impfungen, Gesundheitschecks, Dokumentation und Transport.",
+    "prepTimesTitle": "Geschätzte Vorbereitungszeiten",
+    "prepEurope": "Europa: ca. 4 Monate",
+    "prepUSA": "USA: ca. 1,5 Monate",
+    "prepCanada": "Kanada: ca. 1 Monat",
+    "otherCountriesTitle": "Adoption aus einem anderen Land?",
+    "otherCountriesText": "Für Adoptionen in andere Länder kontaktieren Sie uns bitte unter:",
+    "ctaButton": "Adoptionsanfrage starten →",
+    "backToAdopt": "← Zurück zur Adoption"
+  },
+  "lifelongSupport": {
+    "pageTitle": "Besuchen & adoptieren",
+    "pageSubtitle": "Möchten Sie einen Hund oder eine Katze adoptieren? Sie sind herzlich willkommen, unser Tierheim zu besuchen.",
+    "meetTitle": "Unsere Rettungstiere persönlich kennenlernen",
+    "meetText": "Wir veranstalten Adoptionsevents, bei denen potenzielle Besitzer ihre zukünftigen Begleiter persönlich treffen können. Folgen Sie uns auf Facebook und Instagram.",
+    "visitTitle": "Besuch planen",
+    "visitText": "Sie sind jederzeit willkommen — kontaktieren Sie uns einfach, um einen Termin zu vereinbaren:",
+    "ctaButton": "Adoptionsanfrage starten →",
+    "backToAdopt": "← Zurück zur Adoption"
   }
 }

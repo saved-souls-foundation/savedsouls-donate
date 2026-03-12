@@ -655,11 +655,11 @@
     "promoAlt2": "Perro rescatado con silla de ruedas en acción – Saved Souls Foundation"
   },
   "adoptInquiry": {
-    "badge": "Comienza tu viaje",
-    "titlePart1": "Dale a un alma una",
-    "titlePart2": "segunda oportunidad",
-    "subtitle": "Rellena el formulario y nuestro equipo te responderá en 48 horas.",
-    "tagline": "Cada adopción es una historia de amor ♥",
+    "badge": "Comience su viaje",
+    "titlePart1": "Saved Souls Foundation – Proceso de adopción 🐾",
+    "titlePart2": "",
+    "subtitle": "Nuestros perros rescatados buscan hogares amorosos en Tailandia y en el extranjero.",
+    "tagline": "La adopción dentro de Tailandia es gratuita*, excepto por posibles gastos de viaje. La adopción internacional incluye gastos de viaje y preparación: vacunas, chequeos de salud, documentación y transporte.",
     "formTitle": "Solicitud de adopción",
     "formSubtitle": "No vemos el momento de ayudarte a encontrar tu compañero perfecto",
     "thankYouTitle": "¡Gracias!",
@@ -667,9 +667,9 @@
     "thankYouTagline": "Una nueva historia de amor está por comenzar ♥",
     "backToAdopt": "← Volver a adoptar",
     "browseMore": "Ver más animales →",
-    "trustBadge1": "Visita a domicilio gratuita",
-    "trustBadge2": "Revisión médica completa",
-    "trustBadge3": "Apoyo de por vida",
+    "trustBadge1": "Proceso de adopción",
+    "trustBadge2": "Preparación médica y de viaje",
+    "trustBadge3": "Visitar & adoptar",
     "footer": "Hecho con ♥ para cada alma rescatada"
   },
   "adoptPage": {
@@ -4043,5 +4043,51 @@
     "shareText": "Urgente: Ayuda a salvar la tierra para 350 perros en Saved Souls Foundation — €100.000 necesarios. Dona vía GoFundMe.",
     "photoGridAlt1": "Perro rescatado en Saved Souls Foundation",
     "photoGridAlt2": "Perro rescatado en Saved Souls Foundation"
+  },
+  "freeHomeVisit": {
+    "pageTitle": "Proceso de adopción",
+    "pageSubtitle": "Nuestros perros rescatados buscan hogares amorosos en Tailandia y en el extranjero.",
+    "withinThailandText": "La adopción dentro de Tailandia es gratuita*, excepto por posibles gastos de viaje si el perro necesita ser transportado hasta usted.",
+    "overseasText": "La adopción internacional incluye gastos de viaje y preparación: vacunas, chequeos de salud, documentación y transporte.",
+    "step1Title": "Consulta inicial y emparejamiento",
+    "step1TextBefore": "Puede explorar",
+    "step1Link": "perros y gatos disponibles",
+    "step1TextAfter": "en nuestro sitio web o enviar una consulta a adoption@savedsouls-foundation.org.",
+    "step2Title": "Entrevista",
+    "step2Text": "Programaremos una entrevista para conocerle mejor y asegurarnos de que el perro sea colocado en un entorno amoroso y responsable.",
+    "step3Title": "Contrato de adopción",
+    "step3Text": "Una vez aprobado, se completará el contrato de adopción y se realizará el primer pago.",
+    "step4Title": "Preparación para la adopción y el viaje",
+    "step4Text": "Su perro comenzará el proceso oficial de preparación con vacunas, chequeos y documentación de viaje.",
+    "prepTimesTitle": "Tiempos estimados de preparación:",
+    "prepEurope": "Europa: aproximadamente 4 meses",
+    "prepUSA": "EE.UU.: aproximadamente 1,5 meses",
+    "prepCanada": "Canadá: aproximadamente 1 mes",
+    "prepOther": "Para adopciones a otros países, contáctenos en:",
+    "footnote": "* El transporte dentro de Tailandia puede implicar costes adicionales según la ubicación.",
+    "ctaButton": "Iniciar solicitud de adopción →",
+    "backToAdopt": "← Volver a adoptar"
+  },
+  "fullMedicalCheck": {
+    "pageTitle": "Preparación médica y de viaje",
+    "pageSubtitle": "La adopción internacional incluye gastos de viaje y preparación: vacunas, chequeos de salud, documentación y transporte.",
+    "prepTimesTitle": "Tiempos estimados de preparación",
+    "prepEurope": "Europa: aproximadamente 4 meses",
+    "prepUSA": "EE.UU.: aproximadamente 1,5 meses",
+    "prepCanada": "Canadá: aproximadamente 1 mes",
+    "otherCountriesTitle": "¿Adopta desde otro país?",
+    "otherCountriesText": "Para adopciones a otros países, contáctenos en:",
+    "ctaButton": "Iniciar solicitud de adopción →",
+    "backToAdopt": "← Volver a adoptar"
+  },
+  "lifelongSupport": {
+    "pageTitle": "Visitar & adoptar",
+    "pageSubtitle": "¿Desea adoptar un perro o gato? Siempre es bienvenido a visitar nuestro refugio.",
+    "meetTitle": "Conozca a nuestros rescatados en persona",
+    "meetText": "Organizamos eventos de adopción donde los posibles dueños pueden conocer a sus futuros compañeros en persona. ¡Síganos en Facebook e Instagram!",
+    "visitTitle": "Programe una visita",
+    "visitText": "Siempre es bienvenido a visitar nuestro refugio — contáctenos para concertar una cita:",
+    "ctaButton": "Iniciar solicitud de adopción →",
+    "backToAdopt": "← Volver a adoptar"
   }
 }

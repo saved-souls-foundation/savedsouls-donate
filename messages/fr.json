@@ -937,11 +937,11 @@
     "promoAlt2": "Chien secouru avec fauteuil en action – Saved Souls Foundation"
   },
   "adoptInquiry": {
-    "badge": "Commencez votre aventure",
-    "titlePart1": "Offrez à une âme une",
-    "titlePart2": "seconde chance",
-    "subtitle": "Remplissez le formulaire ci-dessous et notre équipe vous recontactera sous 48 heures.",
-    "tagline": "Chaque adoption est une histoire d'amour ♥",
+    "badge": "Commencez votre voyage",
+    "titlePart1": "Saved Souls Foundation – Processus d'adoption 🐾",
+    "titlePart2": "",
+    "subtitle": "Nos chiens rescapés cherchent des foyers aimants en Thaïlande et à l'étranger.",
+    "tagline": "L'adoption en Thaïlande est gratuite*, sauf frais de transport éventuels. L'adoption internationale comprend les frais de voyage et de préparation : vaccins, bilans de santé, documentation et transport.",
     "formTitle": "Demande d'adoption",
     "formSubtitle": "Nous avons hâte de vous aider à trouver le compagnon idéal",
     "thankYouTitle": "Merci !",
@@ -955,9 +955,9 @@
     "securityOptional": "La vérification de sécurité est optionnelle. Si le champ ci-dessus n'apparaît pas, vous pouvez quand même envoyer.",
     "backToAdopt": "← Retour à l'adoption",
     "browseMore": "Voir plus d'animaux →",
-    "trustBadge1": "Visite à domicile gratuite",
-    "trustBadge2": "Bilan de santé complet",
-    "trustBadge3": "Accompagnement à vie",
+    "trustBadge1": "Processus d'adoption",
+    "trustBadge2": "Préparation médicale et voyage",
+    "trustBadge3": "Visiter & adopter",
     "footer": "Fait avec ♥ pour chaque âme sauvée"
   },
   "adoptPage": {
@@ -4366,5 +4366,51 @@
     "shareText": "Urgent : Aidez à sauver la terre pour 350 chiens à Saved Souls Foundation — 100 000 € nécessaires. Donnez via GoFundMe.",
     "photoGridAlt1": "Chien secouru à Saved Souls Foundation",
     "photoGridAlt2": "Chien secouru à Saved Souls Foundation"
+  },
+  "freeHomeVisit": {
+    "pageTitle": "Processus d'adoption",
+    "pageSubtitle": "Nos chiens rescapés cherchent des foyers aimants en Thaïlande et à l'étranger.",
+    "withinThailandText": "L'adoption en Thaïlande est gratuite*, sauf frais de transport éventuels si le chien doit être acheminé jusqu'à vous.",
+    "overseasText": "L'adoption internationale comprend les frais de voyage et de préparation : vaccins, bilans de santé, documentation et transport.",
+    "step1Title": "Première demande et matching",
+    "step1TextBefore": "Vous pouvez consulter",
+    "step1Link": "les chiens et chats disponibles",
+    "step1TextAfter": "sur notre site ou envoyer une demande à adoption@savedsouls-foundation.org.",
+    "step2Title": "Entretien",
+    "step2Text": "Nous organiserons un entretien pour mieux vous connaître et nous assurer que le chien sera placé dans un environnement aimant et responsable.",
+    "step3Title": "Contrat d'adoption",
+    "step3Text": "Une fois approuvé, le contrat d'adoption sera signé et le premier paiement effectué.",
+    "step4Title": "Préparation à l'adoption et au voyage",
+    "step4Text": "Votre chien commencera le processus officiel de préparation avec vaccins, bilans et documents de voyage.",
+    "prepTimesTitle": "Délais de préparation estimés :",
+    "prepEurope": "Europe : environ 4 mois",
+    "prepUSA": "États-Unis : environ 1,5 mois",
+    "prepCanada": "Canada : environ 1 mois",
+    "prepOther": "Pour les adoptions vers d'autres pays, contactez-nous à :",
+    "footnote": "* Le transport en Thaïlande peut entraîner des frais supplémentaires selon la localisation.",
+    "ctaButton": "Démarrer votre demande d'adoption →",
+    "backToAdopt": "← Retour à l'adoption"
+  },
+  "fullMedicalCheck": {
+    "pageTitle": "Préparation médicale et voyage",
+    "pageSubtitle": "L'adoption internationale comprend les frais de voyage et de préparation : vaccins, bilans de santé, documentation et transport.",
+    "prepTimesTitle": "Délais de préparation estimés",
+    "prepEurope": "Europe : environ 4 mois",
+    "prepUSA": "États-Unis : environ 1,5 mois",
+    "prepCanada": "Canada : environ 1 mois",
+    "otherCountriesTitle": "Vous adoptez depuis un autre pays ?",
+    "otherCountriesText": "Pour les adoptions vers d'autres pays, contactez-nous à :",
+    "ctaButton": "Démarrer votre demande d'adoption →",
+    "backToAdopt": "← Retour à l'adoption"
+  },
+  "lifelongSupport": {
+    "pageTitle": "Visiter & adopter",
+    "pageSubtitle": "Vous souhaitez adopter un chien ou un chat ? Vous êtes toujours les bienvenus dans notre refuge.",
+    "meetTitle": "Rencontrez nos rescapés en personne",
+    "meetText": "Nous organisons des événements d'adoption où les futurs propriétaires peuvent rencontrer leurs compagnons en personne. Suivez-nous sur Facebook et Instagram !",
+    "visitTitle": "Planifier une visite",
+    "visitText": "Vous êtes toujours les bienvenus — contactez-nous pour prendre rendez-vous :",
+    "ctaButton": "Démarrer votre demande d'adoption →",
+    "backToAdopt": "← Retour à l'adoption"
   }
 }
