@@ -97,6 +97,21 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
+    const all: NavDropdownItem[] = [
+      { href: "/get-involved", label: t("getInvolved"), description: t("menuGetInvolvedOverview"), icon: Home },
+      { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
+      { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
+      { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
+      { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
+      { href: "/gidsen", label: t("menuGidsenLabel"), description: t("menuGidsenSubtext"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
+      { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
+      { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
+      { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
+    ];
+    return showSponsor ? all : all.filter((i) => i.href !== "/#sponsor");
+  }, [showSponsor, t]);
+
   const navLinkClass = (path: string, mobile = false) => {
     const isActive = pathname === path || (path !== "/" && pathname.startsWith(path));
     const pad = mobile ? "px-4 py-3" : "px-3 py-2 text-sm";
@@ -188,18 +203,25 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             align="left"
             dropdownStyle={{ zIndex: 200 }}
           />
-          <a
-            href={`/${locale}/get-involved`}
-            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
-          >
-            {t("getInvolved")}
-          </a>
-          <a
-            href={`/${locale}/contact`}
+          <NavDropdown
+            label={t("getInvolved")}
+            layout="involved"
+            items={getInvolvedItems}
+            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            align="right"
+            bottomCta={
+              isHomePage
+                ? { href: "#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext"), onClick: handleDonate }
+                : { href: "/#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }
+            }
+            dropdownStyle={{ zIndex: 200 }}
+          />
+          <Link
+            href="/contact"
             className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("contact")}
-          </a>
+          </Link>
         </div>
 
         {/* Right: Search, Language, Soul saver, Donate (desktop) | Search, Language, Hamburger (mobile) */}
@@ -247,9 +269,8 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 </div>
               )}
             </div>
-            {/* Native <a> voorkomt hydration mismatch met next-intl Link (server <a> vs client tree) */}
-            <a
-              href={`/${locale}/get-involved`}
+            <Link
+              href="/get-involved"
               className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
                 isOverlay
                   ? "backdrop-blur-sm bg-white/10 border-white/30 text-white"
@@ -257,7 +278,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               }`}
             >
               {locale === "nl" ? "Zielenredder worden" : locale === "de" ? "Seelenretter werden" : "Become a soul saver"}
-            </a>
+            </Link>
             {isHomePage ? (
               <a
                 href="#donate"

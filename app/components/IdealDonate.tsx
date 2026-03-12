@@ -59,6 +59,8 @@ export default function IdealDonate() {
   const [rateToEur, setRateToEur] = useState<number | null>(isThai ? 1 / 38 : 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const fetchRate = useCallback(async () => {
     if (currency === "EUR") {
@@ -141,15 +143,25 @@ export default function IdealDonate() {
         {t("donateTagline")}
       </p>
 
+      {/* PayPal · PromptPay · Donorbox — even groot en prominent */}
+      <div className="flex items-center justify-center gap-4 flex-wrap mb-3">
+        <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="hover:opacity-90 flex items-center justify-center">
+          <Image src="/logos/paypal-official.png" alt="PayPal" width={100} height={62} className="h-12 w-auto object-contain" />
+        </a>
+        <Link href="/donate/thai#promptpay" className="hover:opacity-90 flex items-center justify-center">
+          <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-12 w-auto object-contain" />
+        </Link>
+        <a href="https://donorbox.org/saved-souls-foundation-donation" target="_blank" rel="noopener noreferrer" className="hover:opacity-90 flex items-center justify-center py-2 px-3 rounded-xl border border-stone-300 dark:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors">
+          <Image src="/logos/donorbox-logo.png" alt="Donorbox" width={120} height={36} className="h-12 w-auto object-contain" />
+        </a>
+      </div>
+      <p className="text-center text-sm font-bold text-stone-600 dark:text-stone-400 mb-4">
+        · {t("thaiPayments")} · {t("bankTransfer")}
+      </p>
+
       <details className="group mb-4">
-        <summary className="text-xs text-stone-500 dark:text-stone-400 cursor-pointer hover:text-stone-600 dark:hover:text-stone-300 text-center list-none flex items-center justify-center gap-2 flex-wrap">
-          <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
-            <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
-          </a>
-          <Link href="/donate/thai#promptpay" onClick={(e) => e.stopPropagation()} className="hover:opacity-90">
-            <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-10 w-auto object-contain" />
-          </Link>
-          <span>· {t("thaiPayments")} · {t("bankTransfer")}</span>
+        <summary className="text-xs text-stone-500 dark:text-stone-400 cursor-pointer hover:text-stone-600 dark:hover:text-stone-300 text-center list-none">
+          · {t("thaiPayments")} · {t("bankTransfer")} …
         </summary>
         <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700 space-y-2 text-center">
           <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
@@ -160,20 +172,13 @@ export default function IdealDonate() {
             <Image src="/logos/promptpay-official.png" alt="PromptPay" width={71} height={40} className="h-10 w-auto object-contain" />
             <span className="text-xs" style={{ color: "#2aa348" }}>{t("thaiPaymentsMethods")} →</span>
           </Link>
+          <a href="https://donorbox.org/saved-souls-foundation-donation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
+            <Image src="/logos/donorbox-logo.png" alt="Donorbox" width={80} height={24} className="h-6 w-auto object-contain" />
+            <span className="text-xs" style={{ color: "#2aa348" }}>→</span>
+          </a>
           <a href="#bank-transfer" className="block text-xs" style={{ color: "#2aa348" }}>{t("bankTransfer")} →</a>
         </div>
       </details>
-
-      {/* Donorbox */}
-      <div className="mt-6">
-        <script type="module" src="https://donorbox.org/widgets.js" async></script>
-        {/* @ts-expect-error Donorbox custom element */}
-        <dbox-widget
-          campaign="saved-souls-foundation-donation"
-          type="donation_form"
-          enable-auto-scroll="true"
-        />
-      </div>
 
       {/* Maandelijkse zielenredder button */}
       <div className="mt-4">
