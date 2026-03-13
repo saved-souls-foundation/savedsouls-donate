@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Heart } from "lucide-react";
+import DonationLoop from "@/app/components/DonationLoop";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
-const ACCENT_GREEN = "#2aa348";
 const GOAL_EUR = 100_000;
-const RAISED_EUR = 2_163;
+const RAISED_EUR = 2_192;
 const GOFUNDME_URL = "https://gofund.me/6df90b013";
 const BASE_URL = "https://www.savedsouls-foundation.com";
 
@@ -16,7 +17,6 @@ export default async function EmergencyPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("emergency");
 
-  const progressPercent = Math.min(100, (RAISED_EUR / GOAL_EUR) * 100);
   const shareUrl = `${BASE_URL}/${locale}/emergency`;
   const shareText = t("shareText");
   const encodedUrl = encodeURIComponent(shareUrl);
@@ -27,133 +27,93 @@ export default async function EmergencyPage({ params }: Props) {
 
   return (
     <ParallaxPage overlayClassName="bg-transparent" noOverlay>
-      <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
-        {/* Hero — dog-350.jpg, CSS background, overlay + tekst */}
+      <div className="min-h-screen bg-white dark:bg-stone-900">
+
+        {/* ─── HERO ─── */}
         <div
           style={{
             backgroundImage: "url('/dog-red-leash.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            minHeight: "60vh",
+            minHeight: "70vh",
             position: "relative",
             display: "flex",
-            alignItems: "flex-end",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="relative z-10 px-4 py-16 md:py-24 text-white text-center w-full">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
+          <div className="absolute inset-0 bg-black/55" />
+          <div className="relative z-10 px-6 py-24 text-white text-center w-full max-w-3xl mx-auto">
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/60 mb-6">
+              Emergency appeal · Saved Souls Foundation
+            </p>
+            <h1 className="text-4xl md:text-6xl font-semibold leading-tight mb-6 tracking-tight">
               {t("heroTitle")}
             </h1>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-95">
+            <p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto mb-10 leading-relaxed">
               {t("heroSubtitle")}
             </p>
+            <a
+              href={GOFUNDME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium text-white transition-all hover:scale-[1.02] hover:opacity-95"
+              style={{ backgroundColor: "#7B1010" }}
+            >
+              <span className="w-2 h-2 rounded-full bg-white shrink-0 animate-pulse" />
+              <svg width="36" height="14" viewBox="0 0 36 14" aria-hidden style={{ overflow: "visible" }}>
+                <polyline
+                  points="0,7 4,7 6,2 8,12 10,2 12,7 16,7 20,7 22,2 24,12 26,2 28,7 36,7"
+                  fill="none" stroke="white" strokeWidth="1.5"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  strokeDasharray="60" strokeDashoffset="0"
+                  style={{ animation: "ecg-scroll 1.8s linear infinite" }}
+                />
+              </svg>
+              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+              {t("heroDonateCta") ?? "Donate now"}
+            </a>
           </div>
         </div>
 
-        {/* Progress bar */}
-        <section className="bg-white dark:bg-stone-800 shadow-sm py-8 px-4">
-          <div className="max-w-2xl mx-auto">
-            <div className="flex justify-between text-sm font-medium text-stone-600 dark:text-stone-400 mb-2">
-              <span>€{RAISED_EUR.toLocaleString("nl-NL")} {t("progressOf")} €{GOAL_EUR.toLocaleString("nl-NL")}</span>
-              <span>{progressPercent.toFixed(1)}%</span>
+        {/* ─── DONATION LOOP ─── */}
+        <DonationLoop raisedEur={RAISED_EUR} goalEur={GOAL_EUR} />
+
+        {/* ─── TWO GOALS ─── */}
+        <section className="max-w-3xl mx-auto px-6 py-16">
+          <p className="text-xs font-medium tracking-[0.15em] uppercase text-stone-400 text-center mb-10">
+            Where your money goes
+          </p>
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="p-8 rounded-3xl border border-stone-100 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50">
+              <div className="w-10 h-10 rounded-2xl bg-white dark:bg-stone-700 flex items-center justify-center mb-5 shadow-sm">
+                <span className="text-lg" aria-hidden>🏠</span>
+              </div>
+              <h2 className="text-lg font-medium text-stone-900 dark:text-stone-100 mb-2">
+                {t("goalLandTitle")}
+              </h2>
+              <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                {t("goalLandDesc")}
+              </p>
             </div>
-            <div className="h-4 rounded-full bg-stone-200 dark:bg-stone-700 overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%`, backgroundColor: ACCENT_GREEN }}
-              />
+            <div className="p-8 rounded-3xl border border-stone-100 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50">
+              <div className="w-10 h-10 rounded-2xl bg-white dark:bg-stone-700 flex items-center justify-center mb-5 shadow-sm">
+                <span className="text-lg" aria-hidden>🍖</span>
+              </div>
+              <h2 className="text-lg font-medium text-stone-900 dark:text-stone-100 mb-2">
+                {t("goalFundTitle")}
+              </h2>
+              <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                {t("goalFundDesc")}
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Two goals */}
-        <section className="max-w-3xl mx-auto px-4 py-12">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800">
-              <span className="text-2xl" aria-hidden>🏠</span>
-              <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mt-2">{t("goalLandTitle")}</h2>
-              <p className="text-stone-600 dark:text-stone-400 mt-2">{t("goalLandDesc")}</p>
-            </div>
-            <div className="p-6 rounded-2xl border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800">
-              <span className="text-2xl" aria-hidden>🍖</span>
-              <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mt-2">{t("goalFundTitle")}</h2>
-              <p className="text-stone-600 dark:text-stone-400 mt-2">{t("goalFundDesc")}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Impact amounts */}
-        <section className="max-w-3xl mx-auto px-4 py-8">
-          <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 text-center mb-6">{t("impactTitle")}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-              <span className="text-2xl font-bold" style={{ color: ACCENT_GREEN }}>€12</span>
-              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{t("impactFood")}</p>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-              <span className="text-2xl font-bold" style={{ color: ACCENT_GREEN }}>€23</span>
-              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{t("impactMeds")}</p>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-              <span className="text-2xl font-bold" style={{ color: ACCENT_GREEN }}>€32</span>
-              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{t("impactSterilization")}</p>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700">
-              <span className="text-2xl font-bold" style={{ color: ACCENT_GREEN }}>€46</span>
-              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{t("impactEmergency")}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* GoFundMe CTA */}
-        <section className="max-w-2xl mx-auto px-4 py-10">
-          <a
-            href={GOFUNDME_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl text-white text-lg font-bold shadow-lg hover:opacity-95 transition-opacity"
-            style={{ backgroundColor: ACCENT_GREEN }}
-          >
-            {t("ctaGoFundMe")}
-          </a>
-        </section>
-
-        {/* Share buttons */}
-        <section className="max-w-2xl mx-auto px-4 py-8">
-          <p className="text-center text-stone-600 dark:text-stone-400 font-medium mb-4">{t("shareTitle")}</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href={facebookShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1877F2] text-white text-sm font-medium hover:opacity-90"
-            >
-              {t("shareFacebook")}
-            </a>
-            <a
-              href={whatsappShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white text-sm font-medium hover:opacity-90"
-            >
-              {t("shareWhatsApp")}
-            </a>
-            <a
-              href={twitterShare}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-black dark:bg-stone-700 text-white text-sm font-medium hover:opacity-90"
-            >
-              {t("shareTwitter")}
-            </a>
-          </div>
-        </section>
-
-        {/* Photo grid — dog-350, dog-342 */}
-        <section className="max-w-4xl mx-auto px-4 py-12">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+        {/* ─── PHOTO STORY ─── */}
+        <section className="max-w-5xl mx-auto px-6 pb-16">
+          <div className="grid md:grid-cols-2 gap-3 rounded-3xl overflow-hidden">
+            <div className="relative aspect-[4/3]">
               <Image
                 src="/dog-wheelchair-small.webp"
                 alt={t("photoGridAlt1")}
@@ -162,7 +122,7 @@ export default async function EmergencyPage({ params }: Props) {
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+            <div className="relative aspect-[4/3]">
               <Image
                 src="/dog-wheelchair.webp"
                 alt={t("photoGridAlt2")}
@@ -171,6 +131,80 @@ export default async function EmergencyPage({ params }: Props) {
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
+          </div>
+          <div className="mt-6 text-center max-w-xl mx-auto">
+            <p className="text-sm text-stone-400 dark:text-stone-500 leading-relaxed italic">
+              50 of our dogs are disabled and cannot survive without daily care.
+              Without this land, they have nowhere to go.
+            </p>
+          </div>
+        </section>
+
+        {/* ─── SHARE + QR ─── */}
+        <section className="border-t border-stone-100 dark:border-stone-800 py-16 px-6">
+          <div className="max-w-2xl mx-auto flex flex-col items-center gap-10">
+
+            {/* Share */}
+            <div className="text-center">
+              <p className="text-xs font-medium tracking-[0.15em] uppercase text-stone-400 mb-5">
+                {t("shareTitle")}
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  { href: facebookShare,   label: "Facebook",  bg: "#1877F2" },
+                  { href: whatsappShare,   label: "WhatsApp",  bg: "#25D366" },
+                  { href: twitterShare,    label: "X",         bg: "#000000" },
+                  { href: "https://www.instagram.com/savedsoulsfoundation", label: "Instagram", bg: "#E1306C" },
+                  { href: "https://www.tiktok.com/@savedsoulsfoundation",   label: "TikTok",    bg: "#010101" },
+                ].map(({ href, label, bg }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium text-white transition-opacity hover:opacity-85"
+                    style={{ backgroundColor: bg }}
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* QR */}
+            <div className="flex flex-col items-center gap-3">
+              <p className="text-xs tracking-[0.15em] uppercase text-stone-400">
+                Scan to donate
+              </p>
+              <div className="p-5 bg-white rounded-2xl border border-stone-100 dark:border-stone-200">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(GOFUNDME_URL)}&color=7B1010&bgcolor=ffffff`}
+                  alt="QR code — donate via GoFundMe"
+                  width={160}
+                  height={160}
+                  className="block"
+                />
+              </div>
+              <p className="text-xs text-stone-400">gofund.me/6df90b013</p>
+            </div>
+
+            {/* Final CTA */}
+            <div className="text-center">
+              <a
+                href={GOFUNDME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02] hover:opacity-95"
+                style={{ backgroundColor: "#7B1010" }}
+              >
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
+                Donate now — save their home
+              </a>
+              <p className="text-xs text-stone-400 mt-3">
+                Secure · Takes 30 seconds · Every euro counts
+              </p>
+            </div>
+
           </div>
         </section>
 

@@ -197,6 +197,12 @@ body {
   box-shadow: 0 0 20px rgba(192, 96, 74, 0.6);
 }
 
+/* ECG line animation for mobile Noodhulp button */
+@keyframes ecg-scroll {
+  0%   { stroke-dashoffset: 60; }
+  100% { stroke-dashoffset: -60; }
+}
+
 /* Print styles for course materials */
 @media print {
   .print\:hidden {

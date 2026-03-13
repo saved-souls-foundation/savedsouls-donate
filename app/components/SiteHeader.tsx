@@ -228,7 +228,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         <div className={HEADER_RIGHT_WRAPPER} suppressHydrationWarning>
           {/* Desktop: search, language, soul saver, donate */}
           <div className={HEADER_DESKTOP_ACTIONS} suppressHydrationWarning>
-            <SiteSearch desktopIconOnly overlay={isOverlay} />
+            <SiteSearch desktopIconOnly overlay={mounted ? isOverlay : false} />
             {/* Inline language switcher – globe + flag + dropdown */}
             <div ref={langRefDesktop} className="relative">
               <button
@@ -271,11 +271,24 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </div>
             <Link
               href="/emergency"
-              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02]"
-              style={{ backgroundColor: "#ea580c" }}
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02] ![bg-[#C0392B]]"
+              style={{ backgroundColor: "#C0392B" }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
-              {locale === "nl" ? "Noodhulp" : locale === "de" ? "Nothilfe" : "Emergency"}
+              <svg width="36" height="14" viewBox="0 0 36 14" className="shrink-0" aria-hidden style={{ overflow: "visible" }}>
+                <polyline
+                  points="0,7 4,7 6,2 8,12 10,2 12,7 16,7 20,7 22,2 24,12 26,2 28,7 36,7"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeDasharray="60"
+                  strokeDashoffset="0"
+                  style={{ animation: "ecg-scroll 1.8s linear infinite" }}
+                />
+              </svg>
+              {t("menuEmergency") ?? "Noodhulp"}
             </Link>
             <Link
               href="/get-involved"
@@ -421,7 +434,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
               </Link>
             </div>
-            <div className="rounded-2xl border border-red-800/30 shadow-sm overflow-hidden mb-3" style={{ backgroundColor: "#dc2626" }}>
+            <div className="rounded-2xl border border-red-800/40 shadow-sm overflow-hidden mb-3 ![bg-[#C0392B]]" style={{ backgroundColor: "#C0392B" }}>
               <Link
                 href="/emergency"
                 onClick={closeMobileMenu}
@@ -429,10 +442,23 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               >
                 <Heart size={18} className="shrink-0 text-white" aria-hidden />
                 <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
+                <svg width="36" height="14" viewBox="0 0 36 14" className="shrink-0" aria-hidden style={{ overflow: "visible" }}>
+                  <polyline
+                    points="0,7 4,7 6,2 8,12 10,2 12,7 16,7 20,7 22,2 24,12 26,2 28,7 36,7"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeDasharray="60"
+                    strokeDashoffset="0"
+                    style={{ animation: "ecg-scroll 1.8s linear infinite" }}
+                  />
+                </svg>
                 <span className="font-medium text-[15px] text-white flex-1">
-                  {locale === "nl" ? "Noodhulp" : locale === "de" ? "Nothilfe" : "Emergency"}
+                  {t("menuEmergency") ?? "Noodhulp"}
                 </span>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-md shrink-0" style={{ backgroundColor: "#991b1b", color: "white" }}>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-md shrink-0" style={{ backgroundColor: "#b34d10", color: "white" }}>
                   Urgent
                 </span>
               </Link>
