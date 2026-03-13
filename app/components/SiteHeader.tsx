@@ -292,13 +292,13 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </Link>
             <Link
               href="/get-involved"
-              className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium border transition-all hover:scale-[1.02] ${
-                isOverlay
-                  ? "backdrop-blur-sm bg-white/10 border-white/30 text-white"
-                  : "bg-emerald-50 border-emerald-200 text-emerald-700"
-              }`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border-2 transition-opacity hover:opacity-90"
+              style={{ borderColor: "#1a5c2e", color: "#1a5c2e", backgroundColor: "transparent" }}
+              suppressHydrationWarning
             >
-              {locale === "nl" ? "Zielenredder worden" : locale === "de" ? "Seelenretter werden" : "Become a soul saver"}
+              <span suppressHydrationWarning>
+                {locale === "nl" ? "Vrijwilliger" : locale === "de" ? "Freiwilliger" : locale === "es" ? "Voluntario" : locale === "fr" ? "Bénévole" : locale === "ru" ? "Волонтёр" : locale === "th" ? "อาสาสมัคร" : "Volunteer"}
+              </span>
             </Link>
             {isHomePage ? (
               <a
