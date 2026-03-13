@@ -132,13 +132,6 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
     }
   };
 
-  const handleDonate = () => {
-    if (scrollToSection) {
-      scrollToSection("donate");
-      closeMobileMenu();
-    }
-  };
-
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   const isHomePage = !!scrollToSection;
@@ -209,11 +202,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             items={getInvolvedItems}
             buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="right"
-            bottomCta={
-              isHomePage
-                ? { href: "#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext"), onClick: handleDonate }
-                : { href: "/#donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }
-            }
+            bottomCta={{ href: "/donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }}
             dropdownStyle={{ zIndex: 200 }}
           />
           <Link
@@ -271,7 +260,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </div>
             <Link
               href="/emergency"
-              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02] ![bg-[#C0392B]]"
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02]"
               style={{ backgroundColor: "#C0392B" }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
@@ -293,37 +282,26 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             <Link
               href="/get-involved"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border-2 transition-opacity hover:opacity-90"
-              style={{ borderColor: "#1a5c2e", color: "#1a5c2e", backgroundColor: "transparent" }}
+              style={{
+                borderColor: isOverlay ? "white" : "#1a5c2e",
+                color: isOverlay ? "white" : "#1a5c2e",
+                backgroundColor: "transparent"
+              }}
               suppressHydrationWarning
             >
               <span suppressHydrationWarning>
                 {locale === "nl" ? "Vrijwilliger" : locale === "de" ? "Freiwilliger" : locale === "es" ? "Voluntario" : locale === "fr" ? "Bénévole" : locale === "ru" ? "Волонтёр" : locale === "th" ? "อาสาสมัคร" : "Volunteer"}
               </span>
             </Link>
-            {isHomePage ? (
-              <a
-                href="#donate"
-                onClick={(e) => { e.preventDefault(); scrollToSection!("donate"); }}
-                className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 ${
-                  isOverlay ? "backdrop-blur-sm bg-red-500/80 border border-red-400/50 text-white" : "bg-red-500 text-white"
-                }`}
-                title={t("donateTooltip")}
-              >
-                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-                {t("donate")}
-              </a>
-            ) : (
-              <Link
-                href="/#donate"
-                className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 ${
-                  isOverlay ? "backdrop-blur-sm bg-red-500/80 border border-red-400/50 text-white" : "bg-red-500 text-white"
-                }`}
-                title={t("donateTooltip")}
-              >
-                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
-                {t("donate")}
-              </Link>
-            )}
+            <a
+              href={`/${locale}/donate`}
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 text-white"
+              style={{ backgroundColor: "#7B1010" }}
+              title={t("donateTooltip")}
+            >
+              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+              {t("donate")}
+            </a>
           </div>
           {/* Mobile: search, language, hamburger */}
           <div className="flex md:hidden items-center gap-2">
@@ -434,7 +412,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
               </Link>
             </div>
-            <div className="rounded-2xl border border-red-800/40 shadow-sm overflow-hidden mb-3 ![bg-[#C0392B]]" style={{ backgroundColor: "#C0392B" }}>
+            <div className="rounded-2xl border border-red-800/40 shadow-sm overflow-hidden mb-3" style={{ backgroundColor: "#C0392B" }}>
               <Link
                 href="/emergency"
                 onClick={closeMobileMenu}
@@ -650,29 +628,16 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
 
           {/* Bottom CTA – Doneren */}
           <div className="mt-8 pb-20 animate-fade-in" style={{ animationDelay: "150ms" }}>
-            {isHomePage ? (
-              <button
-                type="button"
-                onClick={handleDonate}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg shadow-red-200 active:scale-[0.98] transition-transform"
-                style={{ backgroundColor: "#E53E3E" }}
-                title={t("donateTooltip")}
-              >
-                <Heart size={18} fill="white" color="white" aria-hidden />
-                {t("donate")}
-              </button>
-            ) : (
-              <Link
-                href="/#donate"
-                onClick={closeMobileMenu}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg shadow-red-200 active:scale-[0.98] transition-transform"
-                style={{ backgroundColor: "#E53E3E" }}
-                title={t("donateTooltip")}
-              >
-                <Heart size={18} fill="white" color="white" aria-hidden />
-                {t("donate")}
-              </Link>
-            )}
+            <a
+              href={`/${locale}/donate`}
+              onClick={closeMobileMenu}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg active:scale-[0.98] transition-transform"
+              style={{ backgroundColor: "#7B1010" }}
+              title={t("donateTooltip")}
+            >
+              <Heart size={18} fill="white" color="white" aria-hidden />
+              {t("donate")}
+            </a>
           </div>
         </div>
         )}
