@@ -109,7 +109,7 @@ export default function DonatePage() {
 
       {/* Hero – static fullscreen, desktop AND mobile, scroll-triggered fade-in */}
       <header>
-        <HeroFadeIn className="relative flex min-h-[100svh] md:min-h-[100vh] flex-col items-center justify-center text-center px-6">
+        <HeroFadeIn className="relative flex min-h-[100svh] md:min-h-[100vh] flex-col items-center justify-end pb-24 text-center px-6">
           {/* Hero: <picture> zodat browser alleen 1 afbeelding laadt (mobiel 57KB, desktop 170KB) – geen dubbele request */}
           <div className="absolute inset-0">
             <picture>
@@ -133,7 +133,7 @@ export default function DonatePage() {
             <p className="hero-animate-location text-sm font-semibold text-white/90 mb-4">
               {tHome("location")}
             </p>
-            <h1 className="hero-animate-headline font-bold text-white leading-tight mb-6" style={{ fontSize: "clamp(1.8rem, 5vw, 3.5rem)" }}>
+            <h1 className="hero-animate-headline font-bold italic text-white leading-tight mb-6 max-w-2xl mx-auto" style={{ fontSize: "clamp(1.8rem, 5vw, 3.5rem)" }}>
               {tHome("headline")}
             </h1>
             <p className="hero-animate-subtitle text-base md:text-lg lg:text-xl text-white/90 font-medium max-w-[600px] mx-auto text-center mb-8 leading-relaxed">

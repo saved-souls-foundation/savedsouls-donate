@@ -13,16 +13,24 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-heading: var(--font-cormorant);
   --color-brand-green: #1a5c2e;
   --color-brand-green-mid: #2aa348;
   --color-brand-red: #7B1010;
   --color-brand-red-light: #C0392B;
+  --animate-star-pulse-green: star-pulse-green 2s ease-in-out infinite;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+body h1 {
+  font-family: var(--font-cormorant) !important;
+  font-weight: 700;
+  font-style: italic;
 }
 
 /* Dropdown items: subtiele groene accentlijn bij hover */
@@ -205,6 +213,14 @@ body {
 @keyframes ecg-scroll {
   0%   { stroke-dashoffset: 60; }
   100% { stroke-dashoffset: -60; }
+}
+
+@keyframes star-pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26, 92, 46, 0.4); }
+  50% { box-shadow: 0 0 20px 8px rgba(26, 92, 46, 0.15); }
+}
+.animate-star-pulse-green {
+  animation: star-pulse-green 2s ease-in-out infinite;
 }
 
 /* Print styles for course materials */

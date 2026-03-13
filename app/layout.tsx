@@ -2,7 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["700"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
 import { DeferredStyles } from "./DeferredStyles";
 import { GoogleAnalytics } from "./GoogleAnalytics";
 
@@ -172,7 +180,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} antialiased`}>
+      <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
         {/* Consent Mode v2: default denied vóór GA4 – AVG/GDPR compliant */}
         <script
           dangerouslySetInnerHTML={{
