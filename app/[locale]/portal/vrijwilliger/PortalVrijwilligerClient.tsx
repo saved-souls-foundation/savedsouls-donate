@@ -175,7 +175,7 @@ export default function PortalVrijwilligerClient() {
           <Link
             href="/donate"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: "#dc2626" }}
+            style={{ backgroundColor: "#7B1010" }}
           >
             ♥ Doneren
           </Link>

@@ -261,7 +261,7 @@ export default function ImportModal({ onClose, onImported }: Props) {
                   <tbody>
                     {parsed.slice(0, 10).map((p) => (
                       <tr key={p.idx} className="border-t" style={{ borderColor: ADM_BORDER }}>
-                        <td className="p-2" style={{ color: p.valid ? ADM_TEXT : "#dc2626" }}>{p.title || "—"}</td>
+                        <td className="p-2" style={{ color: p.valid ? ADM_TEXT : "#7B1010" }}>{p.title || "—"}</td>
                         <td className="p-2 text-xs" style={{ color: ADM_MUTED }}>{p.start_time?.slice(0, 10) ?? "—"}</td>
                         <td className="p-2">{p.valid ? "✓" : "✗"}</td>
                       </tr>

@@ -7,7 +7,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 /** Hero-afbeelding: plaats je afbeelding in public/toxic-plants-hero.webp */
 const HERO_IMAGE = "/toxic-plants-hero.webp";

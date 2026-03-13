@@ -11,7 +11,7 @@ import { getPostBySlug, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFaceb
 import { notFound } from "next/navigation";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 function formatDate(dateStr: string, locale: string): string {
   const date = new Date(dateStr);

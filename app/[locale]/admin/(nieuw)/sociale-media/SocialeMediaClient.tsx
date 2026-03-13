@@ -1464,7 +1464,7 @@ function ComposeModal({
               </label>
               <span
                 className="text-xs"
-                style={{ color: isOverLimit ? "#dc2626" : ADM_MUTED }}
+                style={{ color: isOverLimit ? "#7B1010" : ADM_MUTED }}
               >
                 {text.length} / {maxChars.toLocaleString()}
               </span>
@@ -1475,7 +1475,7 @@ function ComposeModal({
               rows={5}
               className="w-full px-3 py-2 rounded-lg border bg-transparent outline-none resize-y"
               style={{
-                borderColor: isOverLimit ? "#dc2626" : ADM_BORDER,
+                borderColor: isOverLimit ? "#7B1010" : ADM_BORDER,
                 color: ADM_TEXT,
               }}
               placeholder="Typ je bericht… (bij # verschijnen hashtag-suggesties)"

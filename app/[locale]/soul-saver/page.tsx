@@ -11,7 +11,7 @@ import HeroPolaroidCarousel from "../../components/HeroPolaroidCarousel";
 const ACCENT_GREEN = "#2aa348";
 const HERO_GREEN = "#2aa348";
 const DARK_GREEN = "#1a6b2e";
-const CORAL = "#E67A4C";
+const CORAL = "#2aa348";
 const AMBER = "#f59e0b";
 const TEAL = "#0d9488";
 

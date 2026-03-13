@@ -23,9 +23,9 @@ const SpotlightSection = dynamic(() => import("../components/SpotlightSection"),
 });
 
 const ACCENT_GREEN = "#2aa348";
-const BTN_DONATE = "#dc2626";
-const BUTTON_ORANGE = "#E67A4C";
-const BTN_VOLUNTEER = "#ea580c";
+const BTN_DONATE = "#7B1010";
+const BUTTON_ORANGE = "#2aa348";
+const BTN_VOLUNTEER = "#1a5c2e";
 
 /** YouTube video IDs */
 const YOUTUBE_VIDEO_ID = "2vNi6Aa3_Gg";

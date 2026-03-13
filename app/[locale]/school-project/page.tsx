@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 export const dynamic = "force-dynamic";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 export default async function SchoolProjectPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

@@ -55,7 +55,7 @@ function NavLink({
       {badge != null && badge > 0 && (
         <span
           className="flex-shrink-0 min-w-[1.25rem] h-5 px-1.5 rounded-full text-xs font-semibold flex items-center justify-center text-white"
-          style={{ background: "#dc2626" }}
+          style={{ background: "#7B1010" }}
         >
           {badge > 99 ? "99+" : badge}
         </span>

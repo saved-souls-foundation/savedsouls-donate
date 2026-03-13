@@ -9,7 +9,7 @@ import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 const FROST_IMAGES = [
   { src: "/team-dogs.webp", alt: "Team and dogs" },

@@ -336,7 +336,7 @@ export default function AdminDonateursClient() {
           </div>
           <div className="rounded-xl border p-4" style={{ background: ADM_CARD, borderColor: stats.paymentIssuesCount > 0 ? "#fecaca" : ADM_BORDER }}>
             <p className="text-sm" style={{ color: ADM_MUTED }}>{t("paymentIssues")}</p>
-            <p className="text-xl font-semibold" style={{ color: stats.paymentIssuesCount > 0 ? "#dc2626" : ADM_TEXT }}>{stats.paymentIssuesCount}</p>
+            <p className="text-xl font-semibold" style={{ color: stats.paymentIssuesCount > 0 ? "#7B1010" : ADM_TEXT }}>{stats.paymentIssuesCount}</p>
           </div>
         </div>
       )}
@@ -485,7 +485,7 @@ export default function AdminDonateursClient() {
             <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
               <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteConfirm")}</p>
               <div className="flex gap-3">
-                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm.id)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#dc2626" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
+                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm.id)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#7B1010" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
                 <button type="button" disabled={deleting} onClick={() => setDeleteConfirm(null)} className="px-4 py-2 rounded-lg border text-sm font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("cancel")}</button>
               </div>
             </div>

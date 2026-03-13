@@ -407,7 +407,7 @@ export default function AdminSponsorenClient() {
             <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
               <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>{t("deleteConfirm")}</p>
               <div className="flex gap-3">
-                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#dc2626" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
+                <button type="button" disabled={deleting} onClick={() => handleDelete(deleteConfirm)} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#7B1010" }}>{deleting ? tAdmin("loading") : t("delete")}</button>
                 <button type="button" disabled={deleting} onClick={() => setDeleteConfirm(null)} className="px-4 py-2 rounded-lg border text-sm font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>{t("cancel")}</button>
               </div>
             </div>

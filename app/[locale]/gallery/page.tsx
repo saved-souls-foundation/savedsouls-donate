@@ -81,7 +81,7 @@ export default function GalleryPage() {
           <Link
             href="/"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#E67A4C" }}
+            style={{ backgroundColor: "#2aa348" }}
           >
             Back to home
           </Link>

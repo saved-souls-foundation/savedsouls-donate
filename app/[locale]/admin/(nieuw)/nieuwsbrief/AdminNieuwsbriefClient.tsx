@@ -604,7 +604,7 @@ export default function AdminNieuwsbriefClient() {
                 type="button"
                 onClick={() => confirmUnsub && handleUnsubscribe(confirmUnsub.id)}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white"
-                style={{ background: "#dc2626" }}
+                style={{ background: "#7B1010" }}
               >
                 {t("unsubscribeButton")}
               </button>
@@ -639,7 +639,7 @@ export default function AdminNieuwsbriefClient() {
                 }}
                 disabled={deletingId === confirmDelete.id}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
-                style={{ background: "#dc2626" }}
+                style={{ background: "#7B1010" }}
               >
                 {deletingId === confirmDelete.id ? loadingStr : "🗑 " + t("deleteButton")}
               </button>
@@ -658,7 +658,7 @@ export default function AdminNieuwsbriefClient() {
               {t("addSubscriber")}
             </h2>
             {addError && (
-              <p className="text-sm" style={{ color: "#dc2626" }}>
+              <p className="text-sm" style={{ color: "#7B1010" }}>
                 {addError}
               </p>
             )}

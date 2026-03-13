@@ -215,7 +215,7 @@ export default function NavDropdown({
                           isHighlight ? "bg-purple-100" : isYellow ? "bg-amber-100" : isRed ? "bg-red-100" : "bg-green-50"
                         }`}
                       >
-                        <Icon size={16} color={isHighlight ? ICON_PURPLE : isYellow ? "#b45309" : isRed ? "#dc2626" : ICON_GREEN} aria-hidden />
+                        <Icon size={16} color={isHighlight ? ICON_PURPLE : isYellow ? "#b45309" : isRed ? "#7B1010" : ICON_GREEN} aria-hidden />
                       </div>
                     )}
                     <div className="flex-1 min-w-0 pr-8">

@@ -11,7 +11,7 @@ import { getISOWeekNumber, getSpotlightDogIndex, getSpotlightCatIndex } from "@/
 import { showSponsor } from "@/lib/features";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 type AnimalType = "dog" | "cat";
 type Gender = "male" | "female";

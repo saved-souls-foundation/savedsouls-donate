@@ -10,7 +10,7 @@ const ADM_BORDER = "#e2e8f0";
 const ADM_TEXT = "#1e293b";
 const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
-const ADM_RED = "#dc2626";
+const ADM_RED = "#7B1010";
 const CATEGORY_ICONS: Record<string, string> = {
   adoptie: "🐕",
   vrijwilliger: "🙋",
@@ -21,7 +21,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 const CATEGORY_COLORS: Record<string, string> = {
   adoptie: "#16a34a",
   vrijwilliger: "#2563eb",
-  donatie: "#ea580c",
+  donatie: "#1a5c2e",
   sponsor: "#7c3aed",
   algemeen: "#64748b",
 };

@@ -8,7 +8,7 @@ import Footer from "../../components/Footer";
 import { useTranslations } from "next-intl";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 function ShareButtons() {
   const t = useTranslations("thankYou");

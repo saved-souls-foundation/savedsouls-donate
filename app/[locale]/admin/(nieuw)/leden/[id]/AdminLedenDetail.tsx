@@ -11,7 +11,7 @@ const ADM_BORDER = "#e2e8f0";
 const ADM_TEXT = "#1e293b";
 const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
-const ADM_ERROR = "#dc2626";
+const ADM_ERROR = "#7B1010";
 
 type MemberRow = {
   id: string;

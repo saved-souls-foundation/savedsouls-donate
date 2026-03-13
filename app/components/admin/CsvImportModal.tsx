@@ -419,7 +419,7 @@ export default function CsvImportModal({
         {step === "preview" && (
           <>
             {parseError && (
-              <p className="text-sm mb-3" style={{ color: "#dc2626" }}>
+              <p className="text-sm mb-3" style={{ color: "#7B1010" }}>
                 {parseError}
               </p>
             )}

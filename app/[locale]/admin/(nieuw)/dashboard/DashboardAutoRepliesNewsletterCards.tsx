@@ -181,7 +181,7 @@ export function DashboardAutoRepliesNewsletterCards({
 
             <div className="p-4 overflow-y-auto flex-1 min-h-0">
               {error && (
-                <p className="text-sm mb-2" style={{ color: "#dc2626" }}>
+                <p className="text-sm mb-2" style={{ color: "#7B1010" }}>
                   {error}
                 </p>
               )}
@@ -285,7 +285,7 @@ export function DashboardAutoRepliesNewsletterCards({
                               type="button"
                               onClick={() => setDeleteConfirm(item.id)}
                               className="text-sm px-2 py-1 rounded"
-                              style={{ color: "#dc2626" }}
+                              style={{ color: "#7B1010" }}
                               title="Verwijderen"
                             >
                               🗑

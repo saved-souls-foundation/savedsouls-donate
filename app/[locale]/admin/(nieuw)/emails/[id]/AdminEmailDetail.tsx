@@ -10,8 +10,8 @@ const ADM_BORDER = "#e2e8f0";
 const ADM_TEXT = "#1e293b";
 const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
-const ADM_RED = "#dc2626";
-const ADM_ORANGE = "#ea580c";
+const ADM_RED = "#7B1010";
+const ADM_ORANGE = "#1a5c2e";
 const ADM_GREEN = "#16a34a";
 
 type Email = {

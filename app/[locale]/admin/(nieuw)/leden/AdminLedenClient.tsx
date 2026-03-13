@@ -378,7 +378,7 @@ export default function AdminLedenClient() {
                   disabled={deleting}
                   onClick={() => handleDelete(deleteConfirm)}
                   className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
-                  style={{ background: "#dc2626" }}
+                  style={{ background: "#7B1010" }}
                 >
                   {deleting ? loadingStr : t("delete")}
                 </button>

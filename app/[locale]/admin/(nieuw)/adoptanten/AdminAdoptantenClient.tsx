@@ -16,7 +16,7 @@ const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
 const ADM_GREEN = "#3D8B5E";
 const ADM_YELLOW = "#B45309";
-const ADM_ERROR = "#dc2626";
+const ADM_ERROR = "#7B1010";
 
 const adoptantStapLabels: Record<number, string> = {
   1: "Aangemeld als adoptant",

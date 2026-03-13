@@ -7,7 +7,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 const PLATSNUIT_URL = "https://www.adopteereenplatsnuit.be/blog/gezondheid/het-gevaar-van-rawhides-of-buffelhuid-hondensnacks/";
 const EMBRACE_URL = "https://www.embracepetinsurance.com/waterbowl/article/dangers-of-rawhide";

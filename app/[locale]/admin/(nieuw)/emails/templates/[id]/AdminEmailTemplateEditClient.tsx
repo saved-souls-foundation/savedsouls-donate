@@ -11,7 +11,7 @@ const ADM_BORDER = "#e2e8f0";
 const ADM_TEXT = "#1e293b";
 const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
-const ADM_RED = "#dc2626";
+const ADM_RED = "#7B1010";
 
 const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 const TiptapEditor = dynamic(() => import("@/app/components/admin/TiptapEditor"), { ssr: false });

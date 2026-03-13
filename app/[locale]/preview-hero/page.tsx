@@ -10,7 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 const HERO_IMAGES = [
   { src: "/team-dogs.webp", alt: "Saved Souls team at the sanctuary" },

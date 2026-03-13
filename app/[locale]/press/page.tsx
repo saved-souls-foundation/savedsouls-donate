@@ -7,7 +7,7 @@ import PressBanner from "../../components/PressBanner";
 import PressBanners from "../../components/PressBanners";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 export const metadata: Metadata = {
   title: "Press | Saved Souls Foundation",

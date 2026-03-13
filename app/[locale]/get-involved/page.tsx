@@ -8,7 +8,7 @@ import Footer from "../../components/Footer";
 import { showSponsor } from "@/lib/features";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 const WARM_CORAL = "#f97316";
 const SOFT_TEAL = "#0d9488";
 

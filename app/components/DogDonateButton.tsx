@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 const ACCENT_GREEN = "#2aa348";
 
 const HEART_SVG = (

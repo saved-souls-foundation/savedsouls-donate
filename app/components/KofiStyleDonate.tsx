@@ -128,7 +128,7 @@ export default function KofiStyleDonate() {
               type="button"
               onClick={() => window.open("https://paypal.me/savedsoulsfoundation", "_blank")}
               className="w-full py-3 px-4 rounded-xl font-semibold text-white transition-all hover:opacity-90"
-              style={{ backgroundColor: "#E67A4C" }}
+              style={{ backgroundColor: "#2aa348" }}
             >
               {t("monthlyCta")}
             </button>

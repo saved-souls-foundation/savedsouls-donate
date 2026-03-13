@@ -230,7 +230,7 @@ export default function AdminNieuwsbriefSjablonenClient() {
                             className="px-2 py-0.5 rounded text-xs font-medium"
                             style={{
                               background: row.status === "sent" ? "rgba(34,197,94,.15)" : row.status === "failed" ? "rgba(220,38,38,.15)" : "rgba(234,88,12,.15)",
-                              color: row.status === "sent" ? "#16a34a" : row.status === "failed" ? "#dc2626" : "#ea580c",
+                              color: row.status === "sent" ? "#16a34a" : row.status === "failed" ? "#7B1010" : "#1a5c2e",
                             }}
                           >
                             {statusLabel(row.status)}

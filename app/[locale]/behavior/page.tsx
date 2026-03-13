@@ -7,7 +7,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 const SS_BEHAVIORS = [
   { key: "fearShy", emoji: "🫣", color: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30" },

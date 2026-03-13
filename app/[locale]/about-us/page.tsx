@@ -10,7 +10,7 @@ import Footer from "@/app/components/Footer";
 import ScrollReveal from "@/app/components/ScrollReveal";
 
 const ACCENT_GREEN = "#2aa348";
-const BTN_VOLUNTEER = "#ea580c";
+const BTN_VOLUNTEER = "#1a5c2e";
 const BTN_INFLUENCERS = "#8b5cf6";
 
 export default function AboutUsPage() {

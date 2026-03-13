@@ -235,7 +235,7 @@ export default async function SheltersPage({ params }: { params: Promise<{ local
                 />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: "#E67A4C" }}>
+                <h3 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: "#2aa348" }}>
                   {t("mdhfName")}
                 </h3>
                 <p className="text-sm text-amber-700 dark:text-amber-400 font-medium mb-2">

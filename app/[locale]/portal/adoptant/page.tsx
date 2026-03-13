@@ -251,7 +251,7 @@ export default function PortalAdoptantPage() {
               <Link
                 href="/donate"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-lg hover:opacity-95 transition-opacity"
-                style={{ backgroundColor: "#dc2626" }}
+                style={{ backgroundColor: "#7B1010" }}
               >
                 <span aria-hidden>♥</span>
                 {t("portalAdoptionCompleteDonate")}

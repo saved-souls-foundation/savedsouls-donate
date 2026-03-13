@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import TurnstileWidget from "./TurnstileWidget";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 type ContactFormProps = {
   idPrefix?: string;

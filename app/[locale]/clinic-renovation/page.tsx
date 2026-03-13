@@ -8,7 +8,7 @@ import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 export default function ClinicRenovationPage() {
   const t = useTranslations("clinicRenovation");

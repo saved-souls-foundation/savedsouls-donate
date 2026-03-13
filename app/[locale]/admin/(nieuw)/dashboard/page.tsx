@@ -261,11 +261,11 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
             key={item.href + item.label}
             href={item.href}
             className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border font-medium text-sm hover:shadow transition"
-            style={{ borderColor: "#ea580c", color: "#1e293b", background: "#ffffff" }}
+            style={{ borderColor: "#1a5c2e", color: "#1e293b", background: "#ffffff" }}
           >
             <span>{item.icon}</span>
             <span>{item.label}</span>
-            <span className="font-bold" style={{ color: "#dc2626" }}>
+            <span className="font-bold" style={{ color: "#7B1010" }}>
               {item.count}
             </span>
           </Link>

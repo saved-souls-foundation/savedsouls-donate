@@ -175,7 +175,7 @@ export default function AdminLoginPage() {
                 />
               </div>
               {error && (
-                <p className="text-sm" style={{ color: "#dc2626" }}>
+                <p className="text-sm" style={{ color: "#7B1010" }}>
                   {error}
                 </p>
               )}
@@ -237,7 +237,7 @@ export default function AdminLoginPage() {
                   />
                 </div>
                 {error && (
-                  <p className="text-sm" style={{ color: "#dc2626" }}>
+                  <p className="text-sm" style={{ color: "#7B1010" }}>
                     {error}
                   </p>
                 )}

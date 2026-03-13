@@ -7,7 +7,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 /** Wikipedia slugs - veterinary/pet-specific pages (dogs & cats) */
 const DISEASE_WIKI: Record<string, string> = {

@@ -8,7 +8,7 @@ import ContactForm from "../../components/ContactForm";
 import NewsletterSignup from "@/components/NewsletterSignup";
 
 const ACCENT_GREEN = "#2aa348";
-const BUTTON_ORANGE = "#E67A4C";
+const BUTTON_ORANGE = "#2aa348";
 
 export const metadata: Metadata = {
   title: "Contact | Saved Souls Foundation",

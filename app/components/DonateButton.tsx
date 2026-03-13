@@ -3,7 +3,7 @@
 import { Link } from "@/i18n/navigation";
 import { Heart } from "lucide-react";
 
-const BTN_DONATE = "#dc2626";
+const BTN_DONATE = "#7B1010";
 
 type DonateButtonProps = {
   href?: string;
