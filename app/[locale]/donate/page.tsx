@@ -30,24 +30,19 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
 
   const isThai = locale === "th";
 
-  const impactCards = isThai
-    ? [
-        { amount: "฿100", textKey: "impactCardA" },
-        { amount: "฿500", textKey: "impactCardB" },
-        { amount: "฿1,000", textKey: "impactCardC" },
-        { amount: "฿2,500", textKey: "impactCardD" },
-      ]
-    : [
-        { amount: "€5", textKey: "impactCardA" },
-        { amount: "€25", textKey: "impactCardB" },
-        { amount: "€55", textKey: "impactCardC" },
-        { amount: "€100", textKey: "impactCardD" },
-      ];
+  const impactAmountsEur = ["5", "25", "55", "100"];
+  const impactAmountsTHB = ["100", "500", "1000", "2500"];
 
   return (
     <ParallaxPage overlayClassName="bg-white/[0.99] dark:bg-stone-950/[0.99]">
       {/* ── HERO ── full width, no max-w constraint */}
-      <div className="relative w-full overflow-hidden" style={{ height: "65vh", minHeight: 340, maxHeight: 600 }}>
+      <div className="relative w-full overflow-hidden" style={{
+        height: "55vh",
+        minHeight: 360,
+        maxHeight: 560,
+        borderRadius: "0 0 32px 32px",
+        boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
+      }}>
         <img
           src="/woman-dog-wheelchair.webp"
           alt={tP("heroTitle")}
@@ -56,8 +51,8 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
         {/* Dark gradient overlay */}
         <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.85) 100%)" }} />
         {/* Text bottom-left */}
-        <div className="absolute bottom-8 left-0 right-0 px-6 pb-4 md:px-12">
-          <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight mb-3" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.4)" }}>
+        <div className="absolute left-0 right-0 px-6 md:px-12" style={{ bottom: "200px" }}>
+          <h1 className="text-4xl md:text-6xl font-semibold text-white leading-tight mb-3 italic" style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
             {tP("heroTitle")}
           </h1>
           <p className="text-sm md:text-base text-white/80">{tP("heroSub")}</p>
@@ -68,7 +63,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
       <div style={{ background: BEIGE }} className="min-h-screen">
         <div className="max-w-lg mx-auto px-5 py-8">
           {/* ── DONATION FORM ── overlaps hero */}
-          <div className="-mt-8 relative z-10">
+          <div className="-mt-32 relative z-10 px-4 md:px-8">
             <DonateForm />
           </div>
 
@@ -91,7 +86,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
             {[
               { num: "350+", label: tP("statAnimals") },
               { num: "50", label: tP("statDisabled") },
-              { num: "€2", label: tP("statFood") },
+              { num: isThai ? "฿70" : "€2", label: tP("statFood") },
             ].map((s) => (
               <div key={s.num} className="bg-white rounded-xl p-4 text-center shadow-sm">
                 <div className="text-xl font-semibold mb-1" style={{ color: GREEN_MID }}>{s.num}</div>
@@ -103,11 +98,23 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
           {/* ── IMPACT CARDS ── */}
           <p className="text-xs font-medium text-stone-500 uppercase tracking-wider mb-3">{tP("impactSectionLabel")}</p>
           <div className="grid grid-cols-2 gap-3 mb-8">
-            {impactCards.map((card) => (
-              <div key={card.amount} className="bg-white rounded-xl p-4 shadow-sm">
-                <div className="text-lg font-semibold mb-1" style={{ color: ORANGE }}>{card.amount}</div>
-                <div className="text-xs text-stone-600 leading-snug">{tP(card.textKey as "impactCardA" | "impactCardB" | "impactCardC" | "impactCardD")}</div>
-              </div>
+            {[
+              { amount: isThai ? "฿100" : "€5", text: tP("impactCardA"), donorboxAmount: isThai ? "100" : "5" },
+              { amount: isThai ? "฿500" : "€25", text: tP("impactCardB"), donorboxAmount: isThai ? "500" : "25" },
+              { amount: isThai ? "฿1,000" : "€55", text: tP("impactCardC"), donorboxAmount: isThai ? "1000" : "55" },
+              { amount: isThai ? "฿2,500" : "€100", text: tP("impactCardD"), donorboxAmount: isThai ? "2500" : "100" },
+            ].map((card) => (
+              <a
+                key={card.amount}
+                href={`https://donorbox.org/saved-souls-foundation-donation?amount=${card.donorboxAmount}&currency=${isThai ? "thb" : "eur"}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white rounded-xl p-4 shadow-sm block hover:shadow-md transition-shadow cursor-pointer"
+              >
+                <div className="text-lg font-semibold mb-1" style={{ color: "#e8622a" }}>{card.amount}</div>
+                <div className="text-xs text-stone-600 leading-snug">{card.text}</div>
+                <div className="text-[10px] text-stone-400 mt-2">Klik om te doneren →</div>
+              </a>
             ))}
           </div>
 

@@ -62,7 +62,15 @@ export default function DonateForm() {
     : `${PAYPAL_URL}/${numericAmount}`;
 
   return (
-    <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm">
+    <div
+      suppressHydrationWarning
+      className="p-6 mb-6"
+      style={{
+        borderRadius: "20px",
+        boxShadow: "0 4px 32px rgba(0,0,0,0.18)",
+        background: "rgba(255,255,255,0.97)",
+      }}
+    >
       <h2 className="text-xl font-semibold text-stone-800 mb-1 leading-snug">
         {tP("formTitle")}
       </h2>
@@ -73,7 +81,7 @@ export default function DonateForm() {
         <button
           type="button"
           onClick={() => setIsMonthly(true)}
-          className="flex-1 py-3 text-sm font-semibold transition-colors"
+          className="flex-1 py-3 text-sm font-semibold transition-all hover:bg-orange-50"
           style={{
             background: isMonthly ? ORANGE : "#fff",
             color: isMonthly ? "#fff" : "#6b7280",
@@ -84,7 +92,7 @@ export default function DonateForm() {
         <button
           type="button"
           onClick={() => setIsMonthly(false)}
-          className="flex-1 py-3 text-sm font-medium transition-colors"
+          className="flex-1 py-3 text-sm font-medium transition-all hover:bg-orange-50"
           style={{
             background: isMonthly ? "#fff" : ORANGE,
             color: isMonthly ? "#6b7280" : "#fff",
@@ -104,10 +112,11 @@ export default function DonateForm() {
             key={a.value}
             type="button"
             onClick={() => setSelectedIndex(i)}
-            className="rounded-xl border-2 p-3 text-center transition-all"
+            className="rounded-xl border-2 p-3 text-center cursor-pointer transition-all hover:border-orange-300 hover:bg-orange-50"
             style={{
               borderColor: i === selectedIndex ? ORANGE : "#e5e7eb",
               background: i === selectedIndex ? "#fff8f5" : "#fff",
+              transition: "all 0.15s",
             }}
           >
             <div
@@ -127,7 +136,7 @@ export default function DonateForm() {
         <button
           type="button"
           onClick={() => setSelectedIndex(-1)}
-          className="rounded-xl border-2 border-stone-200 p-3 text-center transition-all hover:border-orange-300"
+          className="rounded-xl border-2 p-3 text-center cursor-pointer transition-all hover:border-orange-300 hover:bg-orange-50"
           style={{
             borderColor: selectedIndex === -1 ? ORANGE : "#e5e7eb",
             background: selectedIndex === -1 ? "#fff8f5" : "#fff",
@@ -181,7 +190,7 @@ export default function DonateForm() {
               : (selectedIndex >= 0 ? paypalUrl : PAYPAL_URL)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base mb-3 transition-opacity hover:opacity-90"
+            className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base mb-3 hover:opacity-90 active:scale-95 transition-all"
             style={{ background: "#e8622a" }}
           >
             ♥ {isMonthly
@@ -193,13 +202,13 @@ export default function DonateForm() {
           <a
             href={isMonthly
               ? PAYPAL_URL
-              : getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", false, isThai)}
+              : getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", true, isThai)}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border-2 text-sm font-medium transition-colors hover:bg-stone-50 mb-3"
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border-2 text-sm font-medium hover:bg-green-50 active:scale-95 transition-all mb-3"
             style={{ borderColor: "#1a5c2e", color: "#1a5c2e" }}
           >
-            {isMonthly ? "Eenmalig via PayPal" : `Donorbox — ${tP("ctaSecMonthly")}`}
+            {isMonthly ? "Eenmalig via PayPal" : "Maandelijks via Donorbox ♥"}
           </a>
         </>
       )}
