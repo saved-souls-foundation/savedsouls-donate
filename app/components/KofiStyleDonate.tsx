@@ -106,8 +106,6 @@ export default function KofiStyleDonate() {
               {t("payDirectlyWith")}
             </p>
             <div className="flex flex-wrap items-center gap-6">
-              <Image src="/wero-logo.svg" alt="Wero" width={160} height={50} className="h-12 w-auto object-contain dark:hidden" />
-              <Image src="/wero-logo-dark.svg" alt="Wero" width={160} height={50} className="h-12 w-auto object-contain hidden dark:block" />
               <a
                 href="https://www.paypal.com/paypalme/savedsoulsfoundation"
                 target="_blank"
