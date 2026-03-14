@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — Dierenopvang Thailand",
     "description": "Wij redden honden en katten in Thailand. Adopteer, vrijwillig of doneer. Meer dan 550 dieren gered uit de hondenvleeshandel en van straat."
   },
+  "nav": {
+    "ourStoryDesc": "Opgericht in 1999, sindsdien 2.500+ gered",
+    "ourWorkDesc": "Dagelijks voeden, verzorgen en redden",
+    "badge1999": "Sinds 1999",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 honden · 50 invalide",
+    "badgeCats": "98 katten",
+    "volunteerDesc": "Vlieg naar Thailand, red levens",
+    "shopDesc": "Draag ons verhaal",
+    "streetDogsDesc": "600.000 zwerfhonden — wij pakken het aan",
+    "thankYouDesc": "Jullie maken het verschil",
+    "guidesDesc": "Adoptie, zorg & gedrag",
+    "sponsorDesc": "Vanaf €10/maand",
+    "adoptFooter": "Bekijk alle dieren die wachten op een thuis",
+    "statFounded": "Opgericht",
+    "statRescued": "Gered",
+    "statAnimals": "Dieren nu",
+    "influencerDesc": "Vergroot onze impact",
+    "getInvolvedDesc": "Alle manieren om te helpen"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",

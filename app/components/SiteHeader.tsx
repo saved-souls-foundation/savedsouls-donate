@@ -17,7 +17,6 @@ import {
   Dog,
   Cat,
   Megaphone,
-  Smile,
   HelpCircle,
   Globe,
   PawPrint,
@@ -77,16 +76,17 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
   const langRefDesktop = useRef<HTMLDivElement>(null);
   const langRefMobile = useRef<HTMLDivElement>(null);
   const t = useTranslations("common");
+  const tNav = useTranslations("nav");
   const tHome = useTranslations("home");
 
   const isOverOnsOpen = openMenu === "over-ons";
 
   const overOnsItems: NavDropdownItem[] = useMemo(() => [
-    { href: "/story", label: locale === "nl" ? "Ons verhaal" : locale === "de" ? "Unsere Geschichte" : "Our story", icon: BookOpen },
-    { href: "/about-us", label: locale === "nl" ? "Ons werk" : locale === "de" ? "Unsere Arbeit" : "Our work", icon: PawPrint },
+    { href: "/story", label: locale === "nl" ? "Ons verhaal" : locale === "de" ? "Unsere Geschichte" : "Our story", description: tNav("ourStoryDesc"), icon: BookOpen, badgeLabel: tNav("badge1999"), badgeBg: "#e8f5ec", badgeColor: "#1a5c2e" },
+    { href: "/about-us", label: locale === "nl" ? "Ons werk" : locale === "de" ? "Unsere Arbeit" : "Our work", description: tNav("ourWorkDesc"), icon: PawPrint, badgeLabel: tNav("badgeYoutube"), badgeBg: "#fff0f0", badgeColor: "#cc0000" },
     { href: "/faq", label: "FAQ", description: locale === "nl" ? "Veelgestelde vragen" : locale === "de" ? "Häufige Fragen" : "Frequently asked questions", icon: HelpCircle },
     { href: "/donate", label: locale === "nl" ? "Doneer nu" : locale === "de" ? "Jetzt spenden" : "Donate now", icon: Heart },
-  ], [locale]);
+  ], [locale, tNav]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -99,18 +99,18 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
 
   const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
     const all: NavDropdownItem[] = [
-      { href: "/get-involved", label: t("getInvolved"), description: t("menuGetInvolvedOverview"), icon: Home },
-      { href: "/#sponsor", label: t("sponsor"), description: t("menuSponsorSubtext"), icon: Heart },
-      { href: "/volunteer", label: t("volunteer"), description: t("menuVolunteerSubtext"), icon: Sun },
-      { href: "/influencers", label: t("influencers"), description: t("menuInfluencersSubtext"), icon: Megaphone, highlight: true },
-      { href: "/kids", label: t("kids"), description: t("menuKidsSubtext"), icon: Smile },
-      { href: "/gidsen", label: t("menuGidsenLabel"), description: t("menuGidsenSubtext"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
-      { href: "/shop", label: t("shop"), description: t("menuShopSubtext"), icon: ShoppingBag },
-      { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: t("menuStreetDogsSubtextShort"), icon: MapPin },
-      { href: "/thank-you", label: t("thankYou"), description: "", icon: Star },
+      { href: "/get-involved", label: t("getInvolved"), description: tNav("getInvolvedDesc"), icon: Home },
+      { href: "/#sponsor", label: t("sponsor"), description: tNav("sponsorDesc"), icon: Heart },
+      { href: "/volunteer", label: t("volunteer"), description: tNav("volunteerDesc"), icon: Sun },
+      { href: "/influencers", label: t("influencers"), description: tNav("influencerDesc"), icon: Megaphone, highlight: true },
+      { href: "/gidsen", label: t("menuGidsenLabel"), description: tNav("guidesDesc"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
+      { href: "/shop", label: t("shop"), description: tNav("shopDesc"), icon: ShoppingBag },
+      { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: tNav("streetDogsDesc"), icon: MapPin },
+      { href: "/thank-you", label: t("thankYou"), description: tNav("thankYouDesc"), icon: Star },
     ];
-    return showSponsor ? all : all.filter((i) => i.href !== "/#sponsor");
-  }, [showSponsor, t]);
+    const withoutKids = all.filter((i) => i.href !== "/kids");
+    return showSponsor ? withoutKids : withoutKids.filter((i) => i.href !== "/#sponsor");
+  }, [showSponsor, t, tNav]);
 
   const navLinkClass = (path: string, mobile = false) => {
     const isActive = pathname === path || (path !== "/" && pathname.startsWith(path));
@@ -179,12 +179,26 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         </Link>
 
         {/* Center: Nav links (desktop only) – overflow-visible zodat dropdowns niet worden afgeknipt */}
-        <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1 min-w-0 overflow-visible">
+        <div className="hidden md:flex items-center justify-center gap-2 lg:gap-3 flex-1 min-w-0 overflow-visible">
           <NavDropdown
             label={locale === "nl" ? "Over ons" : locale === "de" ? "Über uns" : "About us"}
             layout="involved"
             items={overOnsItems}
-            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            headerContent={
+              <div style={{ display: "flex", gap: "8px", padding: "8px 12px 4px", marginBottom: "4px" }}>
+                {[
+                  { num: "1999", label: tNav("statFounded") },
+                  { num: "2.500+", label: tNav("statRescued") },
+                  { num: "350+", label: tNav("statAnimals") },
+                ].map((s) => (
+                  <div key={s.num} style={{ flex: 1, background: "#f0faf3", borderRadius: "8px", padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ fontSize: "15px", fontWeight: 500, color: "#1a5c2e" }}>{s.num}</div>
+                    <div style={{ fontSize: "10px", color: "#6b7280", marginTop: "2px" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            }
+            buttonClassName={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="left"
             open={isOverOnsOpen}
             onOpenChange={(open) => setOpenMenu(open ? "over-ons" : null)}
@@ -194,25 +208,26 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             label={t("adopt")}
             layout="adopt"
             items={[
-              { href: "/adopt", label: t("menuAdoptMain"), description: t("menuAdoptDogSubtext"), icon: AdoptDogIcon, iconBg: "#fff7ed" },
-              { href: "/adopt?type=cat", label: t("menuAdoptCat"), description: t("menuAdoptCatSubtext"), icon: AdoptCatIcon, iconBg: "#f0f7ff" },
+              { href: "/adopt", label: t("menuAdoptMain"), description: t("menuAdoptDogSubtext"), icon: AdoptDogIcon, iconBg: "#fff7ed", badgeLabel: tNav("badgeDogs"), badgeBg: "#e8f5ec", badgeColor: "#1a5c2e" },
+              { href: "/adopt?type=cat", label: t("menuAdoptCat"), description: t("menuAdoptCatSubtext"), icon: AdoptCatIcon, iconBg: "#f0f7ff", badgeLabel: tNav("badgeCats"), badgeBg: "#e8f5ec", badgeColor: "#1a5c2e" },
             ]}
-            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            bottomCta={{ href: "/adopt", label: t("menuAdoptMain"), subtext: tNav("adoptFooter") }}
+            buttonClassName={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="left"
             dropdownStyle={{ zIndex: 200 }}
           />
           <NavDropdown
             label={t("getInvolved")}
-            layout="involved"
+            layout="two-col"
             items={getInvolvedItems}
-            buttonClassName={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
+            buttonClassName={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="right"
             bottomCta={{ href: "/donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }}
             dropdownStyle={{ zIndex: 200 }}
           />
           <Link
             href="/contact"
-            className={`text-sm lg:text-base font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
+            className={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 ${isOverlay ? textOverlay : textScrolled}`}
           >
             {t("contact")}
           </Link>

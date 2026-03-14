@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — Sauvetage Animal Thaïlande",
     "description": "Nous sauvons des chiens et des chats en Thaïlande. Adoptez, faites du bénévolat ou faites un don. Plus de 550 animaux sauvés."
   },
+  "nav": {
+    "ourStoryDesc": "Fondée en 1999, plus de 2 500 sauvés depuis",
+    "ourWorkDesc": "Nourrir, soigner et secourir chaque jour",
+    "badge1999": "Depuis 1999",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 chiens · 50 handicapés",
+    "badgeCats": "98 chats",
+    "volunteerDesc": "Envolez-vous en Thaïlande, sauvez des vies",
+    "shopDesc": "Portez notre histoire",
+    "streetDogsDesc": "600 000 chiens errants — nous agissons",
+    "thankYouDesc": "Vous faites la différence",
+    "guidesDesc": "Adoption, soins & comportement",
+    "sponsorDesc": "À partir de €10/mois",
+    "adoptFooter": "Découvrez tous les animaux qui attendent un foyer",
+    "statFounded": "Fondée",
+    "statRescued": "Sauvés",
+    "statAnimals": "Animaux maintenant",
+    "influencerDesc": "Amplifiez notre impact",
+    "getInvolvedDesc": "Toutes les façons de participer"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Accueil",

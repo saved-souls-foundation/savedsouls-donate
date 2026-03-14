@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — Tierrettung Thailand",
     "description": "Wir retten Hunde und Katzen in Thailand. Adoptieren, freiwillig helfen oder spenden. Über 550 gerettete Tiere."
   },
+  "nav": {
+    "ourStoryDesc": "Gegründet 1999, seitdem über 2.500 gerettet",
+    "ourWorkDesc": "Täglich füttern, pflegen und retten",
+    "badge1999": "Seit 1999",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 Hunde · 50 mit Behinderung",
+    "badgeCats": "98 Katzen",
+    "volunteerDesc": "Flieg nach Thailand, rette Leben",
+    "shopDesc": "Trag unsere Geschichte",
+    "streetDogsDesc": "600.000 Straßenhunde — wir handeln",
+    "thankYouDesc": "Ihr macht den Unterschied",
+    "guidesDesc": "Adoption, Pflege & Verhalten",
+    "sponsorDesc": "Ab €10/Monat",
+    "adoptFooter": "Alle Tiere kennenlernen, die auf ein Zuhause warten",
+    "statFounded": "Gegründet",
+    "statRescued": "Gerettet",
+    "statAnimals": "Tiere jetzt",
+    "influencerDesc": "Vergrößere unsere Wirkung",
+    "getInvolvedDesc": "Alle Möglichkeiten mitzumachen"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Home",

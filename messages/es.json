@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — Rescate Animal Tailandia",
     "description": "Rescatamos perros y gatos en Tailandia. Adopta, haz voluntariado o dona. Más de 550 animales salvados."
   },
+  "nav": {
+    "ourStoryDesc": "Fundada en 1999, más de 2.500 rescatados",
+    "ourWorkDesc": "Alimentar, cuidar y rescatar cada día",
+    "badge1999": "Desde 1999",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 perros · 50 con discapacidad",
+    "badgeCats": "98 gatos",
+    "volunteerDesc": "Vuela a Tailandia, salva vidas",
+    "shopDesc": "Lleva nuestra historia",
+    "streetDogsDesc": "600.000 perros callejeros — actuamos",
+    "thankYouDesc": "Vosotros marcáis la diferencia",
+    "guidesDesc": "Adopción, cuidado y comportamiento",
+    "sponsorDesc": "Desde €10/mes",
+    "adoptFooter": "Conoce a todos los animales que esperan un hogar",
+    "statFounded": "Fundada",
+    "statRescued": "Rescatados",
+    "statAnimals": "Animales ahora",
+    "influencerDesc": "Amplía nuestro impacto",
+    "getInvolvedDesc": "Todas las formas de participar"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Inicio",

@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — ช่วยเหลือสัตว์ในประเทศไทย",
     "description": "เราช่วยเหลือสุนัขและแมวในประเทศไทย รับเลี้ยง อาสาสมัคร หรือบริจาค สัตว์กว่า 550 ตัวได้รับการช่วยเหลือ"
   },
+  "nav": {
+    "ourStoryDesc": "ก่อตั้งปี 1999 ช่วยเหลือแล้วกว่า 2,500 ตัว",
+    "ourWorkDesc": "ให้อาหาร ดูแล และช่วยเหลือทุกวัน",
+    "badge1999": "ตั้งแต่ปี 1999",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 สุนัข · 50 พิการ",
+    "badgeCats": "98 แมว",
+    "volunteerDesc": "บินมาไทย ช่วยชีวิตสัตว์",
+    "shopDesc": "สวมใส่เรื่องราวของเรา",
+    "streetDogsDesc": "สุนัขจรจัด 600,000 ตัว — เราลงมือแก้ไข",
+    "thankYouDesc": "คุณคือความแตกต่าง",
+    "guidesDesc": "การรับเลี้ยง การดูแล และพฤติกรรม",
+    "sponsorDesc": "เริ่มต้นที่ €10/เดือน",
+    "adoptFooter": "พบกับสัตว์ทุกตัวที่รอบ้านใหม่",
+    "statFounded": "ก่อตั้ง",
+    "statRescued": "ช่วยแล้ว",
+    "statAnimals": "สัตว์ตอนนี้",
+    "influencerDesc": "ขยายผลกระทบของเรา",
+    "getInvolvedDesc": "ทุกวิธีที่จะมีส่วนร่วม"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← หน้าแรก",

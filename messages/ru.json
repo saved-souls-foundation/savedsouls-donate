@@ -17,6 +17,26 @@
     "title": "SavedSouls Foundation — Спасение животных Таиланд",
     "description": "Мы спасаем собак и кошек в Таиланде. Усыновите, станьте волонтёром или пожертвуйте. Более 550 спасённых животных."
   },
+  "nav": {
+    "ourStoryDesc": "Основана в 1999 году, спасено более 2500",
+    "ourWorkDesc": "Ежедневное кормление, уход и спасение",
+    "badge1999": "С 1999 года",
+    "badgeYoutube": "▶ YouTube",
+    "badgeDogs": "350 собак · 50 с инвалидностью",
+    "badgeCats": "98 кошек",
+    "volunteerDesc": "Летите в Таиланд, спасайте жизни",
+    "shopDesc": "Носите нашу историю",
+    "streetDogsDesc": "600 000 бездомных собак — мы действуем",
+    "thankYouDesc": "Вы делаете разницу",
+    "guidesDesc": "Усыновление, уход и поведение",
+    "sponsorDesc": "От €10 в месяц",
+    "adoptFooter": "Познакомьтесь со всеми животными, ждущими дома",
+    "statFounded": "Основана",
+    "statRescued": "Спасено",
+    "statAnimals": "Животных сейчас",
+    "influencerDesc": "Увеличьте наш охват",
+    "getInvolvedDesc": "Все способы помочь"
+  },
   "common": {
     "savedSouls": "Saved Souls",
     "backToHome": "← Главная",
