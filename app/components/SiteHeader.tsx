@@ -146,6 +146,11 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
 
   return (
     <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `@keyframes ss-pulse-icon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.88)}}.ss-pulse-icon{animation:ss-pulse-icon 2.4s ease-in-out infinite;display:inline-flex}`,
+        }}
+      />
       <nav
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out overflow-visible ${navBg}`}
       >
@@ -378,41 +383,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
       >
         {mobileMenuOpen && (
         <div className="px-5 py-6 flex flex-col">
-          {/* Section 1 – ONTDEK */}
+          {/* Block 1 — no section label: Noodhulp + Doneer nu */}
           <div className="animate-fade-in" style={{ animationDelay: "0ms" }}>
-            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
-              {t("menuSectionDiscover")}
-            </p>
-            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
-              <Link
-                href="/story"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
-              >
-                <BookOpen size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("ourStory")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/about-us"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
-              >
-                <Heart size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("aboutUs")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/contact"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
-              >
-                <Mail size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("contact")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-            </div>
-            <div className="rounded-2xl border border-red-800/40 shadow-sm overflow-hidden mb-3" style={{ backgroundColor: "#C0392B" }}>
+            <div className="rounded-2xl border border-red-800/40 shadow-sm overflow-hidden mb-3" style={{ backgroundColor: "#7B1010" }}>
               <Link
                 href="/emergency"
                 onClick={closeMobileMenu}
@@ -433,101 +406,250 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                     style={{ animation: "ecg-scroll 1.8s linear infinite" }}
                   />
                 </svg>
-                <span className="font-medium text-[15px] text-white flex-1">
-                  {t("menuEmergency") ?? "Noodhulp"}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-white block">{t("menuEmergency") ?? "Noodhulp"}</span>
+                  <span className="text-xs text-white/65 block">Dieren in directe nood</span>
+                </div>
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-md shrink-0" style={{ backgroundColor: "#b34d10", color: "white" }}>
                   Urgent
                 </span>
               </Link>
             </div>
+            <Link
+              href="/donate"
+              onClick={closeMobileMenu}
+              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl active:opacity-90 transition-opacity text-white mb-6"
+              style={{ backgroundColor: "#1a5c2e" }}
+            >
+              <Heart size={18} className="shrink-0 text-white" aria-hidden />
+              <div className="flex-1 min-w-0">
+                <span className="font-medium text-[15px] text-white block">{t("donate")}</span>
+                <span className="text-xs text-white/65 block">350 monden te voeden vandaag</span>
+              </div>
+              <ChevronRight size={16} className="shrink-0 text-white/60" aria-hidden />
+            </Link>
           </div>
 
-          {/* Section 2 – DOE MEE */}
-          <div className="mt-6 animate-fade-in" style={{ animationDelay: "50ms" }}>
-            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
-              {t("menuSectionGetInvolved")}
+          {/* Block 2 — Red een dier */}
+          <div className="animate-fade-in" style={{ animationDelay: "50ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3 pl-3 border-l-2 border-[#2aa348]">
+              Red een dier
             </p>
-            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden mb-3">
-              <Link
-                href="/get-involved"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
-              >
-                <Home size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("getInvolved")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-            </div>
             <div className="grid grid-cols-2 gap-3">
-              {/* Card 1 – Adopteer een hond */}
               <Link
                 href="/adopt"
                 onClick={closeMobileMenu}
-                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                style={{ backgroundColor: "#fdf8f2" }}
               >
-                <span className="absolute top-2 right-2 text-base" aria-hidden>🐕</span>
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100 shrink-0">
                   <Dog size={26} color="#c2410c" aria-hidden />
                 </div>
                 <span className="font-semibold text-sm text-gray-800">{t("menuAdoptMain")}</span>
                 <span className="text-xs text-gray-400 mt-1">{t("menuAdoptDogCardSubtext")}</span>
+                <span className="mt-1.5 mr-1 flex flex-wrap gap-1 justify-center">
+                  <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>350 honden</span>
+                  <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block" style={{ backgroundColor: "#fdeaea", color: "#7B1010" }}>50 invalide</span>
+                </span>
               </Link>
-              {/* Card 2 – Adopteer een kat */}
               <Link
                 href="/adopt?type=cat"
                 onClick={closeMobileMenu}
-                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                style={{ backgroundColor: "#f4f6fd" }}
               >
-                <span className="absolute top-2 right-2 text-base" aria-hidden>🐱</span>
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-blue-50 to-sky-100 shrink-0">
                   <Cat size={26} color="#0369a1" aria-hidden />
                 </div>
                 <span className="font-semibold text-sm text-gray-800">{t("menuAdoptCat")}</span>
                 <span className="text-xs text-gray-400 mt-1">{t("menuAdoptCatSubtext")}</span>
+                <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>98 katten</span>
               </Link>
-              {/* Card 3 – Sponsor (verborgen zolang geen betaalplatform) */}
               {showSponsor && (isHomePage ? (
                 <button
                   type="button"
                   onClick={handleSponsor}
-                  className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                  className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                  style={{ backgroundColor: "#fdf0f0" }}
                 >
-                  <span className="absolute top-2 right-2 text-base" aria-hidden>❤️</span>
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-red-50 to-rose-100 shrink-0">
                     <Heart size={26} color="#e11d48" aria-hidden />
                   </div>
                   <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
                   <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
+                  <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>Vanaf €10/mnd</span>
                 </button>
               ) : (
                 <Link
                   href="/#sponsor"
                   onClick={closeMobileMenu}
-                  className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                  className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                  style={{ backgroundColor: "#fdf0f0" }}
                 >
-                  <span className="absolute top-2 right-2 text-base" aria-hidden>❤️</span>
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-red-50 to-rose-100 shrink-0">
                     <Heart size={26} color="#e11d48" aria-hidden />
                   </div>
                   <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
                   <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
+                  <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>Vanaf €10/mnd</span>
                 </Link>
               ))}
-              {/* Card 4 – Vrijwilliger */}
               <Link
                 href="/volunteer"
                 onClick={closeMobileMenu}
-                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                style={{ backgroundColor: "#f0faf3" }}
               >
-                <span className="absolute top-2 right-2 text-base" aria-hidden>🌟</span>
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100 shrink-0">
                   <Sun size={26} color="#059669" aria-hidden />
                 </div>
                 <span className="font-semibold text-sm text-gray-800">{t("volunteer")}</span>
                 <span className="text-xs text-gray-400 mt-1">{t("menuVolunteerSubtext")}</span>
+                <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>Plekken beschikbaar</span>
               </Link>
-              {/* Card 5 – Influencers */}
+            </div>
+          </div>
+
+          {/* Block 3 — Doe mee */}
+          <div className="mt-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3 pl-3 border-l-2 border-[#2aa348]">
+              {t("menuSectionGetInvolved")}
+            </p>
+            <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
+              <Link
+                href="/get-involved"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors bg-[#f0faf3] hover:bg-[#e8f5ec]"
+              >
+                <span
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#1a5c2e",
+                    background: "#e8f5ec",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  Doe mee!
+                </span>
+                <Home size={18} color={ICON_GREEN} aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("getInvolved")}</span>
+                  <span className="text-xs text-gray-500 block">Alle manieren om te helpen</span>
+                </div>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/street-dogs-thailand"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors bg-[#fff5f5] hover:bg-[#ffebeb]"
+              >
+                <span
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#7B1010",
+                    background: "#fdeaea",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  Alarmerend
+                </span>
+                <MapPin size={18} color={ICON_GREEN} aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("streetDogsThailand")}</span>
+                  <span className="text-xs text-gray-500 block">600.000 zwerfhonden — wij pakken het aan</span>
+                </div>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/story"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors bg-[#f0faf3] hover:bg-[#e8f5ec]"
+              >
+                <span
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#1a5c2e",
+                    background: "#e8f5ec",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  Sinds 1999
+                </span>
+                <BookOpen size={18} color={ICON_GREEN} aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("ourStory")}</span>
+                  <span className="text-[11px] text-gray-500 block mt-[1px]">Opgericht in 1999, sindsdien 2.500+ gered</span>
+                </div>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/about-us"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors bg-[#fff8f8] hover:bg-[#ffefef]"
+              >
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open("https://www.youtube.com/@savedsoulsfoundation", "_blank", "noopener,noreferrer");
+                  }}
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#cc0000",
+                    background: "#fff0f0",
+                    border: "0.5px solid #ffcccc",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ▶ YouTube
+                </button>
+                <PawPrint size={18} color={ICON_GREEN} aria-hidden />
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("aboutUs")}</span>
+                  <span className="text-[11px] text-gray-500 block mt-[1px]">Dagelijks voeden, verzorgen en redden</span>
+                </div>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+              <Link
+                href="/gidsen"
+                onClick={closeMobileMenu}
+                className="relative flex items-center gap-3 px-4 py-3 min-h-[52px] border-amber-200/80 bg-amber-100 hover:bg-amber-200/60 active:bg-amber-200 transition-colors"
+              >
+                <span className="absolute top-2 right-3 bg-amber-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {t("menuInformativeBadge")}
+                </span>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100 shrink-0">
+                  <BookOpen size={16} color="#b45309" aria-hidden />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-amber-900 block">{t("menuGidsenLabel")}</span>
+                  <span className="text-[11px] text-gray-500 block mt-[1px]">Adoptie, zorg & gedrag</span>
+                </div>
+                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+              </Link>
+            </div>
+          </div>
+
+          {/* Block 4 — Vergroot impact */}
+          <div className="mt-6 animate-fade-in" style={{ animationDelay: "150ms" }}>
+            <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3 pl-3 border-l-2 border-[#2aa348]">
+              Vergroot impact
+            </p>
+            <div className="grid grid-cols-2 gap-3">
               <Link
                 href="/influencers"
                 onClick={closeMobileMenu}
@@ -542,102 +664,96 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <span className="font-bold text-sm text-[#6d28d9]">{t("influencers")}</span>
                 <span className="text-xs text-purple-400 mt-1">{t("menuInfluencersSubtext")}</span>
               </Link>
-              {/* Card 6 – Shop */}
               <Link
                 href="/shop"
                 onClick={closeMobileMenu}
-                className="relative rounded-2xl border border-[#f3f4f6] bg-white p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
+                style={{ backgroundColor: "#fefcf0" }}
               >
-                <span className="absolute top-2 right-2 text-base" aria-hidden>🛍️</span>
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-yellow-50 to-amber-100 shrink-0">
+                <span
+                  className="whitespace-nowrap"
+                  style={{
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#a0600a",
+                    background: "#fef3e2",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  🐾 Draag je liefde
+                </span>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-yellow-50 to-amber-100 shrink-0" style={{ marginTop: "24px" }}>
                   <ShoppingBag size={26} color="#d97706" aria-hidden />
                 </div>
                 <span className="font-semibold text-sm text-gray-800">{t("shop")}</span>
-                <span className="text-xs text-gray-400 mt-1">{t("menuShopSubtext")}</span>
+                <span className="text-xs text-gray-400 mt-1">Draag ons verhaal</span>
               </Link>
             </div>
           </div>
 
-          {/* Section 3 – MEER */}
-          <div className="mt-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+          {/* Block 5 — MEER (no green border) */}
+          <div className="mt-6 pb-8 animate-fade-in" style={{ animationDelay: "200ms" }}>
             <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3">
               {t("menuSectionMore")}
             </p>
             <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
               <Link
-                href="/shop"
+                href="/contact#contact-form"
                 onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
+                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors bg-[#f0f4ff] hover:bg-[#e8eeff]"
               >
-                <ShoppingBag size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("shop")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/street-dogs-thailand"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
-              >
-                <MapPin size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("streetDogsThailand")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/gidsen"
-                onClick={closeMobileMenu}
-                className="relative flex items-center gap-3 px-4 py-3.5 border-b border-amber-200/80 bg-amber-100 hover:bg-amber-200/60 active:bg-amber-200 transition-colors"
-              >
-                <span className="absolute top-2 right-3 bg-amber-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap">
-                  {t("menuInformativeBadge")}
+                <span
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#1a56a0",
+                    background: "#e8f0fe",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  Schrijf ons
                 </span>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100 shrink-0">
-                  <BookOpen size={16} color="#b45309" aria-hidden />
+                <span className="ss-pulse-icon">
+                  <Mail size={18} color={ICON_GREEN} aria-hidden />
+                </span>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("contact")}</span>
+                  <span className="text-[11px] text-gray-400 block mt-0.5">Stuur ons een bericht</span>
                 </div>
-                <span className="font-medium text-[15px] text-amber-900 flex-1">{t("menuGidsenLabel")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/influencers"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
-              >
-                <Megaphone size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("influencers")}</span>
-                <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
-              </Link>
-              <Link
-                href="/kids"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 active:bg-gray-50 transition-colors"
-              >
-                <Smile size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("kids")}</span>
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
               </Link>
               <Link
                 href="/thank-you"
                 onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors"
+                className="relative flex items-center gap-3 px-4 py-3.5 active:bg-gray-50 transition-colors bg-[#f0faf3] hover:bg-[#e8f5ec]"
               >
+                <span
+                  className="absolute top-2 right-3 whitespace-nowrap"
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#1a5c2e",
+                    background: "#e8f5ec",
+                    borderRadius: "6px",
+                    padding: "2px 10px",
+                  }}
+                >
+                  ❤ Dankbaar
+                </span>
                 <Star size={18} color={ICON_GREEN} aria-hidden />
-                <span className="font-medium text-[15px] text-gray-800 flex-1">{t("thankYou")}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-[15px] text-gray-800 block">{t("thankYou")}</span>
+                  <span className="text-[11px] text-gray-400 block mt-0.5">Jullie maken het verschil</span>
+                </div>
                 <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
               </Link>
             </div>
-          </div>
-
-          {/* Bottom CTA – Doneren */}
-          <div className="mt-8 pb-20 animate-fade-in" style={{ animationDelay: "150ms" }}>
-            <a
-              href={`/${locale}/donate`}
-              onClick={closeMobileMenu}
-              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white shadow-lg active:scale-[0.98] transition-transform"
-              style={{ backgroundColor: "#7B1010" }}
-              title={t("donateTooltip")}
-            >
-              <Heart size={18} fill="white" color="white" aria-hidden />
-              {t("donate")}
-            </a>
           </div>
         </div>
         )}

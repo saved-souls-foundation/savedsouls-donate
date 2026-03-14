@@ -200,7 +200,7 @@ export default async function ContactPage({ params }: Props) {
         </div>
 
         {/* Contact form */}
-        <div className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">
+        <div id="contact-form" className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
             {tContact("sendMessageHeading")}
           </h2>
