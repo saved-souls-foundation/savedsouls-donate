@@ -130,12 +130,12 @@ export default function NavDropdown({
 
   const handlePanelMouseLeave = useCallback(() => {
     if (isMobile) return;
-    closeTimerRef.current = setTimeout(() => setOpen(false), 600);
+    closeTimerRef.current = setTimeout(() => setOpen(false), 400);
   }, [isMobile, setOpen]);
 
   const handleTriggerMouseLeave = useCallback(() => {
     if (isMobile) return;
-    closeTimerRef.current = setTimeout(() => setOpen(false), 600);
+    closeTimerRef.current = setTimeout(() => setOpen(false), 400);
   }, [isMobile, setOpen]);
 
   const handleTriggerClick = useCallback(() => {
