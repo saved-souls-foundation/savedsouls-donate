@@ -42,7 +42,7 @@ export default function BankTransferSection({ defaultOpen = false }: BankTransfe
   return (
     <details open={defaultOpen} className="group rounded-xl border border-stone-200 dark:border-stone-600 overflow-hidden">
       <summary className="px-6 py-4 cursor-pointer list-none flex items-center justify-between bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
-        <span className="font-semibold text-stone-800 dark:text-stone-200" style={{ color: ACCENT_GREEN }}>
+        <span className="font-semibold text-stone-800 dark:text-stone-200">
           {t("bankTransfer")}
         </span>
         <span className="text-stone-400 group-open:rotate-180 transition-transform">
