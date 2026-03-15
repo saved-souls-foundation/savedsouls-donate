@@ -139,12 +139,8 @@ export default function NavDropdown({
   }, [isMobile, setOpen]);
 
   const handleTriggerClick = useCallback(() => {
-    if (isMobile) {
-      setOpen(!open);
-    } else {
-      setOpen(false);
-    }
-  }, [isMobile, open, setOpen]);
+    setOpen(!open);
+  }, [open, setOpen]);
 
   const handleItemClick = () => {
     onItemClick?.();
@@ -173,7 +169,7 @@ export default function NavDropdown({
       {open && (
         <div
           className={dropdownClass}
-          style={dropdownStyle}
+          style={{ ...dropdownStyle, pointerEvents: "auto" }}
           onMouseEnter={cancelClose}
           onMouseLeave={handlePanelMouseLeave}
         >
