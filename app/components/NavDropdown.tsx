@@ -96,7 +96,15 @@ export default function NavDropdown({
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMobile = useIsMobile();
+
+  const cancelClose = useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -108,14 +116,26 @@ export default function NavDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setOpen]);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   const handleTriggerMouseEnter = useCallback(() => {
     if (isMobile) return;
+    cancelClose();
     setOpen(true);
-  }, [isMobile, setOpen]);
+  }, [isMobile, setOpen, cancelClose]);
 
   const handlePanelMouseLeave = useCallback(() => {
     if (isMobile) return;
-    setOpen(false);
+    closeTimerRef.current = setTimeout(() => setOpen(false), 200);
+  }, [isMobile, setOpen]);
+
+  const handleTriggerMouseLeave = useCallback(() => {
+    if (isMobile) return;
+    closeTimerRef.current = setTimeout(() => setOpen(false), 200);
   }, [isMobile, setOpen]);
 
   const handleTriggerClick = useCallback(() => {
@@ -141,6 +161,7 @@ export default function NavDropdown({
         type="button"
         onClick={handleTriggerClick}
         onMouseEnter={handleTriggerMouseEnter}
+        onMouseLeave={handleTriggerMouseLeave}
         className={`flex items-center gap-1 ${buttonClassName}`}
         style={buttonStyle}
         aria-expanded={open}
@@ -153,6 +174,7 @@ export default function NavDropdown({
         <div
           className={dropdownClass}
           style={dropdownStyle}
+          onMouseEnter={cancelClose}
           onMouseLeave={handlePanelMouseLeave}
         >
           {headerContent}
