@@ -66,6 +66,8 @@ const jsonLd = {
   name: "Saved Souls Foundation",
   description: "Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
   url: "https://www.savedsouls-foundation.com",
+  telephone: "+66623698246",
+  image: "https://www.savedsouls-foundation.com/savedsoul-logo.webp",
   address: {
     "@type": "PostalAddress",
     streetAddress: "133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand",
