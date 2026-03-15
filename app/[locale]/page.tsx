@@ -12,6 +12,8 @@ import SiteHeader from "../components/SiteHeader";
 import TrustStatsBar from "../components/TrustStatsBar";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import OurWorkSection from "@/app/components/OurWorkSection";
+import NewsletterHero from "@/app/components/NewsletterHero";
+import NewsletterFormDark from "@/app/components/NewsletterFormDark";
 import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
 
@@ -424,8 +426,9 @@ export default function DonatePage() {
         </section>
       )}
 
-      <section className="py-8 md:py-12 px-4 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
-        <NewsletterSignup variant="compact" />
+      <section style={{ background: "#0f2614" }}>
+        <NewsletterHero />
+        <NewsletterFormDark />
       </section>
 
       <div className="pb-[env(safe-area-inset-bottom,0)]">

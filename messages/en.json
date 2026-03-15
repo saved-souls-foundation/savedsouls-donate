@@ -4803,6 +4803,19 @@
     "errorMessage": "Something went wrong. Please try again.",
     "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation."
   },
+  "newsletterHero": {
+    "heroAccent": "350 dogs.",
+    "tag": "Every month matters",
+    "title": "350 dogs are waiting for your support",
+    "subtitle": "Follow their recovery. Celebrate their wins. Be part of the community that never forgets them.",
+    "stat1": "dogs in our care",
+    "stat2": "cats in our care",
+    "stat3": "disabled dogs",
+    "benefit1": "Updates on adoptable animals",
+    "benefit2": "Emergency alerts when urgent",
+    "benefit3": "Stories from our volunteers",
+    "disclaimer": "No spam · Unsubscribe anytime · Never sold"
+  },
   "emergency": {
     "metaTitle": "Emergency campaign — Save the land for 350 dogs",
     "metaDescription": "We need €100,000 to buy the land where 350 dogs live. 50 are disabled. Donate via GoFundMe — every euro counts.",

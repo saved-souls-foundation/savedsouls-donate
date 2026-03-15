@@ -4115,6 +4115,19 @@
     "errorMessage": "Algo salió mal. Por favor inténtalo de nuevo.",
     "privacy": "Respetamos tu privacidad. Sin spam, solo noticias de SavedSouls Foundation."
   },
+  "newsletterHero": {
+    "heroAccent": "350 perros.",
+    "tag": "Cada mes importa",
+    "title": "350 perros esperan tu apoyo",
+    "subtitle": "Sigue su recuperación. Celebra sus logros. Sé parte de la comunidad que nunca los olvida.",
+    "stat1": "perros bajo nuestro cuidado",
+    "stat2": "gatos bajo nuestro cuidado",
+    "stat3": "perros discapacitados",
+    "benefit1": "Actualizaciones sobre animales en adopción",
+    "benefit2": "Alertas de emergencia cuando es urgente",
+    "benefit3": "Historias de nuestros voluntarios",
+    "disclaimer": "Sin spam · Cancela cuando quieras · Nunca vendido"
+  },
   "emergency": {
     "metaTitle": "Campaña de emergencia — Salva la tierra de 350 perros",
     "metaDescription": "Necesitamos €100.000 para comprar la tierra donde viven 350 perros. 50 tienen discapacidad. Dona vía GoFundMe — cada euro cuenta.",

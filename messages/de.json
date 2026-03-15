@@ -4115,6 +4115,19 @@
     "errorMessage": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "privacy": "Wir respektieren deine Privatsphäre. Kein Spam, nur Neuigkeiten von SavedSouls Foundation."
   },
+  "newsletterHero": {
+    "heroAccent": "350 Hunde.",
+    "tag": "Jeder Monat zählt",
+    "title": "350 Hunde warten auf deine Unterstützung",
+    "subtitle": "Verfolge ihre Genesung. Feiere ihre Erfolge. Sei Teil der Gemeinschaft, die sie nicht vergisst.",
+    "stat1": "Hunde in unserer Obhut",
+    "stat2": "Katzen in unserer Obhut",
+    "stat3": "behinderte Hunde",
+    "benefit1": "Updates zu Adoptionstieren",
+    "benefit2": "Notfallmeldungen bei Dringlichkeit",
+    "benefit3": "Geschichten unserer Freiwilligen",
+    "disclaimer": "Kein Spam · Jederzeit abmelden · Niemals verkauft"
+  },
   "emergency": {
     "metaTitle": "Notfallkampagne — Rettet das Land für 350 Hunde",
     "metaDescription": "Wir brauchen €100.000, um das Land zu kaufen, auf dem 350 Hunde leben. 50 sind behindert. Spende über GoFundMe — jeder Euro zählt.",

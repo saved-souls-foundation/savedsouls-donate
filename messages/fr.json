@@ -4438,6 +4438,19 @@
     "errorMessage": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "privacy": "Nous respectons votre vie privée. Pas de spam, uniquement des nouvelles de SavedSouls Foundation."
   },
+  "newsletterHero": {
+    "heroAccent": "350 chiens.",
+    "tag": "Chaque mois compte",
+    "title": "350 chiens attendent votre soutien",
+    "subtitle": "Suivez leur rétablissement. Célébrez leurs victoires. Faites partie de la communauté qui ne les oublie pas.",
+    "stat1": "chiens sous nos soins",
+    "stat2": "chats sous nos soins",
+    "stat3": "chiens handicapés",
+    "benefit1": "Mises à jour sur les animaux à adopter",
+    "benefit2": "Alertes d'urgence si nécessaire",
+    "benefit3": "Histoires de nos bénévoles",
+    "disclaimer": "Pas de spam · Désabonnement à tout moment · Jamais vendu"
+  },
   "emergency": {
     "metaTitle": "Campagne d'urgence — Sauvez la terre pour 350 chiens",
     "metaDescription": "Nous avons besoin de 100 000 € pour acheter la terre où vivent 350 chiens. 50 sont handicapés. Donnez via GoFundMe — chaque euro compte.",

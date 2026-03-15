@@ -4804,6 +4804,19 @@
     "errorMessage": "Er ging iets mis. Probeer het opnieuw.",
     "privacy": "We respecteren je privacy. Geen spam, alleen nieuws over SavedSouls Foundation."
   },
+  "newsletterHero": {
+    "heroAccent": "350 honden.",
+    "tag": "Elke maand telt",
+    "title": "350 honden wachten op jouw steun",
+    "subtitle": "Volg hun herstel. Vier hun overwinningen. Wees onderdeel van de community die ze niet vergeet.",
+    "stat1": "honden in onze zorg",
+    "stat2": "katten in onze zorg",
+    "stat3": "invalide honden",
+    "benefit1": "Updates over adoptiedieren",
+    "benefit2": "Noodoproepen als het urgent is",
+    "benefit3": "Verhalen van vrijwilligers",
+    "disclaimer": "Geen spam · Altijd afmelden mogelijk · Nooit doorverkocht"
+  },
   "emergency": {
     "metaTitle": "Noodcampagne — Red het land voor 350 honden",
     "metaDescription": "We hebben €100.000 nodig om het land te kopen waar 350 honden wonen. 50 zijn gehandicapt. Doneer via GoFundMe — elke euro telt.",
