@@ -15,7 +15,7 @@
   },
   "seo": {
     "title": "SavedSouls Foundation — Rescate Animal Tailandia",
-    "description": "Rescatamos perros y gatos en Tailandia. Adopta, haz voluntariado o dona. Más de 550 animales salvados."
+    "description": "Rescatamos perros y gatos en Tailandia — incluidos animales paralizados y discapacitados que otros refugios rechazan. Adopta, dona o haz voluntariado en Khon Kaen, Tailandia."
   },
   "nav": {
     "ourStoryDesc": "Fundada en 1999, más de 2.500 rescatados",
@@ -404,8 +404,8 @@
     "ctaBackHome": "Volver al inicio"
   },
   "faq": {
-    "metaTitle": "FAQ mascotas: adopción perros, cuidados perros, alimentación, salud gatos | Saved Souls",
-    "metaDescription": "Preguntas frecuentes sobre cuidados de mascotas, cómo adoptar un perro, alimentación canina, salud del perro, cuidados del gato. Educar perro, adiestramiento, mejor comida perros, desparasitar perro, tratamiento pulgas, esterilizar gato. Saved Souls Foundation.",
+    "metaTitle": "Preguntas frecuentes | Saved Souls Foundation Tailandia",
+    "metaDescription": "Respuestas a las preguntas más frecuentes sobre Saved Souls Foundation: donaciones, adopciones, voluntariado y el cuidado de nuestros 300+ perros y 90+ gatos en Khon Kaen, Tailandia.",
     "metaKeywords": "consejos mascotas, cómo adoptar perro, cuidados perro, adiestramiento perro, educar perro, mejor comida perros, dieta BARF perros, alimentos prohibidos perros, vacunación perro, desparasitar perro, tratamiento pulgas perros, diarrea perro, vómitos perro, adoptar gato, mejor comida gatos, esterilizar gato coste, vacunación gato",
     "title": "Preguntas frecuentes",
     "subtitle": "Todo lo que necesitas saber sobre Saved Souls Foundation",
@@ -1292,6 +1292,8 @@
     }
   },
   "volunteer": {
+    "metaTitle": "Voluntariado en Saved Souls Foundation Tailandia",
+    "metaDescription": "Sé voluntario en Saved Souls Foundation en Khon Kaen, Tailandia. Ayuda a perros y gatos discapacitados y rescatados. Mínimo 2 semanas, alojamiento gratuito.",
     "title": "Welcome to the furry madness!",
     "subtitle": "Volunteering that changes your life – Khon Kaen, Thailand",
     "intro": "Deep in northeastern Thailand, hundreds of dogs and cats are waiting for you. Rescued from the meat trade, from the streets, from abuse. They've lost all trust in humans—until they meet you. Get ready to get sweaty, dirty, and buried in puppy kisses. This is the exhaustion that matters.",

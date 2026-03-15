@@ -15,7 +15,7 @@
   },
   "seo": {
     "title": "SavedSouls Foundation — Sauvetage Animal Thaïlande",
-    "description": "Nous sauvons des chiens et des chats en Thaïlande. Adoptez, faites du bénévolat ou faites un don. Plus de 550 animaux sauvés."
+    "description": "Nous sauvons des chiens et des chats en Thaïlande — y compris des animaux paralysés et handicapés que d'autres refuges refusent. Adoptez, faites un don ou venez comme bénévole à Khon Kaen."
   },
   "nav": {
     "ourStoryDesc": "Fondée en 1999, plus de 2 500 sauvés depuis",
@@ -665,8 +665,8 @@
     "ctaBackHome": "Retour à l'accueil"
   },
   "faq": {
-    "metaTitle": "FAQ animaux : adoption chien, soins, alimentation, santé chat | Saved Souls",
-    "metaDescription": "Questions fréquentes sur les soins aux animaux, adoption chien, alimentation, santé chien et chat. Éducation propreté, dressage, meilleure nourriture chien, vermifuge, antipuces, stérilisation chat. Saved Souls Foundation.",
+    "metaTitle": "Questions fréquentes | Saved Souls Foundation Thaïlande",
+    "metaDescription": "Réponses aux questions les plus fréquentes sur la Saved Souls Foundation : dons, adoptions, bénévolat et soins de nos 300+ chiens et 90+ chats à Khon Kaen, Thaïlande.",
     "metaKeywords": "conseils soins animaux, adopter un chien, soins chien, dressage chien, propreté chien, meilleure nourriture chien, régime cru chiens, aliments toxiques chien, vaccination chien, vermifuge chien, antipuces chien, diarrhée chien, vomissements chien, adopter un chat, nourriture chat, coût stérilisation chat, vaccination chat",
     "title": "Questions fréquentes",
     "subtitle": "Tout ce que vous devez savoir sur Saved Souls Foundation",
@@ -1615,6 +1615,8 @@
     }
   },
   "volunteer": {
+    "metaTitle": "Bénévolat à Saved Souls Foundation Thaïlande",
+    "metaDescription": "Devenez bénévole à Saved Souls Foundation à Khon Kaen, Thaïlande. Aidez des chiens et chats handicapés et sauvés. Minimum 2 semaines, hébergement gratuit.",
     "title": "Bienvenue dans le chaos poilu !",
     "subtitle": "Un bénévolat qui change votre vie – Khon Kaen, Thaïlande",
     "intro": "Au cœur du nord-est de la Thaïlande, des centaines de chiens et de chats vous attendent. Sauvés du trafic de viande, de la rue, de la maltraitance. Ils ont perdu toute confiance en l'homme — jusqu'à vous rencontrer. Préparez-vous à transpirer, vous salir et être submergé de bisous de chiots. C'est la fatigue qui compte.",

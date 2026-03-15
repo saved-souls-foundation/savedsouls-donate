@@ -15,7 +15,7 @@
   },
   "seo": {
     "title": "SavedSouls Foundation — Tierrettung Thailand",
-    "description": "Wir retten Hunde und Katzen in Thailand. Adoptieren, freiwillig helfen oder spenden. Über 550 gerettete Tiere."
+    "description": "Wir retten Hunde und Katzen in Thailand — auch gelähmte und behinderte Tiere, die andere Tierheime ablehnen. Adoptieren, spenden oder freiwillig helfen in Khon Kaen."
   },
   "nav": {
     "ourStoryDesc": "Gegründet 1999, seitdem über 2.500 gerettet",
@@ -404,8 +404,8 @@
     "ctaBackHome": "Zurück zur Startseite"
   },
   "faq": {
-    "metaTitle": "FAQ Haustiere: Hund adoptieren, Hund pflegen, Hundefutter, Katze Gesundheit | Saved Souls",
-    "metaDescription": "Häufig gestellte Fragen zu Haustierpflege, Hund adoptieren, Hundefutter, Hundegesundheit, Katzenpflege. Hund stubenrein, Hund erziehen, bestes Hundefutter, Hund entwurmen, Hund Flöhe, Katze kastrieren. Saved Souls Foundation.",
+    "metaTitle": "Häufig gestellte Fragen | Saved Souls Foundation Thailand",
+    "metaDescription": "Antworten auf die häufigsten Fragen zur Saved Souls Foundation: Spenden, Adoptieren, Freiwilligenarbeit und die Pflege unserer 300+ Hunde und 90+ Katzen in Khon Kaen, Thailand.",
     "metaKeywords": "Haustierpflege, Haustier Ernährung, Hund adoptieren, Hund pflegen, Hund erziehen, Hund stubenrein, bestes Hundefutter, Rohfutter Hund, BARF Hund, Hund darf nicht essen, Hund impfen, Hund entwurmen, Hund Flöhe, Hund Durchfall, Katze adoptieren, bestes Katzenfutter, Katze kastrieren, Katze impfen",
     "title": "Häufig gestellte Fragen",
     "subtitle": "Alles, was Sie über Saved Souls Foundation wissen müssen",
@@ -1292,6 +1292,8 @@
     }
   },
   "volunteer": {
+    "metaTitle": "Freiwilligenarbeit bei Saved Souls Foundation Thailand",
+    "metaDescription": "Werde Freiwilliger bei Saved Souls Foundation in Khon Kaen, Thailand. Hilf behinderten und geretteten Hunden und Katzen. Mindestens 2 Wochen, kostenlose Unterkunft.",
     "title": "Willkommen im pelzigen Wahnsinn!",
     "subtitle": "Freiwilligenarbeit, die dein Leben verändert – Khon Kaen, Thailand",
     "intro": "Tief im Nordosten Thailands warten Hunderte Hunde und Katzen auf dich. Gerettet aus dem Fleischhandel, von der Straße, aus Misshandlung. Sie haben jedes Vertrauen in Menschen verloren—bis sie dich treffen. Mach dich bereit, verschwitzt, schmutzig und unter Welpenküssen begraben zu werden. Das ist die Müdigkeit, die zählt.",
