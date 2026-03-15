@@ -128,6 +128,11 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
 
   return (
     <div className="max-w-[480px] mx-auto px-4 py-8">
+      {!isExpanded && (
+        <p className="text-center text-sm font-medium mb-4 tracking-wide uppercase" style={{ color: "#2aa348" }}>
+          {t("eyebrow")}
+        </p>
+      )}
       <div className="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-sm">
         <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 text-center">
           {t("title")}

@@ -6,6 +6,14 @@
     "disclaimer": "Impressum",
     "ariaLabel": "Cookie-Einwilligung"
   },
+  "ourWork": {
+    "label": "Was wir jeden Tag tun",
+    "title": "Jede Seele verdient eine zweite Chance",
+    "intro": "Von der Rettung bis zur Rehabilitation — das passiert jeden Tag bei der Saved Souls Foundation.",
+    "alt1": "Pflegerin mit geretteten Hunden",
+    "alt2": "Schwimmtherapie",
+    "alt3": "Mobile Klinik Team"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
@@ -911,6 +919,7 @@
     "volunteerText": "Willst du mehr als spenden? Komm nach Thailand. Umarme Hunde, die nie Liebe kannten. Schau in Augen, die wieder hoffen lernen. Viele Freiwillige nennen es \"die bedeutungsvollste Erfahrung ihres Lebens.\"",
     "volunteerCta": "ALS FREIWILLIGER ANMELDEN →",
     "quote": "Wir können nicht alle retten. Aber für jeden, den wir retten, verändern wir ihre ganze Welt.",
+    "showOwnVideoLabel": "Ansehen: Unsere geretteten Hunde",
     "video1Title": "Lernen Sie unsere geretteten Hunde bei Saved Souls Foundation kennen",
     "video2Title": "Ein Zufluchtsort im Herzen von Isaan",
     "video2Text": "Tief in Khon Kaen, im grünen Nordosten Thailands, betreibt ein kleines Team mit großem Herzen ein Tierheim, das keine Seele abweist. Hunderte gerettete Hunde und Katzen nennen diesen Ort ihr Zuhause—und jeden Tag beweisen unsere engagierten Mitarbeiter und Freiwilligen, dass Liebe heilen kann, was die Welt zerbrochen hat.",
@@ -4090,6 +4099,7 @@
   },
   "newsletter": {
     "title": "Bleib auf dem Laufenden",
+    "eyebrow": "Bleib verbunden",
     "subtitle": "Erhalte Neuigkeiten über unsere Tiere und Projekte in Thailand.",
     "emailPlaceholder": "Deine E-Mail-Adresse",
     "voornaamPlaceholder": "Vorname (optional)",

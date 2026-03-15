@@ -6,6 +6,14 @@
     "disclaimer": "Aviso legal",
     "ariaLabel": "Consentimiento de cookies"
   },
+  "ourWork": {
+    "label": "Lo que hacemos cada día",
+    "title": "Cada alma merece una segunda oportunidad",
+    "intro": "Del rescate a la rehabilitación — esto es lo que ocurre cada día en Saved Souls Foundation.",
+    "alt1": "Cuidadora con perros rescatados",
+    "alt2": "Terapia de natación",
+    "alt3": "Equipo de clínica móvil"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
@@ -911,6 +919,7 @@
     "volunteerText": "¿Quieres hacer más que donar? Ven a Tailandia. Abraza perros que nunca han conocido el amor. Mira a ojos que aprenden a esperar de nuevo. Muchos voluntarios lo llaman \"la experiencia más significativa de sus vidas.\"",
     "volunteerCta": "REGISTRARSE COMO VOLUNTARIO →",
     "quote": "No podemos salvarlos a todos. Pero por cada uno que salvamos, cambiamos su mundo entero.",
+    "showOwnVideoLabel": "Ver: Conoce a nuestros perros rescatados",
     "video1Title": "Meet our rescued dogs at Saved Souls Foundation",
     "video2Title": "A Sanctuary in the Heart of Isaan",
     "video2Text": "Deep in Khon Kaen, in the lush northeast of Thailand, a small team with enormous hearts runs a shelter that never turns away a soul. Hundreds of rescued dogs and cats call this place home—and every day, our dedicated staff and volunteers prove that love can heal what the world has broken.",
@@ -4090,6 +4099,7 @@
   },
   "newsletter": {
     "title": "Mantente informado",
+    "eyebrow": "Mantente conectado",
     "subtitle": "Recibe noticias sobre nuestros animales y proyectos en Tailandia.",
     "emailPlaceholder": "Tu correo electrónico",
     "voornaamPlaceholder": "Nombre (opcional)",

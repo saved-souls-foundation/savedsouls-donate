@@ -6,6 +6,14 @@
     "disclaimer": "Disclaimer",
     "ariaLabel": "Cookie consent"
   },
+  "ourWork": {
+    "label": "Wat we elke dag doen",
+    "title": "Elke ziel verdient een tweede kans",
+    "intro": "Van redding tot revalidatie — dit is wat er elke dag gebeurt bij Saved Souls Foundation.",
+    "alt1": "Verzorger met geredde honden",
+    "alt2": "Zwemtherapie",
+    "alt3": "Mobile clinic team"
+  },
   "turnstile": {
     "label": "Beveiligingscontrole",
     "errorBeforeEmail": "De beveiligingscontrole kon niet worden geladen (Cloudflare). Dit kan komen door een probleem met challenges.cloudflare.com.",
@@ -1600,6 +1608,7 @@
     "volunteerText": "Wil je meer dan doneren? Kom naar Thailand. Knuffel de honden die nooit liefde hebben gekend. Kijk in ogen die weer hoop leren kennen. Vele vrijwilligers noemen het \"de meest betekenisvolle ervaring van hun leven.\"",
     "volunteerCta": "AANMELDEN ALS VRIJWILLIGER →",
     "quote": "We kunnen ze niet allemaal redden. Maar voor elke ziel die we redden, veranderen we hun hele wereld.",
+    "showOwnVideoLabel": "Bekijk: Ontmoet onze geredde honden",
     "video1Title": "Ontmoet onze geredde honden bij Saved Souls Foundation",
     "video2Title": "Een toevluchtsoord in het hart van Isaan",
     "video2Text": "Diep in Khon Kaen, in het groene noordoosten van Thailand, runt een klein team met enorme harten een opvang die geen ziel afwijst. Honderden geredde honden en katten noemen deze plek thuis—en elke dag bewijzen onze toegewijde medewerkers en vrijwilligers dat liefde kan genezen wat de wereld heeft gebroken.",
@@ -4779,6 +4788,7 @@
   },
   "newsletter": {
     "title": "Blijf op de hoogte",
+    "eyebrow": "Blijf verbonden",
     "subtitle": "Ontvang nieuws over onze dieren en projecten in Thailand.",
     "emailPlaceholder": "Jouw e-mailadres",
     "voornaamPlaceholder": "Voornaam (optioneel)",

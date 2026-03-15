@@ -11,6 +11,7 @@ import HeroFadeIn from "../components/HeroFadeIn";
 import SiteHeader from "../components/SiteHeader";
 import TrustStatsBar from "../components/TrustStatsBar";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import OurWorkSection from "@/app/components/OurWorkSection";
 import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
 
@@ -44,6 +45,7 @@ export default function DonatePage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const miraclesRef = useRef<HTMLElement>(null);
+  const [showOwnVideo, setShowOwnVideo] = useState(false);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -188,6 +190,8 @@ export default function DonatePage() {
       {/* Spotlight deze week – boven eerste alinea */}
       <SpotlightSection />
 
+      <OurWorkSection />
+
       {/* Intro – below hero (both mobile and desktop) */}
       <div className="max-w-2xl mx-auto px-4 pb-10 md:pt-4">
         <p className="text-stone-600 dark:text-stone-400 text-base md:text-lg text-center leading-relaxed">
@@ -196,7 +200,7 @@ export default function DonatePage() {
       </div>
 
       {/* Content sections – headline + text + one CTA per section */}
-      <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
+      <section className="py-10 md:py-16 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
             <div className="flex-shrink-0 w-full md:w-80 lg:w-96 relative aspect-square">
@@ -232,7 +236,7 @@ export default function DonatePage() {
       <section
         ref={miraclesRef}
         id="about"
-        className="py-16 md:py-20 relative overflow-hidden"
+        className="py-10 md:py-16 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-stone-50/95 dark:bg-stone-800/95" />
         <div className="max-w-5xl mx-auto px-4 relative z-10">
@@ -287,7 +291,7 @@ export default function DonatePage() {
 
       {/* Sponsor Hero – verborgen zolang geen betaalplatform */}
       {showSponsor && (
-        <section id="sponsor" className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
+        <section id="sponsor" className="py-10 md:py-16 bg-white/95 dark:bg-stone-900/95">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
               {tHome("sponsorTitle")}
@@ -316,7 +320,7 @@ export default function DonatePage() {
       )}
 
       {/* Volunteer Hero – grote gele geanimeerde knop */}
-      <section id="volunteer" className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
+      <section id="volunteer" className="py-10 md:py-16 bg-stone-50/90 dark:bg-stone-800/90">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
             {tHome("volunteerTitle")}
@@ -336,7 +340,7 @@ export default function DonatePage() {
       </section>
 
       {/* Quote */}
-      <section className="py-12 bg-white/95 dark:bg-stone-900/95">
+      <section className="py-8 md:py-12 bg-white/95 dark:bg-stone-900/95">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <blockquote className="text-xl md:text-2xl font-serif italic text-stone-700 dark:text-stone-300">
             &ldquo;{tHome("quote")}&rdquo;
@@ -344,30 +348,9 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Video 1 – YouTube */}
-      {YOUTUBE_VIDEO_ID && (
-        <section className="py-16 md:py-20 bg-stone-50/90 dark:bg-stone-800/90">
-          <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-8">
-              {tHome("video1Title")}
-            </h2>
-            <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 shadow-lg" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?rel=0`}
-                title="Saved Souls Foundation – YouTube"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Video 2 – A Sanctuary in the Heart of Isaan */}
       {YOUTUBE_VIDEO_ID_2 && (
-        <section className="py-16 md:py-20 bg-white/95 dark:bg-stone-900/95">
+        <section className="py-10 md:py-16 bg-white/95 dark:bg-stone-900/95">
           <div className="max-w-4xl mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-4">
               {tHome("video2Title")}
@@ -389,7 +372,59 @@ export default function DonatePage() {
         </section>
       )}
 
-      <section className="py-12 px-4 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
+      {/* Video 1 – YouTube (own video, show more) */}
+      {YOUTUBE_VIDEO_ID && (
+        <section className="py-10 md:py-16 bg-stone-50/90 dark:bg-stone-800/90">
+          <div className="max-w-4xl mx-auto px-4">
+            {!showOwnVideo ? (
+              <div className="text-center">
+                <button
+                  onClick={() => setShowOwnVideo(true)}
+                  className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
+                >
+                  <span
+                    className="flex items-center justify-center w-10 h-10 rounded-full"
+                    style={{ backgroundColor: "#FF0000" }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="white">
+                      <polygon points="5,2 14,8 5,14" />
+                    </svg>
+                  </span>
+                  <span className="text-left">
+                    <span className="block text-sm font-semibold text-stone-800 dark:text-stone-100">
+                      {tHome("showOwnVideoLabel")}
+                    </span>
+                    <span className="block text-xs text-stone-500 dark:text-stone-400">
+                      YouTube · Saved Souls Foundation
+                    </span>
+                  </span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-2 text-stone-400">
+                    <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-2xl md:text-3xl font-bold text-center text-stone-800 dark:text-stone-100 mb-8">
+                  {tHome("video1Title")}
+                </h2>
+                <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 dark:border-stone-600 shadow-lg" style={{ paddingBottom: "56.25%" }}>
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?rel=0`}
+                    title="Saved Souls Foundation – YouTube"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      <section className="py-8 md:py-12 px-4 bg-stone-50 dark:bg-stone-900/50 border-t border-stone-200 dark:border-stone-700">
         <NewsletterSignup variant="compact" />
       </section>
 
