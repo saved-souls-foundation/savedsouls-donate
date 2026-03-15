@@ -280,7 +280,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </div>
             <Link
               href="/emergency"
-              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-medium text-white transition-all hover:scale-[1.02]"
               style={{ backgroundColor: "#C0392B" }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" aria-hidden />
@@ -297,7 +297,14 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   style={{ animation: "ecg-scroll 1.8s linear infinite" }}
                 />
               </svg>
-              {t("menuEmergency") ?? "Noodhulp"}
+              <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+                <span style={{ fontSize: "13px", fontWeight: 600 }}>
+                  {t("menuEmergency") ?? "Noodhulp"}
+                </span>
+                <span style={{ fontSize: "10px", opacity: 0.75 }}>
+                  {t("menuEmergencySub") ?? "350 honden in gevaar"}
+                </span>
+              </span>
             </Link>
             <Link
               href="/get-involved"

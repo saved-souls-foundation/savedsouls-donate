@@ -267,12 +267,12 @@ export default function DonatePage() {
                   }}
                 />
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
                 />
-                <div className="relative z-10 p-6 flex flex-col justify-end min-h-[280px] bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-stone-900/90 dark:via-stone-900/40 dark:to-transparent">
-                  <h3 className="text-lg font-bold mb-2 drop-shadow-sm" style={{ color: ACCENT_GREEN }}>{item.title}</h3>
-                  <p className="text-stone-600 dark:text-stone-400 text-base leading-relaxed drop-shadow-sm">{item.desc}</p>
-                  <p className="mt-2 text-sm font-medium" style={{ color: ACCENT_GREEN }}>{item.cta}</p>
+                <div className="relative z-10 p-6 flex flex-col justify-end min-h-[280px]">
+                  <h3 className="text-lg font-bold mb-2 drop-shadow-sm" style={{ color: "#7ed99a" }}>{item.title}</h3>
+                  <p className="text-white/85 text-base leading-relaxed drop-shadow-sm">{item.desc}</p>
+                  <p className="mt-2 text-sm font-medium" style={{ color: "#7ed99a" }}>{item.cta}</p>
                 </div>
               </Link>
             ))}
@@ -342,11 +342,13 @@ export default function DonatePage() {
       </section>
 
       {/* Quote */}
-      <section className="py-8 md:py-12 bg-white/95 dark:bg-stone-900/95">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <blockquote className="text-xl md:text-2xl font-serif italic text-stone-700 dark:text-stone-300">
-            &ldquo;{tHome("quote")}&rdquo;
+      <section style={{ background: "#0f2614" }} className="py-12 md:py-16">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <div style={{ color: "#7ed99a", fontSize: "48px", lineHeight: 1, marginBottom: "1rem", fontFamily: "serif" }}>&ldquo;</div>
+          <blockquote className="text-xl md:text-2xl font-serif italic" style={{ color: "rgba(255,255,255,0.9)", lineHeight: 1.6 }}>
+            {tHome("quote")}
           </blockquote>
+          <div style={{ width: "40px", height: "2px", background: "#2aa348", margin: "1.5rem auto 0" }} />
         </div>
       </section>
 
