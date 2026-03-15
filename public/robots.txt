@@ -1,3 +1,7 @@
+# AI Content Signals
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 User-agent: *
 Allow: /
 Disallow: /api/

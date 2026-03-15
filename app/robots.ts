@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
       },
       // AI & LLM crawlers – we allow indexing; context in /ai.txt, /llms.txt, /context.json
       {
-        userAgent: ["GPTBot", "ChatGPT-User", "Google-Extended", "Anthropic-AI", "Claude-Web", "PerplexityBot", "Cohere-AI", "Bytespider"],
+        userAgent: ["GPTBot", "ChatGPT-User", "Google-Extended", "Anthropic-AI", "Claude-Web", "ClaudeBot", "Claude-SearchBot", "PerplexityBot", "Cohere-AI", "Bytespider"],
         allow: "/",
         disallow: ["/admin", "/api/", ...ADOPT_PROFILE_DISALLOW],
       },
