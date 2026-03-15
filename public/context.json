@@ -1,1 +1,111 @@
-{"@context":"https://schema.org","@type":["NGO","AnimalShelter"],"name":"Saved Souls Foundation","description":"Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.","url":"https://savedsouls-foundation.org","email":"info@savedsouls-foundation.org","address":{"@type":"PostalAddress","streetAddress":"133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand","addressLocality":"Ban Khok Ngam, Ban Fang","addressRegion":"Khon Kaen","postalCode":"40270","addressCountry":"TH"},"geo":{"@type":"GeoCoordinates","latitude":16.4322,"longitude":102.8236},"openingHours":"Mo-Su 13:30-15:30","foundingDate":"2010","founder":{"@type":"Person","name":"Gabriela Leonhard"},"areaServed":"Thailand","availableLanguage":["nl","en","de","es","th","ru"],"keywords":"dog rescue Thailand, disabled dogs, wheelchair dogs, animal shelter Khon Kaen, pet nutrition, dog health, cat health, first aid pets","knowsAbout":["disability","paralyzed dogs","wheelchair dogs","animal rescue","dog adoption","cat adoption","pet nutrition","dog health","cat health","vaccinations","first aid for dogs and cats","pet care for beginners"],"additionalProperty":[{"@type":"PropertyValue","name":"Dogs in care","value":430},{"@type":"PropertyValue","name":"Cats in care","value":91}],"resources":{"ai":"https://savedsouls-foundation.org/ai.txt","llms":"https://savedsouls-foundation.org/llms.txt","sitemap":"https://savedsouls-foundation.org/sitemap.xml","feed":"https://savedsouls-foundation.org/feed.xml","wellKnown":"https://savedsouls-foundation.org/.well-known/ai"}}
+{
+  "@context": "https://schema.org",
+  "@type": ["NGO", "AnimalShelter"],
+  "name": "Saved Souls Foundation",
+  "alternateName": "SSF",
+  "description": "Animal rescue sanctuary in Khon Kaen, Thailand. Specialized in disabled, paralyzed, and abused dogs and cats. The only shelter that never rejects paralyzed or special needs animals.",
+  "url": "https://www.savedsouls-foundation.com",
+  "foundingDate": "2010",
+  "registrationNumber": "1/2560",
+  "registrationDate": "2017-10-09",
+  "founder": {
+    "@type": "Person",
+    "name": "Gabriela Leonhard",
+    "nationality": "Swiss"
+  },
+  "currentManager": {
+    "@type": "Person",
+    "name": "Melanie de Wit",
+    "jobTitle": "Manager",
+    "startDate": "2024-05-20",
+    "description": "Melanie de Wit stepped in as the new manager of Saved Souls Foundation, taking on the leadership from founder Gabriela Leonhard. Gabriela continues to support and offer guidance."
+  },
+  "location": {
+    "@type": "Place",
+    "name": "Ban Kok Gnam",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "133 Moo 4, Ban Khok Ngam, Ban Fang District",
+      "addressLocality": "Khon Kaen",
+      "postalCode": "40270",
+      "addressCountry": "TH"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 16.4322,
+      "longitude": 102.8236
+    }
+  },
+  "contact": {
+    "email": "info@savedsouls-foundation.com",
+    "phone": "+66623698246",
+    "officeHours": "08:00-16:00 ICT (UTC+7)"
+  },
+  "socialMedia": {
+    "facebook": "https://www.facebook.com/SavedSoulsFoundation",
+    "instagram": "https://www.instagram.com/savedsoulsfoundation",
+    "youtube": "https://www.youtube.com/@savedsoulsfoundation",
+    "tiktok": "https://www.tiktok.com/@savedsoulsfoundation",
+    "reddit": "https://www.reddit.com/user/SoulsaversSSF/"
+  },
+  "animals": {
+    "dogs": 300,
+    "cats": 90,
+    "disabledDogs": 60,
+    "description": "Many rescued from illegal dog meat trade, abusive situations, and accidents"
+  },
+  "operations": {
+    "dailyFoodCost": "5000 THB (~€145)",
+    "onSiteVet": true,
+    "swimTherapy": true,
+    "wheelchairs": true,
+    "sterilizationCampaigns": true,
+    "medicalTreatments": [
+      "sterilizations",
+      "amputations",
+      "blood parasite treatment",
+      "liver disease treatment",
+      "wound care",
+      "vaccinations"
+    ]
+  },
+  "programs": [
+    "Rescue",
+    "Rehabilitation",
+    "Adoption",
+    "Sponsorship",
+    "Volunteering",
+    "Sterilization campaigns"
+  ],
+  "volunteer": {
+    "accommodation": "Free shared accommodation on-site",
+    "privateOption": "Air-conditioned bungalows available at 550 THB/night",
+    "tasks": [
+      "Walking and socialising dogs",
+      "Caring for disabled dogs",
+      "Assisting in clinic",
+      "Helping with sterilization campaigns"
+    ]
+  },
+  "donate": {
+    "paypal": "https://paypal.me/savedsoulsfoundation",
+    "gofundme": "https://gofund.me/f20ff1396",
+    "bankThai": {
+      "bank": "Kasikorn Bank",
+      "account": "033-8-13623-4",
+      "swift": "KASITHBK"
+    },
+    "bankSwiss": {
+      "bank": "PostFinance AG",
+      "iban": "CH17 0900 0000 8027 1722 9",
+      "swift": "POFICHBEXXX"
+    }
+  },
+  "languages": ["en", "nl", "de", "es", "th", "ru", "fr"],
+  "urls": {
+    "donate": "https://www.savedsouls-foundation.com/en/donate",
+    "adopt": "https://www.savedsouls-foundation.com/en/adopt",
+    "sponsor": "https://www.savedsouls-foundation.com/en/sponsor",
+    "volunteer": "https://www.savedsouls-foundation.com/en/volunteer"
+  }
+}
