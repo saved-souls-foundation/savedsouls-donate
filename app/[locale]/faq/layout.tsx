@@ -49,6 +49,7 @@ export default async function FaqLayout({
   return (
     <>
       <script
+        id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
