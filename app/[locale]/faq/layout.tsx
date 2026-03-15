@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { alternatesForPath } from "@/lib/metadata";
 
@@ -48,10 +49,11 @@ export default async function FaqLayout({
 
   return (
     <>
-      <script
+      <Script
         id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        strategy="beforeInteractive"
       />
       {children}
     </>
