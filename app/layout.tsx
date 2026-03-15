@@ -84,7 +84,7 @@ const jsonLd = {
     "@type": "ContactPoint",
     email: "info@savedsouls-foundation.org",
     contactType: "general",
-    availableLanguage: ["Dutch", "English", "German", "Spanish", "Thai", "Russian"],
+    availableLanguage: ["Dutch", "English", "German", "Spanish", "Thai", "Russian", "French"],
   },
   foundingDate: "2010",
   founder: {
