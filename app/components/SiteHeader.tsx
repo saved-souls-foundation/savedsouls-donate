@@ -214,8 +214,6 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             bottomCta={{ href: "/adopt", label: t("menuAdoptMain"), subtext: tNav("adoptFooter") }}
             buttonClassName={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="left"
-            open={openMenu === "adopt"}
-            onOpenChange={(open) => setOpenMenu(open ? "adopt" : null)}
             dropdownStyle={{ zIndex: 200 }}
           />
           <NavDropdown
@@ -224,8 +222,6 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             items={getInvolvedItems}
             buttonClassName={`text-xs md:text-sm font-medium transition-colors duration-300 hover:underline underline-offset-4 flex items-center gap-0.5 ${isOverlay ? textOverlay : textScrolled}`}
             align="right"
-            open={openMenu === "doe-mee"}
-            onOpenChange={(open) => setOpenMenu(open ? "doe-mee" : null)}
             bottomCta={{ href: "/donate", label: t("menuDonateNow"), subtext: t("menuDonateSubtext") }}
             dropdownStyle={{ zIndex: 200 }}
           />
