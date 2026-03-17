@@ -235,13 +235,15 @@ export default function SponsorPage() {
       <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
         <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
           <header className="text-center mb-10 md:mb-14 scroll-mt-24" id="sponsor-heading">
-            <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2">
-              {t("title")}
-            </h1>
-            <p className="text-lg text-stone-600 dark:text-stone-400" style={{ color: ACCENT_GREEN }}>
-              {t("subtitle")}
-            </p>
-            <div className="mt-4">
+            <div className="max-w-2xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2">
+                {t("title")}
+              </h1>
+              <p className="text-lg text-stone-600 dark:text-stone-400" style={{ color: ACCENT_GREEN }}>
+                {t("subtitle")}
+              </p>
+            </div>
+            <div className="mt-8 mb-4">
               <Link
                 href="/donate"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
@@ -250,6 +252,9 @@ export default function SponsorPage() {
                 {t("donateCta")}
               </Link>
             </div>
+            <p className="text-xs text-center mt-3 text-stone-400 dark:text-stone-500 italic">
+              {t("heroCta")}
+            </p>
           </header>
 
           <div className="mb-6 max-w-2xl mx-auto">

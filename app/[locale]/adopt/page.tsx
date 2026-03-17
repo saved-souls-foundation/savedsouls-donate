@@ -3,7 +3,7 @@
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Footer from "../../components/Footer";
 import SiteHeader from "../../components/SiteHeader";
 import DashboardLoginBanner from "../../components/DashboardLoginBanner";
@@ -116,6 +116,7 @@ export default function AdoptPage() {
   const [aiMatches, setAiMatches] = useState<{ id: string; reason: string }[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const allAnimalsRef = useRef<Animal[]>([]);
 
   useEffect(() => {
     if (typeParam === "dog" || typeParam === "cat") {
@@ -152,7 +153,9 @@ export default function AdoptPage() {
           images: Array.isArray(c.images) ? (c.images as string[]) : (c.image ? [String(c.image)] : []),
           story: c.story ? String(c.story) : undefined,
         }));
-        setAnimals([...dogs, ...cats]);
+        const list = [...dogs, ...cats];
+        setAnimals(list);
+        allAnimalsRef.current = list;
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -180,7 +183,7 @@ export default function AdoptPage() {
       return;
     }
     setAiLoading(true);
-    const slice = filteredAnimals.slice(0, 150).map((a) => ({
+    const slice = allAnimalsRef.current.slice(0, 150).map((a) => ({
       id: `${a.type}-${a.id}`,
       name: a.name,
       story: a.story ?? "",

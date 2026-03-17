@@ -418,7 +418,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   const renderPillButton = (mobile: boolean) => {
     const isOverlayStyle = overlay;
     const style = isOverlayStyle ? pillOverlayStyle : pillLightStyle;
-    const sparkleColor = isOverlayStyle ? "#7ccd8a" : "#2aa348";
+    const sparkleColor = "#1a5c2e";
     return (
       <button
         type="button"
@@ -455,7 +455,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
     const mobilePillStyle = overlay
       ? { display: "flex" as const, alignItems: "center" as const, gap: "4px", padding: "6px 10px", borderRadius: "20px", border: "1px solid rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.8)", fontSize: "13px", cursor: "pointer" as const }
       : { display: "flex" as const, alignItems: "center" as const, gap: "4px", padding: "6px 10px", borderRadius: "20px", border: "1px solid var(--color-border-secondary)", background: "var(--color-background-secondary)", color: "var(--color-text-secondary)", fontSize: "13px", cursor: "pointer" as const };
-    const mobileSparkleColor = overlay ? "#7ccd8a" : "#2aa348";
+    const mobileSparkleColor = "#1a5c2e";
     return (
       <>
         {sparkleStyle}
