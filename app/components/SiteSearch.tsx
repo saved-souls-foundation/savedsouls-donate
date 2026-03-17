@@ -4,7 +4,6 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { SEARCH_INDEX, type SearchPage } from "@/lib/search-index";
-import TurnstileWidget from "@/app/components/TurnstileWidget";
 import { ChevronRight } from "lucide-react";
 
 const MAX_RESULTS = 8;
@@ -37,7 +36,6 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   const [animalMatches, setAnimalMatches] = useState<AnimalMatch[]>([]);
   const [aiResults, setAiResults] = useState<AiResult[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const aiDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -48,7 +46,9 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
       .then((data: { dogs?: AnimalRecord[]; cats?: AnimalRecord[] }) => {
         const dogs = (data.dogs ?? []).map((d: AnimalRecord) => ({ ...d, type: "dog" }));
         const cats = (data.cats ?? []).map((c: AnimalRecord) => ({ ...c, type: "cat" }));
-        setAllAnimals([...dogs, ...cats]);
+        const list = [...dogs, ...cats];
+        setAllAnimals(list);
+        console.log("[SiteSearch] animals loaded:", list.length);
       })
       .catch(() => {});
   }, []);
@@ -91,27 +91,29 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
       }
       setAiLoading(true);
       try {
+        const animalsPayload = allAnimals.slice(0, 80).map((a) => ({
+          id: `${a.type}-${a.id}`,
+          name: a.name ?? "",
+          story: a.story ?? "",
+        }));
+        console.log("[SiteSearch] searching animals:", animalsPayload.length, "query:", q);
         const siteResPromise = fetch("/api/site-search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             query: q,
             locale,
-            turnstileToken: turnstileToken?.trim() || "",
+            turnstileToken: "",
           }),
         });
         const animalResPromise = fetch("/api/animal-search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            animals: allAnimals.slice(0, 80).map((a) => ({
-              id: `${a.type}-${a.id}`,
-              name: a.name ?? "",
-              story: a.story ?? "",
-            })),
+            animals: animalsPayload,
             query: q,
             locale,
-            turnstileToken: turnstileToken?.trim() || "",
+            turnstileToken: "",
           }),
         });
         const [siteRes, animalRes] = await Promise.all([siteResPromise, animalResPromise]);
@@ -132,7 +134,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         setAiLoading(false);
       }
     },
-    [locale, turnstileToken, allAnimals]
+    [locale, allAnimals]
   );
 
   useEffect(() => {
@@ -235,18 +237,6 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         <span className="text-[11px] text-stone-400 dark:text-stone-500">ESC</span>
       </div>
       <div className="overflow-y-auto max-h-[60vh]">
-        <div
-          style={{
-            position: "absolute",
-            opacity: 0,
-            pointerEvents: "none",
-            width: "1px",
-            height: "1px",
-            overflow: "hidden",
-          }}
-        >
-          <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
-        </div>
         {!query.trim() ? (
           <div className="px-4 py-4 flex flex-wrap gap-2">
             {QUICK_QUERIES.map((q) => (
