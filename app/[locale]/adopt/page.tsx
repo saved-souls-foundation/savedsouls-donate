@@ -176,36 +176,38 @@ export default function AdoptPage() {
     });
   }, [animals, type, gender, size]);
 
-  function aiSearch() {
-    console.log("[adopt] aiSearch called, animals:", allAnimalsRef.current.length, "query:", aiQuery);
+  async function aiSearch() {
     const q = aiQuery.trim();
     if (!q) {
       setAiMatches([]);
       return;
     }
     setAiLoading(true);
-    const slice = allAnimalsRef.current.slice(0, 150).map((a) => ({
-      id: `${a.type}-${a.id}`,
-      name: a.name,
-      story: a.story ?? "",
-    }));
-    fetch("/api/animal-search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        animals: slice,
-        query: q,
-        locale,
-        turnstileToken,
-      }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        console.log("[adopt] AI response:", data);
-        setAiMatches(data.matches ?? []);
-      })
-      .catch(() => setAiMatches([]))
-      .finally(() => setAiLoading(false));
+    try {
+      const payload = allAnimalsRef.current
+        .slice(0, 150)
+        .map((a) => ({
+          id: `${a.type}-${a.id}`,
+          name: a.name ?? "",
+          story: a.story ?? "",
+        }));
+      const res = await fetch("/api/animal-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          animals: payload,
+          query: q,
+          locale,
+          turnstileToken: "",
+        }),
+      });
+      const data = await res.json();
+      setAiMatches(data.matches ?? []);
+    } catch {
+      setAiMatches([]);
+    } finally {
+      setAiLoading(false);
+    }
   }
 
   const totalPages = Math.ceil(filteredAnimals.length / PER_PAGE) || 1;

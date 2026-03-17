@@ -18,16 +18,9 @@ export async function POST(req: Request) {
     const b = await req.json().catch(() => ({}));
     const { animals = [], query = "", locale = "", turnstileToken } = b;
 
-    console.log("[animal-search] token:", turnstileToken ? "present" : "empty", "skip:", !turnstileToken?.trim());
-
     const q = typeof query === "string" ? query.trim() : "";
     if (!q || q.length > MAX_QUERY_LENGTH) {
       return NextResponse.json({ error: "Invalid query" }, { status: 400 });
-    }
-
-    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-    if (process.env.NODE_ENV !== "test") {
-      console.log("[animal-search] query length=%d ip=%s", q.length, ip);
     }
 
     const skipTurnstile = !turnstileToken?.trim();
@@ -50,7 +43,6 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return NextResponse.json({ matches: [] });
     }
-    console.log("[animal-search] called, query:", q, "animals:", list.length, "apiKey:", !!apiKey);
 
     const animalsText = list
       .map((a: AnimalInput) => {
