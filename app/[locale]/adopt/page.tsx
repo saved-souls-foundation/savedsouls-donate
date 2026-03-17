@@ -1,12 +1,13 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
 import SiteHeader from "../../components/SiteHeader";
 import DashboardLoginBanner from "../../components/DashboardLoginBanner";
+import TurnstileWidget from "../../components/TurnstileWidget";
 import { getISOWeekNumber, getSpotlightDogIndex, getSpotlightCatIndex } from "@/lib/spotlight";
 import { showSponsor } from "@/lib/features";
 
@@ -27,17 +28,19 @@ interface Animal {
   size: Size;
   image: string;
   images?: string[];
+  story?: string;
 }
 
 const SIZE_LABELS: Record<Size, string> = { small: "Small", medium: "Medium", large: "Large" };
 
 const FALLBACK_IMAGE = "/animals/dog-328.jpg";
 
-function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) {
+function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: string; reason?: string }) {
   const href = animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`;
 
   return (
-    <Link href={href} className="group block">
+    <div>
+      <Link href={href} className="group block">
       <article className="relative overflow-hidden rounded-2xl bg-white dark:bg-stone-900 shadow-lg border border-stone-200 dark:border-stone-700 transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-2 hover:border-[#2aa348]/40">
         <div className="relative aspect-[3/4] overflow-hidden">
           <img
@@ -77,14 +80,27 @@ function AnimalCard({ animal, imageSrc }: { animal: Animal; imageSrc: string }) 
         </div>
       </article>
     </Link>
+      {reason && <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{reason}</p>}
+    </div>
   );
 }
 
 const PER_PAGE = 24;
 
+const AI_PLACEHOLDER: Record<string, string> = {
+  nl: "Beschrijf je ideale match...",
+  en: "Describe your ideal match...",
+  de: "Beschreibe deinen idealen Match...",
+  ru: "Опишите идеального питомца...",
+  es: "Describe tu compañero ideal...",
+  th: "อธิบายสัตว์เลี้ยงในอุดมคติ...",
+  fr: "Décrivez votre compagnon idéal...",
+};
+
 export default function AdoptPage() {
   const t = useTranslations("adoptPage");
   const tHome = useTranslations("home");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type");
   const initialType = typeParam === "dog" || typeParam === "cat" ? typeParam : "all";
@@ -94,6 +110,10 @@ export default function AdoptPage() {
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiMatches, setAiMatches] = useState<{ id: string; reason: string }[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   useEffect(() => {
     if (typeParam === "dog" || typeParam === "cat") {
@@ -116,6 +136,7 @@ export default function AdoptPage() {
           size: (d.size as Size) || "medium",
           image: String(d.image || ""),
           images: Array.isArray(d.images) ? (d.images as string[]) : (d.image ? [String(d.image)] : []),
+          story: d.story ? String(d.story) : undefined,
         }));
         const cats: Animal[] = (data.cats || []).map((c: Record<string, unknown>) => ({
           id: String(c.id),
@@ -127,6 +148,7 @@ export default function AdoptPage() {
           size: (c.size as Size) || "medium",
           image: String(c.image || ""),
           images: Array.isArray(c.images) ? (c.images as string[]) : (c.image ? [String(c.image)] : []),
+          story: c.story ? String(c.story) : undefined,
         }));
         setAnimals([...dogs, ...cats]);
         setLoading(false);
@@ -149,11 +171,65 @@ export default function AdoptPage() {
     });
   }, [animals, type, gender, size]);
 
+  function aiSearch() {
+    const q = aiQuery.trim();
+    if (!q) {
+      setAiMatches([]);
+      return;
+    }
+    setAiLoading(true);
+    const slice = filteredAnimals.slice(0, 80).map((a) => ({
+      id: `${a.type}-${a.id}`,
+      name: a.name,
+      story: a.story ?? "",
+    }));
+    fetch("/api/animal-search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        animals: slice,
+        query: q,
+        locale,
+        turnstileToken,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        setAiMatches(Array.isArray(data.matches) ? data.matches : []);
+      })
+      .catch(() => setAiMatches([]))
+      .finally(() => setAiLoading(false));
+  }
+
   const totalPages = Math.ceil(filteredAnimals.length / PER_PAGE) || 1;
   const paginatedAnimals = useMemo(() => {
     const start = (page - 1) * PER_PAGE;
     return filteredAnimals.slice(start, start + PER_PAGE);
   }, [filteredAnimals, page]);
+
+  const matchReasonByKey = useMemo(() => {
+    const m: Record<string, string> = {};
+    for (const { id, reason } of aiMatches) m[id] = reason;
+    return m;
+  }, [aiMatches]);
+
+  const displayedAnimals = useMemo(() => {
+    if (aiMatches.length === 0) return paginatedAnimals;
+    const order = new Map(aiMatches.map((x, i) => [x.id, i]));
+    const key = (a: Animal) => `${a.type}-${a.id}`;
+    return [...paginatedAnimals].sort((a, b) => {
+      const ia = order.get(key(a)) ?? 1e9;
+      const ib = order.get(key(b)) ?? 1e9;
+      return ia - ib;
+    });
+  }, [paginatedAnimals, aiMatches]);
+
+  const matchIdsOnPage = useMemo(
+    () => new Set(paginatedAnimals.map((a) => `${a.type}-${a.id}`)),
+    [paginatedAnimals]
+  );
+  const hasAnyMatchOnPage =
+    aiMatches.length > 0 && aiMatches.some((m) => matchIdsOnPage.has(m.id));
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
@@ -301,6 +377,33 @@ export default function AdoptPage() {
           </section>
         )}
 
+        {/* AI-zoekfunctie */}
+        <section className="mb-8 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
+          <div className="flex flex-wrap items-end gap-3 mb-3">
+            <input
+              type="text"
+              value={aiQuery}
+              onChange={(e) => setAiQuery(e.target.value)}
+              placeholder={AI_PLACEHOLDER[locale] ?? AI_PLACEHOLDER.en}
+              className="flex-1 min-w-[200px] px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+              aria-label="AI search"
+            />
+            <button
+              type="button"
+              onClick={aiSearch}
+              disabled={aiLoading || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
+              className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: ACCENT_GREEN }}
+            >
+              Search
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <TurnstileWidget size="flexible" onVerify={(token) => setTurnstileToken(token)} />
+            {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">Loading...</span>}
+          </div>
+        </section>
+
         <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
           {(["all", "dog", "cat"] as const).map((t) => (
             <button
@@ -346,14 +449,26 @@ export default function AdoptPage() {
           <div className="text-center py-12">Loading...</div>
         ) : (
           <>
+            {hasAnyMatchOnPage && (
+              <p className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4" style={{ color: ACCENT_GREEN }}>
+                AI matches
+              </p>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {paginatedAnimals.map((animal) => (
-                <AnimalCard
-                  key={`${animal.type}-${animal.id}`}
-                  animal={animal}
-                  imageSrc={animal.image || FALLBACK_IMAGE}
-                />
-              ))}
+              {displayedAnimals.map((animal) => {
+                const key = `${animal.type}-${animal.id}`;
+                const reason = matchReasonByKey[key];
+                const isMatch = reason !== undefined;
+                return (
+                  <div key={key} className={hasAnyMatchOnPage && !isMatch ? "opacity-40" : ""}>
+                    <AnimalCard
+                      animal={animal}
+                      imageSrc={animal.image || FALLBACK_IMAGE}
+                      reason={reason}
+                    />
+                  </div>
+                );
+              })}
             </div>
             {totalPages > 1 && (
               <div className="flex flex-wrap justify-center gap-2 mt-10">
