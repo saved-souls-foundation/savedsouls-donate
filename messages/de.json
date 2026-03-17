@@ -77,6 +77,7 @@
     "adminForgotPassword": "Passwort vergessen?",
     "adminForgotPasswordHint": "Kontaktieren Sie den Administrator, um Ihr Passwort zurückzusetzen:",
     "disclaimer": "Impressum",
+    "privacyPolicy": "Datenschutzerklärung",
     "thankYou": "Danke",
     "unsubscribedMessage": "Sie wurden abgemeldet",
     "unsubscribeLoading": "Abmeldung läuft…",
@@ -4080,6 +4081,25 @@
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Hund mit Brille liest ein Gesetzbuch"
   },
+  "privacyPolicy": {
+    "metaTitle": "Datenschutzerklärung | Saved Souls Foundation",
+    "metaDescription": "Wie Saved Souls Foundation mit Ihren personenbezogenen Daten umgeht.",
+    "title": "Datenschutzerklärung",
+    "intro": "Saved Souls Foundation — Ban Khok Ngam, Ban Fang, Khon Kaen 40270, Thailand. Eingetragene Non-Profit-Organisation · Reg.-Nr. 1/2560",
+    "dataTitle": "Welche Daten erheben wir?",
+    "dataText": "Über unsere Website erheben wir personenbezogene Daten, die Sie angeben: Name, E-Mail-Adresse und den Inhalt Ihrer Nachricht. Dies erfolgt über das Kontaktformular, das Newsletter-Formular, das Adoptionsanfrage-Formular und das Freiwilligen-Formular.",
+    "purposeTitle": "Wofür verwenden wir Ihre Daten?",
+    "purposeText": "Wir verwenden Ihre Daten ausschließlich für den Zweck, für den Sie sie hinterlassen haben: um Ihre Nachricht zu beantworten, Ihnen den Newsletter zu senden, Ihre Adoptionsanfrage zu bearbeiten oder Ihre Freiwilligenanmeldung zu verfolgen. Wir verkaufen Ihre Daten niemals an Dritte.",
+    "retentionTitle": "Wie lange speichern wir Ihre Daten?",
+    "retentionText": "Kontaktnachrichten bewahren wir maximal 2 Jahre auf. Newsletter-Anmeldungen bewahren wir auf, bis Sie sich abmelden. Sie können sich jederzeit über den Link in jedem Newsletter abmelden.",
+    "toolsTitle": "Welche Tools verwenden wir?",
+    "toolsText": "Wir nutzen Supabase (Datenbank), Resend (E-Mail), Google Analytics (Website-Statistiken) und Cloudflare (Sicherheit). Diese Auftragsverarbeiter sind an strenge Vereinbarungen gebunden.",
+    "rightsTitle": "Ihre Rechte",
+    "rightsText": "Sie haben das Recht, Auskunft, Berichtigung oder Löschung Ihrer Daten zu verlangen. Senden Sie dazu eine E-Mail an info@savedsouls-foundation.org. Wir antworten innerhalb von 4 Wochen.",
+    "contactTitle": "Kontakt",
+    "contactText": "Fragen zu dieser Datenschutzerklärung: info@savedsouls-foundation.org",
+    "backToHome": "← Zurück zur Startseite"
+  },
   "links": {
     "metaTitle": "Nützliche Links – Tierschutz & Zoofachhandel | Saved Souls Foundation",
     "metaDescription": "Überblick über Tierschutzorganisationen in den Niederlanden und Thailand, Tierfutter und Zoofachhandel.",
@@ -4115,7 +4135,10 @@
     "alreadySubscribed": "Diese E-Mail-Adresse ist bereits angemeldet.",
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "errorMessage": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
-    "privacy": "Wir respektieren deine Privatsphäre. Kein Spam, nur Neuigkeiten von SavedSouls Foundation."
+    "privacy": "Wir respektieren deine Privatsphäre. Kein Spam, nur Neuigkeiten von SavedSouls Foundation.",
+    "consentBeforeLink": "Ich stimme der Verarbeitung meiner E-Mail-Adresse für den Newsletter-Empfang zu. ",
+    "privacyLinkText": "Datenschutzerklärung lesen.",
+    "validationConsent": "Bitte stimmen Sie der Verarbeitung zu."
   },
   "newsletterHero": {
     "heroAccent": "350 Hunde.",

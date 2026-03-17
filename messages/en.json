@@ -77,6 +77,7 @@
     "adminForgotPassword": "Forgot password?",
     "adminForgotPasswordHint": "Contact the administrator to reset your password:",
     "disclaimer": "Disclaimer",
+    "privacyPolicy": "Privacy Policy",
     "thankYou": "Thank you",
     "unsubscribedMessage": "You have been unsubscribed",
     "unsubscribeLoading": "Unsubscribing…",
@@ -4787,6 +4788,25 @@
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Dog with glasses reading a law book"
   },
+  "privacyPolicy": {
+    "metaTitle": "Privacy Policy | Saved Souls Foundation",
+    "metaDescription": "How Saved Souls Foundation handles your personal data.",
+    "title": "Privacy Policy",
+    "intro": "Saved Souls Foundation — Ban Khok Ngam, Ban Fang, Khon Kaen 40270, Thailand. Registered non-profit organisation · Registration no. 1/2560",
+    "dataTitle": "What data do we collect?",
+    "dataText": "Via our website we collect personal data that you provide: name, email address and the content of your message. This happens through the contact form, newsletter form, adoption enquiry form and volunteer form.",
+    "purposeTitle": "What do we use your data for?",
+    "purposeText": "We use your data only for the purpose for which you left it: to respond to your message, send you the newsletter, process your adoption enquiry or follow up your volunteer registration. We never sell your data to third parties.",
+    "retentionTitle": "How long do we keep your data?",
+    "retentionText": "We keep contact messages for up to 2 years. Newsletter subscriptions are kept until you unsubscribe. You can unsubscribe at any time via the link in each newsletter.",
+    "toolsTitle": "What tools do we use?",
+    "toolsText": "We use Supabase (database), Resend (email), Google Analytics (website statistics) and Cloudflare (security). These parties process data on our behalf and are bound by strict processor agreements.",
+    "rightsTitle": "Your rights",
+    "rightsText": "You have the right to request access to, correction or deletion of your data. Email info@savedsouls-foundation.org for this. We will respond within 4 weeks.",
+    "contactTitle": "Contact",
+    "contactText": "For questions about this privacy policy: info@savedsouls-foundation.org",
+    "backToHome": "← Back to home"
+  },
   "newsletter": {
     "title": "Stay Updated",
     "eyebrow": "Stay connected",
@@ -4803,7 +4823,10 @@
     "alreadySubscribed": "This email address is already subscribed.",
     "validationEmail": "Please enter a valid email address.",
     "errorMessage": "Something went wrong. Please try again.",
-    "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation."
+    "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation.",
+    "consentBeforeLink": "I agree to the processing of my email address for receiving newsletters. ",
+    "privacyLinkText": "Read our privacy policy.",
+    "validationConsent": "Please agree to the privacy terms."
   },
   "newsletterHero": {
     "heroAccent": "350 dogs.",

@@ -117,6 +117,7 @@ export default function FooterContent() {
               <li key="blog"><a href={`${base}/blog`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("blog")}</span></a></li>
               <li key="faq"><a href={`${base}/faq`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("faq")}</span></a></li>
               <li key="disclaimer"><a href={`${base}/disclaimer`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("disclaimer")}</span></a></li>
+              <li key="privacy-policy"><a href={`${base}/privacy-policy`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("privacyPolicy")}</span></a></li>
             </ul>
           </div>
           <div>

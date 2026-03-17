@@ -77,6 +77,7 @@
     "adminForgotPassword": "Mot de passe oublié ?",
     "adminForgotPasswordHint": "Contact the administrator to reset your password:",
     "disclaimer": "Disclaimer",
+    "privacyPolicy": "Confidentialité",
     "thankYou": "Thank you",
     "unsubscribedMessage": "Vous êtes désinscrit",
     "unsubscribeLoading": "Désinscription en cours…",
@@ -4422,6 +4423,25 @@
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Chien avec des lunettes lisant un livre de droit"
   },
+  "privacyPolicy": {
+    "metaTitle": "Confidentialité | Saved Souls Foundation",
+    "metaDescription": "Comment Saved Souls Foundation traite vos données personnelles.",
+    "title": "Politique de confidentialité",
+    "intro": "Saved Souls Foundation — Ban Khok Ngam, Ban Fang, Khon Kaen 40270, Thaïlande. Organisation à but non lucratif enregistrée · N° d'enregistrement 1/2560",
+    "dataTitle": "Quelles données collectons-nous ?",
+    "dataText": "Via notre site nous collectons les données personnelles que vous renseignez : nom, adresse e-mail et contenu de votre message. Cela se fait via le formulaire de contact, le formulaire newsletter, le formulaire de demande d'adoption et le formulaire volontaires.",
+    "purposeTitle": "À quoi servent vos données ?",
+    "purposeText": "Nous utilisons vos données uniquement pour la finalité pour laquelle vous les avez laissées : répondre à votre message, vous envoyer la newsletter, traiter votre demande d'adoption ou suivre votre inscription volontaire. Nous ne vendons jamais vos données à des tiers.",
+    "retentionTitle": "Combien de temps conservons-nous vos données ?",
+    "retentionText": "Les messages de contact sont conservés au maximum 2 ans. Les inscriptions à la newsletter sont conservées jusqu'à votre désinscription. Vous pouvez vous désinscrire à tout moment via le lien dans chaque newsletter.",
+    "toolsTitle": "Quels outils utilisons-nous ?",
+    "toolsText": "Nous utilisons Supabase (base de données), Resend (e-mail), Google Analytics (statistiques du site) et Cloudflare (sécurité). Ces prestataires traitent les données pour notre compte et sont liés par des accords stricts.",
+    "rightsTitle": "Vos droits",
+    "rightsText": "Vous avez le droit de demander l'accès, la rectification ou la suppression de vos données. Envoyez un e-mail à info@savedsouls-foundation.org. Nous répondrons sous 4 semaines.",
+    "contactTitle": "Contact",
+    "contactText": "Pour toute question sur cette politique de confidentialité : info@savedsouls-foundation.org",
+    "backToHome": "← Retour à l'accueil"
+  },
   "newsletter": {
     "title": "Restez informé",
     "eyebrow": "Restez connecté",
@@ -4438,7 +4458,10 @@
     "alreadySubscribed": "Cette adresse e-mail est déjà inscrite.",
     "validationEmail": "Veuillez entrer une adresse e-mail valide.",
     "errorMessage": "Quelque chose s'est mal passé. Veuillez réessayer.",
-    "privacy": "Nous respectons votre vie privée. Pas de spam, uniquement des nouvelles de SavedSouls Foundation."
+    "privacy": "Nous respectons votre vie privée. Pas de spam, uniquement des nouvelles de SavedSouls Foundation.",
+    "consentBeforeLink": "J'accepte le traitement de mon adresse e-mail pour recevoir des newsletters. ",
+    "privacyLinkText": "Lire la politique de confidentialité.",
+    "validationConsent": "Veuillez accepter la politique de confidentialité."
   },
   "newsletterHero": {
     "heroAccent": "350 chiens.",

@@ -19,6 +19,7 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
   const tCommon = useTranslations("common");
   const locale = useLocale();
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [voornaam, setVoornaam] = useState("");
   const [type, setType] = useState<"persoon" | "bedrijf">("persoon");
   const [bedrijfsnaam, setBedrijfsnaam] = useState("");
@@ -28,6 +29,11 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) {
+      setErrorMessage(t("validationConsent"));
+      setStatus("error");
+      return;
+    }
     const trimmedEmail = email.trim().toLowerCase();
     // Validatie vóór fetch: bij leeg of ongeldig e-mailadres wordt géén API-request gedaan.
     if (!trimmedEmail) {
@@ -175,6 +181,23 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
             />
           </div>
 
+          <label className="flex items-start gap-2.5 text-sm text-stone-600 dark:text-stone-400 cursor-pointer">
+            <input
+              type="checkbox"
+              id="newsletter-consent"
+              required
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-stone-300 dark:border-stone-600 text-[#2aa348] focus:ring-[#2aa348]"
+            />
+            <span>
+              {t("consentBeforeLink")}
+              <Link href="/privacy-policy" className="underline hover:opacity-80" style={{ color: ACCENT_GREEN }}>
+                {t("privacyLinkText")}
+              </Link>
+            </span>
+          </label>
+
           {isExpanded && (
             <>
               <div>
@@ -218,7 +241,7 @@ export default function NewsletterSignup({ variant = "compact" }: Props) {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !consent}
             className="w-full py-3 px-4 rounded-lg font-semibold text-white transition-opacity disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             style={{ backgroundColor: ACCENT_GREEN }}
           >

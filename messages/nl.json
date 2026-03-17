@@ -77,6 +77,7 @@
     "adminForgotPassword": "Wachtwoord vergeten?",
     "adminForgotPasswordHint": "Neem contact op met de beheerder om je wachtwoord te herstellen:",
     "disclaimer": "Disclaimer",
+    "privacyPolicy": "Privacyverklaring",
     "thankYou": "Dank jullie wel",
     "unsubscribedMessage": "Je bent uitgeschreven",
     "unsubscribeLoading": "Bezig met uitschrijven…",
@@ -4788,6 +4789,25 @@
     "contactEmail": "info@savedsouls-foundation.org",
     "dogImageAlt": "Hond met bril die een wetboek leest"
   },
+  "privacyPolicy": {
+    "metaTitle": "Privacyverklaring | Saved Souls Foundation",
+    "metaDescription": "Hoe Saved Souls Foundation omgaat met je persoonsgegevens.",
+    "title": "Privacyverklaring",
+    "intro": "Saved Souls Foundation — Ban Khok Ngam, Ban Fang, Khon Kaen 40270, Thailand. Geregistreerde non-profitorganisatie · Registratienummer 1/2560",
+    "dataTitle": "Welke gegevens verzamelen wij?",
+    "dataText": "Via onze website verzamelen wij persoonsgegevens die je zelf invult: naam, e-mailadres en de inhoud van je bericht. Dit gebeurt via het contactformulier, het nieuwsbriefformulier, het adoptie-aanvraagformulier en het vrijwilligersformulier.",
+    "purposeTitle": "Waarvoor gebruiken wij je gegevens?",
+    "purposeText": "Wij gebruiken je gegevens uitsluitend voor het doel waarvoor je ze hebt achtergelaten: om je bericht te beantwoorden, je nieuwsbrief te sturen, je adoptieaanvraag te verwerken of je vrijwilligersaanmelding op te volgen. Wij verkopen je gegevens nooit aan derden.",
+    "retentionTitle": "Hoe lang bewaren wij je gegevens?",
+    "retentionText": "Contactberichten bewaren wij maximaal 2 jaar. Nieuwsbriefinschrijvingen bewaren wij totdat je je afmeldt. Je kunt je op elk moment afmelden via de link in elke nieuwsbrief.",
+    "toolsTitle": "Welke tools gebruiken wij?",
+    "toolsText": "Wij maken gebruik van Supabase (database), Resend (e-mail), Google Analytics (websitestatistieken) en Cloudflare (beveiliging). Deze partijen verwerken gegevens namens ons en zijn gebonden aan strikte verwerkersovereenkomsten.",
+    "rightsTitle": "Jouw rechten",
+    "rightsText": "Je hebt het recht om je gegevens op te vragen, te laten corrigeren of te laten verwijderen. Stuur hiervoor een e-mail naar info@savedsouls-foundation.org. Wij reageren binnen 4 weken.",
+    "contactTitle": "Contact",
+    "contactText": "Voor vragen over deze privacyverklaring: info@savedsouls-foundation.org",
+    "backToHome": "← Terug naar home"
+  },
   "newsletter": {
     "title": "Blijf op de hoogte",
     "eyebrow": "Blijf verbonden",
@@ -4804,7 +4824,10 @@
     "alreadySubscribed": "Dit e-mailadres is al aangemeld.",
     "validationEmail": "Vul een geldig e-mailadres in.",
     "errorMessage": "Er ging iets mis. Probeer het opnieuw.",
-    "privacy": "We respecteren je privacy. Geen spam, alleen nieuws over SavedSouls Foundation."
+    "privacy": "We respecteren je privacy. Geen spam, alleen nieuws over SavedSouls Foundation.",
+    "consentBeforeLink": "Ik ga akkoord met de verwerking van mijn e-mailadres voor het ontvangen van nieuwsbrieven. ",
+    "privacyLinkText": "Lees onze privacyverklaring.",
+    "validationConsent": "Vink de toestemming aan."
   },
   "newsletterHero": {
     "heroAccent": "350 honden.",
