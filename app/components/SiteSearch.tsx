@@ -97,7 +97,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
           body: JSON.stringify({
             query: q,
             locale,
-            turnstileToken: turnstileToken ?? undefined,
+            turnstileToken: turnstileToken?.trim() || "",
           }),
         });
         const animalResPromise = fetch("/api/animal-search", {
@@ -111,7 +111,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
             })),
             query: q,
             locale,
-            turnstileToken: turnstileToken ?? undefined,
+            turnstileToken: turnstileToken?.trim() || "",
           }),
         });
         const [siteRes, animalRes] = await Promise.all([siteResPromise, animalResPromise]);
@@ -235,7 +235,18 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         <span className="text-[11px] text-stone-400 dark:text-stone-500">ESC</span>
       </div>
       <div className="overflow-y-auto max-h-[60vh]">
-        <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+        <div
+          style={{
+            position: "absolute",
+            opacity: 0,
+            pointerEvents: "none",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+          }}
+        >
+          <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+        </div>
         {!query.trim() ? (
           <div className="px-4 py-4 flex flex-wrap gap-2">
             {QUICK_QUERIES.map((q) => (
