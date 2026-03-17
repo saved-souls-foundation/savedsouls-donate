@@ -39,6 +39,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const aiDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const allAnimalsRef = useRef<AnimalRecord[]>([]);
 
   useEffect(() => {
     fetch("/api/animals")
@@ -48,6 +49,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         const cats = (data.cats ?? []).map((c: AnimalRecord) => ({ ...c, type: "cat" }));
         const list = [...dogs, ...cats];
         setAllAnimals(list);
+        allAnimalsRef.current = list;
         console.log("[SiteSearch] animals loaded:", list.length);
       })
       .catch(() => {});
@@ -91,7 +93,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
       }
       setAiLoading(true);
       try {
-        const animalsPayload = allAnimals.slice(0, 80).map((a) => ({
+        const animalsPayload = allAnimalsRef.current.slice(0, 80).map((a) => ({
           id: `${a.type}-${a.id}`,
           name: a.name ?? "",
           story: a.story ?? "",
@@ -134,7 +136,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         setAiLoading(false);
       }
     },
-    [locale, allAnimals]
+    [locale]
   );
 
   useEffect(() => {
@@ -399,6 +401,20 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
     </>
   );
 
+  const sparkleStyle = (
+    <style dangerouslySetInnerHTML={{ __html: `
+  @keyframes sparkle-pulse {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    25% { opacity: 0.8; transform: scale(1.2) rotate(15deg); }
+    75% { opacity: 0.9; transform: scale(1.1) rotate(-10deg); }
+  }
+  .sparkle-animate {
+    display: inline-block;
+    animation: sparkle-pulse 3s ease-in-out infinite;
+  }
+` }} />
+  );
+
   const renderPillButton = (mobile: boolean) => {
     const isOverlayStyle = overlay;
     const style = isOverlayStyle ? pillOverlayStyle : pillLightStyle;
@@ -422,7 +438,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         style={style}
         aria-label={t("siteSearchPlaceholder")}
       >
-        <span style={{ color: sparkleColor, fontSize: "14px" }}>✦</span>
+        <span className="sparkle-animate" style={{ color: sparkleColor, fontSize: "14px" }}>✦</span>
         {!mobile && (
           <span>{locale === "nl" ? "Zoek..." : "Search..."}</span>
         )}
@@ -431,20 +447,54 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   };
 
   if (mobileIcon) {
+    const openSearch = (e?: React.MouseEvent | React.TouchEvent) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      setMobileOverlayOpen(true);
+    };
+    const mobilePillStyle = overlay
+      ? { display: "flex" as const, alignItems: "center" as const, gap: "4px", padding: "6px 10px", borderRadius: "20px", border: "1px solid rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.8)", fontSize: "13px", cursor: "pointer" as const }
+      : { display: "flex" as const, alignItems: "center" as const, gap: "4px", padding: "6px 10px", borderRadius: "20px", border: "1px solid var(--color-border-secondary)", background: "var(--color-background-secondary)", color: "var(--color-text-secondary)", fontSize: "13px", cursor: "pointer" as const };
+    const mobileSparkleColor = overlay ? "#7ccd8a" : "#2aa348";
     return (
       <>
+        {sparkleStyle}
         <div className="relative shrink-0 flex items-center" style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}>
-          {renderPillButton(true)}
+          <button
+            type="button"
+            onClick={openSearch}
+            style={mobilePillStyle}
+            aria-label={t("siteSearchPlaceholder")}
+          >
+            <span className="sparkle-animate" style={{ color: mobileSparkleColor, fontSize: "13px" }}>✦</span>
+            <span>{locale === "nl" ? "Zoek..." : "Search..."}</span>
+          </button>
         </div>
         {mobileOverlayOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]"
-            style={{ background: "rgba(0,0,0,0.35)" }}
+            className="fixed z-50 flex items-start justify-center overflow-y-auto"
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 50,
+              background: "rgba(0,0,0,0.5)",
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              padding: "16px",
+              paddingTop: "10vh",
+              overflowY: "auto",
+              WebkitOverflowScrolling: "touch",
+            }}
             onClick={closeOverlay}
+            onTouchEnd={(e) => {
+              if (e.target === e.currentTarget) closeOverlay();
+            }}
           >
             <div
               ref={containerRef}
-              className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-700 overflow-hidden w-[calc(100%-32px)] max-w-[560px]"
+              className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 overflow-hidden rounded-2xl"
+              style={{ width: "100%", maxWidth: 560, borderRadius: 16 }}
               onClick={(e) => e.stopPropagation()}
             >
               {renderModalContent()}
@@ -458,12 +508,16 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
   if (desktopIconOnly) {
     return (
       <div className="relative shrink-0 flex items-center">
+        {sparkleStyle}
         {renderPillButton(false)}
         {mobileOverlayOpen && (
           <div
             className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]"
             style={{ background: "rgba(0,0,0,0.35)" }}
             onClick={closeOverlay}
+            onTouchEnd={(e) => {
+              if (e.target === e.currentTarget) closeOverlay();
+            }}
           >
             <div
               ref={containerRef}
