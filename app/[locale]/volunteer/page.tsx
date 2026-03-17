@@ -139,6 +139,32 @@ export default async function VolunteerPage() {
             </div>
           </div>
 
+          {/* Noodhulp CTA */}
+          <Link
+            href="/emergency"
+            className="flex items-center gap-3 rounded-2xl border border-red-800/40 px-4 py-3.5 shadow-lg transition-all hover:opacity-95 active:opacity-90 mb-6 w-full text-left"
+            style={{ backgroundColor: "#7B1010" }}
+          >
+            <span className="w-2 h-2 rounded-full bg-white/90 shrink-0 animate-pulse" aria-hidden />
+            <svg width="36" height="14" viewBox="0 0 36 14" className="shrink-0" aria-hidden style={{ overflow: "visible" }}>
+              <polyline
+                points="0,7 4,7 6,2 8,12 10,2 12,7 16,7 20,7 22,2 24,12 26,2 28,7 36,7"
+                fill="none"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="60"
+                strokeDashoffset="0"
+                style={{ animation: "ecg-scroll 1.8s linear infinite" }}
+              />
+            </svg>
+            <div className="flex-1 min-w-0">
+              <span className="font-semibold text-white block text-lg">{tCommon("menuEmergency")}</span>
+              <span className="text-sm text-white/80 block">{t("emergencyCtaSubtitle")}</span>
+            </div>
+          </Link>
+
           {/* PDF: Intro & Thank you */}
           <div className="rounded-2xl p-6 md:p-8 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-lg">
             <div className="flex gap-2 mb-4">
