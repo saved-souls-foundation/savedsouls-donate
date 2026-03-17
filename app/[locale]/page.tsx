@@ -300,7 +300,18 @@ export default function DonatePage() {
             </button>
           </div>
           <div className="flex justify-center mb-4">
-            <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+            <div
+              style={{
+                position: "absolute",
+                opacity: 0,
+                pointerEvents: "none",
+                width: "1px",
+                height: "1px",
+                overflow: "hidden",
+              }}
+            >
+              <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+            </div>
           </div>
           {aiLoading && (
             <p className="text-center text-sm text-stone-500 dark:text-stone-400 mb-4">Loading...</p>

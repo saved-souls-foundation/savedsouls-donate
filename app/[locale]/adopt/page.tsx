@@ -393,7 +393,7 @@ export default function AdoptPage() {
             <button
               type="button"
               onClick={aiSearch}
-              disabled={aiLoading || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
+              disabled={aiLoading}
               className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: ACCENT_GREEN }}
             >
@@ -401,7 +401,18 @@ export default function AdoptPage() {
             </button>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <TurnstileWidget size="flexible" onVerify={(token) => setTurnstileToken(token)} />
+            <div
+              style={{
+                position: "absolute",
+                opacity: 0,
+                pointerEvents: "none",
+                width: "1px",
+                height: "1px",
+                overflow: "hidden",
+              }}
+            >
+              <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+            </div>
             {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">Loading...</span>}
           </div>
         </section>
