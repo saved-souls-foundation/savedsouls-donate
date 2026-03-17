@@ -39,8 +39,7 @@ function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: st
   const href = animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`;
 
   return (
-    <div>
-      <Link href={href} className="group block">
+    <Link href={href} className="group block">
       <article className="relative overflow-hidden rounded-2xl bg-white dark:bg-stone-900 shadow-lg border border-stone-200 dark:border-stone-700 transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-2 hover:border-[#2aa348]/40">
         <div className="relative aspect-[3/4] overflow-hidden">
           <img
@@ -68,6 +67,11 @@ function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: st
               View More →
             </span>
           </div>
+          {reason && (
+            <div className="absolute bottom-0 left-0 max-w-[85%] bg-emerald-900/80 text-white text-xs px-3 py-1.5 rounded-br-xl rounded-tl-none line-clamp-2 overflow-hidden">
+              {reason}
+            </div>
+          )}
         </div>
         <div className="p-4 md:p-5">
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: ACCENT_GREEN }}>
@@ -80,8 +84,6 @@ function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: st
         </div>
       </article>
     </Link>
-      {reason && <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">{reason}</p>}
-    </div>
   );
 }
 
@@ -178,7 +180,7 @@ export default function AdoptPage() {
       return;
     }
     setAiLoading(true);
-    const slice = filteredAnimals.slice(0, 80).map((a) => ({
+    const slice = filteredAnimals.slice(0, 150).map((a) => ({
       id: `${a.type}-${a.id}`,
       name: a.name,
       story: a.story ?? "",

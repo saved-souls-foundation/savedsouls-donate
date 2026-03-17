@@ -100,7 +100,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
   const getInvolvedItems: NavDropdownItem[] = useMemo(() => {
     const all: NavDropdownItem[] = [
       { href: "/get-involved", label: t("getInvolved"), description: tNav("getInvolvedDesc"), icon: Home },
-      { href: "/#sponsor", label: t("sponsor"), description: tNav("sponsorDesc"), icon: Heart },
+      { href: "/sponsor", label: t("sponsor"), description: tNav("sponsorDesc"), icon: Heart },
       { href: "/volunteer", label: t("volunteer"), description: tNav("volunteerDesc"), icon: Sun },
       { href: "/influencers", label: t("influencers"), description: tNav("influencerDesc"), icon: Megaphone, highlight: true },
       { href: "/gidsen", label: t("menuGidsenLabel"), description: tNav("guidesDesc"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
@@ -109,7 +109,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
       { href: "/thank-you", label: t("thankYou"), description: tNav("thankYouDesc"), icon: Star },
     ];
     const withoutKids = all.filter((i) => i.href !== "/kids");
-    return showSponsor ? withoutKids : withoutKids.filter((i) => i.href !== "/#sponsor");
+    return showSponsor ? withoutKids : withoutKids.filter((i) => i.href !== "/sponsor");
   }, [showSponsor, t, tNav]);
 
   const navLinkClass = (path: string, mobile = false) => {
@@ -487,23 +487,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <span className="text-xs text-gray-400 mt-1">{t("menuAdoptCatSubtext")}</span>
                 <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>98 katten</span>
               </Link>
-              {showSponsor && (isHomePage ? (
-                <button
-                  type="button"
-                  onClick={handleSponsor}
-                  className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
-                  style={{ backgroundColor: "#fdf0f0" }}
-                >
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-red-50 to-rose-100 shrink-0">
-                    <Heart size={26} color="#e11d48" aria-hidden />
-                  </div>
-                  <span className="font-semibold text-sm text-gray-800">{t("sponsor")}</span>
-                  <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
-                  <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>Vanaf €10/mnd</span>
-                </button>
-              ) : (
+              {showSponsor && (
                 <Link
-                  href="/#sponsor"
+                  href="/sponsor"
                   onClick={closeMobileMenu}
                   className="relative rounded-2xl border border-[#f3f4f6] p-4 flex flex-col items-center gap-2 text-center hover:shadow-md hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
                   style={{ backgroundColor: "#fdf0f0" }}
@@ -515,7 +501,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   <span className="text-xs text-gray-400 mt-1">{t("menuSponsorCardSubtext")}</span>
                   <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>Vanaf €10/mnd</span>
                 </Link>
-              ))}
+              )}
               <Link
                 href="/volunteer"
                 onClick={closeMobileMenu}

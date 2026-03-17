@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         system: `You are an adoption assistant for an animal rescue sanctuary in Khon Kaen, Thailand. Based on the user's description, return the best matching animals as JSON.
 Return ONLY valid JSON, nothing else.
 Format: {"matches": [{"id": "...", "reason": "..."}]}
-Maximum 5 matches. Reason in the same language as the query.`,
+Maximum 8 matches. Reason in the same language as the query.`,
         messages: [{ role: "user", content: userMessage }],
       }),
     });
@@ -83,7 +83,7 @@ Maximum 5 matches. Reason in the same language as the query.`,
     const text = data.content?.find((c) => c.type === "text")?.text ?? "";
     const cleaned = text.replace(/^```json\s*/i, "").replace(/\s*```\s*$/i, "").trim();
     const parsed = JSON.parse(cleaned) as { matches?: MatchItem[] };
-    const matches = Array.isArray(parsed.matches) ? parsed.matches.slice(0, 5) : [];
+    const matches = Array.isArray(parsed.matches) ? parsed.matches.slice(0, 8) : [];
 
     return NextResponse.json({
       matches: matches.filter((m) => m && typeof m.id === "string" && typeof m.reason === "string"),

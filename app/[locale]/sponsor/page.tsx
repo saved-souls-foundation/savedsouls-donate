@@ -1,12 +1,13 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import Footer from "../../components/Footer";
 import ParallaxPage from "../../components/ParallaxPage";
 import DashboardLoginBanner from "../../components/DashboardLoginBanner";
+import TurnstileWidget from "../../components/TurnstileWidget";
 
 const ACCENT_GREEN = "#2aa348";
 const FALLBACK_IMAGE = "/savedsoul-logo.webp";
@@ -30,10 +31,12 @@ function SponsorCard({
   animal,
   imageSrc,
   onSponsor,
+  reason,
 }: {
   animal: SponsorAnimal;
   imageSrc: string;
   onSponsor: string;
+  reason?: string;
 }) {
   const href = animal.type === "dog" ? `/sponsor/dog/${animal.id}` : `/sponsor/cat/${animal.id}`;
 
@@ -66,6 +69,11 @@ function SponsorCard({
               {onSponsor} →
             </span>
           </div>
+          {reason && (
+            <div className="absolute bottom-0 left-0 max-w-[85%] bg-emerald-900/80 text-white text-xs px-3 py-1.5 rounded-br-xl rounded-tl-none line-clamp-2 overflow-hidden">
+              {reason}
+            </div>
+          )}
         </div>
         <div className="p-4 md:p-5">
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: ACCENT_GREEN }}>
@@ -86,8 +94,19 @@ function SponsorCard({
 
 const PER_PAGE = 24;
 
+const AI_PLACEHOLDER: Record<string, string> = {
+  nl: "Beschrijf je ideale match...",
+  en: "Describe your ideal match...",
+  de: "Beschreibe deinen idealen Match...",
+  ru: "Опишите идеального питомца...",
+  es: "Describe tu compañero ideal...",
+  th: "อธิบายสัตว์เลี้ยงในฝัน...",
+  fr: "Décrivez votre compagnon idéal...",
+};
+
 export default function SponsorPage() {
   const t = useTranslations("sponsorPage");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type");
   const initialType = typeParam === "dog" || typeParam === "cat" ? typeParam : "all";
@@ -95,6 +114,10 @@ export default function SponsorPage() {
   const [animals, setAnimals] = useState<SponsorAnimal[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiMatches, setAiMatches] = useState<{ id: string; reason: string }[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   useEffect(() => {
     if (typeParam === "dog" || typeParam === "cat") {
@@ -146,11 +169,66 @@ export default function SponsorPage() {
     return animals.filter((a) => a.type === type);
   }, [animals, type]);
 
+  function aiSearch() {
+    const q = aiQuery.trim();
+    if (!q) {
+      setAiMatches([]);
+      return;
+    }
+    setAiLoading(true);
+    const slice = filteredAnimals.slice(0, 150).map((a) => ({
+      id: `${a.type}-${a.id}`,
+      name: a.name,
+      story: a.story ?? "",
+      character: a.character ?? "",
+    }));
+    fetch("/api/animal-search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        animals: slice,
+        query: q,
+        locale,
+        turnstileToken,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        setAiMatches(Array.isArray(data.matches) ? data.matches : []);
+      })
+      .catch(() => setAiMatches([]))
+      .finally(() => setAiLoading(false));
+  }
+
   const totalPages = Math.ceil(filteredAnimals.length / PER_PAGE) || 1;
   const paginatedAnimals = useMemo(() => {
     const start = (page - 1) * PER_PAGE;
     return filteredAnimals.slice(start, start + PER_PAGE);
   }, [filteredAnimals, page]);
+
+  const matchReasonByKey = useMemo(() => {
+    const m: Record<string, string> = {};
+    for (const { id, reason } of aiMatches) m[id] = reason;
+    return m;
+  }, [aiMatches]);
+
+  const displayedAnimals = useMemo(() => {
+    if (aiMatches.length === 0) return paginatedAnimals;
+    const order = new Map(aiMatches.map((x, i) => [x.id, i]));
+    const key = (a: SponsorAnimal) => `${a.type}-${a.id}`;
+    return [...paginatedAnimals].sort((a, b) => {
+      const ia = order.get(key(a)) ?? 1e9;
+      const ib = order.get(key(b)) ?? 1e9;
+      return ia - ib;
+    });
+  }, [paginatedAnimals, aiMatches]);
+
+  const matchIdsOnPage = useMemo(
+    () => new Set(paginatedAnimals.map((a) => `${a.type}-${a.id}`)),
+    [paginatedAnimals]
+  );
+  const hasAnyMatchOnPage =
+    aiMatches.length > 0 && aiMatches.some((m) => matchIdsOnPage.has(m.id));
 
   return (
     <ParallaxPage>
@@ -178,6 +256,33 @@ export default function SponsorPage() {
             <DashboardLoginBanner />
           </div>
 
+          {/* AI-zoekfunctie */}
+          <section className="mb-8 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
+            <div className="flex flex-wrap items-end gap-3 mb-3">
+              <input
+                type="text"
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                placeholder={AI_PLACEHOLDER[locale] ?? AI_PLACEHOLDER.en}
+                className="flex-1 min-w-[200px] px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+                aria-label="AI search"
+              />
+              <button
+                type="button"
+                onClick={aiSearch}
+                disabled={aiLoading || (!!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken)}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ backgroundColor: ACCENT_GREEN }}
+              >
+                Search
+              </button>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <TurnstileWidget size="flexible" onVerify={(token) => setTurnstileToken(token)} />
+              {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">Loading...</span>}
+            </div>
+          </section>
+
           <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
             {(["all", "dog", "cat"] as const).map((filterType) => (
               <button
@@ -197,15 +302,27 @@ export default function SponsorPage() {
               <div className="text-center py-12">{t("loading")}</div>
             ) : (
               <>
+                {hasAnyMatchOnPage && (
+                  <p className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4" style={{ color: ACCENT_GREEN }}>
+                    AI matches
+                  </p>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {paginatedAnimals.map((animal) => (
-                    <SponsorCard
-                      key={`${animal.type}-${animal.id}`}
-                      animal={animal}
-                      imageSrc={animal.image || FALLBACK_IMAGE}
-                      onSponsor={t("sponsorCta")}
-                    />
-                  ))}
+                  {displayedAnimals.map((animal) => {
+                    const key = `${animal.type}-${animal.id}`;
+                    const reason = matchReasonByKey[key];
+                    const isMatch = reason !== undefined;
+                    return (
+                      <div key={key} className={hasAnyMatchOnPage && !isMatch ? "opacity-40" : ""}>
+                        <SponsorCard
+                          animal={animal}
+                          imageSrc={animal.image || FALLBACK_IMAGE}
+                          onSponsor={t("sponsorCta")}
+                          reason={reason}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
                 {totalPages > 1 && (
                   <div className="flex flex-wrap justify-center gap-2 mt-10">
