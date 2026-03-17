@@ -59,10 +59,9 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
     if (!query.trim()) return [];
     const q = query.toLowerCase().trim();
     const matches = SEARCH_INDEX.filter((entry) => {
-      const title = (entry.title[locale as keyof typeof entry.title] ?? entry.title.en).toLowerCase();
-      const desc = (entry.description[locale as keyof typeof entry.description] ?? entry.description.en).toLowerCase();
-      const pathMatch = entry.path.toLowerCase().includes(q);
-      return title.includes(q) || desc.includes(q) || pathMatch;
+      const label = (entry.title[locale as keyof typeof entry.title] ?? entry.title.en ?? "").toLowerCase();
+      const desc = (entry.description[locale as keyof typeof entry.description] ?? entry.description.en ?? "").toLowerCase();
+      return label.includes(q) || desc.includes(q) || entry.path.toLowerCase().includes(q);
     });
     return matches.slice(0, MAX_RESULTS);
   }, [query, locale]);
@@ -153,9 +152,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
     const q = query.trim();
     aiDebounceRef.current = setTimeout(() => {
       aiDebounceRef.current = null;
-      if (mobileOverlayOpen || desktopIconOnly) {
-        fetchSearchResults(q);
-      }
+      fetchSearchResults(q);
     }, AI_DEBOUNCE_MS);
     return () => {
       if (aiDebounceRef.current) clearTimeout(aiDebounceRef.current);
