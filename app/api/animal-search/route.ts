@@ -70,7 +70,8 @@ export async function POST(req: Request) {
         system: `You are an adoption assistant for an animal rescue sanctuary in Khon Kaen, Thailand. Based on the user's description, return the best matching animals as JSON.
 Return ONLY valid JSON, nothing else.
 Format: {"matches": [{"id": "...", "reason": "..."}]}
-Maximum 8 matches. Reason in the same language as the query.`,
+Maximum 8 matches. Reason in the same language as the query.
+Be generous with matches — if an animal could reasonably fit the description, include it. It is better to show more matches than fewer. Only exclude animals that clearly do not match.`,
         messages: [{ role: "user", content: userMessage }],
       }),
     });

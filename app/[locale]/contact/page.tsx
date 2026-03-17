@@ -181,22 +181,8 @@ export default async function ContactPage({ params }: Props) {
           </div>
         </section>
 
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-          <DonateButton size="md">{t("donate")}</DonateButton>
-          <a
-            href="mailto:info@savedsouls-foundation.org"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: BUTTON_ORANGE }}
-          >
-            {tContact("sendEmail")}
-          </a>
-          <Link
-            href="/#contact"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"
-            style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-          >
-            {tContact("contactFormHomepage")}
-          </Link>
+        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
+          <DonateButton size="md" href="/donate">{t("donate")}</DonateButton>
         </div>
 
         {/* Contact form */}
