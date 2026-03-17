@@ -214,9 +214,9 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
     color: "var(--color-text-secondary, #4b5563)",
   };
 
-  const renderModalContent = () => (
+  const renderModalContent = (isMobile = false) => (
     <>
-      <div className="flex items-center gap-[10px] px-4 py-3.5 border-b border-stone-200 dark:border-stone-700">
+      <div className="flex items-center gap-[10px] px-4 py-3.5 border-b border-stone-200 dark:border-stone-700 shrink-0">
         <span className="text-[16px] text-[#2aa348]" aria-hidden>✦</span>
         <input
           ref={inputRef}
@@ -233,9 +233,20 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
           autoFocus
           className="flex-1 min-w-0 text-[14px] bg-transparent border-none outline-none text-stone-800 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500"
         />
-        <span className="text-[11px] text-stone-400 dark:text-stone-500">ESC</span>
+        {isMobile ? (
+          <button
+            type="button"
+            onClick={closeOverlay}
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-2xl text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 -mr-1"
+            aria-label={t("siteSearchCancel")}
+          >
+            ×
+          </button>
+        ) : (
+          <span className="text-[11px] text-stone-400 dark:text-stone-500">ESC</span>
+        )}
       </div>
-      <div className="overflow-y-auto max-h-[60vh]">
+      <div className={isMobile ? "flex-1 min-h-0 overflow-y-auto" : "overflow-y-auto max-h-[60vh]"}>
         {!query.trim() ? (
           <div className="px-4 py-4 flex flex-wrap gap-2">
             {QUICK_QUERIES.map((q) => (
@@ -384,7 +395,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between px-4 py-2.5 border-t border-stone-200 dark:border-stone-700">
+      <div className="flex items-center justify-between px-4 py-2.5 border-t border-stone-200 dark:border-stone-700 shrink-0">
         <span className="text-[11px] text-stone-500 dark:text-stone-400">
           ↑↓ navigeren · Enter openen · ESC sluiten
         </span>
@@ -469,33 +480,11 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         </div>
         {mobileOverlayOpen && (
           <div
-            className="fixed z-50 flex items-start justify-center overflow-y-auto"
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 50,
-              background: "rgba(0,0,0,0.5)",
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "center",
-              padding: "16px",
-              paddingTop: "10vh",
-              overflowY: "auto",
-              WebkitOverflowScrolling: "touch",
-            }}
-            onClick={closeOverlay}
-            onTouchEnd={(e) => {
-              if (e.target === e.currentTarget) closeOverlay();
-            }}
+            ref={containerRef}
+            className="fixed inset-0 z-50 flex flex-col bg-white dark:bg-stone-900 overflow-hidden"
+            style={{ position: "fixed", inset: 0, zIndex: 50 }}
           >
-            <div
-              ref={containerRef}
-              className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 overflow-hidden rounded-2xl"
-              style={{ width: "100%", maxWidth: 560, borderRadius: 16 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {renderModalContent()}
-            </div>
+            {renderModalContent(true)}
           </div>
         )}
       </>
@@ -509,8 +498,7 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         {renderPillButton(false)}
         {mobileOverlayOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]"
-            style={{ background: "rgba(0,0,0,0.35)" }}
+            className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] bg-black/35"
             onClick={closeOverlay}
             onTouchEnd={(e) => {
               if (e.target === e.currentTarget) closeOverlay();
@@ -518,10 +506,10 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
           >
             <div
               ref={containerRef}
-              className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-700 overflow-hidden w-[calc(100%-32px)] max-w-[560px]"
+              className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-700 overflow-hidden w-[calc(100%-32px)] max-w-[560px] flex flex-col max-h-[85vh]"
               onClick={(e) => e.stopPropagation()}
             >
-              {renderModalContent()}
+              {renderModalContent(false)}
             </div>
           </div>
         )}
