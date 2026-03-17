@@ -50,6 +50,7 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return NextResponse.json({ matches: [] });
     }
+    console.log("[animal-search] called, query:", q, "animals:", list.length, "apiKey:", !!apiKey);
 
     const animalsText = list
       .map((a: AnimalInput) => {

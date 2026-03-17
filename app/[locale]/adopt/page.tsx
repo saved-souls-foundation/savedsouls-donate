@@ -177,6 +177,7 @@ export default function AdoptPage() {
   }, [animals, type, gender, size]);
 
   function aiSearch() {
+    console.log("[adopt] aiSearch called, animals:", allAnimalsRef.current.length, "query:", aiQuery);
     const q = aiQuery.trim();
     if (!q) {
       setAiMatches([]);
@@ -200,7 +201,8 @@ export default function AdoptPage() {
     })
       .then((r) => r.json())
       .then((data) => {
-        setAiMatches(Array.isArray(data.matches) ? data.matches : []);
+        console.log("[adopt] AI response:", data);
+        setAiMatches(data.matches ?? []);
       })
       .catch(() => setAiMatches([]))
       .finally(() => setAiLoading(false));
