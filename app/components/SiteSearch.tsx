@@ -481,8 +481,11 @@ export default function SiteSearch({ mobileIcon = false, desktopIconOnly = false
         {mobileOverlayOpen && (
           <div
             ref={containerRef}
-            className="fixed inset-0 z-50 flex flex-col bg-white dark:bg-stone-900 overflow-hidden"
-            style={{ position: "fixed", inset: 0, zIndex: 50 }}
+            className="fixed inset-0 z-[200] flex flex-col bg-white dark:bg-stone-900 overflow-hidden"
+            style={{
+              paddingTop: "env(safe-area-inset-top, 16px)",
+              paddingBottom: "env(safe-area-inset-bottom, 0px)",
+            }}
           >
             {renderModalContent(true)}
           </div>
