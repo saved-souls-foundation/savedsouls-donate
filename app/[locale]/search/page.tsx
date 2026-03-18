@@ -56,17 +56,17 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
+    <div className="min-h-screen bg-[#f0f7f2] dark:bg-stone-900">
       <SiteHeader />
 
       {/* Subtiele hero */}
-      <div className="relative h-44 overflow-hidden">
+      <div className="relative h-56 overflow-hidden">
         <img
           src="/woman-dog-wheelchair-backup.webp"
           alt=""
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-stone-900/60" />
+        <div className="absolute inset-0 bg-stone-900/40" />
         <div className="absolute inset-0 flex items-end px-4 pb-4 max-w-2xl mx-auto">
           <button
             type="button"
