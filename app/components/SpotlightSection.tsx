@@ -74,7 +74,7 @@ export default function SpotlightSection() {
           {t("spotlightTitle")}
         </h2>
       </div>
-      <div className="grid grid-cols-2 gap-3 md:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
         {data.dog && (
           <SpotlightCard animal={data.dog} />
         )}
@@ -122,7 +122,7 @@ function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to top, rgba(15, 35, 15, 0.95) 0%, rgba(20, 45, 20, 0.7) 45%, transparent 75%)",
+            "linear-gradient(to top, rgba(20, 40, 18, 0.88) 0%, rgba(30, 55, 25, 0.6) 45%, transparent 75%)",
           transition: "opacity 0.4s ease",
         }}
       />
