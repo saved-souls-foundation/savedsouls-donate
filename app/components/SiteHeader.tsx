@@ -152,7 +152,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         }}
       />
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out overflow-visible ${navBg}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 md:gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out overflow-visible ${navBg}`}
       >
         {/* Left: Logo + Saved Souls */}
         <Link
@@ -333,14 +333,14 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </a>
           </div>
           {/* Mobile: search, language, hamburger */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5 shrink-0">
             <SiteSearch mobileIcon overlay={isOverlay} />
             {/* Mobile language switcher – same globe dropdown */}
             <div ref={langRefMobile} className="relative">
               <button
                 type="button"
                 onClick={() => setLangOpen((o) => !o)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border transition-all text-sm font-medium ${
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-xl border transition-all text-sm font-medium ${
                   isOverlay ? "backdrop-blur-sm bg-white/10 border-white/20 text-white" : "bg-white/80 border-stone-200 text-stone-700"
                 }`}
                 aria-expanded={langOpen}
