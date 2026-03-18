@@ -16,10 +16,27 @@ const getDailyOffset = () => {
 export default function ImpactTicker() {
   const locale = useLocale();
   const lang = locale === "nl" ? "nl" : locale === "de" ? "de" : "en";
+  const [raised, setRaised] = useState<number>(0);
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
   const [dismissed, setDismissed] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/campaign-stats")
+      .then((r) => r.json())
+      .then((d) => setRaised(d.raised ?? 0))
+      .catch(() => {});
+  }, []);
+
+  const dynamicMessage = {
+    nl: `❤️ Al €${raised.toLocaleString("nl-NL")} opgehaald — help ons verder!`,
+    en: `❤️ €${raised.toLocaleString("en-GB")} raised — help us reach our goal!`,
+    de: `❤️ €${raised.toLocaleString("de-DE")} gesammelt — hilf uns weiter!`,
+    url: "/emergency",
+  };
+
+  const allMessages = raised > 0 ? [dynamicMessage, ...messages] : messages;
 
   useEffect(() => {
     setMounted(true);
@@ -33,19 +50,19 @@ export default function ImpactTicker() {
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
-        setIndex((i) => (i + 1) % messages.length);
+        setIndex((i) => (i + 1) % allMessages.length);
         setVisible(true);
       }, 400);
     }, 5000);
     return () => clearInterval(interval);
-  }, [dismissed]);
+  }, [dismissed, raised]);
 
   const handleDismiss = () => {
     setDismissed(true);
     sessionStorage.setItem("tickerDismissed", "true");
   };
 
-  const url = messages[index].url;
+  const url = allMessages[index]?.url;
   const currentHref = url
     ? url.startsWith("http")
       ? url
@@ -104,7 +121,7 @@ export default function ImpactTicker() {
               className="flex-1 text-white text-xs font-medium truncate transition-opacity duration-400"
               style={{ opacity: visible ? 1 : 0 }}
             >
-              {messages[index][lang]}
+              {allMessages[index][lang]}
             </a>
             <a
               href={currentHref}
@@ -139,7 +156,7 @@ export default function ImpactTicker() {
               style={{ opacity: visible ? 1 : 0 }}
             >
               <a href={currentHref} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2">
-                {messages[index][lang]}
+                {allMessages[index][lang]}
               </a>
             </p>
             <button
