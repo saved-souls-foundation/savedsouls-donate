@@ -152,7 +152,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         }}
       />
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 md:gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-all duration-300 ease-out overflow-visible ${navBg}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 md:gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-colors transition-shadow duration-300 ease-out overflow-visible ${navBg}`}
       >
         {/* Left: Logo + Saved Souls */}
         <Link
@@ -173,7 +173,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className={`font-semibold whitespace-nowrap text-sm md:text-xl ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`}>
+          <span className={`font-semibold whitespace-nowrap text-sm md:text-xl max-w-[110px] md:max-w-none ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`}>
             Saved Souls
           </span>
         </Link>
