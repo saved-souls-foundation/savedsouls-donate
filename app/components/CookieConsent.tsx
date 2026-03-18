@@ -45,16 +45,16 @@ export default function CookieConsent() {
 
   return (
     <div
-      className="fixed bottom-20 left-4 right-4 md:left-auto md:right-6 md:bottom-24 max-w-sm mx-auto md:mx-0 md:max-w-md z-[60] rounded-2xl bg-white dark:bg-stone-900 shadow-xl overflow-hidden border border-stone-200 dark:border-stone-700"
+      className="fixed bottom-24 left-4 right-4 md:left-6 md:right-auto md:bottom-24 max-w-sm mx-auto md:mx-0 md:max-w-md z-[60] rounded-2xl bg-white dark:bg-stone-900 shadow-xl overflow-hidden border border-stone-200 dark:border-stone-700"
       role="dialog"
       aria-label={t("ariaLabel")}
     >
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-40 h-32 md:h-auto flex-shrink-0">
+        <div className="md:w-40 h-28 md:h-auto flex-shrink-0">
           <img
             src="/ourwork-1.webp"
             alt="Saved Souls Foundation"
-            className="w-full h-full object-cover object-[20%_20%]"
+            className="w-full h-full object-cover object-[50%_30%]"
           />
         </div>
         <div className="p-4 flex flex-col gap-3">
