@@ -62,7 +62,7 @@ export default function ImpactTicker() {
           setVisible(true);
           sessionStorage.removeItem("tickerDismissed");
         }}
-        className="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
+        className="fixed bottom-4 right-4 z-[50] w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
         style={{ backgroundColor: "#2aa348" }}
         aria-label="Ticker openen"
       >
@@ -89,7 +89,7 @@ export default function ImpactTicker() {
       `}</style>
 
       {/* MOBILE: bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <div className="fixed bottom-0 left-0 right-0 z-[50] md:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
         <div className="ticker-bg shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
           <div className="ticker-shimmer h-0.5 w-full" />
           <div className="flex items-center gap-2 px-3 py-2.5">
@@ -126,7 +126,7 @@ export default function ImpactTicker() {
       </div>
 
       {/* DESKTOP: floating card bottom right */}
-      <div className="fixed hidden md:block pointer-events-none" style={{ bottom: "24px", right: "16px", width: "300px", zIndex: 40 }}>
+      <div className="fixed hidden md:block pointer-events-none" style={{ bottom: "24px", right: "16px", width: "300px", zIndex: 50 }}>
         <div className="ticker-bg rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(42,163,72,0.35),0_2px_8px_rgba(0,0,0,0.2)] pointer-events-auto">
           <div className="ticker-shimmer h-1 w-full" />
           <div className="px-4 pt-3 pb-2 flex items-start gap-2">
