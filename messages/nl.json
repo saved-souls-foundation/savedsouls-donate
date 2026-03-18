@@ -1,5 +1,6 @@
 {
   "cookieConsent": {
+    "cookieTitle": "We gebruiken cookies",
     "message": "We gebruiken cookies om Google Analytics te laden en jouw ervaring te verbeteren. Kies hieronder jouw voorkeur.",
     "accept": "Accepteren",
     "deny": "Weigeren",

@@ -1,5 +1,6 @@
 {
   "cookieConsent": {
+    "cookieTitle": "Usamos cookies",
     "message": "Usamos cookies para cargar Google Analytics y mejorar tu experiencia. Elige tu preferencia abajo.",
     "accept": "Aceptar",
     "deny": "Rechazar",

@@ -60,11 +60,11 @@ export default function SearchPage() {
       <SiteHeader />
 
       {/* Subtiele hero */}
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-72 overflow-hidden">
         <img
           src="/woman-dog-wheelchair-backup.webp"
           alt=""
-          className="w-full h-full object-cover object-top"
+          className="w-full h-full object-cover object-[center_30%]"
         />
         <div className="absolute inset-0 bg-stone-900/40" />
         <div className="absolute inset-0 flex items-end px-4 pb-4 max-w-2xl mx-auto">

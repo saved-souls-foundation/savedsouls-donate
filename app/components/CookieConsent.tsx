@@ -45,36 +45,49 @@ export default function CookieConsent() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 px-4 py-4 bg-white/98 dark:bg-stone-900/98 border-t border-stone-200 dark:border-stone-700 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] mb-20 sm:mb-0"
+      className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-50 rounded-2xl bg-white dark:bg-stone-900 shadow-xl overflow-hidden border border-stone-200 dark:border-stone-700"
       role="dialog"
       aria-label={t("ariaLabel")}
     >
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center gap-4">
-        <p className="text-sm text-stone-600 dark:text-stone-400 flex-1">
-          {t("message")}{" "}
-          <Link
-            href="/disclaimer#cookies"
-            className="underline hover:no-underline font-medium text-stone-800 dark:text-stone-200"
-          >
-            {t("disclaimer")}
-          </Link>
-        </p>
-        <div className="flex flex-shrink-0 gap-3">
-          <button
-            type="button"
-            onClick={deny}
-            className="px-5 py-2.5 rounded-lg font-semibold text-stone-700 dark:text-stone-300 border border-stone-300 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-          >
-            {t("deny")}
-          </button>
-          <button
-            type="button"
-            onClick={accept}
-            className="px-5 py-2.5 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#2aa348" }}
-          >
-            {t("accept")}
-          </button>
+      <div className="flex flex-col md:flex-row">
+        <div className="md:w-40 h-32 md:h-auto flex-shrink-0">
+          <img
+            src="/ourwork-1.webp"
+            alt="Saved Souls Foundation"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="p-4 flex flex-col gap-3">
+          <div>
+            <p className="font-medium text-sm text-stone-800 dark:text-stone-100 mb-1">
+              {t("cookieTitle")}
+            </p>
+            <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+              {t("message")}{" "}
+              <Link
+                href="/disclaimer#cookies"
+                className="underline hover:no-underline font-medium text-stone-800 dark:text-stone-200"
+              >
+                {t("disclaimer")}
+              </Link>
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={deny}
+              className="flex-1 h-10 rounded-xl border-2 border-stone-800 dark:border-stone-200 text-stone-800 dark:text-stone-200 text-sm font-medium hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors"
+            >
+              {t("deny")}
+            </button>
+            <button
+              type="button"
+              onClick={accept}
+              className="flex-1 h-10 rounded-xl bg-[#1a3d2b] text-white text-sm font-medium hover:bg-[#2aa348] transition-colors"
+            >
+              {t("accept")}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 {
   "cookieConsent": {
+    "cookieTitle": "Мы используем файлы cookie",
     "message": "Мы используем cookie для загрузки Google Analytics и улучшения вашего опыта. Выберите предпочтение ниже.",
     "accept": "Принять",
     "deny": "Отклонить",
