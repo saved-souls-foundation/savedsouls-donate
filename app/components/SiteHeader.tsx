@@ -173,8 +173,11 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className={`text-xl font-semibold whitespace-nowrap ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`}>
-            Saved Souls
+          <span className={`font-semibold whitespace-nowrap text-base md:text-xl ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`}>
+            <span className="md:hidden">
+              {locale === "nl" ? "Geredde Zielen" : "Saved Souls"}
+            </span>
+            <span className="hidden md:inline">Saved Souls</span>
           </span>
         </Link>
 
