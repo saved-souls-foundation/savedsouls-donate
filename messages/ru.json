@@ -15,6 +15,10 @@
     "alt2": "Плавательная терапия",
     "alt3": "Команда мобильной клиники"
   },
+  "spotlight": {
+    "spotlightDescription": "В поисках любящего дома.",
+    "spotlightCta": "Познакомьтесь с {name} →"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",

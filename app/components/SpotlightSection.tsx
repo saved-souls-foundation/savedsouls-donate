@@ -89,6 +89,7 @@ export default function SpotlightSection() {
 }
 
 function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
+  const t = useTranslations("spotlight");
   const imgSrc = animal.image || FALLBACK_IMAGE;
   const href = animal.url ?? (animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`);
 
@@ -163,7 +164,7 @@ function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
             fontStyle: "italic",
           }}
         >
-          {animal.description || "Op zoek naar een thuis vol liefde."}
+          {animal.description || t("spotlightDescription")}
         </div>
 
         {/* CTA pill knop */}
@@ -197,7 +198,7 @@ function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
               flexShrink: 0,
             }}
           />
-          Ontmoet {animal.name} →
+          {t("spotlightCta", { name: animal.name })}
         </Link>
       </div>
 

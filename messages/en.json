@@ -15,6 +15,10 @@
     "alt2": "Swimming therapy",
     "alt3": "Mobile clinic team"
   },
+  "spotlight": {
+    "spotlightDescription": "Looking for a home full of love.",
+    "spotlightCta": "Meet {name} →"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",

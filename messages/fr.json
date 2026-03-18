@@ -15,6 +15,10 @@
     "alt2": "Thérapie par la natation",
     "alt3": "Équipe de clinique mobile"
   },
+  "spotlight": {
+    "spotlightDescription": "À la recherche d'un foyer plein d'amour.",
+    "spotlightCta": "Rencontrer {name} →"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",

@@ -15,6 +15,10 @@
     "alt2": "Schwimmtherapie",
     "alt3": "Mobile Klinik Team"
   },
+  "spotlight": {
+    "spotlightDescription": "Auf der Suche nach einem liebevollen Zuhause.",
+    "spotlightCta": "Lerne {name} kennen →"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",

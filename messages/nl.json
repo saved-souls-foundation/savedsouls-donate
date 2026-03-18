@@ -15,6 +15,10 @@
     "alt2": "Zwemtherapie",
     "alt3": "Mobile clinic team"
   },
+  "spotlight": {
+    "spotlightDescription": "Op zoek naar een thuis vol liefde.",
+    "spotlightCta": "Ontmoet {name} →"
+  },
   "turnstile": {
     "label": "Beveiligingscontrole",
     "errorBeforeEmail": "De beveiligingscontrole kon niet worden geladen (Cloudflare). Dit kan komen door een probleem met challenges.cloudflare.com.",

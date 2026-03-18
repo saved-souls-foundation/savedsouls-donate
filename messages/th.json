@@ -15,6 +15,10 @@
     "alt2": "กายภาพบำบัดในน้ำ",
     "alt3": "ทีมคลินิกเคลื่อนที่"
   },
+  "spotlight": {
+    "spotlightDescription": "กำลังมองหาบ้านที่เต็มไปด้วยความรัก",
+    "spotlightCta": "พบกับ {name} →"
+  },
   "turnstile": {
     "label": "Security check",
     "errorBeforeEmail": "The security check could not be loaded (Cloudflare). This may be caused by an issue with challenges.cloudflare.com.",
