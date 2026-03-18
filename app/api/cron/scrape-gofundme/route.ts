@@ -98,6 +98,15 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  const foundAmountFields: Record<string, number> = {};
+  if (nextDataMatch) {
+    const amountRegex = /"([\w]*(?:amount|raised|goal|target|fund|donation)[\w]*)"\s*:\s*(\d+)/gi;
+    let m: RegExpExecArray | null;
+    while ((m = amountRegex.exec(nextDataMatch[1])) !== null) {
+      foundAmountFields[m[1]] = parseInt(m[2], 10);
+    }
+  }
+
   const donations = parseDonationsFromHtml(html);
 
   const admin = createAdminClient();
@@ -128,7 +137,8 @@ export async function GET(request: NextRequest) {
     goal,
     donations,
     hasNextData: !!nextDataMatch,
-    nextDataPreview: nextDataMatch ? nextDataMatch[1].substring(0, 500) : null,
+    nextDataPreview: nextDataMatch ? nextDataMatch[1].substring(0, 3000) : null,
+    foundAmountFields,
     htmlPreview: html.substring(0, 3000),
   });
 }
