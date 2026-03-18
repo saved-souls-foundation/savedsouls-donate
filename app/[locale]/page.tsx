@@ -17,7 +17,6 @@ import NewsletterHero from "@/app/components/NewsletterHero";
 import NewsletterFormDark from "@/app/components/NewsletterFormDark";
 import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
-import TurnstileWidget from "../components/TurnstileWidget";
 
 const SpotlightSection = dynamic(() => import("../components/SpotlightSection"), {
   ssr: false,
@@ -34,35 +33,6 @@ const YOUTUBE_VIDEO_ID = "2vNi6Aa3_Gg";
 const YOUTUBE_VIDEO_ID_2 = "l7qYY1c_n3M";
 
 const THEME_KEY = "savedsouls-theme";
-
-const HOME_AI_TITLE: Record<string, string> = {
-  nl: "Welk dier past bij jou?",
-  en: "Which animal is right for you?",
-  de: "Welches Tier passt zu dir?",
-  ru: "Какое животное подходит вам?",
-  es: "¿Qué animal es el adecuado para ti?",
-  th: "สัตว์เลี้ยงตัวไหนเหมาะกับคุณ?",
-  fr: "Quel animal vous correspond?",
-};
-const HOME_AI_PLACEHOLDER: Record<string, string> = {
-  nl: "bijv. rustige kat, of energieke hond voor gezin...",
-  en: "e.g. calm cat, or energetic dog for a family...",
-  de: "z.B. ruhige Katze oder energischer Hund...",
-  ru: "напр. спокойная кошка или активная собака...",
-  es: "p.ej. gato tranquilo o perro enérgico...",
-  th: "เช่น แมวเงียบ หรือสุนัขซนสำหรับครอบครัว...",
-  fr: "ex. chat calme ou chien énergique...",
-};
-const HOME_AI_VIEW_ALL: Record<string, string> = {
-  nl: "Bekijk alle dieren →",
-  en: "View all animals →",
-  de: "Alle Tiere ansehen →",
-  ru: "Смотреть всех животных →",
-  es: "Ver todos los animales →",
-  th: "ดูสัตว์ทั้งหมด →",
-  fr: "Voir tous les animaux →",
-};
-const FALLBACK_ANIMAL_IMAGE = "/animals/dog-328.jpg";
 
 async function getCampaignStats(): Promise<{
   raised: number;
@@ -99,11 +69,6 @@ export default function DonatePage() {
   const miraclesRef = useRef<HTMLElement>(null);
   const [showOwnVideo, setShowOwnVideo] = useState(false);
 
-  const [aiQuery, setAiQuery] = useState("");
-  const [aiMatches, setAiMatches] = useState<{ id: string; reason: string }[]>([]);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [allAnimals, setAllAnimals] = useState<{ id: string; type: string; name?: string; story?: string; image?: string }[]>([]);
-  const [turnstileToken, setTurnstileToken] = useState("");
   const [campaignStats, setCampaignStats] = useState({
     raised: 0,
     goal: 120_000,
@@ -113,58 +78,6 @@ export default function DonatePage() {
   useEffect(() => {
     getCampaignStats().then(setCampaignStats);
   }, []);
-
-  useEffect(() => {
-    fetch("/api/animals")
-      .then((r) => r.json())
-      .then((data) => {
-        const list = data?.all ?? [];
-        const withType = Array.isArray(list)
-          ? list.map((a: { id: string; type?: string; name?: string; story?: string; image?: string }) => ({
-              ...a,
-              type: a.type ?? "dog",
-            }))
-          : [];
-        if (withType.length === 0 && (data?.dogs || data?.cats)) {
-          const dogs = (data.dogs || []).map((d: { id: string; name?: string; story?: string; image?: string }) => ({ ...d, type: "dog" }));
-          const cats = (data.cats || []).map((c: { id: string; name?: string; story?: string; image?: string }) => ({ ...c, type: "cat" }));
-          setAllAnimals([...dogs, ...cats]);
-        } else {
-          setAllAnimals(withType);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  function aiSearch() {
-    const q = aiQuery.trim();
-    if (!q) {
-      setAiMatches([]);
-      return;
-    }
-    setAiLoading(true);
-    const animalsPayload = allAnimals.slice(0, 80).map((a) => ({
-      id: `${a.type}-${a.id}`,
-      name: a.name ?? "",
-      story: a.story ?? "",
-    }));
-    fetch("/api/animal-search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        animals: animalsPayload,
-        query: q,
-        locale,
-        turnstileToken,
-      }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        setAiMatches((data.matches ?? []).slice(0, 4));
-      })
-      .catch(() => setAiMatches([]))
-      .finally(() => setAiLoading(false));
-  }
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -319,103 +232,6 @@ export default function DonatePage() {
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" aria-hidden />
         </div>
       </header>
-
-      {/* AI-dieren-zoeksectie */}
-      <section className="py-10 md:py-14 bg-amber-50/80 dark:bg-stone-900/50">
-        <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4 text-center">
-            {HOME_AI_TITLE[locale] ?? HOME_AI_TITLE.en}
-          </h2>
-          <div className="flex flex-wrap items-end gap-3 mb-3">
-            <input
-              type="text"
-              value={aiQuery}
-              onChange={(e) => setAiQuery(e.target.value)}
-              placeholder={HOME_AI_PLACEHOLDER[locale] ?? HOME_AI_PLACEHOLDER.en}
-              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm placeholder:text-stone-400"
-              aria-label="Search animals"
-            />
-            <button
-              type="button"
-              onClick={aiSearch}
-              disabled={aiLoading}
-              className="px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: ACCENT_GREEN }}
-            >
-              Search
-            </button>
-          </div>
-          <div className="flex justify-center mb-4">
-            <div
-              style={{
-                position: "absolute",
-                opacity: 0,
-                pointerEvents: "none",
-                width: "1px",
-                height: "1px",
-                overflow: "hidden",
-              }}
-            >
-              <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
-            </div>
-          </div>
-          {aiLoading && (
-            <p className="text-center text-sm text-stone-500 dark:text-stone-400 mb-4">Loading...</p>
-          )}
-          {aiMatches.length > 0 && (
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              {aiMatches.map((match) => {
-                const animal = allAnimals.find((a) => `${a.type}-${a.id}` === match.id);
-                if (!animal) return null;
-                const href = animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`;
-                const imgSrc = animal.image || FALLBACK_ANIMAL_IMAGE;
-                return (
-                  <Link
-                    key={match.id}
-                    href={href}
-                    className="group block rounded-2xl overflow-hidden bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md hover:shadow-lg transition-shadow"
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden">
-                      <Image
-                        src={imgSrc}
-                        alt={animal.name ? `${animal.name} – Saved Souls` : "Animal"}
-                        fill
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 50vw, 240px"
-                        onError={(e) => {
-                          const t = e.target as HTMLImageElement;
-                          if (!t.dataset.fallback) {
-                            t.dataset.fallback = "1";
-                            t.src = FALLBACK_ANIMAL_IMAGE;
-                          }
-                        }}
-                      />
-                      {match.reason && (
-                        <div className="absolute bottom-0 left-0 max-w-[85%] bg-emerald-900/80 text-white text-xs px-3 py-1.5 rounded-br-xl rounded-tl-none line-clamp-2 overflow-hidden">
-                          {match.reason}
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-3">
-                      <p className="font-semibold text-stone-800 dark:text-stone-100 text-sm truncate">
-                        {animal.name ?? ""}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-          <div className="text-right">
-            <Link
-              href="/adopt"
-              className="text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 transition-colors"
-            >
-              {HOME_AI_VIEW_ALL[locale] ?? HOME_AI_VIEW_ALL.en}
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Trust / stats bar – below hero */}
       <TrustStatsBar />
