@@ -39,8 +39,8 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
     }
     setLoading(true);
     try {
-      // Sla op in database (fire and forget)
-      fetch("/api/sponsor-lead", {
+      // Wacht op database opslag
+      await fetch("/api/sponsor-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -52,16 +52,15 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
           message: message.trim().slice(0, 500) || undefined,
           locale,
         }),
-      }).catch(() => {});
+      });
 
-      // Redirect naar Donorbox
+      // Dan pas redirect naar Donorbox
       const comment = encodeURIComponent(
         `Sponsor ${animalName} (${animalType})`
       );
       const donorboxUrl =
         `https://donorbox.org/saved-souls-foundation-donation` +
         `?amount=10&recurring=true&currency=eur&comment=${comment}`;
-
       window.location.href = donorboxUrl;
     } catch {
       setError(t("paymentError"));
