@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export interface CampaignBannerProps {
+interface CampaignBannerProps {
   raised: number;
   goal: number;
   donations: number;
@@ -16,6 +16,7 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
   const ref = useRef<HTMLDivElement>(null);
 
   const pct = Math.min((raised / goal) * 100, 100);
+  const remaining = goal - raised;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,7 +31,7 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
 
   useEffect(() => {
     if (!started) return;
-    const duration = 1500;
+    const duration = 1800;
     const startTime = performance.now();
     const animate = (now: number) => {
       const progress = Math.min((now - startTime) / duration, 1);
@@ -43,160 +44,198 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
 
   useEffect(() => {
     if (!started) return;
-    const timer = setTimeout(() => setBarWidth(pct), 100);
+    const timer = setTimeout(() => setBarWidth(Math.max(pct, 0.8)), 200);
     return () => clearTimeout(timer);
   }, [started, pct]);
 
   return (
-    <div ref={ref} style={{ backgroundColor: "#7B1010" }}>
-      <div className="max-w-6xl mx-auto px-6 py-4">
-        {/* Desktop layout */}
-        <div className="hidden sm:flex items-center justify-between gap-6">
-          {/* Label */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div style={{ position: "relative", width: 10, height: 10 }}>
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "50%",
-                  backgroundColor: "#ff4444",
-                  animation: "ping 1.5s cubic-bezier(0,0,0.2,1) infinite",
-                  opacity: 0.75,
-                }}
-              />
-              <div
-                style={{
-                  position: "relative",
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  backgroundColor: "#ff6666",
-                }}
-              />
-            </div>
-            <div>
-              <div style={{ color: "#fca5a5", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em" }}>
-                NOODHULP
+    <>
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        .banner-amount {
+          background: linear-gradient(90deg, #ffffff 0%, #fca5a5 50%, #ffffff 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 3s linear infinite;
+        }
+        .donate-btn {
+          background: white;
+          color: #7B1010;
+          border: none;
+          padding: 10px 22px;
+          border-radius: 999px;
+          font-weight: 700;
+          font-size: 13px;
+          cursor: pointer;
+          transition: all 0.2s;
+          white-space: nowrap;
+          text-decoration: none;
+          display: inline-block;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        .donate-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+          background: #fff5f5;
+        }
+      `}</style>
+
+      <div
+        ref={ref}
+        style={{
+          background: "linear-gradient(135deg, #6b0e0e 0%, #7B1010 50%, #8b1515 100%)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid rgba(0,0,0,0.2)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1152,
+            margin: "0 auto",
+            padding: "14px 24px",
+          }}
+        >
+          {/* DESKTOP */}
+          <div
+            style={{ alignItems: "center", gap: 24 }}
+            className="hidden sm:flex"
+          >
+            {/* Pulserende dot + label */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+              <div style={{ position: "relative", width: 10, height: 10 }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: "50%",
+                    backgroundColor: "#ff6b6b",
+                    animation: "pulse-dot 1.8s ease-in-out infinite",
+                  }}
+                />
               </div>
-              <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>350 honden in gevaar</div>
+              <div>
+                <div
+                  style={{
+                    color: "rgba(255,255,255,0.5)",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Noodhulp
+                </div>
+                <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11 }}>350 honden</div>
+              </div>
             </div>
+
+            {/* Divider */}
+            <div style={{ width: 1, height: 32, background: "rgba(255,255,255,0.1)", flexShrink: 0 }} />
+
+            {/* Bedrag */}
+            <div style={{ flexShrink: 0 }}>
+              <span
+                className="banner-amount"
+                style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.02em" }}
+              >
+                €{displayAmount.toLocaleString("nl-NL")}
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, marginLeft: 6 }}>
+                opgehaald
+              </span>
+            </div>
+
+            {/* Progressbalk blok */}
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
+              {/* Balk */}
+              <div
+                style={{
+                  height: 8,
+                  borderRadius: 999,
+                  background: "rgba(255,255,255,0.1)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    borderRadius: 999,
+                    background: "white",
+                    width: `${barWidth}%`,
+                    transition: "width 1.5s ease-out",
+                  }}
+                />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
+                <span>{pct.toFixed(1)}%</span>
+                <span>van €{goal.toLocaleString("nl-NL")}</span>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <a href={`/${locale}/emergency`} className="donate-btn">
+              Doneer nu →
+            </a>
           </div>
 
-          {/* Bedrag + donaties */}
-          <div className="shrink-0 text-right">
-            <div style={{ color: "white", fontWeight: 700, fontSize: 20, lineHeight: 1 }}>
-              €{displayAmount.toLocaleString("nl-NL")}
-            </div>
-            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 11 }}>{donations} donaties</div>
-          </div>
-
-          {/* Progressbalk + percentage */}
-          <div className="flex-1 flex items-center gap-3">
+          {/* MOBILE */}
+          <div className="flex flex-col gap-3 text-center sm:hidden">
             <div
               style={{
-                flex: 1,
+                color: "rgba(255,255,255,0.5)",
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              Noodhulp · 350 honden
+            </div>
+            <div>
+              <span
+                className="banner-amount"
+                style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em" }}
+              >
+                €{displayAmount.toLocaleString("nl-NL")}
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
+                {" "}
+                · {donations} donaties · {pct.toFixed(1)}%
+              </span>
+            </div>
+            <div
+              style={{
                 height: 6,
                 borderRadius: 999,
-                backgroundColor: "rgba(255,255,255,0.15)",
+                background: "rgba(255,255,255,0.1)",
+                overflow: "hidden",
               }}
             >
               <div
                 style={{
                   height: "100%",
                   borderRadius: 999,
-                  backgroundColor: "white",
+                  background: "white",
                   width: `${barWidth}%`,
                   transition: "width 1.5s ease-out",
                 }}
               />
             </div>
-            <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, flexShrink: 0 }}>
-              {pct.toFixed(1)}%
-            </div>
+            <a href={`/${locale}/emergency`} className="donate-btn">
+              Doneer nu →
+            </a>
           </div>
-
-          {/* Doel */}
-          <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }} className="shrink-0">
-            van €{goal.toLocaleString("nl-NL")}
-          </div>
-
-          {/* CTA */}
-          <a
-            href={`/${locale}/emergency`}
-            style={{
-              border: "1.5px solid rgba(255,255,255,0.6)",
-              color: "white",
-              fontSize: 13,
-              fontWeight: 700,
-              padding: "6px 16px",
-              borderRadius: 999,
-              whiteSpace: "nowrap",
-              textDecoration: "none",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = "white";
-              (e.currentTarget as HTMLElement).style.color = "#7B1010";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-              (e.currentTarget as HTMLElement).style.color = "white";
-            }}
-          >
-            Doneer nu →
-          </a>
-        </div>
-
-        {/* Mobile layout */}
-        <div className="flex sm:hidden flex-col gap-2 text-center">
-          <div style={{ color: "#fca5a5", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em" }}>
-            🔴 NOODHULP · 350 honden in gevaar
-          </div>
-          <div style={{ color: "white", fontWeight: 700, fontSize: 22 }}>
-            €{displayAmount.toLocaleString("nl-NL")}
-            <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 400 }}>
-              {" "}
-              · {donations} donaties · {pct.toFixed(1)}%
-            </span>
-          </div>
-          <div
-            style={{
-              height: 5,
-              borderRadius: 999,
-              backgroundColor: "rgba(255,255,255,0.15)",
-            }}
-          >
-            <div
-              style={{
-                height: "100%",
-                borderRadius: 999,
-                backgroundColor: "white",
-                width: `${barWidth}%`,
-                transition: "width 1.5s ease-out",
-              }}
-            />
-          </div>
-          <a
-            href={`/${locale}/emergency`}
-            style={{
-              color: "white",
-              fontSize: 13,
-              fontWeight: 700,
-              textDecoration: "none",
-              padding: "4px 0",
-            }}
-          >
-            Doneer nu →
-          </a>
         </div>
       </div>
-
-      <style>{`
-        @keyframes ping {
-          75%, 100% { transform: scale(2); opacity: 0; }
-        }
-      `}</style>
-    </div>
+    </>
   );
 }
