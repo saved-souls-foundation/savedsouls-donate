@@ -111,7 +111,7 @@ export default function NewsletterFormDark() {
           </button>
         </form>
         <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "11px", textAlign: "center", marginTop: "0.75rem" }}>
-          {"Geen spam · Altijd afmelden mogelijk · Nooit doorverkocht"}
+          {t("noSpam")}
         </p>
       </div>
     </div>

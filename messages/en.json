@@ -4827,7 +4827,8 @@
     "privacy": "We respect your privacy. No spam, only news from SavedSouls Foundation.",
     "consentBeforeLink": "I agree to the processing of my email address for receiving newsletters. ",
     "privacyLinkText": "Read our privacy policy.",
-    "validationConsent": "Please agree to the privacy terms."
+    "validationConsent": "Please agree to the privacy terms.",
+    "noSpam": "No spam · Unsubscribe anytime · Never shared"
   },
   "newsletterHero": {
     "heroAccent": "350 dogs.",

@@ -148,7 +148,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
     <>
       <style
         dangerouslySetInnerHTML={{
-          __html: `@keyframes ss-pulse-icon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.88)}}.ss-pulse-icon{animation:ss-pulse-icon 2.4s ease-in-out infinite;display:inline-flex}`,
+          __html: `@keyframes ss-pulse-icon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.88)}}.ss-pulse-icon{animation:ss-pulse-icon 2.4s ease-in-out infinite;display:inline-flex}@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.15)}70%{transform:scale(1)}}`,
         }}
       />
       <nav
@@ -326,7 +326,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               style={{ backgroundColor: "#7B1010" }}
               title={t("donateTooltip")}
             >
-              <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+              <span style={{ display: "inline-block", animation: "heartbeat 2.5s ease-in-out infinite" }}>
+                <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
+              </span>
               {t("donate")}
             </a>
           </div>

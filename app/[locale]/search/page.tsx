@@ -58,15 +58,27 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
       <SiteHeader />
-      <main className="max-w-2xl mx-auto px-4 pt-16 pb-16">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 mb-6 flex items-center gap-1"
-        >
-          ← {locale === "nl" ? "Terug" : "Back"}
-        </button>
 
+      {/* Subtiele hero */}
+      <div className="relative h-44 overflow-hidden">
+        <img
+          src="/woman-dog-wheelchair-backup.webp"
+          alt=""
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-stone-900/60" />
+        <div className="absolute inset-0 flex items-end px-4 pb-4 max-w-2xl mx-auto">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="text-white/80 hover:text-white text-sm flex items-center gap-1 transition-colors"
+          >
+            ← {locale === "nl" ? "Terug" : "Back"}
+          </button>
+        </div>
+      </div>
+
+      <main className="max-w-2xl mx-auto px-4 pt-6 pb-16">
         <p className="text-center text-stone-500 dark:text-stone-400 text-sm mb-4">
           {locale === "nl"
             ? "Zoek door pagina's, gidsen en dieren"
