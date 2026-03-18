@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -13,6 +12,8 @@ type SpotlightAnimal = {
   thaiName: string;
   type: "dog" | "cat";
   image: string;
+  description?: string;
+  url?: string;
 };
 
 type SpotlightData = {
@@ -88,46 +89,140 @@ export default function SpotlightSection() {
 }
 
 function SpotlightCard({ animal }: { animal: SpotlightAnimal }) {
-  const t = useTranslations("home");
-  const href = animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`;
   const imgSrc = animal.image || FALLBACK_IMAGE;
+  const href = animal.url ?? (animal.type === "dog" ? `/adopt/dog/${animal.id}` : `/adopt/cat/${animal.id}`);
 
   return (
-    <Link
-      href={href}
-      className="group block rounded-2xl overflow-hidden border-2 border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 shadow-lg hover:shadow-xl hover:border-[#2aa348]/40 transition-all"
+    <div
+      className="spotlight-card"
+      style={{
+        position: "relative",
+        borderRadius: 20,
+        overflow: "hidden",
+        aspectRatio: "3/4",
+        cursor: "pointer",
+      }}
     >
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <Image
-          src={imgSrc}
-          alt={`${animal.name} – in de spotlight deze week`}
-          fill
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 50vw, 400px"
-          loading="lazy"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            if (!target.dataset.fallback) {
-              target.dataset.fallback = "1";
-              (target as HTMLImageElement).src = FALLBACK_IMAGE;
-            }
+      {/* Foto */}
+      <img
+        src={imgSrc}
+        alt={animal.name}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)",
+        }}
+        className="spotlight-photo"
+      />
+
+      {/* Gradient overlay van onderaf — donkergroen */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(15, 35, 15, 0.95) 0%, rgba(20, 45, 20, 0.7) 45%, transparent 75%)",
+          transition: "opacity 0.4s ease",
+        }}
+      />
+
+      {/* Tekst overlay — schuift in van onderaf bij load */}
+      <div
+        className="spotlight-content"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "28px 24px",
+        }}
+      >
+        {/* Naam */}
+        <div
+          style={{
+            color: "white",
+            fontSize: 28,
+            fontWeight: 800,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+            marginBottom: 8,
+            textShadow: "0 2px 8px rgba(0,0,0,0.3)",
           }}
-        />
-        <div className="absolute inset-0 bg-stone-900/60 dark:bg-stone-950/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 text-center px-4">
-          <span className="text-white/95 text-xl md:text-2xl font-medium italic drop-shadow-md">
-            {t("spotlightGiveMeAChance")}
-          </span>
-          <span className="text-white font-semibold text-base tracking-wide drop-shadow-md">
-            {t("spotlightMeetName", { name: animal.name })}
-          </span>
+        >
+          {animal.name}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-          <span className="font-bold drop-shadow-md">
-            {animal.name}
-            {animal.thaiName && <span className="font-normal text-white/90"> / {animal.thaiName}</span>}
-          </span>
+
+        {/* Emotionele zin */}
+        <div
+          style={{
+            color: "rgba(255,255,255,0.75)",
+            fontSize: 14,
+            lineHeight: 1.5,
+            marginBottom: 16,
+            fontStyle: "italic",
+          }}
+        >
+          {animal.description || "Op zoek naar een thuis vol liefde."}
         </div>
+
+        {/* CTA pill knop */}
+        <Link
+          href={href}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            backgroundColor: "rgba(42, 163, 72, 0.25)",
+            border: "1.5px solid rgba(42, 163, 72, 0.6)",
+            color: "white",
+            fontSize: 13,
+            fontWeight: 600,
+            padding: "8px 18px",
+            borderRadius: 999,
+            textDecoration: "none",
+            backdropFilter: "blur(8px)",
+            transition: "all 0.3s ease",
+          }}
+          className="spotlight-btn"
+        >
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              backgroundColor: "#2aa348",
+              display: "inline-block",
+              animation: "spotlight-pulse 1.8s ease-in-out infinite",
+              flexShrink: 0,
+            }}
+          />
+          Ontmoet {animal.name} →
+        </Link>
       </div>
-    </Link>
+
+      {/* CSS animaties */}
+      <style>{`
+        .spotlight-card:hover .spotlight-photo {
+          transform: scale(1.06);
+        }
+        .spotlight-card:hover .spotlight-btn {
+          background-color: rgba(42, 163, 72, 0.45);
+          border-color: rgba(42, 163, 72, 0.9);
+          transform: translateY(-1px);
+        }
+        .spotlight-content {
+          animation: slideUpFade 0.7s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+        @keyframes slideUpFade {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spotlight-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.7); }
+        }
+      `}</style>
+    </div>
   );
 }
