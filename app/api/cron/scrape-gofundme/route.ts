@@ -13,31 +13,6 @@ const GOAL_EUR = 120_000;
 
 type DonationEntry = { name: string; amount: number; currency: string };
 
-function parseRaisedFromHtml(html: string): number | null {
-  // "€2,856 raised of €120K" of "€ 2,856 raised"
-  const withGoal = html.match(/€\s*([\d.,]+)\s*raised\s+of\s+€/i);
-  if (withGoal) {
-    const num = parseInt(withGoal[1].replace(/[.,\s]/g, ""), 10);
-    if (!Number.isNaN(num) && num < 1_000_000) return num;
-  }
-  const direct = html.match(/€\s*([\d.,]+)\s*raised/i);
-  if (direct) {
-    const num = parseInt(direct[1].replace(/[.,\s]/g, ""), 10);
-    if (!Number.isNaN(num) && num < 1_000_000) return num;
-  }
-  // Fallback: tekst tussen eerste € en "raised" — eerste getal
-  const raisedIdx = html.search(/\braised\s+of\s+€/i);
-  if (raisedIdx > 0) {
-    const snippet = html.slice(0, raisedIdx);
-    const lastEur = snippet.match(/€\s*([\d.,]+)\s*$/);
-    if (lastEur) {
-      const num = parseInt(lastEur[1].replace(/[.,\s]/g, ""), 10);
-      if (!Number.isNaN(num) && num < 1_000_000) return num;
-    }
-  }
-  return null;
-}
-
 const UI_LABELS = new Set([
   "skip to content", "share", "read more", "read story", "donate", "see all",
   "see top", "recent donation", "top donation", "organizer", "message", "new",
@@ -104,14 +79,32 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const raised = parseRaisedFromHtml(html);
+  let raised: number = 0;
+  let goal: number = GOAL_EUR;
+  const nextDataMatch = html.match(
+    /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
+  );
+  if (nextDataMatch) {
+    try {
+      const nextData = JSON.parse(nextDataMatch[1]);
+      console.log("NEXT_DATA keys:", JSON.stringify(Object.keys(nextData), null, 2));
+      const str = JSON.stringify(nextData);
+      const raisedMatch = str.match(/"current_amount":(\d+)/);
+      const goalMatch = str.match(/"goal_amount":(\d+)/);
+      if (raisedMatch) raised = Math.round(parseInt(raisedMatch[1], 10) / 100);
+      if (goalMatch) goal = Math.round(parseInt(goalMatch[1], 10) / 100);
+    } catch (e) {
+      console.error("[cron/scrape-gofundme] __NEXT_DATA__ parse error:", e);
+    }
+  }
+
   const donations = parseDonationsFromHtml(html);
 
   const admin = createAdminClient();
   const row = {
     id: CAMPAIGN_STATS_ID,
-    raised_eur: raised ?? 0,
-    goal_eur: GOAL_EUR,
+    raised_eur: raised,
+    goal_eur: goal,
     donations: donations as unknown as Record<string, unknown>[],
     gofundme_url: GOFUNDME_URL,
     updated_at: new Date().toISOString(),
@@ -131,8 +124,11 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    raised: raised ?? 0,
+    raised,
+    goal,
     donations,
+    hasNextData: !!nextDataMatch,
+    nextDataPreview: nextDataMatch ? nextDataMatch[1].substring(0, 500) : null,
     htmlPreview: html.substring(0, 3000),
   });
 }
