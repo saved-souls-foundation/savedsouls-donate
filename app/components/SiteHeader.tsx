@@ -44,7 +44,7 @@ const ICON_GREEN = "#2d7a3a";
 const CHEVRON_GRAY = "#d1d5db";
 
 /** Vaste classNames voor header-rechterkant om hydration mismatch te voorkomen (server/client moeten identiek zijn) */
-const HEADER_RIGHT_WRAPPER = "flex items-center gap-3 md:gap-6 shrink-0";
+const HEADER_RIGHT_WRAPPER = "flex items-center gap-2 md:gap-6 shrink-0";
 const HEADER_DESKTOP_ACTIONS = "hidden md:flex items-center gap-6 lg:gap-8";
 
 const LOCALE_LABELS: Record<string, string> = {
@@ -152,7 +152,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         }}
       />
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 md:gap-4 px-4 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-colors transition-shadow duration-300 ease-out overflow-visible ${navBg}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 md:gap-4 px-3 md:px-6 h-14 md:h-16 border-b backdrop-blur-md transition-colors transition-shadow duration-300 ease-out overflow-visible ${navBg}`}
       >
         {/* Left: Logo + Saved Souls */}
         <Link
