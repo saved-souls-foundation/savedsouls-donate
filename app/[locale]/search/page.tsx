@@ -6,6 +6,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { SEARCH_INDEX, type SearchPage } from "@/lib/search-index";
 import { ChevronRight } from "lucide-react";
+import SiteHeader from "../../components/SiteHeader";
 
 const MAX_RESULTS = 20;
 
@@ -56,7 +57,8 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
-      <main className="max-w-2xl mx-auto px-4 pt-8 pb-16">
+      <SiteHeader />
+      <main className="max-w-2xl mx-auto px-4 pt-16 pb-16">
         <button
           type="button"
           onClick={() => router.back()}
@@ -64,6 +66,22 @@ export default function SearchPage() {
         >
           ← {locale === "nl" ? "Terug" : "Back"}
         </button>
+
+        <p className="text-center text-stone-500 dark:text-stone-400 text-sm mb-4">
+          {locale === "nl"
+            ? "Zoek door pagina's, gidsen en dieren"
+            : locale === "de"
+              ? "Seiten, Guides und Tiere durchsuchen"
+              : locale === "fr"
+                ? "Rechercher pages, guides et animaux"
+                : locale === "es"
+                  ? "Buscar páginas, guías y animales"
+                  : locale === "ru"
+                    ? "Поиск страниц, руководств и животных"
+                    : locale === "th"
+                      ? "ค้นหาหน้า คู่มือ และสัตว์"
+                      : "Search pages, guides and animals"}
+        </p>
 
         <div className="bg-white dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700 overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-4 border-b border-stone-100 dark:border-stone-700">
@@ -129,7 +147,7 @@ export default function SearchPage() {
 
         {!query.trim() && (
           <>
-            <p className="text-xs text-stone-400 text-center mt-6 mb-3">
+            <p className="text-xs text-stone-400 text-center mt-4 mb-3">
               {locale === "nl" ? "Snel zoeken" : "Quick search"}
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
