@@ -89,21 +89,12 @@ export async function GET(request: NextRequest) {
       const nextData = JSON.parse(nextDataMatch[1]);
       console.log("NEXT_DATA keys:", JSON.stringify(Object.keys(nextData), null, 2));
       const str = JSON.stringify(nextData);
-      const raisedMatch = str.match(/"current_amount":(\d+)/);
+      const raisedMatch = str.match(/"amountRaisedUnattributedNumber":(\d+)/);
       const goalMatch = str.match(/"goal_amount":(\d+)/);
-      if (raisedMatch) raised = Math.round(parseInt(raisedMatch[1], 10) / 100);
+      if (raisedMatch) raised = parseInt(raisedMatch[1], 10);
       if (goalMatch) goal = Math.round(parseInt(goalMatch[1], 10) / 100);
     } catch (e) {
       console.error("[cron/scrape-gofundme] __NEXT_DATA__ parse error:", e);
-    }
-  }
-
-  const foundAmountFields: Record<string, number> = {};
-  if (nextDataMatch) {
-    const amountRegex = /"([\w]*(?:amount|raised|goal|target|fund|donation)[\w]*)"\s*:\s*(\d+)/gi;
-    let m: RegExpExecArray | null;
-    while ((m = amountRegex.exec(nextDataMatch[1])) !== null) {
-      foundAmountFields[m[1]] = parseInt(m[2], 10);
     }
   }
 
@@ -138,7 +129,6 @@ export async function GET(request: NextRequest) {
     donations,
     hasNextData: !!nextDataMatch,
     nextDataPreview: nextDataMatch ? nextDataMatch[1].substring(0, 3000) : null,
-    foundAmountFields,
     htmlPreview: html.substring(0, 3000),
   });
 }
