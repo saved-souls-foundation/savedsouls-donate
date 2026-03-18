@@ -25,7 +25,13 @@ export default function ImpactTicker() {
   useEffect(() => {
     fetch("/api/campaign-stats")
       .then((r) => r.json())
-      .then((d) => setRaised(d.raised ?? 0))
+      .then((d) => {
+        const amount = d.raised ?? 0;
+        if (amount > 0) {
+          setRaised(amount);
+          setIndex(0); // zet index naar 0 = dynamicMessage
+        }
+      })
       .catch(() => {});
   }, []);
 
