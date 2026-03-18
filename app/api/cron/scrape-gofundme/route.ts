@@ -127,8 +127,5 @@ export async function GET(request: NextRequest) {
     raised,
     goal,
     donations,
-    hasNextData: !!nextDataMatch,
-    nextDataPreview: nextDataMatch ? nextDataMatch[1].substring(0, 3000) : null,
-    htmlPreview: html.substring(0, 3000),
   });
 }
