@@ -39,20 +39,32 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
     }
     setLoading(true);
     try {
-      const checkoutData = {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        amountThb: defaultThb,
-        message: message.trim().slice(0, 500) || undefined,
-        animalId,
-        animalName,
-        animalType,
-      };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(checkoutData));
-      router.push(`/sponsor/${animalType}/${animalId}/checkout`);
+      // Sla op in database (fire and forget)
+      fetch("/api/sponsor-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          animalId,
+          animalName,
+          animalType,
+          donorName: name.trim(),
+          donorEmail: email.trim().toLowerCase(),
+          message: message.trim().slice(0, 500) || undefined,
+          locale,
+        }),
+      }).catch(() => {});
+
+      // Redirect naar Donorbox
+      const comment = encodeURIComponent(
+        `Sponsor ${animalName} (${animalType})`
+      );
+      const donorboxUrl =
+        `https://donorbox.org/saved-souls-foundation-donation` +
+        `?amount=10&recurring=true&currency=eur&comment=${comment}`;
+
+      window.location.href = donorboxUrl;
     } catch {
       setError(t("paymentError"));
-    } finally {
       setLoading(false);
     }
   };
