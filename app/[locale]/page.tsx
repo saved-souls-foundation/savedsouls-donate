@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import HeroFadeIn from "../components/HeroFadeIn";
 import SiteHeader from "../components/SiteHeader";
 import TrustStatsBar from "../components/TrustStatsBar";
+import CampaignBanner from "@/app/components/CampaignBanner";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import OurWorkSection from "@/app/components/OurWorkSection";
 import NewsletterHero from "@/app/components/NewsletterHero";
@@ -63,6 +64,25 @@ const HOME_AI_VIEW_ALL: Record<string, string> = {
 };
 const FALLBACK_ANIMAL_IMAGE = "/animals/dog-328.jpg";
 
+async function getCampaignStats(): Promise<{
+  raised: number;
+  goal: number;
+  donations: { name: string; amount: number; currency: string }[];
+}> {
+  try {
+    const res = await fetch("/api/campaign-stats");
+    if (!res.ok) return { raised: 0, goal: 120_000, donations: [] };
+    const data = await res.json();
+    return {
+      raised: Number(data.raised) || 0,
+      goal: Number(data.goal) || 120_000,
+      donations: Array.isArray(data.donations) ? data.donations : [],
+    };
+  } catch {
+    return { raised: 0, goal: 120_000, donations: [] };
+  }
+}
+
 /** Light between 6:00 and 20:00, dark otherwise */
 function getThemeFromTime(): "light" | "dark" {
   if (typeof window === "undefined") return "light";
@@ -84,6 +104,15 @@ export default function DonatePage() {
   const [aiLoading, setAiLoading] = useState(false);
   const [allAnimals, setAllAnimals] = useState<{ id: string; type: string; name?: string; story?: string; image?: string }[]>([]);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [campaignStats, setCampaignStats] = useState({
+    raised: 0,
+    goal: 120_000,
+    donations: [] as { name: string; amount: number; currency: string }[],
+  });
+
+  useEffect(() => {
+    getCampaignStats().then(setCampaignStats);
+  }, []);
 
   useEffect(() => {
     fetch("/api/animals")
@@ -373,6 +402,13 @@ export default function DonatePage() {
 
       {/* Trust / stats bar – below hero */}
       <TrustStatsBar />
+
+      <CampaignBanner
+        raised={campaignStats.raised}
+        goal={campaignStats.goal}
+        donations={campaignStats.donations.length > 0 ? campaignStats.donations.length : 76}
+        locale={locale}
+      />
 
       {/* Spotlight deze week – boven eerste alinea */}
       <SpotlightSection />
