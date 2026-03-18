@@ -110,7 +110,7 @@ export default function NewsletterFormDark() {
             {loading ? t("subscribing") : t("subscribeButton")}
           </button>
         </form>
-        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "11px", textAlign: "center", marginTop: "0.75rem" }}>
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "11px", textAlign: "center", marginTop: "0.75rem" }}>
           {t("noSpam")}
         </p>
       </div>
