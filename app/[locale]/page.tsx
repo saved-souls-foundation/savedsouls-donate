@@ -223,6 +223,15 @@ export default function DonatePage() {
         ref={scrollRef}
         className="relative z-10 h-full overflow-y-auto overscroll-contain"
       >
+      <style>{`
+        @keyframes heartbeat {
+          0%, 100% { transform: scale(1); }
+          14% { transform: scale(1.3); }
+          28% { transform: scale(1); }
+          42% { transform: scale(1.2); }
+          56% { transform: scale(1); }
+        }
+      `}</style>
       <SiteHeader
         scrollToSection={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
         scrollY={scrollY}
@@ -266,7 +275,15 @@ export default function DonatePage() {
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all hover:scale-[1.02] text-white shadow-lg hover:opacity-95"
                 style={{ backgroundColor: "#7B1010" }}
               >
-                <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
+                <span
+                  style={{
+                    display: "inline-block",
+                    animation: "heartbeat 1.4s ease-in-out infinite",
+                    marginRight: 8,
+                  }}
+                >
+                  <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
+                </span>
                 {t("donate")}
               </a>
             </div>

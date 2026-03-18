@@ -148,7 +148,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
     <>
       <style
         dangerouslySetInnerHTML={{
-          __html: `@keyframes ss-pulse-icon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.88)}}.ss-pulse-icon{animation:ss-pulse-icon 2.4s ease-in-out infinite;display:inline-flex}@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.15)}70%{transform:scale(1)}}`,
+          __html: `@keyframes ss-pulse-icon{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(0.88)}}.ss-pulse-icon{animation:ss-pulse-icon 2.4s ease-in-out infinite;display:inline-flex}@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.15)}70%{transform:scale(1)}}.mobile-donate-btn{background-color:#E87B3A}.mobile-donate-btn:hover{background-color:#d06a2a}`,
         }}
       />
       <nav
@@ -442,8 +442,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             <Link
               href="/donate"
               onClick={closeMobileMenu}
-              className="flex items-center gap-3 px-4 py-3.5 rounded-2xl active:opacity-90 transition-opacity text-white mb-6"
-              style={{ backgroundColor: "#1a5c2e" }}
+              className="mobile-donate-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl active:opacity-90 transition-colors text-white mb-6"
             >
               <Heart size={18} className="shrink-0 text-white" aria-hidden />
               <div className="flex-1 min-w-0">
