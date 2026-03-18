@@ -5,9 +5,9 @@ import DonationLoop from "@/app/components/DonationLoop";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
-const GOAL_EUR = 100_000;
-const RAISED_EUR = 2_192;
-const GOFUNDME_URL = "https://gofund.me/6df90b013";
+const GOAL_EUR = 120_000;
+const RAISED_EUR = 2_822;
+const GOFUNDME_URL = "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
 const BASE_URL = "https://www.savedsouls-foundation.com";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -185,7 +185,7 @@ export default async function EmergencyPage({ params }: Props) {
                   className="block"
                 />
               </div>
-              <p className="text-xs text-stone-400">gofund.me/6df90b013</p>
+              <p className="text-xs text-stone-400">gofundme.com/f/300-dogs-fighting...</p>
             </div>
 
             {/* Final CTA */}

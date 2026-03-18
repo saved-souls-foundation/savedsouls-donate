@@ -2,18 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const GOAL = 100_000;
+const GOAL = 120_000;
 
 const MILESTONES = [
   { pct: 0,    label: "€0" },
   { pct: 0.25, label: "€25K" },
   { pct: 0.5,  label: "€50K" },
   { pct: 0.75, label: "€75K" },
-  { pct: 1,    label: "€100K" },
+  { pct: 1,    label: "€120K" },
 ];
 
 const MSGS: [number, string][] = [
-  [0,    "350 dogs will lose their home unless we raise €100,000."],
+  [0,    "350 dogs will lose their home unless we raise €120,000."],
   [0.05, "They have nowhere else to go. Will you help today?"],
   [0.15, "More needed than ever. Share this with one person right now."],
   [0.25, "€25,000 reached — the first land payment is within reach."],
@@ -21,7 +21,7 @@ const MSGS: [number, string][] = [
   [0.5,  "Halfway. 175 dogs already have a safer future because of you."],
   [0.65, "Can you feel the momentum? Don't stop now."],
   [0.75, "Three quarters there. One final push needed."],
-  [0.9,  "Almost at €100K. You could be the one who gets us there."],
+  [0.9,  "Almost at €120K. You could be the one who gets us there."],
   [0.97, "The finish line is right here. Help us cross it."],
 ];
 
