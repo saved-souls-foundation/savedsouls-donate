@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useLocale } from "next-intl";
 import Footer from "../../../../components/Footer";
 import AdoptInquiryForm from "../../../../components/AdoptInquiryForm";
 
@@ -21,8 +22,11 @@ type Dog = {
   story?: string;
 };
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.com";
+
 export default function DogDetailPage() {
   const params = useParams();
+  const locale = useLocale();
   const id = typeof params.id === "string" ? params.id : "";
   const [dog, setDog] = useState<Dog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -82,6 +86,26 @@ export default function DogDetailPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950">
+      {dog && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Animal",
+              name: dog.name,
+              description: dog.story ?? "",
+              image: dog.image ?? "",
+              url: `${SITE_URL}/${locale}/adopt/dog/${dog.id}`,
+              provider: {
+                "@type": "NGO",
+                name: "Saved Souls Foundation",
+                url: "https://www.savedsouls-foundation.com",
+              },
+            }),
+          }}
+        />
+      )}
       <main className="max-w-5xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           <div>

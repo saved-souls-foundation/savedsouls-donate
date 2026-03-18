@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { alternatesForPath } from "@/lib/metadata";
 
 const BASE_URL = "https://savedsouls-foundation.org";
+const SCHEMA_BASE = "https://www.savedsouls-foundation.com";
 
 type Props = {
   children: React.ReactNode;
@@ -60,17 +61,17 @@ export default async function StoryLayout({ children, params }: Props) {
     author: {
       "@type": "Organization",
       name: "Saved Souls Foundation",
-      url: BASE_URL,
+      url: SCHEMA_BASE,
     },
     publisher: {
       "@type": "Organization",
       name: "Saved Souls Foundation",
-      logo: { "@type": "ImageObject", url: `${BASE_URL}/savedsoul-logo.webp` },
+      logo: { "@type": "ImageObject", url: `${SCHEMA_BASE}/savedsoul-logo.webp` },
     },
     datePublished: "2017-10-09",
     dateModified: new Date().toISOString().split("T")[0],
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE_URL}/${locale}/story` },
-    image: `${BASE_URL}/team-dogs.webp`,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SCHEMA_BASE}/${locale}/story` },
+    image: `${SCHEMA_BASE}/team-dogs.webp`,
     keywords: "dog rescue Thailand, animal shelter Khon Kaen, disabled dogs, wheelchair dogs, dog meat trade, animal sanctuary",
   };
 

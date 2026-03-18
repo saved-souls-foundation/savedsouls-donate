@@ -45,7 +45,7 @@ export default function CookieConsent() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 px-4 py-4 bg-white/98 dark:bg-stone-900/98 border-t border-stone-200 dark:border-stone-700 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+      className="fixed bottom-0 left-0 right-0 z-50 px-4 py-4 bg-white/98 dark:bg-stone-900/98 border-t border-stone-200 dark:border-stone-700 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] mb-20 sm:mb-0"
       role="dialog"
       aria-label={t("ariaLabel")}
     >
