@@ -21,8 +21,8 @@ export default function CookieConsent() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = localStorage.getItem(CONSENT_KEY) as ConsentStatus | null;
-    if (stored != null) {
+    const stored = localStorage.getItem(CONSENT_KEY);
+    if (stored === "granted" || stored === "denied") {
       updateGtagConsent(stored);
       return;
     }
