@@ -14,44 +14,54 @@ const GOAL_EUR = 120_000;
 type DonationEntry = { name: string; amount: number; currency: string };
 
 function parseRaisedFromHtml(html: string): number | null {
-  // "€2,856 raised" of "€2.856 raised" (EU format)
-  const raisedMatch = html.match(/€\s*([\d.,]+)\s*raised/i);
-  if (raisedMatch) {
-    const num = parseInt(raisedMatch[1].replace(/[.,\s]/g, ""), 10);
-    if (!Number.isNaN(num)) return num;
+  // "€2,856 raised of €120K" of "€ 2,856 raised"
+  const withGoal = html.match(/€\s*([\d.,]+)\s*raised\s+of\s+€/i);
+  if (withGoal) {
+    const num = parseInt(withGoal[1].replace(/[.,\s]/g, ""), 10);
+    if (!Number.isNaN(num) && num < 1_000_000) return num;
   }
-  // "raised of €X" — soms staat alleen goal, dan zoeken we "X raised"
-  const alt = html.match(/raised\s+of\s+€[\d.,]+/i);
-  if (alt) {
-    const before = html.slice(0, html.indexOf(alt[0]));
-    const lastEur = before.match(/€\s*([\d.,]+)\s*$/);
+  const direct = html.match(/€\s*([\d.,]+)\s*raised/i);
+  if (direct) {
+    const num = parseInt(direct[1].replace(/[.,\s]/g, ""), 10);
+    if (!Number.isNaN(num) && num < 1_000_000) return num;
+  }
+  // Fallback: tekst tussen eerste € en "raised" — eerste getal
+  const raisedIdx = html.search(/\braised\s+of\s+€/i);
+  if (raisedIdx > 0) {
+    const snippet = html.slice(0, raisedIdx);
+    const lastEur = snippet.match(/€\s*([\d.,]+)\s*$/);
     if (lastEur) {
       const num = parseInt(lastEur[1].replace(/[.,\s]/g, ""), 10);
-      if (!Number.isNaN(num)) return num;
+      if (!Number.isNaN(num) && num < 1_000_000) return num;
     }
   }
   return null;
 }
 
+const UI_LABELS = new Set([
+  "skip to content", "share", "read more", "read story", "donate", "see all",
+  "see top", "recent donation", "top donation", "organizer", "message", "new",
+]);
+
 function parseDonationsFromHtml(html: string): DonationEntry[] {
   const donations: DonationEntry[] = [];
-  // "Name donated €100" of "Name donated €1,000"
+  // Alleen "Name donated €100" — echte donorregels
   const donatedRe = /([A-Za-zÀ-ÿ\s]+)\s+donated\s+€\s*([\d.,]+)/gi;
   let m: RegExpExecArray | null;
   while ((m = donatedRe.exec(html)) !== null) {
     const name = m[1].trim();
     const amount = parseInt(m[2].replace(/[.,\s]/g, ""), 10);
-    if (name.length > 0 && !Number.isNaN(amount))
+    const nameLower = name.toLowerCase();
+    if (
+      name.length >= 2 &&
+      name.length <= 50 &&
+      !Number.isNaN(amount) &&
+      amount > 0 &&
+      amount < 100_000 &&
+      !UI_LABELS.has(nameLower) &&
+      !/^\d+$/.test(name)
+    ) {
       donations.push({ name, amount, currency: "EUR" });
-  }
-  // Donations list: ">Name<" gevolgd door "€34" (link + bedrag)
-  const linkAmountRe = /(?:>|"])\s*([A-Za-zÀ-ÿ\s]{2,50}?)\s*(?:<|\[).*?€\s*([\d.,]+)/g;
-  while ((m = linkAmountRe.exec(html)) !== null) {
-    const name = m[1].trim();
-    const amount = parseInt(m[2].replace(/[.,\s]/g, ""), 10);
-    if (name.length > 0 && !Number.isNaN(amount)) {
-      const exists = donations.some((d) => d.name === name && d.amount === amount);
-      if (!exists) donations.push({ name, amount, currency: "EUR" });
     }
   }
   // Unieke donaties, laatste 5
