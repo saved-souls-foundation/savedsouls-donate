@@ -5,17 +5,34 @@ import DonationLoop from "@/app/components/DonationLoop";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
-const GOAL_EUR = 120_000;
-const RAISED_EUR = 2_822;
 const GOFUNDME_URL = "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.com";
 
 type Props = { params: Promise<{ locale: string }> };
+
+async function getCampaignStats() {
+  const base = BASE_URL.replace(/\/$/, "");
+  try {
+    const res = await fetch(`${base}/api/campaign-stats`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return { raised: 0, goal: 120_000, donations: [] as { name: string; amount: number; currency: string }[] };
+    const data = await res.json();
+    return {
+      raised: Number(data.raised) || 0,
+      goal: Number(data.goal) || 120_000,
+      donations: Array.isArray(data.donations) ? data.donations : [],
+    };
+  } catch {
+    return { raised: 0, goal: 120_000, donations: [] as { name: string; amount: number; currency: string }[] };
+  }
+}
 
 export default async function EmergencyPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("emergency");
+  const { raised, goal, donations } = await getCampaignStats();
 
   const shareUrl = `${BASE_URL}/${locale}/emergency`;
   const shareText = t("shareText");
@@ -77,7 +94,29 @@ export default async function EmergencyPage({ params }: Props) {
         </div>
 
         {/* ─── DONATION LOOP ─── */}
-        <DonationLoop raisedEur={RAISED_EUR} goalEur={GOAL_EUR} />
+        <DonationLoop raisedEur={raised} goalEur={goal} />
+
+        {/* ─── LAATSTE DONATIES ─── */}
+        {donations.length > 0 && (
+          <section className="max-w-lg mx-auto px-6 py-8">
+            <p className="text-xs font-medium tracking-[0.15em] uppercase text-stone-400 text-center mb-4">
+              Recent donations
+            </p>
+            <ul className="space-y-2">
+              {donations.map((d: { name: string; amount: number; currency: string }, i: number) => (
+                <li
+                  key={i}
+                  className="flex justify-between items-center py-2 border-b border-stone-100 dark:border-stone-800 last:border-0 text-sm"
+                >
+                  <span className="text-stone-700 dark:text-stone-300">{d.name}</span>
+                  <span className="font-medium text-stone-900 dark:text-stone-100">
+                    €{d.amount.toLocaleString("en-GB")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* ─── TWO GOALS ─── */}
         <section className="max-w-3xl mx-auto px-6 py-16">
