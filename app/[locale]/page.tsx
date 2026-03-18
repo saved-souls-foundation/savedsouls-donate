@@ -427,10 +427,10 @@ export default function DonatePage() {
         locale={locale}
       />
 
-      {/* Spotlight deze week – boven eerste alinea */}
-      <SpotlightSection />
-
       <OurWorkSection />
+
+      {/* Spotlight deze week – na Wat we elke dag doen */}
+      <SpotlightSection />
 
       {/* Intro – below hero (both mobile and desktop) */}
       <div className="max-w-2xl mx-auto px-4 pb-10 md:pt-4">
