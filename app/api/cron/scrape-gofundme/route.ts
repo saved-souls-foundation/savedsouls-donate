@@ -133,5 +133,6 @@ export async function GET(request: NextRequest) {
     success: true,
     raised: raised ?? 0,
     donations,
+    htmlPreview: html.substring(0, 3000),
   });
 }
