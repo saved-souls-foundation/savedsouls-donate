@@ -45,6 +45,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log("[sponsor-lead] Starting mail send to:", donorEmail);
+
     const mailRes = await sendSponsorConfirmationMail({
       to: donorEmail.trim().toLowerCase(),
       donorName: donorName.trim(),
@@ -57,6 +59,7 @@ export async function POST(req: NextRequest) {
           : null,
       locale: typeof locale === "string" ? locale : "nl",
     });
+    console.log("[sponsor-lead] Mail result:", JSON.stringify(mailRes));
     if (!mailRes.success) {
       console.error("[sponsor-lead] confirmation mail error:", mailRes.error);
     }
