@@ -45,6 +45,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log("[sponsor-lead] animalImage:", animalImage);
+
     const mailRes = await sendSponsorConfirmationMail({
       to: donorEmail.trim().toLowerCase(),
       donorName: donorName.trim(),
