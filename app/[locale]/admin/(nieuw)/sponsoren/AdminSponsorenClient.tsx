@@ -64,6 +64,31 @@ export default function AdminSponsorenClient() {
   const [deleting, setDeleting] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
 
+  type SponsorLead = {
+    id: string;
+    animal_id: string;
+    animal_name: string;
+    animal_type: string;
+    donor_name: string;
+    donor_email: string;
+    message: string | null;
+    locale: string | null;
+    created_at: string;
+  };
+  const [activeTab, setActiveTab] = useState<"bedrijven" | "dieren">("bedrijven");
+  const [leads, setLeads] = useState<SponsorLead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(false);
+
+  useEffect(() => {
+    if (activeTab !== "dieren") return;
+    setLeadsLoading(true);
+    fetch("/api/admin/sponsor-leads")
+      .then((r) => r.ok ? r.json() : { data: [] })
+      .then((j) => setLeads(j.data ?? []))
+      .catch(() => setLeads([]))
+      .finally(() => setLeadsLoading(false));
+  }, [activeTab]);
+
   const fetchList = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
@@ -166,6 +191,32 @@ export default function AdminSponsorenClient() {
 
   return (
     <div className="space-y-6">
+      <div className="flex gap-2 border-b mb-2" style={{ borderColor: ADM_BORDER }}>
+        <button
+          type="button"
+          onClick={() => setActiveTab("bedrijven")}
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+            activeTab === "bedrijven"
+              ? "border-teal-600 text-teal-700"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          🏢 Bedrijfssponsoren
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("dieren")}
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+            activeTab === "dieren"
+              ? "border-teal-600 text-teal-700"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          🐾 Dier sponsors
+        </button>
+      </div>
+      {activeTab === "bedrijven" && (
+        <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-xl font-semibold" style={{ color: ADM_TEXT }}>
           {t("title")}
@@ -424,6 +475,66 @@ export default function AdminSponsorenClient() {
           </div>
         )}
       </div>
+        </>
+      )}
+      {activeTab === "dieren" && (
+        <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
+          <table className="w-full text-sm">
+            <thead>
+              <tr style={{ background: "#f8fafc", borderBottom: `1px solid ${ADM_BORDER}` }}>
+                <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Naam</th>
+                <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>E-mail</th>
+                <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Dier</th>
+                <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Type</th>
+                <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Datum</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leadsLoading && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
+                    Laden...
+                  </td>
+                </tr>
+              )}
+              {!leadsLoading && leads.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
+                    Geen dier sponsors gevonden
+                  </td>
+                </tr>
+              )}
+              {!leadsLoading && leads.map((lead) => (
+                <tr key={lead.id} style={{ borderBottom: `1px solid ${ADM_BORDER}` }}>
+                  <td className="px-4 py-3 font-medium" style={{ color: ADM_TEXT }}>
+                    {lead.donor_name}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: ADM_MUTED }}>
+                    {lead.donor_email}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: ADM_TEXT }}>
+                    {lead.animal_name}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-medium"
+                      style={{
+                        background: lead.animal_type === "dog" ? "#e8f5ec" : "#e8f0fe",
+                        color: lead.animal_type === "dog" ? "#1a5c2e" : "#3730a3"
+                      }}>
+                      {lead.animal_type === "dog" ? "🐕 Hond" : "🐈 Kat"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-xs" style={{ color: ADM_MUTED }}>
+                    {new Date(lead.created_at).toLocaleDateString("nl-NL", {
+                      day: "2-digit", month: "2-digit", year: "numeric"
+                    })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

@@ -142,6 +142,7 @@ export async function POST(request: NextRequest) {
       source: "manual",
       animal_id: animal.id,
       type: "spotlight",
+      hero_image: animal.image ?? null,
     };
     console.log("[blog-generator] posts insert data:", insertData);
 
