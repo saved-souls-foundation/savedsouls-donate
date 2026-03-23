@@ -16,9 +16,10 @@ type Props = {
   animalId: string;
   animalName: string;
   animalType: "dog" | "cat";
+  animalImage?: string;
 };
 
-export default function SponsorForm({ animalId, animalName, animalType }: Props) {
+export default function SponsorForm({ animalId, animalName, animalType, animalImage }: Props) {
   const t = useTranslations("sponsorForm");
   const locale = useLocale();
   const router = useRouter();
@@ -51,6 +52,7 @@ export default function SponsorForm({ animalId, animalName, animalType }: Props)
           donorEmail: email.trim().toLowerCase(),
           message: message.trim().slice(0, 500) || undefined,
           locale,
+          animalImage: animalImage ?? undefined,
         }),
       });
 
