@@ -69,6 +69,9 @@ export function getAdoptConfirmationHtml(params: AdoptConfirmationParams): strin
           <!-- Body -->
           <tr>
             <td style="padding: 28px 24px;">
+              <p style="margin:0 0 16px 0;text-align:center;">
+                <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+              </p>
               <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #334155;">${greeting}</p>
               ${animalLine}
               <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #334155;">We have received your adoption inquiry and our team will get back to you within 48 hours.</p>

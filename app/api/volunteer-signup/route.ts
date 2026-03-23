@@ -28,6 +28,9 @@ function buildAutoReplyHtml(): string {
     <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">Saved Souls Foundation</p>
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
+    <p style="margin:0 0 16px 0;text-align:center;">
+      <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+    </p>
     <p style="margin:0 0 16px;">Dear friend,</p>
     <p style="margin:0 0 16px;">Thank you for your interest in volunteering at Saved Souls Foundation! We have received your application and our team will get back to you within 48 hours.</p>
     <p style="margin:0 0 24px;">We look forward to welcoming you to our sanctuary in Khon Kaen, Thailand!</p>

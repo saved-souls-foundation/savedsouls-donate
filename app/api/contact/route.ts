@@ -234,6 +234,9 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean, name?:
     <p style="margin:10px 0 0;opacity:0.95;font-size:15px;">${escapeHtml(ORG_NAME)}</p>
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
+    <p style="margin:0 0 16px 0;text-align:center;">
+      <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+    </p>
     <p style="margin:0 0 16px;">${escapeHtml(greeting)}</p>
     <p style="margin:0 0 16px;">${escapeHtml(c.body1)}</p>
     ${buttonBlock}
