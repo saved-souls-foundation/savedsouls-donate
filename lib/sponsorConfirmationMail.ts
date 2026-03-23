@@ -436,12 +436,13 @@ export function buildSponsorConfirmationHtml(params: {
   const greeting = fill(copy.greeting, donorName, animalName);
   const story = fill(copy.story, donorName, animalName);
 
-  const imageBlock =
-    animalImageUrl && animalImageUrl.trim().length > 0
-      ? `<p style="margin:0 0 16px 0;text-align:center;">
-  <img src="${escapeHtml(animalImageUrl.trim())}" alt="${escapeHtml(animalName)}" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
-</p>`
-      : "";
+  const resolvedImage = animalImageUrl && animalImageUrl.trim().length > 0
+    ? animalImageUrl.trim()
+    : "https://www.savedsouls-foundation.com/ourwork-1.webp";
+
+  const imageBlock = `<p style="margin:0 0 16px 0;text-align:center;">
+  <img src="${escapeHtml(resolvedImage)}" alt="${escapeHtml(animalName)}" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+</p>`;
 
   const moreRow = (emoji: string, label: string, href: string) =>
     `<tr>
