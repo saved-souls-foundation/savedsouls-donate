@@ -19,6 +19,18 @@ const ADM_MUTED = "#64748b";
 const ADM_ACCENT = "#0d9488";
 const TEAL = "#2A9D8F";
 
+/** Lokale kalenderdag als yyyy-mm-dd (vereist voor input type="date"; toISOString zou UTC-datum geven). */
+function localDateYmd(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function localTimeHm(d: Date): string {
+  return d.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+}
+
 type AnimalOption = { id: string; name: string; type: "dog" | "cat"; image?: string };
 
 type Volunteer = { id: string; name: string | null; line_id?: string | null; telefoon?: string | null };
@@ -37,9 +49,16 @@ export default function EventModal({ initialDate, initialEvent, volunteers = [],
 
   const [title, setTitle] = useState(initialEvent?.title ?? "");
   const [category, setCategory] = useState<EventCategory>(initialEvent?.category ?? "afspraak");
-  const [date, setDate] = useState(initialDate ?? initialEvent?.start_time?.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
-  const [startTime, setStartTime] = useState(initialEvent?.start_time?.slice(11, 16) ?? "09:00");
-  const [endTime, setEndTime] = useState(initialEvent?.end_time?.slice(11, 16) ?? "10:00");
+  const [date, setDate] = useState(
+    initialDate ??
+      (initialEvent?.start_time ? localDateYmd(new Date(initialEvent.start_time)) : localDateYmd(new Date()))
+  );
+  const [startTime, setStartTime] = useState(
+    initialEvent?.start_time ? localTimeHm(new Date(initialEvent.start_time)) : "09:00"
+  );
+  const [endTime, setEndTime] = useState(
+    initialEvent?.end_time ? localTimeHm(new Date(initialEvent.end_time)) : "10:00"
+  );
   const [location, setLocation] = useState(initialEvent?.location ?? "");
   const [animalId, setAnimalId] = useState<string | null>(initialEvent?.animal_id ?? null);
   const [animalName, setAnimalName] = useState(initialEvent?.animal_name ?? "");
