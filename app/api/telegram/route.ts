@@ -24,7 +24,25 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const message = body.message?.text;
-    chatId = body.message?.chat?.id;
+    chatId = body.message?.chat?.id ?? 0;
+
+    const allowedIds = (process.env.TELEGRAM_ALLOWED_IDS ?? "")
+      .split(",")
+      .map((id) => id.trim());
+    const fromId = String(body.message?.from?.id ?? "");
+
+    if (!allowedIds.includes(fromId)) {
+      await sendTelegram(chatId, "⛔ Je hebt geen toegang tot deze bot.");
+      return NextResponse.json({ ok: true });
+    }
+
+    const afzender =
+      [
+        body.message?.from?.first_name,
+        body.message?.from?.last_name,
+      ]
+        .filter(Boolean)
+        .join(" ") || "Onbekend";
 
     if (!message) return NextResponse.json({ ok: true });
 
@@ -96,12 +114,15 @@ Voorbeelden:
         data.persoon != null && String(data.persoon).trim().length > 0
           ? String(data.persoon).trim()
           : null;
+      const description = persoon
+        ? persoon + " (via " + afzender + ")"
+        : "Via: " + afzender;
 
       const { error } = await supabase.from("calendar_events").insert({
         title,
         category: "afspraak",
         start_time,
-        description: persoon,
+        description,
         location: null,
       });
       if (error) {
@@ -123,7 +144,7 @@ Voorbeelden:
 
       const { error } = await supabase.from("incoming_emails").insert({
         onderwerp,
-        van_naam,
+        van_naam: afzender + ": " + van_naam,
         van_email: "telegram@savedsouls.internal",
         inhoud: prioriteit,
         bron: "telegram",
@@ -143,11 +164,12 @@ Voorbeelden:
         ? `Bedrag: ${String(data.bedrag).trim()}`
         : null;
 
+      const datum = new Date().toLocaleDateString("nl-NL");
       const { error } = await supabase.from("sponsors").insert({
         bedrijfsnaam: naam,
         bedrag_per_maand: null,
         status: "actief",
-        notities: "Via Telegram op " + new Date().toLocaleDateString("nl-NL"),
+        notities: "Via Telegram door " + afzender + " op " + datum,
         omschrijving,
         herinnering_verstuurd: false,
       });
