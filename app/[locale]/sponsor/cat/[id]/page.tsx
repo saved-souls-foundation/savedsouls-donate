@@ -185,6 +185,7 @@ export default function SponsorCatDetailPage() {
                 animalId={String(cat.id)}
                 animalName={cat.name}
                 animalType="cat"
+                animalImage={cat.image ?? undefined}
               />
             </section>
           </div>
