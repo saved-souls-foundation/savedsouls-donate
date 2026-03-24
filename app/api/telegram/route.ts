@@ -8,17 +8,32 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+async function sendTelegram(chatId: number, text: string) {
+  await fetch(
+    `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text }),
+    }
+  );
+}
+
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const message = body.message?.text;
-  const chatId = body.message?.chat?.id;
+  let chatId = 0;
+  try {
+    const body = await req.json();
+    const message = body.message?.text;
+    chatId = body.message?.chat?.id;
 
-  if (!message) return NextResponse.json({ ok: true });
+    if (!message) return NextResponse.json({ ok: true });
 
-  const claude = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 1000,
-    system: `Je bent een assistent voor SavedSouls Foundation. 
+    await sendTelegram(chatId, `⏳ Bezig met verwerken: "${message}"`);
+
+    const claude = await anthropic.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      system: `Je bent een assistent voor SavedSouls Foundation. 
 Zet berichten om naar JSON. Mogelijke types:
 - rooster_wijziging: { naam, datum, tijd, actie }
 - afspraak: { datum, beschrijving, persoon }
@@ -29,30 +44,25 @@ Zet berichten om naar JSON. Mogelijke types:
 - adoptant: { naam, dier, datum }
 
 Antwoord ALLEEN met geldig JSON: { "type": "...", "data": {...} }`,
-    messages: [{ role: "user", content: message }],
-  });
+      messages: [{ role: "user", content: message }],
+    });
 
-  const responseText =
-    claude.content[0].type === "text" ? claude.content[0].text : "";
-  let bevestiging = "✅ Verwerkt!";
+    const responseText =
+      claude.content[0].type === "text" ? claude.content[0].text : "";
 
-  try {
+    await sendTelegram(chatId, `🧠 Claude zegt: ${responseText}`);
+
     const actie = JSON.parse(responseText);
     const { error } = await supabase.from(actie.type).insert(actie.data);
-    if (error) throw error;
-    bevestiging = `✅ Opgeslagen als ${actie.type}!\n\n${JSON.stringify(actie.data, null, 2)}`;
-  } catch (e) {
-    bevestiging = `❌ Fout: kon niet verwerken.\nClaude zei: ${responseText}`;
-  }
 
-  await fetch(
-    `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text: bevestiging }),
+    if (error) {
+      await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
+    } else {
+      await sendTelegram(chatId, `✅ Opgeslagen als ${actie.type}!`);
     }
-  );
+  } catch (e: any) {
+    if (chatId) await sendTelegram(chatId, `❌ Fout: ${e.message}`);
+  }
 
   return NextResponse.json({ ok: true });
 }
