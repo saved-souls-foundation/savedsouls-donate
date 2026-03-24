@@ -28,17 +28,15 @@ async function sendTelegram(chatId: number, text: string) {
 }
 
 function toLocalISOString(datum: string, tijd: string): string {
-  const str = `${datum}T${tijd}:00`;
-  const d = new Date(str);
-  if (Number.isNaN(d.getTime())) return new Date().toISOString().slice(0, 19);
-  const offset = d.getTimezoneOffset() * 60000;
-  return new Date(d.getTime() - offset).toISOString().slice(0, 19);
+  return `${datum}T${tijd}:00`;
 }
 
 function isZeker(data: Record<string, unknown>, type: string): boolean {
   if (type === "afspraak") {
-    // Zeker als datum én tijd én beschrijving aanwezig zijn
     return !!(data.datum && data.tijd && data.beschrijving);
+  }
+  if (type === "mail_taak") {
+    return !!(data.onderwerp && data.van);
   }
   if (type === "mail_taak") {
     return !!(data.onderwerp && data.van);
