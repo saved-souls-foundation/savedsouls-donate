@@ -52,13 +52,104 @@ Antwoord ALLEEN met geldig JSON: { "type": "...", "data": {...} }`,
 
     await sendTelegram(chatId, `🧠 Claude zegt: ${responseText}`);
 
-    const actie = JSON.parse(responseText);
-    const { error } = await supabase.from(actie.type).insert(actie.data);
+    const actie = JSON.parse(responseText) as {
+      type?: string;
+      data?: Record<string, unknown>;
+    };
+    const type = typeof actie.type === "string" ? actie.type.trim() : "";
+    const data =
+      actie.data && typeof actie.data === "object" && actie.data !== null
+        ? actie.data
+        : {};
 
-    if (error) {
-      await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
+    if (type === "afspraak") {
+      let start_time: string;
+      try {
+        const d = new Date(data.datum as string | number | Date);
+        start_time = Number.isNaN(d.getTime())
+          ? new Date().toISOString()
+          : d.toISOString();
+      } catch {
+        start_time = new Date().toISOString();
+      }
+      const beschrijving =
+        data.beschrijving != null ? String(data.beschrijving).trim() : "";
+      const title = beschrijving.length > 0 ? beschrijving : "Afspraak";
+      const persoon =
+        data.persoon != null && String(data.persoon).trim().length > 0
+          ? String(data.persoon).trim()
+          : null;
+
+      const row = {
+        title,
+        category: "appointment",
+        start_time,
+        description: persoon,
+        location: null as string | null,
+      };
+
+      const { error } = await supabase.from("calendar_events").insert(row);
+      if (error) {
+        await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
+      } else {
+        await sendTelegram(chatId, `✅ Opgeslagen als calendar_events (afspraak)!`);
+      }
+    } else if (type === "mail_taak") {
+      const onderwerpRaw = data.onderwerp != null ? String(data.onderwerp).trim() : "";
+      const onderwerp =
+        onderwerpRaw.length > 0 ? onderwerpRaw : "Via Telegram";
+      const vanNaamRaw = data.van != null ? String(data.van).trim() : "";
+      const van_naam = vanNaamRaw.length > 0 ? vanNaamRaw : "Telegram";
+      const prioriteit =
+        data.prioriteit != null && String(data.prioriteit).trim().length > 0
+          ? String(data.prioriteit).trim()
+          : null;
+
+      const row = {
+        onderwerp,
+        van_naam,
+        van_email: "telegram@savedsouls.internal",
+        inhoud: prioriteit,
+        bron: "telegram",
+        status: "in_behandeling" as const,
+      };
+
+      const { error } = await supabase.from("incoming_emails").insert(row);
+      if (error) {
+        await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
+      } else {
+        await sendTelegram(chatId, `✅ Opgeslagen als incoming_emails (mail_taak)!`);
+      }
+    } else if (type === "sponsor") {
+      const naam =
+        data.naam != null && String(data.naam).trim().length > 0
+          ? String(data.naam).trim()
+          : null;
+      const omschrijving =
+        data.bedrag != null && String(data.bedrag).trim().length > 0
+          ? `Bedrag: ${String(data.bedrag).trim()}`
+          : null;
+
+      const row = {
+        bedrijfsnaam: naam,
+        bedrag_per_maand: null as number | null,
+        status: "actief" as const,
+        notities: "Via Telegram op " + new Date().toLocaleDateString("nl-NL"),
+        omschrijving,
+        herinnering_verstuurd: false,
+      };
+
+      const { error } = await supabase.from("sponsors").insert(row);
+      if (error) {
+        await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
+      } else {
+        await sendTelegram(chatId, `✅ Opgeslagen als sponsors (sponsor)!`);
+      }
     } else {
-      await sendTelegram(chatId, `✅ Opgeslagen als ${actie.type}!`);
+      await sendTelegram(
+        chatId,
+        `⚠️ ${type || "(geen type)"} wordt nog niet automatisch opgeslagen.\n\nNoteer handmatig: ${JSON.stringify(data)}`
+      );
     }
   } catch (e: any) {
     if (chatId) await sendTelegram(chatId, `❌ Fout: ${e.message}`);
