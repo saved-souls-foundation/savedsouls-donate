@@ -98,7 +98,7 @@ Voorbeelden:
       try {
         const datum = data.datum ? String(data.datum).trim() : "";
         const tijd = data.tijd ? String(data.tijd).trim() : "09:00";
-        const datumStr = datum ? `${datum}T${tijd}:00+07:00` : "";
+        const datumStr = datum ? `${datum}T${tijd}:00` : "";
         const d = datumStr ? new Date(datumStr) : new Date();
         start_time = Number.isNaN(d.getTime())
           ? new Date().toISOString()
