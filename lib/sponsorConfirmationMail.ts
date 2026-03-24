@@ -7,9 +7,9 @@ const DONORBOX_BASE =
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "https://www.savedsouls-foundation.com";
+  "https://www.savedsouls-foundation.org";
 
-const FROM_ADDRESS = "Saved Souls Foundation <info@savedsouls-foundation.com>";
+const FROM_ADDRESS = "Saved Souls Foundation <info@savedsouls-foundation.org>";
 
 export type SponsorMailLocale = "nl" | "en" | "de" | "fr" | "es" | "th" | "ru";
 
@@ -333,13 +333,13 @@ const SOCIAL_PLATFORMS: SocialPlatform[] = [
     label: "Snapchat",
     buildText: ({ animal, url, locale }) => {
       const lines: Record<SponsorMailLocale, string> = {
-        nl: `Sponsor ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        en: `Sponsoring ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        de: `Sponsor ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        fr: `Parrainage ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        es: `Patrocinio ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        th: `สปอนเซอร์ ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
-        ru: `Спонсор ${animal} 🐾 | savedsouls-foundation.com | ${url}`,
+        nl: `Sponsor ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        en: `Sponsoring ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        de: `Sponsor ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        fr: `Parrainage ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        es: `Patrocinio ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        th: `สปอนเซอร์ ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
+        ru: `Спонсор ${animal} 🐾 | savedsouls-foundation.org | ${url}`,
       };
       return lines[locale];
     },
@@ -438,7 +438,7 @@ export function buildSponsorConfirmationHtml(params: {
 
   const resolvedImage = animalImageUrl && animalImageUrl.trim().length > 0
     ? animalImageUrl.trim()
-    : "https://www.savedsouls-foundation.com/ourwork-1.webp";
+    : "https://www.savedsouls-foundation.org/ourwork-1.webp";
 
   const imageBlock = `<p style="margin:0 0 16px 0;text-align:center;">
   <img src="${escapeHtml(resolvedImage)}" alt="${escapeHtml(animalName)}" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
@@ -556,6 +556,6 @@ export async function sendSponsorConfirmationMail(
     subject,
     text,
     html,
-    replyTo: "info@savedsouls-foundation.com",
+    replyTo: "info@savedsouls-foundation.org",
   });
 }

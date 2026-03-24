@@ -3,7 +3,7 @@
  * Gebruik in contact-, volunteer-, donate-, adopt-notificaties en auto-replies.
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.org";
 const FOOTER_BG = "#1a3d2b";
 const ACCENT_GREEN = "#2aa348";
 

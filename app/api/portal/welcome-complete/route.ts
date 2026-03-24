@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { sendMail, NOTIFICATION_EMAILS, delay } from "@/lib/sendMail";
 
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 
 function escapeHtml(s: string): string {
   return s
@@ -86,14 +86,14 @@ Reis je naar een van onze projecten? Dan ontvang je een volledig reisplan met be
 
 Met vriendelijke groet,
 Saved Souls Foundation
-https://savedsouls-foundation.com`;
+https://savedsouls-foundation.org`;
 
     const welcomeHtml = `
       <p>Hoi ${escapeHtml(firstName)},</p>
       <p>Gefeliciteerd! Je bent nu officieel onderdeel van <strong>team Saved Souls</strong>.</p>
       <p>Je ontvangt van ons een persoonlijk reisplan en een introductie op onze werkwijze zodat je goed voorbereid van start kunt gaan. Onze planner neemt contact met je op om je eerste inzet in te plannen.</p>
       <p>Reis je naar een van onze projecten? Dan ontvang je een volledig reisplan met begeleiding. Je wordt ook toegevoegd aan onze vrijwilligers-community — altijd een team om op terug te vallen.</p>
-      <p>Met vriendelijke groet,<br><strong>Saved Souls Foundation</strong><br><a href="https://savedsouls-foundation.com">savedsouls-foundation.com</a></p>
+      <p>Met vriendelijke groet,<br><strong>Saved Souls Foundation</strong><br><a href="https://savedsouls-foundation.org">savedsouls-foundation.org</a></p>
     `.trim();
 
     const welcomeResult = await sendMail({

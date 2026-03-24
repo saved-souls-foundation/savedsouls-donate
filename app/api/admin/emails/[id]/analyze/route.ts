@@ -5,7 +5,7 @@ import { analyzeIncomingEmail } from "@/lib/claudeAnalyze";
 import { sendMail } from "@/lib/sendMail";
 import { logSentEmail } from "@/lib/sentEmailsLog";
 
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.com";
+const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "info@savedsouls-foundation.org";
 const AUTO_SEND_CONFIDENCE_THRESHOLD = 0.6;
 
 function wrapHtml(body: string): string {

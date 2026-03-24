@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const LOCALES = ["nl", "en", "de", "es", "th", "ru", "fr"];
 
 const disallow = [

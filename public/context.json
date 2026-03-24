@@ -4,7 +4,7 @@
   "name": "Saved Souls Foundation",
   "alternateName": "SSF",
   "description": "Animal rescue sanctuary in Khon Kaen, Thailand. Specialized in disabled, paralyzed, and abused dogs and cats. The only shelter that never rejects paralyzed or special needs animals.",
-  "url": "https://www.savedsouls-foundation.com",
+  "url": "https://www.savedsouls-foundation.org",
   "foundingDate": "2010",
   "registrationNumber": "1/2560",
   "registrationDate": "2017-10-09",
@@ -37,7 +37,7 @@
     }
   },
   "contact": {
-    "email": "info@savedsouls-foundation.com",
+    "email": "info@savedsouls-foundation.org",
     "phone": "+66623698246",
     "officeHours": "08:00-16:00 ICT (UTC+7)"
   },
@@ -103,9 +103,9 @@
   },
   "languages": ["en", "nl", "de", "es", "th", "ru", "fr"],
   "urls": {
-    "donate": "https://www.savedsouls-foundation.com/en/donate",
-    "adopt": "https://www.savedsouls-foundation.com/en/adopt",
-    "sponsor": "https://www.savedsouls-foundation.com/en/sponsor",
-    "volunteer": "https://www.savedsouls-foundation.com/en/volunteer"
+    "donate": "https://www.savedsouls-foundation.org/en/donate",
+    "adopt": "https://www.savedsouls-foundation.org/en/adopt",
+    "sponsor": "https://www.savedsouls-foundation.org/en/sponsor",
+    "volunteer": "https://www.savedsouls-foundation.org/en/volunteer"
   }
 }

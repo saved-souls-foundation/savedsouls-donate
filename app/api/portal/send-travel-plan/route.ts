@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { sendMail } from "@/lib/sendMail";
 import { buildTravelPlanEmail } from "@/lib/travelPlanEmail";
 
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 
 export async function POST(req: NextRequest) {
   try {

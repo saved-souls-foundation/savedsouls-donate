@@ -4,7 +4,7 @@ import { fetchAnimalsFromApi } from "@/lib/animals-api";
 import { fetchSponsorAnimalsFromApi } from "@/lib/sponsor-api";
 import { getAllBlogPosts } from "@/lib/blog-posts";
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 
 const STATIC_PATHS = [
   "",

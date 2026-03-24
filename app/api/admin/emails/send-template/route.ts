@@ -9,7 +9,7 @@ const MAX_EMAILS_PER_DAY = 200;
 const ORGANISATIE = "Saved Souls Foundation";
 
 function getFromEmail(): string {
-  return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
+  return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.org>";
 }
 
 async function requireAdmin() {

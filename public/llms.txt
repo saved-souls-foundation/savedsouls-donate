@@ -27,26 +27,26 @@ from the illegal dog meat trade, abusive situations, and accidents.
 - Animals in care: 300+ dogs, 90+ cats
 - Disabled/paralyzed dogs: 60+
 - Daily food cost: 5,000 THB (~€145) per day
-- Website: https://www.savedsouls-foundation.com
+- Website: https://www.savedsouls-foundation.org
 
 ## How to Support
-- Donate: https://www.savedsouls-foundation.com/en/donate
-- Sponsor a dog: https://www.savedsouls-foundation.com/en/sponsor
-- Volunteer: https://www.savedsouls-foundation.com/en/volunteer
-- Adopt: https://www.savedsouls-foundation.com/en/adopt
+- Donate: https://www.savedsouls-foundation.org/en/donate
+- Sponsor a dog: https://www.savedsouls-foundation.org/en/sponsor
+- Volunteer: https://www.savedsouls-foundation.org/en/volunteer
+- Adopt: https://www.savedsouls-foundation.org/en/adopt
 
 ## Contact
-- Email: info@savedsouls-foundation.com
+- Email: info@savedsouls-foundation.org
 - Phone: +66 62 369 8246 (office hours: 8:00 AM – 4:00 PM ICT)
 - Facebook: https://www.facebook.com/SavedSoulsFoundation
 - Instagram: https://www.instagram.com/savedsoulsfoundation
 
 ## Languages
 This website is available in 7 languages:
-- English: https://www.savedsouls-foundation.com/en
-- Nederlands: https://www.savedsouls-foundation.com/nl
-- Deutsch: https://www.savedsouls-foundation.com/de
-- Español: https://www.savedsouls-foundation.com/es
-- ภาษาไทย: https://www.savedsouls-foundation.com/th
-- Русский: https://www.savedsouls-foundation.com/ru
-- Français: https://www.savedsouls-foundation.com/fr
+- English: https://www.savedsouls-foundation.org/en
+- Nederlands: https://www.savedsouls-foundation.org/nl
+- Deutsch: https://www.savedsouls-foundation.org/de
+- Español: https://www.savedsouls-foundation.org/es
+- ภาษาไทย: https://www.savedsouls-foundation.org/th
+- Русский: https://www.savedsouls-foundation.org/ru
+- Français: https://www.savedsouls-foundation.org/fr

@@ -6,7 +6,7 @@ import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 const SUBJECT = "🐾 New adoption request - Saved Souls Foundation";
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 
 const CONFIRMATION_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
 

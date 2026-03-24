@@ -5,7 +5,7 @@ import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/adm
 import { getEmailFooterHtml, getEmailFooterText } from "@/lib/emailFooter";
 
 const SUBJECT = "🌟 New volunteer signup - Saved Souls Foundation";
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 const GREEN = "#2aa348";
 
 const CONFIRMATION_SUBJECT = "We received your volunteer application – Saved Souls Foundation";
@@ -18,7 +18,7 @@ We look forward to welcoming you to our sanctuary in Khon Kaen, Thailand!
 With gratitude,
 The Saved Souls Team
 Khon Kaen, Thailand
-https://savedsouls-foundation.com`;
+https://savedsouls-foundation.org`;
 
 function escapeHtml(s: string): string {
   return String(s)

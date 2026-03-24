@@ -3,7 +3,7 @@
  * Zakelijke stijl, duidelijke gegevens aanvrager + dier, knop naar beheer.
  */
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const GREEN = "#2aa348";
 const GREEN_DARK = "#1e7a38";
 const FOOTER_BG = "#1a3d2b";

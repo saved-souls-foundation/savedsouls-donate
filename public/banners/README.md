@@ -25,7 +25,7 @@ Standaard bannerformaten voor advertenties en partners.
 ## Gebruik
 
 Banners zijn bereikbaar via:
-- `https://www.savedsouls-foundation.com/banners/728x90-leaderboard-en.html`
+- `https://www.savedsouls-foundation.org/banners/728x90-leaderboard-en.html`
 - etc.
 
 Of lokaal: `public/banners/`
@@ -35,4 +35,4 @@ Of lokaal: `public/banners/`
 - Brandkleuren: groen (#2aa348), oranje (#E67A4C), teal (#0d9488)
 - Rolstoelhond-animatie (heen en weer)
 - Hover-effect op CTA-knoppen
-- Link naar savedsouls-foundation.com
+- Link naar savedsouls-foundation.org

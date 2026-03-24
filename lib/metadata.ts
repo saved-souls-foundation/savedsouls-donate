@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const LOCALES = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 
 /**

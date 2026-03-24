@@ -34,8 +34,8 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://www.savedsouls-foundation.com/sitemap.xml
-Host: https://www.savedsouls-foundation.com
+Sitemap: https://www.savedsouls-foundation.org/sitemap.xml
+Host: https://www.savedsouls-foundation.org
 ```
 
 **Status:** ✅ Correct
@@ -52,14 +52,14 @@ Host: https://www.savedsouls-foundation.com
 
 **Status:** ✅ Correct
 
-- **Base URL:** https://www.savedsouls-foundation.com
+- **Base URL:** https://www.savedsouls-foundation.org
 - **Locales:** nl, en, de, es, th, ru (6 talen)
 - **Statische paden:** 106 paden × 6 locales = 636 URLs
 - **Dynamisch:** blogposts, adopt-dieren (dogs/cats), sponsor-dieren
 - **Prioriteit:** homepage 1, donate 0.9, overige 0.6–0.8
 - **Change frequency:** homepage/donate weekly, rest monthly
 
-**Let op:** URLs bevatten altijd een locale, bijv. `https://www.savedsouls-foundation.com/nl/donate`.
+**Let op:** URLs bevatten altijd een locale, bijv. `https://www.savedsouls-foundation.org/nl/donate`.
 
 ---
 

@@ -6,7 +6,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 
 const GOFUNDME_URL = "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.org";
 
 type Props = { params: Promise<{ locale: string }> };
 

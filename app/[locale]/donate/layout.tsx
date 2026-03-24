@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 
 const donateActionSchema = {
   "@context": "https://schema.org",

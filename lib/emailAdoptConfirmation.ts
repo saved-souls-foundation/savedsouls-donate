@@ -3,7 +3,7 @@
  * Inline styles voor maximale compatibiliteit in e-mailclients.
  */
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const GREEN = "#2aa348";
 const GREEN_DARK = "#1e7a38";
 const FOOTER_BG = "#1a3d2b";
@@ -70,7 +70,7 @@ export function getAdoptConfirmationHtml(params: AdoptConfirmationParams): strin
           <tr>
             <td style="padding: 28px 24px;">
               <p style="margin:0 0 16px 0;text-align:center;">
-                <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+                <img src="https://www.savedsouls-foundation.org/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
               </p>
               <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #334155;">${greeting}</p>
               ${animalLine}
@@ -92,7 +92,7 @@ export function getAdoptConfirmationHtml(params: AdoptConfirmationParams): strin
               <p style="margin: 0 0 12px 0; font-size: 15px; font-weight: 700; color: #ffffff;">Saved Souls Foundation</p>
               <p style="margin: 0 0 16px 0; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.85);">Ban Khok Ngam, Ban Fang, Khon Kaen, Thailand</p>
               <p style="margin: 0 0 16px 0; font-size: 13px;">
-                <a href="${websiteUrl}" style="color: #7dd3fc; text-decoration: underline;">savedsouls-foundation.com</a>
+                <a href="${websiteUrl}" style="color: #7dd3fc; text-decoration: underline;">savedsouls-foundation.org</a>
               </p>
               <!-- Social links -->
               <p style="margin: 0 0 8px 0; font-size: 12px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em;">Follow us</p>
@@ -124,7 +124,7 @@ export function getAdoptConfirmationText(params: AdoptConfirmationParams): strin
   }
   intro += `We have received your adoption inquiry and our team will get back to you within 48 hours.\n\n`;
   intro += `We look forward to helping you find your new companion!\n\n`;
-  intro += `With gratitude,\nThe Saved Souls Team\nKhon Kaen, Thailand\nhttps://www.savedsouls-foundation.com`;
+  intro += `With gratitude,\nThe Saved Souls Team\nKhon Kaen, Thailand\nhttps://www.savedsouls-foundation.org`;
 
   return intro;
 }

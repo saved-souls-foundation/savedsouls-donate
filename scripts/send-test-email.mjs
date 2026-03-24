@@ -8,8 +8,8 @@
 import { Resend } from "resend";
 
 const apiKey = process.env.RESEND_API_KEY;
-const from = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
-const to = process.env.TEST_EMAIL_TO || "info@savedsouls-foundation.com";
+const from = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.org>";
+const to = process.env.TEST_EMAIL_TO || "info@savedsouls-foundation.org";
 
 if (!apiKey) {
   console.error("Geen RESEND_API_KEY. Run met: RESEND_API_KEY=re_xxx node scripts/send-test-email.mjs");

@@ -7,7 +7,7 @@ import { sendMail, delay } from "@/lib/sendMail";
 
 const BASE_URL = (typeof process.env.NEXT_PUBLIC_SITE_URL === "string" && process.env.NEXT_PUBLIC_SITE_URL.trim())
   ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
-  : "https://www.savedsouls-foundation.com";
+  : "https://www.savedsouls-foundation.org";
 const BATCH_SIZE = 50;
 const LANGUAGES = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 

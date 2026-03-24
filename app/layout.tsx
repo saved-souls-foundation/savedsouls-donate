@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   description:
     "Saved Souls Foundation in Khon Kaen, Thailand: the only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs. Donate since 2010.",
   keywords: ["Saved Souls Foundation", "Thailand", "Khon Kaen", "disabled dogs", "rescued dogs", "stray dogs", "wheelchair dogs", "paralyzed dogs", "dog rescue Thailand", "animal shelter Thailand", "donate", "adopt dog", "sponsor dog"],
-  authors: [{ name: "Saved Souls Foundation", url: "https://www.savedsouls-foundation.com" }],
+  authors: [{ name: "Saved Souls Foundation", url: "https://www.savedsouls-foundation.org" }],
   openGraph: {
     title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs",
     description:
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     images: ["/savedsoul-logo.webp"],
   },
   robots: "index, follow",
-  metadataBase: new URL("https://www.savedsouls-foundation.com"),
+  metadataBase: new URL("https://www.savedsouls-foundation.org"),
 };
 
 export const viewport: Viewport = {
@@ -65,9 +65,9 @@ const jsonLd = {
   "@type": ["NGO", "AnimalShelter"],
   name: "Saved Souls Foundation",
   description: "Animal rescue sanctuary in Khon Kaen, Thailand. The only shelter that never rejects paralyzed or special needs dogs. Rescue stray dogs, adopt rescued dogs, sponsor wheelchair dogs.",
-  url: "https://www.savedsouls-foundation.com",
+  url: "https://www.savedsouls-foundation.org",
   telephone: "+66623698246",
-  image: "https://www.savedsouls-foundation.com/savedsoul-logo.webp",
+  image: "https://www.savedsouls-foundation.org/savedsoul-logo.webp",
   address: {
     "@type": "PostalAddress",
     streetAddress: "133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270, Thailand",

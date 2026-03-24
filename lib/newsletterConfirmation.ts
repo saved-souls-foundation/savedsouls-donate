@@ -10,7 +10,7 @@ export async function sendNewsletterConfirmation({
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const result = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "Saved Souls Foundation <info@savedsouls-foundation.com>",
+      from: process.env.RESEND_FROM_EMAIL || "Saved Souls Foundation <info@savedsouls-foundation.org>",
       to: email,
       subject: "✅ Je bent aangemeld voor de Saved Souls nieuwsbrief!",
       html: `
@@ -20,7 +20,7 @@ export async function sendNewsletterConfirmation({
           </div>
           <div style="background:#fff;padding:24px;border-radius:0 0 12px 12px;">
             <p style="margin:0 0 16px 0;text-align:center;">
-              <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+              <img src="https://www.savedsouls-foundation.org/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
             </p>
             <p>Beste ${naam ?? "abonnee"},</p>
             <p>Welkom! Je bent succesvol aangemeld voor de nieuwsbrief van Saved Souls Foundation.</p>

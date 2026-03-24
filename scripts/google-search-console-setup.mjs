@@ -11,7 +11,7 @@
  *     → Toont sitemap + robots URL voor aanmelden in GSC.
  */
 
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const fs = await import("fs");
 const path = await import("path");
 const { fileURLToPath } = await import("url");

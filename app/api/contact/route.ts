@@ -5,12 +5,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getEmailFooterHtml } from "@/lib/emailFooter";
 
 const SUBJECT = "💌 New contact message - Saved Souls Foundation";
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 /** Kopie auto-reply altijd naar dit adres (valt soms niet aan bij submitter). */
 const AUTO_REPLY_CC = "kleinjansmike@gmail.com";
 
 const ACCENT_GREEN = "#2aa348";
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const CONTACT_EMAIL = "info@savedsouls-foundation.org";
 const FOOTER_BG = "#1a3d2b";
 /** Organisatienaam altijd in het Engels in de mail (nooit vertalen). */
@@ -235,7 +235,7 @@ function buildAutoReplyHtml(locale: string, includeDonateButton: boolean, name?:
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
     <p style="margin:0 0 16px 0;text-align:center;">
-      <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+      <img src="https://www.savedsouls-foundation.org/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
     </p>
     <p style="margin:0 0 16px;">${escapeHtml(greeting)}</p>
     <p style="margin:0 0 16px;">${escapeHtml(c.body1)}</p>

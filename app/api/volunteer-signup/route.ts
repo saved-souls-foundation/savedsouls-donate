@@ -6,7 +6,7 @@ import { getEmailFooterHtml, getEmailFooterText } from "@/lib/emailFooter";
 
 const TO_VOLUNTEER = "info@savedsouls-foundation.org";
 const TO_MIKE_MONITOR = "mike@savedsouls-foundation.org";
-const REPLY_TO = "info@savedsouls-foundation.com";
+const REPLY_TO = "info@savedsouls-foundation.org";
 
 const AUTO_REPLY_SUBJECT = "We received your volunteer application – Saved Souls Foundation";
 const GREEN = "#2aa348";
@@ -29,7 +29,7 @@ function buildAutoReplyHtml(): string {
   </div>
   <div style="padding:24px;line-height:1.6;color:#333;">
     <p style="margin:0 0 16px 0;text-align:center;">
-      <img src="https://www.savedsouls-foundation.com/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+      <img src="https://www.savedsouls-foundation.org/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
     </p>
     <p style="margin:0 0 16px;">Dear friend,</p>
     <p style="margin:0 0 16px;">Thank you for your interest in volunteering at Saved Souls Foundation! We have received your application and our team will get back to you within 48 hours.</p>
@@ -121,7 +121,7 @@ We look forward to welcoming you to our sanctuary in Khon Kaen, Thailand!
 With gratitude,
 The Saved Souls Team
 Khon Kaen, Thailand
-https://www.savedsouls-foundation.com${getEmailFooterText()}`;
+https://www.savedsouls-foundation.org${getEmailFooterText()}`;
 
     const autoRes = await sendMail({
       to: email,

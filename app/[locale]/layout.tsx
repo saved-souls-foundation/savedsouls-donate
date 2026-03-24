@@ -14,7 +14,7 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.savedsouls-foundation.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.savedsouls-foundation.org";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -101,8 +101,8 @@ export default async function LocaleLayout({ children, params }: Props) {
     "@context": "https://schema.org",
     "@type": "NGO",
     name: "SavedSouls Foundation",
-    url: "https://www.savedsouls-foundation.com",
-    logo: "https://www.savedsouls-foundation.com/logo.png",
+    url: "https://www.savedsouls-foundation.org",
+    logo: "https://www.savedsouls-foundation.org/logo.png",
     description: "Animal rescue sanctuary in Thailand rescuing dogs and cats from the illegal dog meat trade and the streets.",
     foundingDate: "2010",
     address: {

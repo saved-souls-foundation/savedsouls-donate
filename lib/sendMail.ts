@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
-/** From-adres moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan. */
-const DEFAULT_FROM = "Saved Souls Website <info@savedsouls-foundation.com>";
+/** From-adres moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.org), anders komt mail niet aan. */
+const DEFAULT_FROM = "Saved Souls Website <info@savedsouls-foundation.org>";
 
 /** Reply-to voor Resend Inbound: antwoorden komen binnen via webhook (reply@woonjonie.resend.app). */
 const DEFAULT_REPLY_TO = process.env.RESEND_INBOUND_REPLY_TO ?? "reply@woonjonie.resend.app";
@@ -68,7 +68,6 @@ export function delay(ms: number): Promise<void> {
 
 /** Notification recipients for form submissions (contact, volunteer, adopt, donate). Mike (@.org) ontvangt voorlopig alles om te monitoren; .org blijft zo. */
 export const NOTIFICATION_EMAILS = [
-  "info@savedsouls-foundation.com",
   "info@savedsouls-foundation.org",
   "mike@savedsouls-foundation.org",
 ] as const;

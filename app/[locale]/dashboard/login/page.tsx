@@ -107,7 +107,7 @@ export default function DashboardLoginPage() {
     try {
       const supabase = createClient();
       // Base URL moet EXACT overeenkomen met Supabase Redirect URLs (anders gaat Supabase naar homepage).
-      // Zet in Vercel: NEXT_PUBLIC_SITE_URL=https://savedsouls-foundation.com (zonder trailing slash)
+      // Zet in Vercel: NEXT_PUBLIC_SITE_URL=https://savedsouls-foundation.org (zonder trailing slash)
       const base =
         typeof process.env.NEXT_PUBLIC_SITE_URL === "string" && process.env.NEXT_PUBLIC_SITE_URL
           ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")

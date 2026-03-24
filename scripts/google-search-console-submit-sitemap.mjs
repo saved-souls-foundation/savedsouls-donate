@@ -14,10 +14,10 @@
  *   export GOOGLE_APPLICATION_CREDENTIALS=/pad/naar/service-account.json
  *   node scripts/google-search-console-submit-sitemap.mjs
  *
- * Optioneel: SITE_URL en SITEMAP_URL overschrijven (default: savedsouls-foundation.com).
+ * Optioneel: SITE_URL en SITEMAP_URL overschrijven (default: savedsouls-foundation.org).
  */
 
-const BASE_URL = process.env.SITE_URL || "https://www.savedsouls-foundation.com";
+const BASE_URL = process.env.SITE_URL || "https://www.savedsouls-foundation.org";
 const SITEMAP_URL = process.env.SITEMAP_URL || `${BASE_URL}/sitemap.xml`;
 
 async function main() {
@@ -52,7 +52,7 @@ async function main() {
   const authClient = await auth.getClient();
   const webmasters = google.webmasters({ version: "v3", auth: authClient });
 
-  // siteUrl = exacte eigenschap-URL in GSC (bijv. https://www.savedsouls-foundation.com/)
+  // siteUrl = exacte eigenschap-URL in GSC (bijv. https://www.savedsouls-foundation.org/)
   const siteUrl = BASE_URL.endsWith("/") ? BASE_URL : `${BASE_URL}/`;
   // feedpath = volledige sitemap-URL (zoals in de API-docs)
   const feedpath = SITEMAP_URL;

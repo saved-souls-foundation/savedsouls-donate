@@ -5,7 +5,7 @@ import { sendMail } from "@/lib/sendMail";
 import { logSentEmail } from "@/lib/sentEmailsLog";
 
 /** From moet formaat "Name <email@domain.com>" hebben voor Resend (geverifieerd domein). */
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.com>";
+const RESEND_FROM = process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Saved Souls Foundation <info@savedsouls-foundation.org>";
 
 async function requireAdmin() {
   const supabase = await createClient();

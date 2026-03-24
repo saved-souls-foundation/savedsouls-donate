@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { alternatesForPath } from "@/lib/metadata";
 
 const BASE_URL = "https://savedsouls-foundation.org";
-const SCHEMA_BASE = "https://www.savedsouls-foundation.com";
+const SCHEMA_BASE = "https://www.savedsouls-foundation.org";
 
 type Props = {
   children: React.ReactNode;

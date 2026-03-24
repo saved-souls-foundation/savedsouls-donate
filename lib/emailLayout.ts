@@ -5,7 +5,7 @@
 const BRAND_COLOR = "#2aa348";
 const FOOTER_BG = "#1a3d2b";
 const ORG_NAME = "Saved Souls Foundation";
-export const EMAIL_BASE_URL = "https://www.savedsouls-foundation.com";
+export const EMAIL_BASE_URL = "https://www.savedsouls-foundation.org";
 
 /** Max 4 socials voor in de footer (Facebook, Instagram, TikTok, YouTube). */
 export const EMAIL_SOCIALS = [

@@ -7,9 +7,9 @@ import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
 
 const TO_PRIMARY = "info@savedsouls-foundation.org";
 const TO_MIKE_MONITOR = "mike@savedsouls-foundation.org";
-// From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.com), anders komt mail niet aan.
-const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.com>";
-const REPLY_TO = "info@savedsouls-foundation.com";
+// From moet op het in Resend geverifieerde domein zijn (bijv. savedsouls-foundation.org), anders komt mail niet aan.
+const FROM_EMAIL = process.env.RESEND_FROM || "Saved Souls Website <info@savedsouls-foundation.org>";
+const REPLY_TO = "info@savedsouls-foundation.org";
 
 const AUTO_REPLY_SUBJECT = "We received your adoption inquiry – Saved Souls Foundation";
 

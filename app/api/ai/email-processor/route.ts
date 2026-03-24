@@ -5,7 +5,7 @@ import { EMAIL_CLASSIFY_PROMPT, EMAIL_REPLY_PROMPT } from "@/lib/ai/prompts";
 import { sendMail } from "@/lib/sendMail";
 
 const ACCENT_GREEN = "#2aa348";
-const BASE_URL = "https://www.savedsouls-foundation.com";
+const BASE_URL = "https://www.savedsouls-foundation.org";
 const FOOTER_BG = "#1a3d2b";
 const ORG_NAME = "Saved Souls Foundation";
 

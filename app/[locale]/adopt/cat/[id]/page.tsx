@@ -21,7 +21,7 @@ type Cat = {
   story?: string;
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.org";
 
 export default function CatDetailPage() {
   const params = useParams();
@@ -99,7 +99,7 @@ export default function CatDetailPage() {
               provider: {
                 "@type": "NGO",
                 name: "Saved Souls Foundation",
-                url: "https://www.savedsouls-foundation.com",
+                url: "https://www.savedsouls-foundation.org",
               },
             }),
           }}
