@@ -28,8 +28,9 @@ async function sendTelegram(chatId: number, text: string) {
 }
 
 function toLocalISOString(datum: string, tijd: string): string {
-  return `${datum}T${tijd}:00`;
+  return `${datum}T${tijd}:00+07:00`;
 }
+
 
 function isZeker(data: Record<string, unknown>, type: string): boolean {
   if (type === "afspraak") {
