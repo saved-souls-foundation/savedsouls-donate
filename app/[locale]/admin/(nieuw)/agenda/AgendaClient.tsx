@@ -73,6 +73,39 @@ function getWeekDays(anchor: Date) {
   });
 }
 
+const HOUR_ROW_PX = 48;
+
+/** Zelfde datum-sleutel als eventsByDate (start_time.slice(0, 10) op ISO-string). */
+function isoDayKey(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+/** Verticale layout t.o.v. lokale dag 07:00–23:00 (16 rijen). */
+function layoutEventBlock(ev: CalendarEvent, columnDate: Date): { top: number; height: number } | null {
+  const start = new Date(ev.start_time);
+  let end: Date;
+  if (ev.end_time) {
+    end = new Date(ev.end_time);
+    if (end.getTime() <= start.getTime()) {
+      end = new Date(start.getTime() + 60 * 60 * 1000);
+    }
+  } else {
+    end = new Date(start.getTime() + 60 * 60 * 1000);
+  }
+  const y = columnDate.getFullYear();
+  const mo = columnDate.getMonth();
+  const da = columnDate.getDate();
+  const gridStart = new Date(y, mo, da, HOURS[0], 0, 0, 0);
+  const gridHeightPx = HOURS.length * HOUR_ROW_PX;
+  const rawTop = ((start.getTime() - gridStart.getTime()) / 3600000) * HOUR_ROW_PX;
+  const rawBottom = ((end.getTime() - gridStart.getTime()) / 3600000) * HOUR_ROW_PX;
+  if (rawBottom <= 0 || rawTop >= gridHeightPx) return null;
+  const top = Math.max(0, rawTop);
+  const bottom = Math.min(gridHeightPx, rawBottom);
+  const height = Math.max(20, bottom - top);
+  return { top, height };
+}
+
 export default function AgendaClient() {
   const t = useTranslations("admin.agenda");
   const [view, setView] = useState<"month" | "week" | "day">("week");
@@ -528,24 +561,94 @@ export default function AgendaClient() {
                   </div>
                 </div>
               ) : (
-              <div className="grid gap-px min-w-[600px]" style={{ gridTemplateColumns: `60px repeat(7, 1fr)` }}>
-                <div className="border-b border-r p-1" style={{ borderColor: ADM_BORDER }} />
-                {weekDays.map((d) => (
-                  <div key={d.toISOString()} className="border-b border-r p-1 text-center text-xs font-medium" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
-                    {d.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric" })}
-                  </div>
-                ))}
-                {HOURS.map((h) => (
-                  <React.Fragment key={h}>
-                    <div className="border-r p-1 text-xs" style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}>
-                      {h}:00
-                    </div>
+                <div className="min-w-[600px]">
+                  <div
+                    className="grid gap-px border-b"
+                    style={{
+                      gridTemplateColumns: `60px repeat(7, 1fr)`,
+                      borderColor: ADM_BORDER,
+                    }}
+                  >
+                    <div className="border-r p-1" style={{ borderColor: ADM_BORDER }} />
                     {weekDays.map((d) => (
-                      <div key={d.toISOString()} className="border-r min-h-[48px]" style={{ borderColor: ADM_BORDER }} />
+                      <div
+                        key={d.toISOString()}
+                        className="border-r p-1 text-center text-xs font-medium"
+                        style={{ borderColor: ADM_BORDER, color: ADM_MUTED }}
+                      >
+                        {d.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric" })}
+                      </div>
                     ))}
-                  </React.Fragment>
-                ))}
-              </div>
+                  </div>
+                  <div className="flex" style={{ borderColor: ADM_BORDER }}>
+                    <div className="w-[60px] shrink-0 border-r" style={{ borderColor: ADM_BORDER }}>
+                      {HOURS.map((h) => (
+                        <div
+                          key={h}
+                          className="text-xs px-1 flex items-start pt-0.5"
+                          style={{ height: HOUR_ROW_PX, borderColor: ADM_BORDER, color: ADM_MUTED }}
+                        >
+                          {h}:00
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex-1 grid grid-cols-7 min-w-0">
+                      {weekDays.map((d) => {
+                        const iso = isoDayKey(d);
+                        const dayEvents = eventsByDate[iso] ?? [];
+                        return (
+                          <div
+                            key={iso}
+                            className="relative border-r last:border-r-0 shrink-0"
+                            style={{
+                              width: "100%",
+                              minHeight: HOURS.length * HOUR_ROW_PX,
+                              borderColor: ADM_BORDER,
+                            }}
+                          >
+                            {HOURS.map((h) => (
+                              <div
+                                key={h}
+                                className="border-b"
+                                style={{ height: HOUR_ROW_PX, borderColor: ADM_BORDER }}
+                              />
+                            ))}
+                            <div className="absolute inset-0 pointer-events-none z-[1]">
+                              {dayEvents.map((ev) => {
+                                const layout = layoutEventBlock(ev, d);
+                                if (!layout) return null;
+                                const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                                const color = cfg?.color ?? "#6b7280";
+                                const icon = cfg?.icon ?? "📌";
+                                return (
+                                  <button
+                                    key={ev.id}
+                                    type="button"
+                                    onClick={() => setEventModal({ open: true, event: ev })}
+                                    className="absolute left-0.5 right-0.5 text-left px-1 py-0.5 rounded text-[10px] leading-tight truncate border-l-2 shadow-sm pointer-events-auto overflow-hidden"
+                                    style={{
+                                      top: layout.top,
+                                      height: layout.height,
+                                      background: `${color}30`,
+                                      borderLeftColor: color,
+                                      color: ADM_TEXT,
+                                    }}
+                                    title={ev.title}
+                                  >
+                                    <span className="font-medium">
+                                      {icon}{" "}
+                                      {ev.title.length > 24 ? `${ev.title.slice(0, 24)}…` : ev.title}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -569,17 +672,71 @@ export default function AgendaClient() {
                 {current ? current.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : ""}
               </div>
               <div className="flex">
-                <div className="w-14 shrink-0 border-r py-2" style={{ borderColor: ADM_BORDER }}>
+                <div className="w-14 shrink-0 border-r" style={{ borderColor: ADM_BORDER }}>
                   {HOURS.map((h) => (
-                    <div key={h} className="h-12 text-xs px-1" style={{ color: ADM_MUTED }}>
+                    <div
+                      key={h}
+                      className="text-xs px-1 flex items-start pt-0.5"
+                      style={{ height: HOUR_ROW_PX, color: ADM_MUTED }}
+                    >
                       {h}:00
                     </div>
                   ))}
                 </div>
-                <div className="flex-1 min-h-[480px] relative">
+                <div
+                  className="flex-1 relative min-w-0"
+                  style={{ minHeight: HOURS.length * HOUR_ROW_PX }}
+                >
                   {HOURS.map((h) => (
-                    <div key={h} className="h-12 border-b" style={{ borderColor: ADM_BORDER }} />
+                    <div
+                      key={h}
+                      className="border-b"
+                      style={{ height: HOUR_ROW_PX, borderColor: ADM_BORDER }}
+                    />
                   ))}
+                  {current && (
+                    <div className="absolute inset-0 pointer-events-none z-[1]">
+                      {(eventsByDate[isoDayKey(current)] ?? []).map((ev) => {
+                        const layout = layoutEventBlock(ev, current);
+                        if (!layout) return null;
+                        const cfg = EVENT_CATEGORIES[ev.category as EventCategory];
+                        const color = cfg?.color ?? "#6b7280";
+                        const icon = cfg?.icon ?? "📌";
+                        return (
+                          <button
+                            key={ev.id}
+                            type="button"
+                            onClick={() => setEventModal({ open: true, event: ev })}
+                            className="absolute left-1 right-1 text-left px-1.5 py-1 rounded text-xs leading-snug border-l-2 shadow-sm pointer-events-auto overflow-hidden"
+                            style={{
+                              top: layout.top,
+                              height: layout.height,
+                              background: `${color}30`,
+                              borderLeftColor: color,
+                              color: ADM_TEXT,
+                            }}
+                            title={ev.title}
+                          >
+                            <span className="font-semibold block truncate">
+                              {icon} {ev.title}
+                            </span>
+                            <span className="text-[10px] opacity-80">
+                              {new Date(ev.start_time).toLocaleTimeString("nl-NL", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                              {ev.end_time
+                                ? ` – ${new Date(ev.end_time).toLocaleTimeString("nl-NL", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}`
+                                : ""}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
                 </>
