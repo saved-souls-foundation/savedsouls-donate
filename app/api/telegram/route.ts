@@ -95,7 +95,7 @@ Exact dit formaat:
 
       const { error } = await supabase.from("calendar_events").insert({
         title,
-        category: "appointment",
+        category: "afspraak",
         start_time,
         description: persoon,
         location: null,
