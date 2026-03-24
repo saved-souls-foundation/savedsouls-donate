@@ -36,20 +36,21 @@ export async function POST(req: NextRequest) {
       system: `Je bent een assistent voor SavedSouls Foundation.
 Zet berichten om naar JSON. Geen uitleg, geen markdown, geen backticks.
 Antwoord ALLEEN met pure JSON op één regel.
+Huidig jaar is 2026. Gebruik altijd 2026 tenzij anders aangegeven.
 
 Mogelijke types en velden:
-- afspraak: { beschrijving, datum (YYYY-MM-DD), persoon }
+- afspraak: { beschrijving, datum (YYYY-MM-DD), tijd (HH:MM), persoon }
 - mail_taak: { onderwerp, van, prioriteit }
-- sponsor: { naam, bedrag, datum }
-- donatie: { naam, bedrag, datum }
+- sponsor: { naam, bedrag, datum (YYYY-MM-DD) }
+- donatie: { naam, bedrag, datum (YYYY-MM-DD) }
 - vrijwilliger: { naam, email, rol }
-- adoptant: { naam, dier, datum }
-- rooster_wijziging: { naam, datum, tijd, actie }
+- adoptant: { naam, dier, datum (YYYY-MM-DD) }
+- rooster_wijziging: { naam, datum (YYYY-MM-DD), tijd (HH:MM), actie }
 
-Exact dit formaat:
-{"type":"afspraak","data":{"beschrijving":"dierenarts","datum":"2025-03-28","persoon":"arts"}}
+Voorbeelden:
+{"type":"afspraak","data":{"beschrijving":"dierenarts","datum":"2026-03-28","tijd":"14:00","persoon":"arts"}}
 {"type":"mail_taak","data":{"onderwerp":"samenwerking","van":"ABC","prioriteit":"hoog"}}
-{"type":"sponsor","data":{"naam":"Bedrijf XYZ","bedrag":"500","datum":"2025-03-24"}}`,
+{"type":"sponsor","data":{"naam":"Bedrijf XYZ","bedrag":"500","datum":"2026-03-24"}}`,
       messages: [{ role: "user", content: message }],
     });
 
@@ -58,7 +59,6 @@ Exact dit formaat:
 
     await sendTelegram(chatId, `🧠 Claude zegt: ${responseText}`);
 
-    // Verwijder eventuele backticks of "json" prefix voor de zekerheid
     const cleanJson = responseText
       .replace(/^```json\s*/i, "")
       .replace(/^```\s*/i, "")
@@ -78,13 +78,17 @@ Exact dit formaat:
     if (type === "afspraak") {
       let start_time: string;
       try {
-        const d = new Date(data.datum as string | number | Date);
+        const datum = data.datum ? String(data.datum).trim() : "";
+        const tijd = data.tijd ? String(data.tijd).trim() : "09:00";
+        const datumStr = datum ? `${datum}T${tijd}:00` : "";
+        const d = datumStr ? new Date(datumStr) : new Date();
         start_time = Number.isNaN(d.getTime())
           ? new Date().toISOString()
           : d.toISOString();
       } catch {
         start_time = new Date().toISOString();
       }
+
       const beschrijving =
         data.beschrijving != null ? String(data.beschrijving).trim() : "";
       const title = beschrijving.length > 0 ? beschrijving : "Afspraak";
@@ -103,13 +107,19 @@ Exact dit formaat:
       if (error) {
         await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
       } else {
-        await sendTelegram(chatId, `✅ Afspraak opgeslagen in agenda!\n📅 ${title} op ${data.datum}`);
+        await sendTelegram(
+          chatId,
+          `✅ Afspraak opgeslagen in agenda!\n📅 ${title} op ${data.datum} om ${data.tijd ?? "09:00"}`
+        );
       }
-
     } else if (type === "mail_taak") {
-      const onderwerp = data.onderwerp ? String(data.onderwerp).trim() : "Via Telegram";
+      const onderwerp = data.onderwerp
+        ? String(data.onderwerp).trim()
+        : "Via Telegram";
       const van_naam = data.van ? String(data.van).trim() : "Telegram";
-      const prioriteit = data.prioriteit ? String(data.prioriteit).trim() : null;
+      const prioriteit = data.prioriteit
+        ? String(data.prioriteit).trim()
+        : null;
 
       const { error } = await supabase.from("incoming_emails").insert({
         onderwerp,
@@ -122,12 +132,16 @@ Exact dit formaat:
       if (error) {
         await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
       } else {
-        await sendTelegram(chatId, `✅ Mail taak opgeslagen!\n📧 ${onderwerp} van ${van_naam}`);
+        await sendTelegram(
+          chatId,
+          `✅ Mail taak opgeslagen!\n📧 ${onderwerp} van ${van_naam}`
+        );
       }
-
     } else if (type === "sponsor") {
       const naam = data.naam ? String(data.naam).trim() : null;
-      const omschrijving = data.bedrag ? `Bedrag: ${String(data.bedrag).trim()}` : null;
+      const omschrijving = data.bedrag
+        ? `Bedrag: ${String(data.bedrag).trim()}`
+        : null;
 
       const { error } = await supabase.from("sponsors").insert({
         bedrijfsnaam: naam,
@@ -140,16 +154,17 @@ Exact dit formaat:
       if (error) {
         await sendTelegram(chatId, `❌ Supabase fout: ${error.message}`);
       } else {
-        await sendTelegram(chatId, `✅ Sponsor opgeslagen!\n🏢 ${naam ?? "onbekend"}`);
+        await sendTelegram(
+          chatId,
+          `✅ Sponsor opgeslagen!\n🏢 ${naam ?? "onbekend"}`
+        );
       }
-
     } else {
       await sendTelegram(
         chatId,
         `⚠️ "${type || "onbekend"}" wordt nog niet automatisch opgeslagen.\n\nNoteer handmatig:\n${JSON.stringify(data, null, 2)}`
       );
     }
-
   } catch (e: any) {
     if (chatId) await sendTelegram(chatId, `❌ Fout: ${e.message}`);
   }
