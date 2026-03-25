@@ -50,7 +50,7 @@ export function getAdoptNotificationHtml(params: AdoptNotificationParams): strin
   const aid = animalId.trim() ? escapeHtml(animalId.trim()) : "";
   const mot = escapeHtml(motivation.trim()).replace(/\n/g, "<br>");
 
-  const adminUrl = `${BASE_URL}/admin?source=adopt&email=${encodeURIComponent(email.trim())}&name=${encodeURIComponent(name.trim())}${animal ? "&animal=" + encodeURIComponent(animalName.trim()) : ""}`;
+  const adminUrl = `https://www.savedsouls-foundation.org/nl/admin/login?source=adopt&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&animal=${encodeURIComponent(animalName || "")}`;
 
   return `
 <!DOCTYPE html>
