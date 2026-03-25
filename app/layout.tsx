@@ -51,6 +51,9 @@ export const metadata: Metadata = {
   },
   robots: "index, follow",
   metadataBase: new URL("https://www.savedsouls-foundation.org"),
+  verification: {
+    google: "m6dbi2wdsONicsDH8Bls2WsUGBqkiPw2YMJfyvlBy9w",
+  },
 };
 
 export const viewport: Viewport = {
@@ -145,7 +148,6 @@ export default async function RootLayout({
   const headersList = await headers();
   const locale = headersList.get("x-next-intl-locale") || "nl";
   const lang = LOCALE_TO_LANG[locale] || locale;
-  const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
 
   return (
     <html lang={lang}>
@@ -159,9 +161,6 @@ export default async function RootLayout({
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
-        {googleSiteVerification && (
-          <meta name="google-site-verification" content={googleSiteVerification} />
-        )}
         {/* Travelpayouts – laadt na window.load om laadsnelheid niet te beïnvloeden */}
         <script
           dangerouslySetInnerHTML={{
