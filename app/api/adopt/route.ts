@@ -4,6 +4,7 @@ import { verifyTurnstile } from "@/lib/verifyTurnstile";
 import { getAdoptConfirmationHtml, getAdoptConfirmationText } from "@/lib/emailAdoptConfirmation";
 import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { getPrimaryImageUrlForAnimalId } from "@/lib/animals-api";
 
 const SUBJECT = "🐾 New adoption request - Saved Souls Foundation";
 const REPLY_TO = "info@savedsouls-foundation.org";
@@ -68,7 +69,15 @@ export async function POST(req: NextRequest) {
       .filter(Boolean)
       .join("\n");
 
-    const confirmParams = { recipientName: name, animalName: dogPreference || undefined };
+    let animalImageUrl: string | null = null;
+    if (animalId) {
+      animalImageUrl = await getPrimaryImageUrlForAnimalId(animalId);
+    }
+    const confirmParams = {
+      recipientName: name,
+      animalName: dogPreference || undefined,
+      animalImageUrl,
+    };
     const autoReply = await sendMail({
       to: email,
       subject: CONFIRMATION_SUBJECT,

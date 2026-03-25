@@ -22,6 +22,8 @@ const SOCIAL_LINKS = [
 export type AdoptConfirmationParams = {
   recipientName: string;
   animalName?: string;
+  /** Server-side opgehaald op basis van animalId; zelfde fallback als sponsorbevestiging. */
+  animalImageUrl?: string | null;
 };
 
 function escapeHtml(s: string): string {
@@ -33,12 +35,22 @@ function escapeHtml(s: string): string {
 }
 
 export function getAdoptConfirmationHtml(params: AdoptConfirmationParams): string {
-  const { recipientName, animalName } = params;
+  const { recipientName, animalName, animalImageUrl } = params;
   const name = escapeHtml(recipientName.trim() || "friend");
   const animal = animalName?.trim() ? escapeHtml(animalName.trim()) : null;
+  const animalNameRaw = animalName?.trim() || "";
 
   const donateUrl = `${BASE_URL}/donate`;
   const websiteUrl = BASE_URL;
+
+  const resolvedImage =
+    animalImageUrl && animalImageUrl.trim().length > 0
+      ? animalImageUrl.trim()
+      : "https://www.savedsouls-foundation.org/ourwork-1.webp";
+  const imageAlt = animalNameRaw ? escapeHtml(animalNameRaw) : "Saved Souls Foundation";
+  const imageBlock = `<p style="margin:0 0 16px 0;text-align:center;">
+                <img src="${escapeHtml(resolvedImage)}" alt="${imageAlt}" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
+              </p>`;
 
   const greeting = `Dear ${name},`;
   const animalLine = animal
@@ -69,9 +81,7 @@ export function getAdoptConfirmationHtml(params: AdoptConfirmationParams): strin
           <!-- Body -->
           <tr>
             <td style="padding: 28px 24px;">
-              <p style="margin:0 0 16px 0;text-align:center;">
-                <img src="https://www.savedsouls-foundation.org/ourwork-1.webp" alt="Saved Souls Foundation" width="520" style="max-width:100%;height:auto;border-radius:12px;display:inline-block;" />
-              </p>
+              ${imageBlock}
               <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #334155;">${greeting}</p>
               ${animalLine}
               <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #334155;">We have received your adoption inquiry and our team will get back to you within 48 hours.</p>

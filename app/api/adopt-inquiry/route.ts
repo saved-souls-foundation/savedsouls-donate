@@ -4,6 +4,7 @@ import { delay } from "@/lib/sendMail";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
 import { getAdoptConfirmationHtml, getAdoptConfirmationText } from "@/lib/emailAdoptConfirmation";
 import { getAdoptNotificationHtml } from "@/lib/emailAdoptNotification";
+import { getPrimaryImageUrlForAnimalId } from "@/lib/animals-api";
 
 const TO_PRIMARY = "info@savedsouls-foundation.org";
 const TO_MIKE_MONITOR = "mike@savedsouls-foundation.org";
@@ -62,8 +63,16 @@ export async function POST(req: NextRequest) {
 
     const subjectLine = "[Adoption Inquiry] " + name + (animalName ? " – " + animalName : "");
 
+    let animalImageUrl: string | null = null;
+    if (animalId?.trim()) {
+      animalImageUrl = await getPrimaryImageUrlForAnimalId(animalId.trim());
+    }
     // 1. Eerst auto-reply naar bezoeker (HTML met footer, kleuren, donatieknop, naam + dier)
-    const confirmParams = { recipientName: name, animalName: animalName || undefined };
+    const confirmParams = {
+      recipientName: name,
+      animalName: animalName || undefined,
+      animalImageUrl,
+    };
     const autoRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + apiKey },

@@ -123,3 +123,19 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
 
   return { dogs, cats };
 }
+
+/** Primaire foto-URL voor e-mail / UI; null als ID onbekend of fetch faalt. */
+export async function getPrimaryImageUrlForAnimalId(animalId: string): Promise<string | null> {
+  const id = animalId?.trim();
+  if (!id) return null;
+  try {
+    const { dogs, cats } = await fetchAnimalsFromApi();
+    const all = [...dogs, ...cats];
+    const found = all.find((a) => String(a.id) === String(id));
+    if (!found) return null;
+    const url = (found.images?.[0] || found.image || "").trim();
+    return url.length > 0 ? url : null;
+  } catch {
+    return null;
+  }
+}
