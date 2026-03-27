@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/pressПресса", destination: "/nl/press", permanent: true },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.savedsouls-foundation.com" }],
+        destination: "https://www.savedsouls-foundation.org/:path*",
+        permanent: true,
+      },
     ];
   },
   // Cache voor build-bestanden (hashes in naam → veilig lang cachen, geen stale content)
