@@ -16,5 +16,18 @@
       "path": "/api/cron/scrape-gofundme",
       "schedule": "0 20 * * *"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.savedsouls-foundation.com"
+        }
+      ],
+      "destination": "https://www.savedsouls-foundation.org/:path*",
+      "permanent": true
+    }
   ]
 }
