@@ -5,7 +5,29 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
+/** Publieke hostname van het verzoek (Cloudflare zet vaak de echte site in x-forwarded-host). */
+function getRequestHostname(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-host");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim().toLowerCase() ?? "";
+    return first.split(":")[0] || "";
+  }
+  const host = request.headers.get("host")?.toLowerCase() ?? "";
+  return host.split(":")[0] || "";
+}
+
+const LEGACY_WWW_COM = "www.savedsouls-foundation.com";
+
 export default async function proxy(request: NextRequest) {
+  const hostname = getRequestHostname(request);
+  if (hostname === LEGACY_WWW_COM) {
+    const url = request.nextUrl.clone();
+    url.hostname = "www.savedsouls-foundation.org";
+    url.protocol = "https:";
+    url.port = "";
+    return NextResponse.redirect(url, 301);
+  }
+
   const pathname = request.nextUrl.pathname;
 
   const localeMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)(\/|$)/);
