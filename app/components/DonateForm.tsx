@@ -104,7 +104,7 @@ export default function DonateForm() {
 
       {/* Amount grid */}
       <p className="text-xs font-medium text-stone-400 uppercase tracking-wider mb-3">
-        {tP("impactSectionLabel")}
+        {tP("amountSectionLabel")}
       </p>
       <div className="grid grid-cols-3 gap-2 mb-2">
         {amountOptions.map((a, i) => (

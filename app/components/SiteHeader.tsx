@@ -173,11 +173,25 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               title="Saved Souls Foundation logo"
             />
           </div>
-          <span className="flex flex-col leading-tight">
-            <span className={`font-semibold text-sm md:text-base whitespace-nowrap ${isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"}`} suppressHydrationWarning>
+          <span className="flex flex-col leading-tight" suppressHydrationWarning>
+            <span
+              suppressHydrationWarning
+              className={`font-semibold text-sm md:text-base whitespace-nowrap ${
+                mounted
+                  ? isOverlay ? "text-white" : "text-[#1a1a1a] dark:text-stone-100"
+                  : "text-[#1a1a1a] dark:text-stone-100"
+              }`}
+            >
               Saved Souls
             </span>
-            <span className={`font-normal text-[10px] md:text-xs whitespace-nowrap tracking-wide ${isOverlay ? "text-white/70" : "opacity-70 text-[#1a1a1a] dark:text-stone-100"}`} suppressHydrationWarning>
+            <span
+              suppressHydrationWarning
+              className={`font-normal text-[10px] md:text-xs whitespace-nowrap tracking-wide ${
+                mounted
+                  ? isOverlay ? "text-white/70" : "opacity-70 text-[#1a1a1a] dark:text-stone-100"
+                  : "opacity-70 text-[#1a1a1a] dark:text-stone-100"
+              }`}
+            >
               Foundation
             </span>
           </span>

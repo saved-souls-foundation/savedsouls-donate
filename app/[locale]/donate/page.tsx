@@ -81,6 +81,11 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
             ))}
           </div>
 
+          {/* ── BANK TRANSFER ── existing component */}
+          <div id="bank-transfer" className="scroll-mt-24 mb-8">
+            <BankTransferAutoOpen />
+          </div>
+
           {/* ── STATS ── */}
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
@@ -95,34 +100,10 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
             ))}
           </div>
 
-          {/* ── IMPACT CARDS ── */}
-          <p className="text-xs font-medium text-stone-500 uppercase tracking-wider mb-3">{tP("impactSectionLabel")}</p>
-          <div className="grid grid-cols-2 gap-3 mb-8">
-            {[
-              { amount: isThai ? "฿100" : "€5", text: tP("impactCardA"), donorboxAmount: isThai ? "100" : "5" },
-              { amount: isThai ? "฿500" : "€25", text: tP("impactCardB"), donorboxAmount: isThai ? "500" : "25" },
-              { amount: isThai ? "฿1,000" : "€55", text: tP("impactCardC"), donorboxAmount: isThai ? "1000" : "55" },
-              { amount: isThai ? "฿2,500" : "€100", text: tP("impactCardD"), donorboxAmount: isThai ? "2500" : "100" },
-            ].map((card) => (
-              <a
-                key={card.amount}
-                href={`https://donorbox.org/saved-souls-foundation-donation?amount=${card.donorboxAmount}&currency=${isThai ? "thb" : "eur"}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white rounded-xl p-4 shadow-sm block hover:shadow-md transition-shadow cursor-pointer"
-              >
-                <div className="text-lg font-semibold mb-1" style={{ color: "#e8622a" }}>{card.amount}</div>
-                <div className="text-xs text-stone-600 leading-snug">{card.text}</div>
-                <div className="text-[10px] text-stone-400 mt-2">Klik om te doneren →</div>
-              </a>
-            ))}
-          </div>
-
           {/* ── OTHER WAYS ── */}
           <p className="text-sm font-semibold text-stone-700 mb-3">{tP("otherWaysTitle")}</p>
           <div className="flex flex-col gap-2 mb-8">
             {[
-              { icon: "🏦", title: tP("wayBank"), sub: tP("wayBankSub"), href: "/donate#bank-transfer" },
               { icon: "🇹🇭", title: tP("wayThai"), sub: tP("wayThaiSub"), href: "/donate/thai" },
               { icon: "🎯", title: tP("wayCauses"), sub: tP("wayCausesSub"), href: "/donate/causes" },
             ].map((way) => (
@@ -141,24 +122,27 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
             ))}
           </div>
 
-          {/* ── BANK TRANSFER ── existing component */}
-          <div id="bank-transfer" className="scroll-mt-24 mb-8">
-            <BankTransferAutoOpen />
+          {/* ── FOOTER CARDS ── */}
+          <div className="flex flex-col gap-2 mb-6">
+            {[
+              { icon: "📋", title: t("linkToSupport"), sub: "Steun ons", href: "/support" },
+              { icon: "💰", title: t("linkToFinancialOverview"), sub: tP("footerCardFinancialSub"), href: "/financial-overview" },
+              { icon: "🎯", title: t("linkToCauses"), sub: tP("footerCardCausesSub"), href: "/donate/causes" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm hover:bg-stone-50 transition-colors"
+              >
+                <span className="text-xl flex-shrink-0">{item.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-stone-800">{item.title}</div>
+                  <div className="text-xs text-stone-500 mt-0.5">{item.sub}</div>
+                </div>
+              </Link>
+            ))}
           </div>
-
-          {/* ── FOOTER LINKS ── */}
-          <div className="flex flex-col items-center gap-3 text-center pb-8">
-            <Link href="/support" className="text-xs text-stone-500 underline underline-offset-2">
-              {t("linkToSupport")}
-            </Link>
-            <Link href="/financial-overview" className="text-xs text-stone-500 underline underline-offset-2">
-              {t("linkToFinancialOverview")}
-            </Link>
-            <Link href="/donate/causes" className="text-xs text-stone-500 underline underline-offset-2">
-              {t("linkToCauses")}
-            </Link>
-            <p className="text-xs text-stone-400">{tP("footerReg")}</p>
-          </div>
+          <p className="text-xs text-stone-400 text-center pb-8">{tP("footerReg")}</p>
         </div>
       </div>
 
