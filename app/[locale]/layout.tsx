@@ -15,7 +15,8 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.savedsouls-foundation.org";
+const rawURL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.savedsouls-foundation.org";
+const BASE_URL = rawURL.replace("https://savedsouls-foundation.org", "https://www.savedsouls-foundation.org");
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
