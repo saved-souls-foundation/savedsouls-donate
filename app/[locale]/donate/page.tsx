@@ -125,7 +125,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
           {/* ── FOOTER CARDS ── */}
           <div className="flex flex-col gap-2 mb-6">
             {[
-              { icon: "📋", title: t("linkToSupport"), sub: "Steun ons", href: "/support" },
+              { icon: "📋", title: t("linkToSupport"), sub: tP("footerCardSupportSub"), href: "/support" },
               { icon: "💰", title: t("linkToFinancialOverview"), sub: tP("footerCardFinancialSub"), href: "/financial-overview" },
               { icon: "🎯", title: t("linkToCauses"), sub: tP("footerCardCausesSub"), href: "/donate/causes" },
             ].map((item) => (

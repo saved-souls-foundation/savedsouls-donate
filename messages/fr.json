@@ -48,7 +48,8 @@
     "statRescued": "Sauvés",
     "statAnimals": "Animaux maintenant",
     "influencerDesc": "Amplifiez notre impact",
-    "getInvolvedDesc": "Toutes les façons de participer"
+    "getInvolvedDesc": "Toutes les façons de participer",
+    "aboutUsNav": "À propos"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -1946,6 +1947,7 @@
     "wayThaiSub": "PromptPay et plus",
     "wayCauses": "Faire un don pour un objectif spécifique",
     "wayCausesSub": "Choisissez un animal ou un projet",
+    "footerCardSupportSub": "Soutenez-nous",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "Organisation à but non lucratif officielle Thaïlande · Numéro d'enregistrement 1/2560"
@@ -4486,6 +4488,7 @@
     "heroSubtitle": "Nous avons besoin de 100 000 € pour acheter la terre où ils vivent. Sans cela, ils perdent leur foyer. 50 chiens sont handicapés — ils ont besoin de votre aide maintenant.",
     "heroDonateCta": "Donner maintenant",
     "progressOf": "sur",
+    "donationsLabel": "dons",
     "goalLandTitle": "Acheter la terre — 100 000 €",
     "goalLandDesc": "Sans cela nous perdons la terre. 350 chiens perdraient leur foyer.",
     "goalFundTitle": "Fonds d'urgence",

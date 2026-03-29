@@ -48,7 +48,8 @@
     "statRescued": "Rescued",
     "statAnimals": "Animals now",
     "influencerDesc": "Grow our impact",
-    "getInvolvedDesc": "All ways to get involved"
+    "getInvolvedDesc": "All ways to get involved",
+    "aboutUsNav": "About us"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -2311,6 +2312,7 @@
     "wayThaiSub": "PromptPay and more",
     "wayCauses": "Donate for a specific cause",
     "wayCausesSub": "Choose an animal or project",
+    "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
@@ -4851,6 +4853,7 @@
     "heroSubtitle": "We need €100,000 to buy the land where they live. Without it, they lose their home. 50 dogs are disabled — they need your help now.",
     "heroDonateCta": "Donate now",
     "progressOf": "of",
+    "donationsLabel": "donations",
     "goalLandTitle": "Buy the land — €100,000",
     "goalLandDesc": "Without this we lose the land. 350 dogs would lose their home.",
     "goalFundTitle": "Emergency fund",

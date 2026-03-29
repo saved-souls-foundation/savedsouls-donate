@@ -48,7 +48,8 @@
     "statRescued": "ช่วยแล้ว",
     "statAnimals": "สัตว์ตอนนี้",
     "influencerDesc": "ขยายผลกระทบของเรา",
-    "getInvolvedDesc": "ทุกวิธีที่จะมีส่วนร่วม"
+    "getInvolvedDesc": "ทุกวิธีที่จะมีส่วนร่วม",
+    "aboutUsNav": "เกี่ยวกับเรา"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -139,7 +140,7 @@
     "faq": "คำถามที่พบบ่อย",
     "shelters": "สถานพักพิงอื่นๆ",
     "shop": "ร้านค้า",
-    "helpAndShop": "Help & Shop",
+    "helpAndShop": "ช่วยและซื้อ",
     "financialOverview": "ภาพรวมทางการเงิน",
     "blog": "บล็อก",
     "followUsOnFacebook": "ติดตามเราบน Facebook",
@@ -1623,6 +1624,7 @@
     "wayThaiSub": "PromptPay และอื่นๆ",
     "wayCauses": "บริจาคเพื่อวัตถุประสงค์เฉพาะ",
     "wayCausesSub": "เลือกสัตว์หรือโครงการ",
+    "footerCardSupportSub": "สนับสนุนเรา",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "องค์กรไม่แสวงหากำไรอย่างเป็นทางการประเทศไทย · เลขทะเบียน 1/2560"
@@ -4227,6 +4229,7 @@
     "heroSubtitle": "เราต้องการ 100,000 ยูโรเพื่อซื้อที่ดินที่พวกเขาอาศัยอยู่ ไม่มีแล้วพวกเขาจะไร้บ้าน 50 ตัวพิการ — พวกเขาต้องการความช่วยเหลือจากคุณตอนนี้",
     "heroDonateCta": "บริจาคเลย",
     "progressOf": "จาก",
+    "donationsLabel": "การบริจาค",
     "goalLandTitle": "ซื้อที่ดิน — 100,000 ยูโร",
     "goalLandDesc": "ไม่มีแล้วเราจะเสียที่ดิน หมาทั้ง 350 ตัวจะไร้บ้าน",
     "goalFundTitle": "กองทุนฉุกเฉิน",

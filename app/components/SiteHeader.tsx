@@ -200,7 +200,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
         {/* Center: Nav links (desktop only) – overflow-visible zodat dropdowns niet worden afgeknipt */}
         <div className="hidden md:flex items-center justify-center gap-2 lg:gap-3 flex-1 min-w-0 overflow-visible">
           <NavDropdown
-            label={locale === "nl" ? "Over ons" : locale === "de" ? "Über uns" : "About us"}
+            label={tNav("aboutUsNav")}
             layout="involved"
             items={overOnsItems}
             headerContent={

@@ -48,7 +48,8 @@
     "statRescued": "Gerettet",
     "statAnimals": "Tiere jetzt",
     "influencerDesc": "Vergrößere unsere Wirkung",
-    "getInvolvedDesc": "Alle Möglichkeiten mitzumachen"
+    "getInvolvedDesc": "Alle Möglichkeiten mitzumachen",
+    "aboutUsNav": "Über uns"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -139,7 +140,7 @@
     "faq": "FAQ",
     "shelters": "Andere Tierheime",
     "shop": "Shop",
-    "helpAndShop": "Help & Shop",
+    "helpAndShop": "Helfen & Einkaufen",
     "financialOverview": "Finanzielle Übersicht",
     "blog": "Blog",
     "followUsOnFacebook": "Folge uns auf Facebook",
@@ -1623,6 +1624,7 @@
     "wayThaiSub": "PromptPay und mehr",
     "wayCauses": "Für einen bestimmten Zweck spenden",
     "wayCausesSub": "Wähle ein Tier oder Projekt",
+    "footerCardSupportSub": "Unterstütze uns",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "Offizielle Non-Profit-Organisation Thailand · Registrierungsnummer 1/2560"
@@ -4163,6 +4165,7 @@
     "heroSubtitle": "Wir brauchen €100.000, um das Land zu kaufen, auf dem sie leben. Ohne das verlieren sie ihr Zuhause. 50 Hunde sind behindert — sie brauchen jetzt eure Hilfe.",
     "heroDonateCta": "Jetzt spenden",
     "progressOf": "von",
+    "donationsLabel": "Spenden",
     "goalLandTitle": "Das Land kaufen — €100.000",
     "goalLandDesc": "Ohne das verlieren wir das Land. 350 Hunde verlieren ihr Zuhause.",
     "goalFundTitle": "Notfallfonds",

@@ -48,7 +48,8 @@
     "statRescued": "Спасено",
     "statAnimals": "Животных сейчас",
     "influencerDesc": "Увеличьте наш охват",
-    "getInvolvedDesc": "Все способы помочь"
+    "getInvolvedDesc": "Все способы помочь",
+    "aboutUsNav": "О нас"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -139,7 +140,7 @@
     "faq": "FAQ",
     "shelters": "Другие приюты",
     "shop": "Магазин",
-    "helpAndShop": "Help & Shop",
+    "helpAndShop": "Помочь и купить",
     "financialOverview": "Финансовый обзор",
     "blog": "Блог",
     "followUsOnFacebook": "Подпишитесь на нас в Facebook",
@@ -1623,6 +1624,7 @@
     "wayThaiSub": "PromptPay и другие",
     "wayCauses": "Пожертвовать для конкретной цели",
     "wayCausesSub": "Выберите животное или проект",
+    "footerCardSupportSub": "Поддержите нас",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "Официальная некоммерческая организация Таиланд · Регистрационный номер 1/2560"
@@ -4227,6 +4229,7 @@
     "heroSubtitle": "Нам нужно 100 000 €, чтобы купить землю, где они живут. Без этого они потеряют дом. 50 собак с ограниченными возможностями — им нужна ваша помощь сейчас.",
     "heroDonateCta": "Помочь сейчас",
     "progressOf": "из",
+    "donationsLabel": "пожертвований",
     "goalLandTitle": "Купить землю — 100 000 €",
     "goalLandDesc": "Без этого мы потеряем землю. 350 собак потеряют дом.",
     "goalFundTitle": "Чрезвычайный фонд",

@@ -48,7 +48,8 @@
     "statRescued": "Gered",
     "statAnimals": "Dieren nu",
     "influencerDesc": "Vergroot onze impact",
-    "getInvolvedDesc": "Alle manieren om te helpen"
+    "getInvolvedDesc": "Alle manieren om te helpen",
+    "aboutUsNav": "Over ons"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -2312,6 +2313,7 @@
     "wayThaiSub": "PromptPay en meer",
     "wayCauses": "Doneer voor een specifiek doel",
     "wayCausesSub": "Kies een dier of project",
+    "footerCardSupportSub": "Steun ons",
     "footerCardFinancialSub": "Waar gaat jouw donatie naartoe?",
     "footerCardCausesSub": "Steun een specifiek doel",
     "footerReg": "Officieel non-profit organisatie Thailand · Registratienummer 1/2560"
@@ -4852,6 +4854,7 @@
     "heroSubtitle": "We hebben €100.000 nodig om het land te kopen waar ze wonen. Zonder dat verliezen ze hun thuis. 50 honden zijn gehandicapt — ze hebben nu je hulp nodig.",
     "heroDonateCta": "Doneer nu",
     "progressOf": "van",
+    "donationsLabel": "donaties",
     "goalLandTitle": "Het land kopen — €100.000",
     "goalLandDesc": "Zonder dit verliezen we het land. 350 honden verliezen hun thuis.",
     "goalFundTitle": "Noodfonds",

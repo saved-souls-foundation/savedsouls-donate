@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface CampaignBannerProps {
   raised: number;
@@ -10,6 +11,7 @@ interface CampaignBannerProps {
 }
 
 export default function CampaignBanner({ raised, goal, donations, locale }: CampaignBannerProps) {
+  const tEmergency = useTranslations("emergency");
   const [displayAmount, setDisplayAmount] = useState(0);
   const [barWidth, setBarWidth] = useState(0);
   const [started, setStarted] = useState(false);
@@ -230,7 +232,7 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
               </span>
               <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
                 {" "}
-                · {donations} donaties · {pct.toFixed(1)}%
+                · {donations} {tEmergency("donationsLabel")} · {pct.toFixed(1)}%
               </span>
             </div>
             <div

@@ -48,7 +48,8 @@
     "statRescued": "Rescatados",
     "statAnimals": "Animales ahora",
     "influencerDesc": "Amplía nuestro impacto",
-    "getInvolvedDesc": "Todas las formas de participar"
+    "getInvolvedDesc": "Todas las formas de participar",
+    "aboutUsNav": "Sobre nosotros"
   },
   "common": {
     "savedSouls": "Saved Souls",
@@ -139,7 +140,7 @@
     "faq": "FAQ",
     "shelters": "Otros refugios",
     "shop": "Tienda",
-    "helpAndShop": "Help & Shop",
+    "helpAndShop": "Compra y ayuda",
     "financialOverview": "Resumen financiero",
     "blog": "Blog",
     "followUsOnFacebook": "Síguenos en Facebook",
@@ -1623,6 +1624,7 @@
     "wayThaiSub": "PromptPay y más",
     "wayCauses": "Donar para un propósito específico",
     "wayCausesSub": "Elige un animal o proyecto",
+    "footerCardSupportSub": "Apóyanos",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
     "footerReg": "Organización sin fines de lucro oficial Tailandia · Número de registro 1/2560"
@@ -4163,6 +4165,7 @@
     "heroSubtitle": "Necesitamos €100.000 para comprar la tierra donde viven. Sin ello pierden su hogar. 50 perros tienen discapacidad — necesitan tu ayuda ahora.",
     "heroDonateCta": "Dona ahora",
     "progressOf": "de",
+    "donationsLabel": "donaciones",
     "goalLandTitle": "Comprar la tierra — €100.000",
     "goalLandDesc": "Sin esto perdemos la tierra. 350 perros perderían su hogar.",
     "goalFundTitle": "Fondo de emergencia",
