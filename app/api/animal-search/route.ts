@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
 
+export const dynamic = "force-dynamic";
+
 const MAX_QUERY_LENGTH = 500;
 const MAX_ANIMALS = 100;
 
@@ -66,11 +68,12 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6",
         max_tokens: 400,
-        system: `You are an adoption assistant for an animal rescue sanctuary in Khon Kaen, Thailand. Based on the user's description, return the best matching animals as JSON.
+        system: `You are an adoption assistant for an animal rescue sanctuary in Khon Kaen, Thailand.
+Each request includes a user line "Query: ..." and a list of animals (id, name, story). Read THAT query literally: note temperament (e.g. calm/rustig vs playful/speels), age cues (puppy, senior, oud), energy, and any other words. Compare each animal's story (and name if relevant) to those cues.
+Rank by fit to THIS query only: best matches first. Different queries must yield different orderings and usually different id lists when stories differ—never output the same generic shortlist for every query. Omit animals with no clear link to the query.
 Return ONLY valid JSON, nothing else.
 Format: {"matches": [{"id": "...", "reason": "..."}]}
-Maximum 8 matches. Reason in the same language as the query.
-Be generous with matches — if an animal could reasonably fit the description, include it. It is better to show more matches than fewer. Only exclude animals that clearly do not match.`,
+Maximum 8 matches. Use each id exactly as provided. Reasons in the same language as the query; briefly tie each reason to wording from that animal's story.`,
         messages: [{ role: "user", content: userMessage }],
       }),
     });

@@ -205,6 +205,7 @@ export default function AdoptPage() {
           story: a.story ?? "",
         }));
       const res = await fetch("/api/animal-search", {
+        cache: "no-store",
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -416,16 +417,16 @@ export default function AdoptPage() {
               value={nameQuery}
               onChange={(e) => setNameQuery(e.target.value)}
               placeholder={t("nameSearch.placeholder")}
-              className="w-full min-w-0 pl-4 pr-10 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+              className="w-full min-w-0 pl-4 pr-11 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
             />
             <span
-              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400 dark:text-stone-500"
+              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400"
               aria-hidden
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
