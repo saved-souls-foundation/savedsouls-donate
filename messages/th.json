@@ -26,6 +26,12 @@
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
     "retryButton": "Retry security check"
   },
+  "exitPopup": {
+    "title": "⚠️ ที่ดินของเรากำลังถูกขาย",
+    "subtitle": "สุนัข 350 ตัวจะสูญเสียบ้าน — เว้นแต่เราจะซื้อที่ดินได้ ช่วยพวกเขาตอนนี้",
+    "buttonText": "บริจาคเลย",
+    "closeLabel": "ปิด"
+  },
   "seo": {
     "title": "SavedSouls Foundation — ช่วยเหลือสัตว์ในประเทศไทย",
     "description": "เราช่วยเหลือสุนัขและแมวในประเทศไทย รวมถึงสัตว์ที่เป็นอัมพาตและพิการที่ที่พักพิงอื่นปฏิเสธ รับเลี้ยง บริจาค หรือเป็นอาสาสมัครที่ขอนแก่น"

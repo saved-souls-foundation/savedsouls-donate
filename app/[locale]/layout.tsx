@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
 import ImpactTicker from "@/app/components/ImpactTicker";
 import ThemeRoot from "@/app/components/ThemeRoot";
+import ExitIntentPopup from "@/app/components/ExitIntentPopup";
 import AuthErrorRedirect from "./AuthErrorRedirect";
 
 type Props = {
@@ -132,6 +133,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       </Suspense>
       <ImpactTicker />
       {children}
+      <ExitIntentPopup />
       <ThemeRoot />
     </NextIntlClientProvider>
   );

@@ -26,6 +26,12 @@
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
     "retryButton": "Retry security check"
   },
+  "exitPopup": {
+    "title": "⚠️ Наша земля продаётся",
+    "subtitle": "350 собак потеряют дом — если мы не купим землю. Помогите им сейчас.",
+    "buttonText": "Пожертвовать",
+    "closeLabel": "Закрыть"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Спасение животных Таиланд",
     "description": "Мы спасаем собак и кошек в Таиланде — в том числе парализованных и инвалидов, которых отвергают другие приюты. Усыновите, пожертвуйте или станьте волонтёром в Кхон Каен."

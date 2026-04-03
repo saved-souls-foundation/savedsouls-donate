@@ -227,6 +227,19 @@ body h1 {
   animation: star-pulse-green 2s ease-in-out infinite;
 }
 
+@keyframes ssf-pulse-border {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(251, 146, 60, 0.9);
+  }
+}
+.ssf-exit-popup-pulse {
+  animation: ssf-pulse-border 2s ease-in-out infinite;
+}
+
 /* Print styles for course materials */
 @media print {
   .print\:hidden {

@@ -26,6 +26,12 @@
     "errorAfterEmail": ". Vermeld bij contact de pagina waarop u deze fout zag.",
     "retryButton": "Beveiligingscontrole opnieuw proberen"
   },
+  "exitPopup": {
+    "title": "⚠️ Onze grond wordt verkocht",
+    "subtitle": "350 honden verliezen hun thuis — tenzij wij de grond kunnen kopen. Help ons nu.",
+    "buttonText": "Doneer nu",
+    "closeLabel": "Sluiten"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Dierenopvang Thailand",
     "description": "Wij redden honden en katten in Thailand — ook verlamde en gehandicapte dieren die andere opvangcentra weigeren. Adopteer, doneer of kom vrijwilligen in Khon Kaen."

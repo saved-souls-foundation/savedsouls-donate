@@ -26,6 +26,12 @@
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
     "retryButton": "Retry security check"
   },
+  "exitPopup": {
+    "title": "⚠️ Our land is being sold",
+    "subtitle": "350 dogs will lose their home — unless we can buy the land. Help them now.",
+    "buttonText": "Donate now",
+    "closeLabel": "Close"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Animal Rescue Thailand",
     "description": "We rescue dogs and cats in Thailand — including paralyzed and disabled animals that other shelters turn away. Adopt, donate or volunteer in Khon Kaen, Thailand."

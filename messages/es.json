@@ -26,6 +26,12 @@
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
     "retryButton": "Retry security check"
   },
+  "exitPopup": {
+    "title": "⚠️ Nuestro terreno está en venta",
+    "subtitle": "350 perros perderán su hogar — a menos que podamos comprar el terreno. Ayúdales ahora.",
+    "buttonText": "Donar ahora",
+    "closeLabel": "Cerrar"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Rescate Animal Tailandia",
     "description": "Rescatamos perros y gatos en Tailandia — incluidos animales paralizados y discapacitados que otros refugios rechazan. Adopta, dona o haz voluntariado en Khon Kaen, Tailandia."

@@ -26,6 +26,12 @@
     "errorAfterEmail": ". When contacting us, please mention the page where you saw this error.",
     "retryButton": "Retry security check"
   },
+  "exitPopup": {
+    "title": "⚠️ Notre terrain est en vente",
+    "subtitle": "350 chiens vont perdre leur foyer — sauf si nous pouvons acheter le terrain. Aidez-les maintenant.",
+    "buttonText": "Faire un don",
+    "closeLabel": "Fermer"
+  },
   "seo": {
     "title": "SavedSouls Foundation — Sauvetage Animal Thaïlande",
     "description": "Nous sauvons des chiens et des chats en Thaïlande — y compris des animaux paralysés et handicapés que d'autres refuges refusent. Adoptez, faites un don ou venez comme bénévole à Khon Kaen."
