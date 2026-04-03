@@ -466,35 +466,14 @@ export default function AdoptPage() {
           <label htmlFor="adopt-name-search" className="block text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
             {t("nameSearch.label")}
           </label>
-          <div className="relative w-full">
-            <input
-              id="adopt-name-search"
-              type="search"
-              value={nameQuery}
-              onChange={(e) => setNameQuery(e.target.value)}
-              placeholder={t("nameSearch.placeholder")}
-              className="w-full min-w-0 pl-4 pr-11 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
-            />
-            <span
-              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400"
-              aria-hidden
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-            </span>
-          </div>
+          <input
+            id="adopt-name-search"
+            type="search"
+            value={nameQuery}
+            onChange={(e) => setNameQuery(e.target.value)}
+            placeholder={t("nameSearch.placeholder")}
+            className="w-full min-w-0 px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+          />
         </section>
 
         {/* Sectie 2: filters */}
@@ -579,23 +558,28 @@ export default function AdoptPage() {
             </button>
           </div>
           <div
-            className={`transition-opacity duration-300 ease-out ${showAiNameHint ? "opacity-100 mb-2" : "opacity-0 h-0 overflow-hidden mb-0 pointer-events-none"}`}
+            className={`transition-opacity duration-300 ease-out ${showAiNameHint ? "opacity-100 mb-2 min-h-6 pt-1.5 pointer-events-auto" : "opacity-0 h-0 overflow-hidden mb-0 pointer-events-none"}`}
           >
             <button
               type="button"
-              className="text-xs text-stone-400 cursor-pointer text-left hover:underline decoration-stone-400/80 underline-offset-2"
+              className="flex w-full items-start gap-1 text-left text-xs text-stone-300 dark:text-stone-300 cursor-pointer hover:underline decoration-stone-300/80 dark:decoration-stone-300/80 underline-offset-2"
               onClick={() => {
                 const v = aiQuery.trim();
                 if (!v) return;
                 setNameQuery(v);
                 setAiQuery("");
+                setAiMatches([]);
+                setPage(1);
                 requestAnimationFrame(() => {
                   document.getElementById("adopt-name-search")?.focus({ preventScroll: true });
                   document.getElementById("adopt-name-search")?.scrollIntoView({ behavior: "smooth", block: "center" });
                 });
               }}
             >
-              {t("aiSearch.nameHint")}
+              <span className="shrink-0 leading-snug" aria-hidden>
+                ↑
+              </span>
+              <span className="min-w-0 leading-snug">{t("aiSearch.nameHint")}</span>
             </button>
           </div>
           <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">{t("aiSearch.hint")}</p>

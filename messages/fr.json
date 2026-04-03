@@ -1056,7 +1056,7 @@
       "button": "Rechercher",
       "loading": "Chargement...",
       "placeholder": "Décrivez votre compagnon idéal...",
-      "nameHint": "Vous cherchez un nom ? Utilisez la recherche par nom en haut. ↑"
+      "nameHint": "Vous cherchez un nom ? Utilisez la recherche par nom en haut."
     },
     "results": {
       "loading": "Chargement...",

@@ -768,7 +768,7 @@
       "button": "Suchen",
       "loading": "Laden...",
       "placeholder": "Beschreibe deinen idealen Match...",
-      "nameHint": "Suchst du nach einem Namen? Nutze die Namenssuche oben. ↑"
+      "nameHint": "Suchst du nach einem Namen? Nutze die Namenssuche oben."
     },
     "results": {
       "loading": "Laden...",
