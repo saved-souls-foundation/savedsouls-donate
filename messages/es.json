@@ -767,7 +767,8 @@
       "ariaLabel": "Búsqueda con IA",
       "button": "Buscar",
       "loading": "Cargando...",
-      "placeholder": "Describe tu compañero ideal..."
+      "placeholder": "Describe tu compañero ideal...",
+      "nameHint": "¿Buscas por nombre? Usa el campo de búsqueda de arriba. ↑"
     },
     "results": {
       "loading": "Cargando...",

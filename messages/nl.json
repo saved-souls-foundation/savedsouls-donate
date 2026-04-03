@@ -1456,7 +1456,8 @@
       "ariaLabel": "AI-zoeken",
       "button": "Zoek",
       "loading": "Laden...",
-      "placeholder": "Beschrijf je ideale match..."
+      "placeholder": "Beschrijf je ideale match...",
+      "nameHint": "Zoek je op naam? Gebruik het zoekveld bovenaan. ↑"
     },
     "results": {
       "loading": "Laden...",

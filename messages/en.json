@@ -1457,7 +1457,8 @@
       "ariaLabel": "AI search",
       "button": "Search",
       "loading": "Loading...",
-      "placeholder": "Describe your ideal match..."
+      "placeholder": "Describe your ideal match...",
+      "nameHint": "Looking for a specific name? Use the name search above. ↑"
     },
     "results": {
       "loading": "Loading...",

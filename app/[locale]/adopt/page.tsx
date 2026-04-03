@@ -96,6 +96,59 @@ function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: st
 
 const PER_PAGE = 24;
 
+/** Woorden die duiden op een beschrijving i.p.v. een naam (meertalig). */
+const AI_DESCRIPTION_WORDS = [
+  "rustig",
+  "calm",
+  "speels",
+  "hond",
+  "dog",
+  "kat",
+  "cat",
+  "jong",
+  "oud",
+  "klein",
+  "groot",
+  "quiet",
+  "playful",
+  "gentle",
+  "active",
+  "senior",
+  "puppy",
+  "ruhig",
+  "tranquilo",
+  "calme",
+  "спокойный",
+  "ใจเย็น",
+] as const;
+
+function queryContainsDescriptionWord(query: string): boolean {
+  const lower = query.trim().toLowerCase();
+  for (const w of AI_DESCRIPTION_WORDS) {
+    if (/^[a-z]+$/i.test(w)) {
+      let i = lower.indexOf(w);
+      while (i !== -1) {
+        const beforeOk = i === 0 || !/[a-z]/i.test(lower[i - 1]!);
+        const afterOk = i + w.length >= lower.length || !/[a-z]/i.test(lower[i + w.length]!);
+        if (beforeOk && afterOk) return true;
+        i = lower.indexOf(w, i + 1);
+      }
+    } else if (lower.includes(w)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isLikelyNameSearchQuery(q: string): boolean {
+  const trimmed = q.trim();
+  if (!trimmed || trimmed.length >= 20) return false;
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  if (words.length < 1 || words.length > 2) return false;
+  if (queryContainsDescriptionWord(trimmed)) return false;
+  return true;
+}
+
 export default function AdoptPage() {
   const t = useTranslations("adoptPage");
   const tHome = useTranslations("home");
@@ -203,6 +256,7 @@ export default function AdoptPage() {
           id: `${a.type}-${a.id}`,
           name: a.name ?? "",
           story: a.story ?? "",
+          age: a.age ?? null,
         }));
       const res = await fetch("/api/animal-search", {
         cache: "no-store",
@@ -240,6 +294,8 @@ export default function AdoptPage() {
     for (const { id, reason } of aiMatches) m[id] = reason;
     return m;
   }, [aiMatches]);
+
+  const showAiNameHint = isLikelyNameSearchQuery(aiQuery);
 
   const displayedAnimals = useMemo(() => {
     if (aiMatches.length === 0) return paginatedAnimals;
@@ -520,6 +576,26 @@ export default function AdoptPage() {
               style={{ backgroundColor: ACCENT_GREEN }}
             >
               {t("aiSearch.button")}
+            </button>
+          </div>
+          <div
+            className={`transition-opacity duration-300 ease-out ${showAiNameHint ? "opacity-100 mb-2" : "opacity-0 h-0 overflow-hidden mb-0 pointer-events-none"}`}
+          >
+            <button
+              type="button"
+              className="text-xs text-stone-400 cursor-pointer text-left hover:underline decoration-stone-400/80 underline-offset-2"
+              onClick={() => {
+                const v = aiQuery.trim();
+                if (!v) return;
+                setNameQuery(v);
+                setAiQuery("");
+                requestAnimationFrame(() => {
+                  document.getElementById("adopt-name-search")?.focus({ preventScroll: true });
+                  document.getElementById("adopt-name-search")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+              }}
+            >
+              {t("aiSearch.nameHint")}
             </button>
           </div>
           <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">{t("aiSearch.hint")}</p>
