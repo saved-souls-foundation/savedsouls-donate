@@ -1438,6 +1438,50 @@
     "happyFacesSponsor": "Sponsor",
     "happyFacesDonate": "Donate",
     "happyFacesVolunteer": "Volunteer",
+    "nameSearch": {
+      "label": "Search by name",
+      "placeholder": "e.g. Uma, Lord Farquhar...",
+      "button": "Search"
+    },
+    "ageGroup": {
+      "all": "All ages",
+      "puppy": "Puppy (0–1 yr)",
+      "young": "Young (1–3 yr)",
+      "adult": "Adult (3–8 yr)",
+      "senior": "Senior (8+ yr)"
+    },
+    "aiSearch": {
+      "label": "AI search",
+      "hint": "Describe personality, energy, or what fits you — AI helps you search.",
+      "badge": "AI",
+      "ariaLabel": "AI search",
+      "button": "Search",
+      "loading": "Loading...",
+      "placeholder": "Describe your ideal match..."
+    },
+    "results": {
+      "loading": "Loading...",
+      "aiMatches": "AI matches",
+      "previous": "← Previous",
+      "next": "Next →",
+      "page": "Page {current} of {total}",
+      "noResults": "No animals match your filters."
+    },
+    "gender": {
+      "all": "All genders",
+      "male": "Male",
+      "female": "Female"
+    },
+    "size": {
+      "all": "All sizes",
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "typeAll": "All",
+    "typeDog": "Dogs",
+    "typeCat": "Cats",
+    "clear": "Clear",
     "pleaseHelpUs": "Please help us. With 300+ dogs in our care, they truly need to be adopted. Today, we said goodbye to a 10-year-old dog who sadly spent his final days in the shelter. No dog deserves to end their life without knowing what a real home feels like."
   },
   "sponsorPage": {

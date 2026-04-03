@@ -748,6 +748,50 @@
     "happyFacesSponsor": "Apadrinar",
     "happyFacesDonate": "Donar",
     "happyFacesVolunteer": "Voluntario",
+    "nameSearch": {
+      "label": "Buscar por nombre",
+      "placeholder": "p. ej. Uma, Lord Farquhar...",
+      "button": "Buscar"
+    },
+    "ageGroup": {
+      "all": "Todas las edades",
+      "puppy": "Cachorro (0–1 año)",
+      "young": "Joven (1–3 años)",
+      "adult": "Adulto (3–8 años)",
+      "senior": "Senior (8+ años)"
+    },
+    "aiSearch": {
+      "label": "Búsqueda con IA",
+      "hint": "Describe carácter, energía o lo que encaje contigo: la IA ayuda a buscar.",
+      "badge": "IA",
+      "ariaLabel": "Búsqueda con IA",
+      "button": "Buscar",
+      "loading": "Cargando...",
+      "placeholder": "Describe tu compañero ideal..."
+    },
+    "results": {
+      "loading": "Cargando...",
+      "aiMatches": "Coincidencias de IA",
+      "previous": "← Anterior",
+      "next": "Siguiente →",
+      "page": "Página {current} de {total}",
+      "noResults": "Ningún animal coincide con tus filtros."
+    },
+    "gender": {
+      "all": "Todos los sexos",
+      "male": "Macho",
+      "female": "Hembra"
+    },
+    "size": {
+      "all": "Todos los tamaños",
+      "small": "Pequeño",
+      "medium": "Mediano",
+      "large": "Grande"
+    },
+    "typeAll": "Todos",
+    "typeDog": "Perros",
+    "typeCat": "Gatos",
+    "clear": "Limpiar",
     "pleaseHelpUs": "Por favor ayúdanos. Con más de 300 perros a nuestro cargo, realmente necesitan ser adoptados. Hoy nos despedimos de un perro de 10 años que tristemente pasó sus últimos días en el refugio. Ningún perro merece terminar su vida sin saber cómo se siente un hogar de verdad."
   },
   "sponsorPage": {

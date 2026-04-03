@@ -1437,6 +1437,50 @@
     "happyFacesSponsor": "Sponsor",
     "happyFacesDonate": "Doneer",
     "happyFacesVolunteer": "Vrijwilliger",
+    "nameSearch": {
+      "label": "Zoek op naam",
+      "placeholder": "bijv. Uma, Lord Farquhar...",
+      "button": "Zoek"
+    },
+    "ageGroup": {
+      "all": "Alle leeftijden",
+      "puppy": "Puppy (0–1 jr)",
+      "young": "Jong (1–3 jr)",
+      "adult": "Volwassen (3–8 jr)",
+      "senior": "Senior (8+ jr)"
+    },
+    "aiSearch": {
+      "label": "AI-zoekopdracht",
+      "hint": "Beschrijf karakter, energie of wat bij jou past — AI helpt zoeken.",
+      "badge": "AI",
+      "ariaLabel": "AI-zoeken",
+      "button": "Zoek",
+      "loading": "Laden...",
+      "placeholder": "Beschrijf je ideale match..."
+    },
+    "results": {
+      "loading": "Laden...",
+      "aiMatches": "AI-matches",
+      "previous": "← Vorige",
+      "next": "Volgende →",
+      "page": "Pagina {current} van {total}",
+      "noResults": "Geen dieren komen overeen met je filters."
+    },
+    "gender": {
+      "all": "Alle geslachten",
+      "male": "Man",
+      "female": "Vrouw"
+    },
+    "size": {
+      "all": "Alle groottes",
+      "small": "Klein",
+      "medium": "Medium",
+      "large": "Groot"
+    },
+    "typeAll": "Alle",
+    "typeDog": "Honden",
+    "typeCat": "Katten",
+    "clear": "Wissen",
     "pleaseHelpUs": "Help ons alstublieft. Met meer dan 300 honden in onze zorg hebben ze echt een adoptie nodig. Vandaag hebben we afscheid genomen van een 10-jarige hond die helaas zijn laatste dagen in het shelter doorbracht. Geen enkele hond verdient het om zijn leven te beëindigen zonder te weten hoe een echt thuis voelt."
   },
   "sponsorPage": {

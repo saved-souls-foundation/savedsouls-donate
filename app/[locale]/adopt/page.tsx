@@ -18,13 +18,20 @@ type AnimalType = "dog" | "cat";
 type Gender = "male" | "female";
 type Size = "small" | "medium" | "large";
 
+function parseAgeYears(value: unknown): number | undefined {
+  if (value === undefined || value === null || value === "") return undefined;
+  const n = typeof value === "number" ? value : parseFloat(String(value).replace(",", "."));
+  if (!Number.isFinite(n) || n < 0) return undefined;
+  return n;
+}
+
 interface Animal {
   id: string;
   name: string;
   thaiName: string;
   type: AnimalType;
   gender: Gender;
-  age?: string;
+  age?: number;
   size: Size;
   image: string;
   images?: string[];
@@ -89,16 +96,6 @@ function AnimalCard({ animal, imageSrc, reason }: { animal: Animal; imageSrc: st
 
 const PER_PAGE = 24;
 
-const AI_PLACEHOLDER: Record<string, string> = {
-  nl: "Beschrijf je ideale match...",
-  en: "Describe your ideal match...",
-  de: "Beschreibe deinen idealen Match...",
-  ru: "Опишите идеального питомца...",
-  es: "Describe tu compañero ideal...",
-  th: "อธิบายสัตว์เลี้ยงในอุดมคติ...",
-  fr: "Décrivez votre compagnon idéal...",
-};
-
 export default function AdoptPage() {
   const t = useTranslations("adoptPage");
   const tHome = useTranslations("home");
@@ -106,6 +103,8 @@ export default function AdoptPage() {
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type");
   const initialType = typeParam === "dog" || typeParam === "cat" ? typeParam : "all";
+  const [nameQuery, setNameQuery] = useState<string>("");
+  const [ageGroup, setAgeGroup] = useState<string>("");
   const [gender, setGender] = useState("all");
   const [size, setSize] = useState("all");
   const [type, setType] = useState<"all" | AnimalType>(initialType);
@@ -135,7 +134,7 @@ export default function AdoptPage() {
           thaiName: String(d.thaiName || ""),
           type: "dog" as const,
           gender: (d.gender as Gender) || "male",
-          age: d.age ? String(d.age) : undefined,
+          age: parseAgeYears(d.age),
           size: (d.size as Size) || "medium",
           image: String(d.image || ""),
           images: Array.isArray(d.images) ? (d.images as string[]) : (d.image ? [String(d.image)] : []),
@@ -147,7 +146,7 @@ export default function AdoptPage() {
           thaiName: String(c.thaiName || ""),
           type: "cat" as const,
           gender: (c.gender as Gender) || "male",
-          age: undefined,
+          age: parseAgeYears(c.age),
           size: (c.size as Size) || "medium",
           image: String(c.image || ""),
           images: Array.isArray(c.images) ? (c.images as string[]) : (c.image ? [String(c.image)] : []),
@@ -172,9 +171,14 @@ export default function AdoptPage() {
       if (type !== "all" && a.type !== type) return false;
       if (gender !== "all" && a.gender !== gender) return false;
       if (size !== "all" && a.size !== size) return false;
+      if (nameQuery.trim() && !a.name?.toLowerCase().includes(nameQuery.trim().toLowerCase())) return false;
+      if (ageGroup === "puppy" && (a.age === undefined || a.age > 1)) return false;
+      if (ageGroup === "young" && (a.age === undefined || a.age <= 1 || a.age > 3)) return false;
+      if (ageGroup === "adult" && (a.age === undefined || a.age <= 3 || a.age > 8)) return false;
+      if (ageGroup === "senior" && (a.age === undefined || a.age <= 8)) return false;
       return true;
     });
-  }, [animals, type, gender, size]);
+  }, [animals, type, gender, size, nameQuery, ageGroup]);
 
   async function aiSearch() {
     const q = aiQuery.trim();
@@ -386,16 +390,105 @@ export default function AdoptPage() {
           </section>
         )}
 
-        {/* AI-zoekfunctie */}
-        <section className="mb-8 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
-          <div className="flex flex-wrap items-end gap-3 mb-3">
+        {/* Sectie 1: zoek op naam */}
+        <section className="rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm p-4 mb-4">
+          <label htmlFor="adopt-name-search" className="block text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
+            {t("nameSearch.label")}
+          </label>
+          <form
+            className="flex flex-col sm:flex-row gap-3 w-full"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <input
+              id="adopt-name-search"
+              type="text"
+              value={nameQuery}
+              onChange={(e) => setNameQuery(e.target.value)}
+              placeholder={t("nameSearch.placeholder")}
+              className="flex-1 min-w-0 w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+            />
+            <button
+              type="submit"
+              className="shrink-0 px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: ACCENT_GREEN }}
+            >
+              {t("nameSearch.button")}
+            </button>
+          </form>
+        </section>
+
+        {/* Sectie 2: filters */}
+        <div className="flex flex-wrap items-center justify-center gap-3 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm p-4 mb-4">
+          {(["all", "dog", "cat"] as const).map((animalType) => (
+            <button
+              key={animalType}
+              type="button"
+              onClick={() => { setType(animalType); setPage(1); }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${type === animalType ? "text-white" : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"}`}
+              style={type === animalType ? { backgroundColor: ACCENT_GREEN } : {}}
+            >
+              {animalType === "all" ? t("typeAll") : animalType === "dog" ? t("typeDog") : t("typeCat")}
+            </button>
+          ))}
+          <select
+            value={gender}
+            onChange={(e) => { setGender(e.target.value); setPage(1); }}
+            className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+          >
+            <option value="all">{t("gender.all")}</option>
+            <option value="male">{t("gender.male")}</option>
+            <option value="female">{t("gender.female")}</option>
+          </select>
+          <select
+            value={size}
+            onChange={(e) => { setSize(e.target.value); setPage(1); }}
+            className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+          >
+            <option value="all">{t("size.all")}</option>
+            <option value="small">{t("size.small")}</option>
+            <option value="medium">{t("size.medium")}</option>
+            <option value="large">{t("size.large")}</option>
+          </select>
+          <select
+            value={ageGroup}
+            onChange={(e) => { setAgeGroup(e.target.value); setPage(1); }}
+            className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+          >
+            <option value="">{t("ageGroup.all")}</option>
+            <option value="puppy">{t("ageGroup.puppy")}</option>
+            <option value="young">{t("ageGroup.young")}</option>
+            <option value="adult">{t("ageGroup.adult")}</option>
+            <option value="senior">{t("ageGroup.senior")}</option>
+          </select>
+          <button
+            type="button"
+            onClick={() => { setNameQuery(""); setAgeGroup(""); setGender("all"); setSize("all"); setType("all"); setPage(1); }}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+          >
+            {t("clear")}
+          </button>
+        </div>
+
+        {/* Sectie 3: AI-zoekfunctie */}
+        <section className="rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm p-4 mb-4">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">
+              {t("aiSearch.label")}
+            </span>
+            <span className="text-xs px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-500">
+              ✦ {t("aiSearch.badge")}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-end gap-3 mb-2">
             <input
               type="text"
               value={aiQuery}
               onChange={(e) => setAiQuery(e.target.value)}
-              placeholder={AI_PLACEHOLDER[locale] ?? AI_PLACEHOLDER.en}
+              placeholder={t("aiSearch.placeholder")}
               className="flex-1 min-w-[200px] px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
-              aria-label="AI search"
+              aria-label={t("aiSearch.ariaLabel")}
             />
             <button
               type="button"
@@ -404,9 +497,10 @@ export default function AdoptPage() {
               className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: ACCENT_GREEN }}
             >
-              Search
+              {t("aiSearch.button")}
             </button>
           </div>
+          <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">{t("aiSearch.hint")}</p>
           <div className="flex flex-wrap items-center gap-3">
             <div
               style={{
@@ -420,58 +514,18 @@ export default function AdoptPage() {
             >
               <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
             </div>
-            {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">Loading...</span>}
+            {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">{t("aiSearch.loading")}</span>}
           </div>
         </section>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10 p-4 rounded-xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-700 shadow-sm">
-          {(["all", "dog", "cat"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => { setType(t); setPage(1); }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${type === t ? "text-white" : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"}`}
-              style={type === t ? { backgroundColor: ACCENT_GREEN } : {}}
-            >
-              {t === "all" ? "All" : t === "dog" ? "Dogs" : "Cats"}
-            </button>
-          ))}
-          <select
-            value={gender}
-            onChange={(e) => { setGender(e.target.value); setPage(1); }}
-            className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
-          >
-            <option value="all">All Genders</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          <select
-            value={size}
-            onChange={(e) => { setSize(e.target.value); setPage(1); }}
-            className="px-3 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
-          >
-            <option value="all">All Sizes</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-          <button
-            type="button"
-            onClick={() => { setGender("all"); setSize("all"); setType("all"); setPage(1); }}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-          >
-            Clear
-          </button>
-        </div>
-
         <div id="animals" className="scroll-mt-8">
         {loading ? (
-          <div className="text-center py-12">Loading...</div>
+          <div className="text-center py-12">{t("results.loading")}</div>
         ) : (
           <>
             {hasAnyMatchOnPage && (
               <p className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4" style={{ color: ACCENT_GREEN }}>
-                AI matches
+                {t("results.aiMatches")}
               </p>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -498,10 +552,10 @@ export default function AdoptPage() {
                   disabled={page <= 1}
                   className="px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                 >
-                  ← Previous
+                  {t("results.previous")}
                 </button>
                 <span className="px-4 py-2 text-sm text-stone-600 dark:text-stone-400">
-                  Page {page} of {totalPages}
+                  {t("results.page", { current: page, total: totalPages })}
                 </span>
                 <button
                   type="button"
@@ -509,7 +563,7 @@ export default function AdoptPage() {
                   disabled={page >= totalPages}
                   className="px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                 >
-                  Next →
+                  {t("results.next")}
                 </button>
               </div>
             )}
@@ -517,7 +571,7 @@ export default function AdoptPage() {
         )}
 
         {!loading && filteredAnimals.length === 0 && (
-          <p className="text-center text-stone-500 py-12">No animals match your filters.</p>
+          <p className="text-center text-stone-500 py-12">{t("results.noResults")}</p>
         )}
         </div>
       </main>

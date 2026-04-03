@@ -1036,6 +1036,50 @@
     "happyFacesSponsor": "Parrainer",
     "happyFacesDonate": "Donner",
     "happyFacesVolunteer": "Bénévole",
+    "nameSearch": {
+      "label": "Rechercher par nom",
+      "placeholder": "ex. Uma, Lord Farquhar...",
+      "button": "Rechercher"
+    },
+    "ageGroup": {
+      "all": "Tous âges",
+      "puppy": "Chiot (0–1 an)",
+      "young": "Jeune (1–3 ans)",
+      "adult": "Adulte (3–8 ans)",
+      "senior": "Senior (8+ ans)"
+    },
+    "aiSearch": {
+      "label": "Recherche IA",
+      "hint": "Décris le caractère, l'énergie ou ce qui te convient — l'IA aide à chercher.",
+      "badge": "IA",
+      "ariaLabel": "Recherche IA",
+      "button": "Rechercher",
+      "loading": "Chargement...",
+      "placeholder": "Décrivez votre compagnon idéal..."
+    },
+    "results": {
+      "loading": "Chargement...",
+      "aiMatches": "Correspondances IA",
+      "previous": "← Précédent",
+      "next": "Suivant →",
+      "page": "Page {current} sur {total}",
+      "noResults": "Aucun animal ne correspond à tes filtres."
+    },
+    "gender": {
+      "all": "Tous les sexes",
+      "male": "Mâle",
+      "female": "Femelle"
+    },
+    "size": {
+      "all": "Toutes les tailles",
+      "small": "Petit",
+      "medium": "Moyen",
+      "large": "Grand"
+    },
+    "typeAll": "Tous",
+    "typeDog": "Chiens",
+    "typeCat": "Chats",
+    "clear": "Effacer",
     "pleaseHelpUs": "Aidez-nous. Avec plus de 300 chiens à notre charge, ils ont vraiment besoin d'être adoptés. Aujourd'hui, nous avons dit au revoir à un chien de 10 ans qui a malheureusement passé ses derniers jours au refuge. Aucun chien ne mérite de finir sa vie sans connaître ce que c'est qu'un vrai foyer."
   },
   "sponsorPage": {
