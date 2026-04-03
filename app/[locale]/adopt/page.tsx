@@ -166,11 +166,17 @@ export default function AdoptPage() {
   const spotlightDog = dogs.length > 0 ? dogs[getSpotlightDogIndex(week, dogs.length)] : null;
   const spotlightCat = cats.length > 0 ? cats[getSpotlightCatIndex(week, cats.length)] : null;
 
-  const filteredAnimals = useMemo(() => {
+  const filteredAnimalsBasics = useMemo(() => {
     return animals.filter((a) => {
       if (type !== "all" && a.type !== type) return false;
       if (gender !== "all" && a.gender !== gender) return false;
       if (size !== "all" && a.size !== size) return false;
+      return true;
+    });
+  }, [animals, type, gender, size]);
+
+  const filteredAnimals = useMemo(() => {
+    return filteredAnimalsBasics.filter((a) => {
       if (nameQuery.trim() && !a.name?.toLowerCase().includes(nameQuery.trim().toLowerCase())) return false;
       if (ageGroup === "puppy" && (a.age === undefined || a.age > 1)) return false;
       if (ageGroup === "young" && (a.age === undefined || a.age <= 1 || a.age > 3)) return false;
@@ -178,7 +184,10 @@ export default function AdoptPage() {
       if (ageGroup === "senior" && (a.age === undefined || a.age <= 8)) return false;
       return true;
     });
-  }, [animals, type, gender, size, nameQuery, ageGroup]);
+  }, [filteredAnimalsBasics, nameQuery, ageGroup]);
+
+  /** Zelfde basis als vóór naam/leeftijd-filters: nodig zodat AI-matches niet uit de grid vallen. */
+  const animalsForGrid = aiMatches.length > 0 ? filteredAnimalsBasics : filteredAnimals;
 
   async function aiSearch() {
     const q = aiQuery.trim();
@@ -214,11 +223,16 @@ export default function AdoptPage() {
     }
   }
 
-  const totalPages = Math.ceil(filteredAnimals.length / PER_PAGE) || 1;
+  const totalPages = Math.ceil(animalsForGrid.length / PER_PAGE) || 1;
+
+  useEffect(() => {
+    setPage((p) => Math.min(p, totalPages));
+  }, [totalPages]);
+
   const paginatedAnimals = useMemo(() => {
     const start = (page - 1) * PER_PAGE;
-    return filteredAnimals.slice(start, start + PER_PAGE);
-  }, [filteredAnimals, page]);
+    return animalsForGrid.slice(start, start + PER_PAGE);
+  }, [animalsForGrid, page]);
 
   const matchReasonByKey = useMemo(() => {
     const m: Record<string, string> = {};
@@ -395,28 +409,35 @@ export default function AdoptPage() {
           <label htmlFor="adopt-name-search" className="block text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">
             {t("nameSearch.label")}
           </label>
-          <form
-            className="flex flex-col sm:flex-row gap-3 w-full"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <div className="relative w-full">
             <input
               id="adopt-name-search"
-              type="text"
+              type="search"
               value={nameQuery}
               onChange={(e) => setNameQuery(e.target.value)}
               placeholder={t("nameSearch.placeholder")}
-              className="flex-1 min-w-0 w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
+              className="w-full min-w-0 pl-4 pr-10 py-2 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm"
             />
-            <button
-              type="submit"
-              className="shrink-0 px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: ACCENT_GREEN }}
+            <span
+              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400 dark:text-stone-500"
+              aria-hidden
             >
-              {t("nameSearch.button")}
-            </button>
-          </form>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </span>
+          </div>
         </section>
 
         {/* Sectie 2: filters */}
@@ -570,7 +591,7 @@ export default function AdoptPage() {
           </>
         )}
 
-        {!loading && filteredAnimals.length === 0 && (
+        {!loading && animalsForGrid.length === 0 && (
           <p className="text-center text-stone-500 py-12">{t("results.noResults")}</p>
         )}
         </div>
