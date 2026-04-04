@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-YT9LXHPDZT";
+  process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-LWC1BYBJE4";
 const LOAD_DELAY_MS = 3500;
 
 /**
