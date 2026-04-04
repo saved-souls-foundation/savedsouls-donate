@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Heart, ChevronDown } from "lucide-react";
+import CookieConsent from "../components/CookieConsent";
 import Footer from "../components/Footer";
 import HeroFadeIn from "../components/HeroFadeIn";
 import SiteHeader from "../components/SiteHeader";
@@ -489,6 +490,7 @@ export default function DonatePage() {
       <div className="pb-[env(safe-area-inset-bottom,0)]">
         <Footer />
       </div>
+      <CookieConsent />
       </div>
     </div>
   );
