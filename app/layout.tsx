@@ -13,6 +13,7 @@ const cormorant = Cormorant_Garamond({
 });
 import { DeferredStyles } from "./DeferredStyles";
 import { GoogleAnalytics } from "./GoogleAnalytics";
+import CookieConsent from "@/app/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -201,6 +202,7 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <CookieConsent />
         {children}
       </body>
     </html>
