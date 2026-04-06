@@ -7,6 +7,9 @@ import {
   getSpotlightCatIndex,
 } from "@/lib/spotlight";
 
+const SPOTLIGHT_CACHE_CONTROL =
+  "public, s-maxage=3600, stale-while-revalidate=86400";
+
 function toSpotlightAnimal(a: AnimalRecord | null, type: "dog" | "cat") {
   if (!a) return null;
   return {
@@ -38,7 +41,9 @@ export async function GET() {
       ["spotlight-animals", String(week)],
       { revalidate: 3600 }
     );
-    return NextResponse.json(await getCached());
+    return NextResponse.json(await getCached(), {
+      headers: { "Cache-Control": SPOTLIGHT_CACHE_CONTROL },
+    });
   } catch (e) {
     console.error("Spotlight API error:", e);
     return NextResponse.json(
