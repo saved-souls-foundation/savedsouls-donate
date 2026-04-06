@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { fetchAnimalsFromApi, toSlimAnimalRecord } from "@/lib/animals-api";
+import { fetchAnimalsFromApi } from "@/lib/animals-api";
 
+/** Zelfde payload als vroeger /api/animals — alleen voor adopt detailpagina's (story, images). */
 export const revalidate = 60;
 
 const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=120";
@@ -8,14 +9,12 @@ const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=120";
 export async function GET() {
   try {
     const { dogs, cats } = await fetchAnimalsFromApi();
-    const slimDogs = dogs.map(toSlimAnimalRecord);
-    const slimCats = cats.map(toSlimAnimalRecord);
     return NextResponse.json(
-      { dogs: slimDogs, cats: slimCats, all: [...slimDogs, ...slimCats] },
+      { dogs, cats, all: [...dogs, ...cats] },
       { headers: { "Cache-Control": CACHE_CONTROL } }
     );
   } catch (e) {
-    console.error("Animals API error:", e);
+    console.error("Animals full API error:", e);
     return NextResponse.json(
       { error: "Failed to load animals from database" },
       { status: 502 }

@@ -39,7 +39,7 @@ export default function CatDetailPage() {
   useEffect(() => {
     async function fetchCat() {
       try {
-        const res = await fetch("/api/animals", { cache: "no-store" });
+        const res = await fetch("/api/animals/full", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to load");
         const data = await res.json();
         const found = data.cats?.find((c: Cat) => String(c.id) === String(id));

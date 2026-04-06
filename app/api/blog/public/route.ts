@@ -3,15 +3,16 @@ import { NextResponse } from "next/server";
 
 /**
  * Publieke lijst van gepubliceerde blogposts (geen auth).
- * Gebruikt Nederlandse kolommen: titel, inhoud, gepubliceerd_op.
- * Status: 'published' of 'Gepubliceerd' (beide worden gematcht).
+ * Lijst zonder volledige inhoud — detail via /api/blog/public/[slug].
  */
+export const revalidate = 3600;
+
 export async function GET() {
   try {
     const admin = createAdminClient();
     const { data: rows, error } = await admin
       .from("posts")
-      .select("id, slug, titel, inhoud, gepubliceerd_op, category, source, hero_image")
+      .select("id, slug, titel, gepubliceerd_op, category, hero_image")
       .or("status.eq.published,status.eq.Gepubliceerd")
       .order("gepubliceerd_op", { ascending: false, nullsFirst: false });
 
@@ -26,11 +27,9 @@ export async function GET() {
     const posts = (rows ?? []).map((row) => ({
       id: row.id,
       slug: row.slug ?? row.id,
-      titel: row.titel,
-      inhoud: row.inhoud,
-      gepubliceerd_op: row.gepubliceerd_op,
-      category: row.category,
-      source: row.source,
+      title: row.titel,
+      published_at: row.gepubliceerd_op,
+      category: row.category ?? null,
       hero_image: row.hero_image ?? null,
     }));
 

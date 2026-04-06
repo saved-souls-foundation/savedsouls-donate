@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyTurnstile } from "@/lib/verifyTurnstile";
+import { fetchAnimalsFromApi } from "@/lib/animals-api";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,43 @@ type AnimalInput = {
 };
 
 type MatchItem = { id: string; reason: string };
+
+/** Eerste geheel getal in age-string (bijv. "2 years" → 2). */
+function parseAgeYearsFromApiAge(ageStr: string): number | null {
+  const m = String(ageStr).match(/(\d+)/);
+  if (!m) return null;
+  const n = parseInt(m[1], 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** Slimme client-payload heeft geen story; verrijk vanuit dezelfde bron als /api/animals/full. */
+async function enrichAnimalStories(list: AnimalInput[]): Promise<AnimalInput[]> {
+  if (list.length === 0) return list;
+  const hasAnyStory = list.some((a) => (a.story && String(a.story).trim().length > 0));
+  if (hasAnyStory) return list;
+  try {
+    const { dogs, cats } = await fetchAnimalsFromApi();
+    const byCompositeId = new Map<string, { story: string; age: number | null }>();
+    for (const d of dogs) {
+      byCompositeId.set(`dog-${d.id}`, { story: d.story || "", age: parseAgeYearsFromApiAge(d.age) });
+    }
+    for (const c of cats) {
+      byCompositeId.set(`cat-${c.id}`, { story: c.story || "", age: parseAgeYearsFromApiAge(c.age) });
+    }
+    return list.map((a) => {
+      const key = String(a.id ?? "");
+      const full = byCompositeId.get(key);
+      if (!full) return a;
+      return {
+        ...a,
+        story: full.story,
+        age: a.age ?? full.age,
+      };
+    });
+  } catch {
+    return list;
+  }
+}
 
 const ADOPTION_MATCH_SYSTEM_PROMPT = `You are an expert animal-adoption matching engine for Saved Souls Foundation, a rescue sanctuary in Khon Kaen, Thailand. You have deep knowledge of animal behavior, trauma recovery, and adoption compatibility.
 
@@ -167,12 +205,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ matches: [] });
     }
 
+    const enrichedList = await enrichAnimalStories(list as AnimalInput[]);
+
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ matches: [] });
     }
 
-    const animalsText = list
+    const animalsText = enrichedList
       .map((a: AnimalInput) => {
         const id = a?.id ?? "";
         const name = a?.name ?? "";

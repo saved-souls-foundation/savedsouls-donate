@@ -40,7 +40,7 @@ export default function DogDetailPage() {
   useEffect(() => {
     async function fetchDog() {
       try {
-        const res = await fetch("/api/animals", { cache: "no-store" });
+        const res = await fetch("/api/animals/full", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to load");
         const data = await res.json();
         const found = data.dogs?.find((d: Dog) => String(d.id) === String(id));

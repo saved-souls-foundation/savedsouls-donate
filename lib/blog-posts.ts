@@ -97,17 +97,27 @@ export function isDbPost(post: BlogPostOrFacebook): post is DbPost {
 
 const DEFAULT_BLOG_IMAGE = "/savedsoul-logo-bg.webp";
 
-/** Maakt een DbPost van een API-response (titel, inhoud, gepubliceerd_op, optioneel hero_image) */
-export function toDbPost(row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null; hero_image?: string | null }): DbPost {
-  const iso = row.gepubliceerd_op ?? new Date().toISOString();
+/** Maakt een DbPost van een API-response (lijst of detail; titel/title, inhoud optioneel). */
+export function toDbPost(row: {
+  id: string;
+  slug: string | null;
+  titel?: string | null;
+  title?: string | null;
+  inhoud?: string | null;
+  gepubliceerd_op?: string | null;
+  published_at?: string | null;
+  hero_image?: string | null;
+}): DbPost {
+  const titel = row.titel ?? row.title ?? null;
+  const iso = row.gepubliceerd_op ?? row.published_at ?? new Date().toISOString();
   const date = iso.slice(0, 10);
   const hero = row.hero_image?.trim() || DEFAULT_BLOG_IMAGE;
   return {
     id: row.id,
     slug: row.slug ?? row.id,
-    titel: row.titel,
-    inhoud: row.inhoud,
-    gepubliceerd_op: row.gepubliceerd_op,
+    titel,
+    inhoud: row.inhoud ?? null,
+    gepubliceerd_op: row.gepubliceerd_op ?? row.published_at ?? null,
     date,
     heroImage: hero,
     listingImage: hero,

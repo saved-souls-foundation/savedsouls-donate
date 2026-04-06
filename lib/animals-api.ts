@@ -1,6 +1,6 @@
 /**
  * Fetches dogs and cats from the external Saved Souls database API.
- * Used by /api/animals and sitemap.
+ * Used by /api/animals (slim), /api/animals/full, sitemap, spotlight.
  * API's blijven op de oude .org site (db.savedsouls-foundation.org).
  */
 
@@ -19,6 +19,27 @@ export interface AnimalRecord {
   image: string;
   images: string[];
   story?: string;
+}
+
+/** Lichte payload voor /api/animals (bandbreedte). */
+export type AnimalRecordSlim = {
+  id: string;
+  name: string;
+  gender: "male" | "female";
+  age: string;
+  size: "small" | "medium" | "large";
+  image: string;
+};
+
+export function toSlimAnimalRecord(a: AnimalRecord): AnimalRecordSlim {
+  return {
+    id: a.id,
+    name: a.name,
+    gender: a.gender,
+    age: a.age,
+    size: a.size,
+    image: a.image,
+  };
 }
 
 async function fetchAllPages(

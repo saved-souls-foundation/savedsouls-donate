@@ -51,7 +51,18 @@ export default function BlogPage() {
       .then((data) => {
         if (cancelled) return;
         const list = Array.isArray(data?.posts) ? data.posts : [];
-        setDbPosts(list.map((row: { id: string; slug: string | null; titel: string | null; inhoud: string | null; gepubliceerd_op: string | null }) => toDbPost(row)));
+        setDbPosts(
+          list.map((row: { id: string; slug: string | null; title: string | null; published_at: string | null; hero_image?: string | null; category?: string | null }) =>
+            toDbPost({
+              id: row.id,
+              slug: row.slug,
+              title: row.title,
+              inhoud: null,
+              published_at: row.published_at,
+              hero_image: row.hero_image ?? null,
+            })
+          )
+        );
       })
       .catch(() => { if (!cancelled) setDbPosts([]); })
       .finally(() => { if (!cancelled) setLoading(false); });
