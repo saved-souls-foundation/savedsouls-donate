@@ -33,6 +33,17 @@ export default async function ContactPage({ params }: Props) {
         </p>
 
         <section className="space-y-8 text-stone-700 dark:text-stone-300">
+          {/* Contact form */}
+          <div id="contact-form" className="mb-8">
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
+              {tContact("sendMessageHeading")}
+            </h2>
+            <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
+              {tContact("sendMessageSubtitle")}
+            </p>
+            <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
+          </div>
+
           {/* Logo + Name + Address + Google Map */}
           <div className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">
             <div className="flex items-start gap-4 mb-3">
@@ -183,17 +194,6 @@ export default async function ContactPage({ params }: Props) {
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
           <DonateButton size="md" href="/donate">{t("donate")}</DonateButton>
-        </div>
-
-        {/* Contact form */}
-        <div id="contact-form" className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">
-          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
-            {tContact("sendMessageHeading")}
-          </h2>
-          <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
-            {tContact("sendMessageSubtitle")}
-          </p>
-          <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
         </div>
 
         <section className="mt-16 pt-12 border-t border-stone-200 dark:border-stone-700">

@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles } from "lucide-react";
+import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles, Shield } from "lucide-react";
 import GlobalSearch from "./components/GlobalSearch";
 
 const ADM_BG = "#f1f5f9";
@@ -371,6 +371,14 @@ export default function AdminLayoutClient({
           icon={<Sparkles className="w-[18px] h-[18px]" />}
           label={t("ai")}
           isActive={pathname?.includes("dashboard/ai") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
+        <NavLink
+          href="/admin/admins"
+          icon={<Shield className="w-[18px] h-[18px]" />}
+          label="Admins"
+          isActive={pathname?.includes("admin/admins") ?? false}
           locale={locale}
           onClick={() => setMobileOpen(false)}
         />
