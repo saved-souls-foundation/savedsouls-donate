@@ -12,9 +12,22 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
+function supabaseErrorResponse(err: { message: string; code?: string; details?: string | null; hint?: string | null }) {
+  return NextResponse.json(
+    {
+      error: err.message,
+      ...(err.code != null && { code: err.code }),
+      ...(err.details != null && err.details !== "" && { details: err.details }),
+      ...(err.hint != null && err.hint !== "" && { hint: err.hint }),
+    },
+    { status: 500 }
+  );
+}
+
 export async function GET(request: NextRequest) {
-  const { error } = await requireAdmin();
+  const { error, supabase: admin } = await requireAdmin();
   if (error) return error;
+  if (!admin) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type")?.trim() ?? "";
@@ -22,42 +35,40 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
-  const admin = createAdminClient();
-  // Probeer Engels (migratie 20250305), bij schemafout Nederlands
-  let raw: Record<string, unknown>[] = [];
-  let count: number | null = 0;
-  const qEn = admin
+  // Productie: Nederlandse kolomnamen in sent_emails.
+  const qNl = admin
     .from("sent_emails")
-    .select("id, type, to_email, subject, body_preview, sent_at, reference_id, meta", { count: "exact" })
-    .order("sent_at", { ascending: false })
+    .select(
+      "id, type, aan, onderwerp, inhoud, verstuurd_op, reference_id, reference_type, verwerkt_door",
+      { count: "exact" }
+    )
+    .order("verstuurd_op", { ascending: false })
     .range(from, from + limit - 1);
-  const qEnFiltered = type === "step_notify" || type === "email_assistant" ? qEn.eq("type", type) : qEn;
-  const resultEn = await qEnFiltered;
-  if (resultEn.error && (resultEn.error.code === "PGRST204" || /column|schema/i.test(resultEn.error.message ?? ""))) {
-    const qNl = admin
-      .from("sent_emails")
-      .select("id, type, aan, onderwerp, inhoud, verstuurd_op, reference_id, meta", { count: "exact" })
-      .order("verstuurd_op", { ascending: false })
-      .range(from, from + limit - 1);
-    const resultNl = await (type === "step_notify" || type === "email_assistant" ? qNl.eq("type", type) : qNl);
-    if (resultNl.error) return NextResponse.json({ error: resultNl.error.message }, { status: 500 });
-    raw = (resultNl.data ?? []) as Record<string, unknown>[];
-    count = resultNl.count ?? 0;
-  } else {
-    if (resultEn.error) return NextResponse.json({ error: resultEn.error.message }, { status: 500 });
-    raw = (resultEn.data ?? []) as Record<string, unknown>[];
-    count = resultEn.count ?? 0;
+  const resultNl = await (type === "step_notify" || type === "email_assistant" ? qNl.eq("type", type) : qNl);
+
+  if (resultNl.error) {
+    console.error("[api/admin/sent-emails] query failed:", {
+      code: resultNl.error.code,
+      message: resultNl.error.message,
+      details: resultNl.error.details,
+      hint: resultNl.error.hint,
+    });
+    return supabaseErrorResponse(resultNl.error);
   }
-  // Normaliseer naar frontend-formaat (aan, onderwerp, inhoud, verstuurd_op)
+
+  const raw = (resultNl.data ?? []) as Record<string, unknown>[];
+  const count = resultNl.count ?? 0;
+
   const data = raw.map((row: Record<string, unknown>) => ({
     id: row.id,
     type: row.type,
-    aan: row.aan ?? row.to_email ?? "",
-    onderwerp: row.onderwerp ?? row.subject ?? "",
-    inhoud: row.inhoud ?? row.body_preview ?? null,
-    verstuurd_op: row.verstuurd_op ?? row.sent_at ?? "",
+    aan: row.aan ?? "",
+    onderwerp: row.onderwerp ?? "",
+    inhoud: row.inhoud ?? null,
+    verstuurd_op: row.verstuurd_op ?? "",
     reference_id: row.reference_id ?? null,
-    meta: row.meta ?? null,
+    reference_type: row.reference_type ?? null,
+    verwerkt_door: row.verwerkt_door ?? null,
   }));
   return NextResponse.json({ data, total: count, page, limit });
 }
