@@ -295,6 +295,7 @@
     "resetLinkSent": "Check your email. We have sent a link to reset your password.",
     "backToWebsite": "← Back to website",
     "dashboardLabel": "Dashboard",
+    "emailsNav": "Emails",
     "ai": "AI",
     "dashboard": {
       "activeMembers": "Active Members",

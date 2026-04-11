@@ -18,6 +18,7 @@ const ADM_ACCENT = "#0d9488";
 
 const nav = [
   { href: "/admin/dashboard", labelKey: "dashboardLabel", icon: "📊" },
+  { href: "/admin/emails", labelKey: "emailsNav", icon: "📧" },
   { href: "/admin/adoptanten", labelKey: "adoptanten", icon: "🐾" },
   { href: "/admin/vrijwilligers", labelKey: "vrijwilligers", icon: "🤝" },
   { href: "/admin/documenten", labelKey: "documenten", icon: "📄" },
@@ -245,7 +246,7 @@ export default function AdminLayoutClient({
   }
 
   const sidebar = (
-    <div className="flex flex-col h-full" style={{ background: ADM_SIDEBAR, color: ADM_TEXT }}>
+    <div className="flex flex-col h-full min-h-0" style={{ background: ADM_SIDEBAR, color: ADM_TEXT }}>
       <div className="p-4 border-b shrink-0" style={{ borderColor: ADM_BORDER }}>
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -278,7 +279,7 @@ export default function AdminLayoutClient({
           {t("subtitle")}
         </p>
       </div>
-      <nav className="p-2 flex-1 overflow-y-auto min-h-0">
+      <nav className="p-2 flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-y-contain">
         {nav.map((item) => {
           const isActive = pathname?.includes(item.href.slice(1));
           return (
@@ -417,7 +418,7 @@ export default function AdminLayoutClient({
         }
       `}</style>
       <aside
-        className="w-56 shrink-0 border-r hidden md:flex flex-col relative z-10"
+        className="w-56 shrink-0 border-r hidden md:flex flex-col relative z-10 min-h-0 md:sticky md:top-0 md:h-screen md:max-h-screen md:self-start"
         style={{ background: ADM_SIDEBAR, borderColor: ADM_BORDER }}
       >
         {sidebar}
@@ -429,7 +430,7 @@ export default function AdminLayoutClient({
           onClick={() => setMobileOpen(false)}
         >
           <aside
-            className="absolute left-0 top-0 bottom-0 w-64 max-w-[85vw] flex flex-col border-r shadow-xl"
+            className="absolute left-0 top-0 bottom-0 w-64 max-w-[85vw] flex flex-col border-r shadow-xl min-h-0"
             style={{ background: ADM_SIDEBAR, borderColor: ADM_BORDER, color: ADM_TEXT }}
             onClick={(e) => e.stopPropagation()}
           >
