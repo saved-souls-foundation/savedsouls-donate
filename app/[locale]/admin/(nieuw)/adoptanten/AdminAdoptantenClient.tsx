@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import type { AdoptantRow } from "./page";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ANIMALS_BASE_URL = "https://db.savedsouls-foundation.org";
@@ -28,6 +30,7 @@ const adoptantStapLabels: Record<number, string> = {
 export default function AdminAdoptantenClient({ initialRows }: { initialRows: AdoptantRow[] }) {
   const t = useTranslations("admin");
   const locale = useLocale();
+  const [rows, setRows] = useState<AdoptantRow[]>(initialRows);
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<AdoptantRow | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
@@ -39,15 +42,26 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
   const [deleteConfirm, setDeleteConfirm] = useState<AdoptantRow | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoIds, setPendingUndoIds] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    setRows(initialRows);
+  }, [initialRows]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
-    if (!q) return initialRows;
-    return initialRows.filter((r) => {
+    if (!q) return rows;
+    return rows.filter((r) => {
       const naam = [r.voornaam, r.achternaam].filter(Boolean).join(" ").toLowerCase();
       return naam.includes(q);
     });
-  }, [initialRows, search]);
+  }, [rows, search]);
 
   function openDetail(row: AdoptantRow) {
     setDetail(row);
@@ -156,6 +170,52 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
     }
   }
 
+  const pageIds = filtered.map((r) => r.id);
+
+  function selectedAdoptantEmails(): string {
+    const emails = filtered.filter((r) => selectedIds.has(r.id) && r.email?.trim()).map((r) => r.email!.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function restoreAdoptanten(ids: string[]) {
+    for (const id of ids) {
+      await fetch(`/api/admin/adoptanten/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ restore: true }),
+      });
+    }
+    window.location.reload();
+  }
+
+  async function handleBulkDeleteAdoptanten() {
+    const toDelete = filtered.filter((r) => selectedIds.has(r.id));
+    if (toDelete.length === 0) return;
+    setDeleting(true);
+    setError("");
+    try {
+      for (const row of toDelete) {
+        const res = await fetch(`/api/admin/adoptanten/${row.id}`, { method: "DELETE" });
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          throw new Error((j as { error?: string }).error ?? t("errorGeneric"));
+        }
+      }
+      const ids = toDelete.map((r) => r.id);
+      setRows((prev) => prev.filter((r) => !ids.includes(r.id)));
+      if (detail && ids.includes(detail.id)) setDetail(null);
+      setPendingUndoIds(ids);
+      setUndoCount(ids.length);
+      setUndoOpen(true);
+      setSelectedIds(new Set());
+      setBulkDeleteConfirm(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : t("errorGeneric"));
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <p className="text-sm" style={{ color: ADM_MUTED }}>
@@ -207,6 +267,21 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
         </p>
       )}
 
+      <AdminBulkActionBar
+        selectedCount={selectedIds.size}
+        onEmail={() => {
+          const bcc = selectedAdoptantEmails();
+          if (!bcc) {
+            setError("Geen geldige e-mailadressen in selectie");
+            return;
+          }
+          setComposeBcc(bcc);
+          setComposeOpen(true);
+        }}
+        onDelete={() => setBulkDeleteConfirm(true)}
+        onClear={() => setSelectedIds(new Set())}
+      />
+
       <div
         className="rounded-xl border overflow-hidden"
         style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
@@ -215,6 +290,12 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
           <table className="w-full text-sm">
             <thead>
               <tr style={{ color: ADM_MUTED }}>
+                <AdminBulkSelectAllTh
+                  pageIds={pageIds}
+                  selectedIds={selectedIds}
+                  setSelectedIds={setSelectedIds}
+                  className="text-left p-3 align-top w-[min(12rem,32vw)] min-w-[8.5rem]"
+                />
                 <th className="text-left p-3">{t("name")}</th>
                 <th className="text-left p-3">{t("step")}</th>
                 <th className="text-left p-3">{t("notesPreview")}</th>
@@ -225,6 +306,22 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
             <tbody>
               {filtered.map((r) => (
                 <tr key={r.id} className="border-t" style={{ borderColor: ADM_BORDER }}>
+                  <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(r.id)}
+                      onChange={() =>
+                        setSelectedIds((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(r.id)) next.delete(r.id);
+                          else next.add(r.id);
+                          return next;
+                        })
+                      }
+                      className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                      aria-label="Selecteer rij"
+                    />
+                  </td>
                   <td className="p-3" style={{ color: ADM_TEXT }}>
                     {[r.voornaam, r.achternaam].filter(Boolean).join(" ") || t("noValue")}
                   </td>
@@ -408,6 +505,44 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
         </div>
       )}
 
+      {bulkDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setBulkDeleteConfirm(false)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_MUTED }}>
+              Weet je zeker dat je {selectedIds.size} adoptant{selectedIds.size === 1 ? "" : "en"} wilt verwijderen?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => setBulkDeleteConfirm(false)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg text-sm font-medium border disabled:opacity-50"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                Annuleren
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleBulkDeleteAdoptanten()}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ERROR }}
+              >
+                {deleting ? t("loading") : "Verwijderen"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {deleteConfirm && (
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center p-4"
@@ -448,6 +583,33 @@ export default function AdminAdoptantenClient({ initialRows }: { initialRows: Ad
           </div>
         </div>
       )}
+
+      {composeOpen && (
+        <ComposeEmailModal
+          open={composeOpen}
+          onClose={() => setComposeOpen(false)}
+          onSent={() => {
+            setComposeOpen(false);
+            setSelectedIds(new Set());
+          }}
+          initialBcc={composeBcc}
+          initialSubject=""
+        />
+      )}
+
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (pendingUndoIds?.length) await restoreAdoptanten(pendingUndoIds);
+          setUndoOpen(false);
+          setPendingUndoIds(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoIds(null);
+        }}
+      />
     </div>
   );
 }

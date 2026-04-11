@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import type { VolunteerRow } from "./page";
 import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
@@ -37,6 +39,7 @@ const LANGUAGE_OPTIONS = ["nl", "en", "de", "es", "fr", "ru", "th"] as const;
 
 export default function AdminVrijwilligersClient({ initialRows }: { initialRows: VolunteerRow[] }) {
   const t = useTranslations("admin");
+  const [rows, setRows] = useState<VolunteerRow[]>(initialRows);
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<VolunteerRow | null>(null);
   const [savingStep, setSavingStep] = useState<string | null>(null);
@@ -55,16 +58,87 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
     area: "",
     language: "nl",
   });
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoVolunteers, setPendingUndoVolunteers] = useState<VolunteerRow[] | null>(null);
+
+  useEffect(() => {
+    setRows(initialRows);
+  }, [initialRows]);
+
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [search]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
-    if (!q) return initialRows;
-    return initialRows.filter((r) => {
+    if (!q) return rows;
+    return rows.filter((r) => {
       const naam = [r.voornaam, r.achternaam].filter(Boolean).join(" ").toLowerCase();
       const email = (r.email ?? "").toLowerCase();
       return naam.includes(q) || email.includes(q);
     });
-  }, [initialRows, search]);
+  }, [rows, search]);
+
+  const pageIds = filtered.map((r) => r.user_id);
+
+  function selectedVolunteerEmails(): string {
+    const emails = filtered.filter((r) => selectedIds.has(r.user_id) && r.email?.trim()).map((r) => r.email!.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function restoreVolunteersSnapshot(list: VolunteerRow[]) {
+    const res = await fetch("/api/admin/volunteers/restore", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        rows: list.map((r) => ({
+          user_id: r.user_id,
+          voornaam: r.voornaam,
+          achternaam: r.achternaam,
+          email: r.email,
+          phone: r.phone,
+          city: r.city,
+          area: r.area,
+          language: r.language,
+          step: r.step,
+        })),
+      }),
+    });
+    if (!res.ok) {
+      setError(t("errorGeneric"));
+      return;
+    }
+    window.location.reload();
+  }
+
+  async function handleBulkDeleteVolunteers() {
+    const list = filtered.filter((r) => selectedIds.has(r.user_id));
+    if (list.length === 0) return;
+    setDeleting(true);
+    setError("");
+    try {
+      for (const row of list) {
+        const res = await fetch(`/api/admin/volunteers/${row.user_id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error();
+      }
+      setRows((prev) => prev.filter((r) => !selectedIds.has(r.user_id)));
+      if (detail && selectedIds.has(detail.user_id)) setDetail(null);
+      setPendingUndoVolunteers(list);
+      setUndoCount(list.length);
+      setUndoOpen(true);
+      setSelectedIds(new Set());
+      setBulkDeleteConfirm(false);
+    } catch {
+      setError(t("errorGeneric"));
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   async function updateStep(userId: string, row: VolunteerRow, nieuweStap: number) {
     setSavingStep(userId);
@@ -232,18 +306,33 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
         </p>
       )}
 
+      <AdminBulkActionBar
+        selectedCount={selectedIds.size}
+        onEmail={() => {
+          const bcc = selectedVolunteerEmails();
+          if (!bcc) {
+            setError("Geen geldige e-mailadressen in selectie");
+            return;
+          }
+          setComposeBcc(bcc);
+          setComposeOpen(true);
+        }}
+        onDelete={() => setBulkDeleteConfirm(true)}
+        onClear={() => setSelectedIds(new Set())}
+      />
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard icon="🤝" label="Totaal vrijwilligers" value={initialRows.length} />
+        <StatCard icon="🤝" label="Totaal vrijwilligers" value={rows.length} />
         <StatCard
           icon="✈️"
           label="Actief in Thailand"
-          value={initialRows.filter((v) => (v as { status?: string }).status === "actief" || v.step === 4).length}
+          value={rows.filter((v) => (v as { status?: string }).status === "actief" || v.step === 4).length}
           accentColor="blue"
         />
         <StatCard
           icon="📅"
           label="Nieuwe aanmeldingen"
-          value={initialRows.filter((v) => {
+          value={rows.filter((v) => {
             const d = new Date((v as { aangemeld_op?: string }).aangemeld_op || v.created_at || 0);
             const now = new Date();
             return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
@@ -254,7 +343,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
         <StatCard
           icon="⏳"
           label="In behandeling"
-          value={initialRows.filter((v) => (v.step ?? 0) < 4).length}
+          value={rows.filter((v) => (v.step ?? 0) < 4).length}
           accentColor="violet"
         />
       </div>
@@ -276,6 +365,7 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
             <table className="w-full text-sm min-w-[600px]">
               <thead>
                 <tr className="text-gray-500">
+                  <AdminBulkSelectAllTh pageIds={pageIds} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
                   <th className="text-left p-3">{t("name")}</th>
                   <th className="text-left p-3">{t("emailCol")}</th>
                   <th className="text-left p-3">{t("city")}</th>
@@ -294,6 +384,22 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
                       className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
                       onClick={() => setDetail(r)}
                     >
+                      <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(r.user_id)}
+                          onChange={() =>
+                            setSelectedIds((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(r.user_id)) next.delete(r.user_id);
+                              else next.add(r.user_id);
+                              return next;
+                            })
+                          }
+                          className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                          aria-label="Selecteer rij"
+                        />
+                      </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <Avatar name={naam} size="sm" />
@@ -338,6 +444,44 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           </TableWrapper>
         )}
       </div>
+
+      {bulkDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setBulkDeleteConfirm(false)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+              Weet je zeker dat je {selectedIds.size} vrijwilliger{selectedIds.size === 1 ? "" : "s"} wilt verwijderen?
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => void handleBulkDeleteVolunteers()}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: ADM_ERROR }}
+              >
+                {deleting ? t("loading") : t("deleteButton")}
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setBulkDeleteConfirm(false)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {t("members.cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {deleteConfirm && (
         <div
@@ -604,6 +748,33 @@ export default function AdminVrijwilligersClient({ initialRows }: { initialRows:
           </div>
         </div>
       )}
+
+      {composeOpen && (
+        <ComposeEmailModal
+          open={composeOpen}
+          onClose={() => setComposeOpen(false)}
+          onSent={() => {
+            setComposeOpen(false);
+            setSelectedIds(new Set());
+          }}
+          initialBcc={composeBcc}
+          initialSubject=""
+        />
+      )}
+
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (pendingUndoVolunteers?.length) await restoreVolunteersSnapshot(pendingUndoVolunteers);
+          setUndoOpen(false);
+          setPendingUndoVolunteers(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoVolunteers(null);
+        }}
+      />
     </div>
   );
 }

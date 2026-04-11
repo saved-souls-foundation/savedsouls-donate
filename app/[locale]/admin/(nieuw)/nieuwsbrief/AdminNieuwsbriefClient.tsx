@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
@@ -62,6 +64,14 @@ export default function AdminNieuwsbriefClient() {
   const [toastError, setToastError] = useState<string | null>(null);
   const [toastSuccess, setToastSuccess] = useState<string | null>(null);
   const [testingEmailId, setTestingEmailId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoRows, setPendingUndoRows] = useState<SubscriberRow[] | null>(null);
 
   useEffect(() => {
     if (!toastError) return;
@@ -102,6 +112,10 @@ export default function AdminNieuwsbriefClient() {
   useEffect(() => {
     fetchSubscribers();
   }, [fetchSubscribers]);
+
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [page, search, statusFilter, typeFilter, languageFilter]);
 
   useEffect(() => {
     fetch("/api/admin/newsletter?status=actief&limit=1")
@@ -170,6 +184,41 @@ export default function AdminNieuwsbriefClient() {
       if (wasActief && activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - 1));
     } else {
       setToastError("Verwijderen mislukt");
+    }
+  }
+
+  const subscriberPageIds = data.map((r) => r.id);
+
+  function subscriberBulkEmails(): string {
+    const emails = data
+      .filter((r) => selectedIds.has(r.id) && r.email?.trim())
+      .map((r) => r.email!.trim().toLowerCase());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function handleBulkDeleteSelected() {
+    const rows = data.filter((r) => selectedIds.has(r.id)).map((r) => ({ ...r }));
+    if (rows.length === 0) return;
+    setBulkDeleting(true);
+    setToastError(null);
+    try {
+      for (const r of rows) {
+        const res = await fetch(`/api/admin/newsletter/${r.id}/delete`, { method: "DELETE" });
+        if (!res.ok) throw new Error("delete failed");
+      }
+      setData((prev) => prev.filter((x) => !selectedIds.has(x.id)));
+      setTotal((prev) => Math.max(0, prev - rows.length));
+      const actiefDel = rows.filter((r) => r.actief).length;
+      if (activeCount != null) setActiveCount((c) => Math.max(0, (c ?? 0) - actiefDel));
+      setPendingUndoRows(rows);
+      setUndoCount(rows.length);
+      setUndoOpen(true);
+      setSelectedIds(new Set());
+      setBulkDeleteConfirm(false);
+    } catch {
+      setToastError("Verwijderen mislukt");
+    } finally {
+      setBulkDeleting(false);
     }
   }
 
@@ -450,6 +499,18 @@ export default function AdminNieuwsbriefClient() {
         </a>
       </div>
 
+      {selectedIds.size >= 1 ? (
+        <AdminBulkActionBar
+          selectedCount={selectedIds.size}
+          onEmail={() => {
+            setComposeBcc(subscriberBulkEmails());
+            setComposeOpen(true);
+          }}
+          onDelete={() => setBulkDeleteConfirm(true)}
+          onClear={() => setSelectedIds(new Set())}
+        />
+      ) : null}
+
       <div className="rounded-xl border overflow-hidden" style={{ background: ADM_CARD, borderColor: ADM_BORDER }}>
         {loading ? (
           <div className="p-6 text-center text-gray-500">…</div>
@@ -464,6 +525,7 @@ export default function AdminNieuwsbriefClient() {
             <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="text-gray-500">
+                  <AdminBulkSelectAllTh pageIds={subscriberPageIds} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
                   <th className="text-left p-3">{t("name")}</th>
                   <th className="text-left p-3">{t("email")}</th>
                   <th className="text-left p-3">{t("type")}</th>
@@ -480,6 +542,22 @@ export default function AdminNieuwsbriefClient() {
                     key={r.id}
                     className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100"
                   >
+                    <td className="p-3 w-12 min-w-[3rem] align-middle">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.has(r.id)}
+                        onChange={() =>
+                          setSelectedIds((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(r.id)) next.delete(r.id);
+                            else next.add(r.id);
+                            return next;
+                          })
+                        }
+                        className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                        aria-label="Selecteer rij"
+                      />
+                    </td>
                     <td className="p-3">
                       <div className="flex items-center gap-3">
                         <Avatar name={(name(r) || r.email) ?? "–"} size="sm" />
@@ -740,6 +818,86 @@ export default function AdminNieuwsbriefClient() {
           </div>
         </div>
       )}
+
+      <ComposeEmailModal
+        open={composeOpen}
+        onClose={() => setComposeOpen(false)}
+        onSent={() => setComposeOpen(false)}
+        initialBcc={composeBcc}
+      />
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (!pendingUndoRows?.length) return;
+          const res = await fetch("/api/admin/newsletter/restore", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              rows: pendingUndoRows.map((r) => ({
+                email: r.email,
+                voornaam: r.voornaam,
+                achternaam: r.achternaam,
+                type: r.type,
+                language: r.language,
+                actief: r.actief,
+                aangemeld_op: r.aangemeld_op,
+                uitgeschreven_op: r.uitgeschreven_op,
+              })),
+            }),
+          });
+          if (res.ok) {
+            const actiefRest = pendingUndoRows.filter((r) => r.actief).length;
+            if (activeCount != null) setActiveCount((c) => (c ?? 0) + actiefRest);
+            await fetchSubscribers();
+          }
+          setUndoOpen(false);
+          setPendingUndoRows(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoRows(null);
+        }}
+      />
+
+      {bulkDeleteConfirm ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.4)" }}
+          onClick={() => !bulkDeleting && setBulkDeleteConfirm(false)}
+        >
+          <div
+            className="rounded-xl border p-6 max-w-md w-full shadow-lg"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+              Weet je zeker dat je {selectedIds.size}{" "}
+              {selectedIds.size === 1 ? "abonnee" : "abonnees"} permanent wilt verwijderen?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                disabled={bulkDeleting}
+                onClick={() => setBulkDeleteConfirm(false)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium disabled:opacity-50"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {tAdmin("members.cancel")}
+              </button>
+              <button
+                type="button"
+                disabled={bulkDeleting}
+                onClick={() => void handleBulkDeleteSelected()}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: "#7B1010" }}
+              >
+                {bulkDeleting ? loadingStr : `🗑 ${t("deleteButton")}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

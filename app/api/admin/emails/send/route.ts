@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendMail } from "@/lib/sendMail";
+import { sendMail, NOTIFICATION_EMAILS } from "@/lib/sendMail";
 import { logSentEmail } from "@/lib/sentEmailsLog";
 
 /** From moet formaat "Name <email@domain.com>" hebben voor Resend (geverifieerd domein). */
@@ -23,7 +23,8 @@ function wrapHtml(body: string): string {
 
 /**
  * Verstuur een nieuwe e-mail (niet gekoppeld aan inkomende mail, of als antwoord met optional incoming_email_id).
- * POST body: { to_email, subject, body, incoming_email_id? }
+ * POST body: { to_email, bcc?, subject, body, incoming_email_id? }
+ * `bcc`: komma-gescheiden of array van e-mailadressen (bulk vanuit admin-lijsten).
  * Logt in sent_emails (lib/sentEmailsLog: probeert EN/NL/minimaal schema). Bij log-falen: altijd 200 + success: true (mail is verstuurd).
  */
 export async function POST(request: NextRequest) {
@@ -31,32 +32,49 @@ export async function POST(request: NextRequest) {
     const { error } = await requireAdmin();
     if (error) return error;
 
-    let body: { to_email?: string; subject?: string; body?: string; incoming_email_id?: string };
+    let body: { to_email?: string; bcc?: string | string[]; subject?: string; body?: string; incoming_email_id?: string };
     try {
       body = await request.json();
     } catch {
       return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
-    const to_email = typeof body.to_email === "string" ? body.to_email.trim() : "";
+    let to_email = typeof body.to_email === "string" ? body.to_email.trim() : "";
     const subject = typeof body.subject === "string" ? body.subject.trim() : "";
     const bodyText = typeof body.body === "string" ? body.body.trim() : "";
     const incoming_email_id = typeof body.incoming_email_id === "string" ? body.incoming_email_id : undefined;
 
-    if (!to_email || !subject) {
-      return NextResponse.json({ error: "to_email and subject are required" }, { status: 400 });
+    const bccList: string[] = Array.isArray(body.bcc)
+      ? body.bcc.map((e) => (typeof e === "string" ? e.trim().toLowerCase() : "")).filter(Boolean)
+      : typeof body.bcc === "string"
+        ? body.bcc
+            .split(/[,;\s]+/)
+            .map((e) => e.trim().toLowerCase())
+            .filter(Boolean)
+        : [];
+
+    if (!subject) {
+      return NextResponse.json({ error: "subject is required" }, { status: 400 });
     }
     if (!bodyText) {
       return NextResponse.json({ error: "body is required" }, { status: 400 });
     }
 
+    if (bccList.length > 0 && !to_email) {
+      to_email = NOTIFICATION_EMAILS[0];
+    }
+    if (!to_email) {
+      return NextResponse.json({ error: "to_email is required (of vul BCC-ontvangers in)" }, { status: 400 });
+    }
+
     const html = wrapHtml(bodyText);
     const text = bodyText.replace(/<[^>]+>/g, "");
 
-    console.log("[admin/emails/send] RESEND_API_KEY present:", Boolean(process.env.RESEND_API_KEY), "| from:", RESEND_FROM, "| to:", to_email);
+    console.log("[admin/emails/send] RESEND_API_KEY present:", Boolean(process.env.RESEND_API_KEY), "| from:", RESEND_FROM, "| to:", to_email, "| bcc count:", bccList.length);
 
     const result = await sendMail({
       from: RESEND_FROM,
       to: to_email,
+      ...(bccList.length > 0 ? { bcc: bccList } : {}),
       subject,
       text,
       html,
@@ -96,9 +114,10 @@ export async function POST(request: NextRequest) {
         .eq("id", incoming_email_id);
     }
 
+    const logTo = bccList.length > 0 ? `${to_email} (+${bccList.length} bcc)` : to_email.trim();
     const logged = await logSentEmail(admin, {
       type: "email_assistant",
-      to: to_email.trim(),
+      to: logTo.slice(0, 500),
       subject: subject.trim(),
       bodyPreview: bodyText.slice(0, 500).trim() || null,
       referenceId: incoming_email_id ?? null,

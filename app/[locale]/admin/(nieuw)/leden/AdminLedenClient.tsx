@@ -6,6 +6,8 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { StatCard, TableWrapper, Avatar, StatusBadge, QuickActions, EmptyState } from "../components/ui/design-system";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
@@ -63,8 +65,15 @@ export default function AdminLedenClient() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState<MemberRow | null>(null);
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoRows, setPendingUndoRows] = useState<MemberRow[] | null>(null);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -92,6 +101,10 @@ export default function AdminLedenClient() {
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
+
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [page, search, statusFilter, typeFilter]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const exportUrl = `/api/admin/members/export?${new URLSearchParams({
@@ -128,6 +141,62 @@ export default function AdminLedenClient() {
     return locale === "en"
       ? new Date(d).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
       : new Date(d).toLocaleDateString("nl-NL", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+
+  const pageIds = data.map((r) => r.id);
+
+  function selectedMemberEmails(): string {
+    const emails = data.filter((r) => selectedIds.has(r.id) && r.email?.trim()).map((r) => r.email!.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function restoreMembers(rows: MemberRow[]) {
+    for (const r of rows) {
+      const voornaam = r.voornaam?.trim() || "—";
+      const achternaam = r.achternaam?.trim() || "—";
+      const email = r.email?.trim();
+      if (!email) continue;
+      await fetch("/api/admin/members", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          voornaam,
+          achternaam,
+          email,
+          telefoon: r.telefoon ?? null,
+          type: r.type === "bedrijf" ? "bedrijf" : "persoon",
+          bedrijfsnaam: r.bedrijfsnaam ?? null,
+          status: r.status === "inactief" ? "inactief" : "actief",
+          lid_sinds: r.lid_sinds ?? undefined,
+          notities: r.notities ?? null,
+        }),
+      });
+    }
+    await fetchMembers();
+  }
+
+  async function handleBulkDelete() {
+    const rows = data.filter((r) => selectedIds.has(r.id));
+    if (rows.length === 0) return;
+    setDeleting(true);
+    setToastError(null);
+    try {
+      for (const row of rows) {
+        const res = await fetch(`/api/admin/members/${row.id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error();
+      }
+      setData((prev) => prev.filter((x) => !selectedIds.has(x.id)));
+      setTotal((prev) => Math.max(0, prev - rows.length));
+      setPendingUndoRows(rows);
+      setUndoCount(rows.length);
+      setUndoOpen(true);
+      setSelectedIds(new Set());
+      setBulkDeleteConfirm(false);
+    } catch {
+      setToastError("Verwijderen mislukt");
+    } finally {
+      setDeleting(false);
+    }
   }
 
   async function handleDelete(row: MemberRow) {
@@ -189,6 +258,21 @@ export default function AdminLedenClient() {
           {toastError}
         </div>
       )}
+
+      <AdminBulkActionBar
+        selectedCount={selectedIds.size}
+        onEmail={() => {
+          const bcc = selectedMemberEmails();
+          if (!bcc) {
+            setToastError("Geen geldige e-mailadressen in selectie");
+            return;
+          }
+          setComposeBcc(bcc);
+          setComposeOpen(true);
+        }}
+        onDelete={() => setBulkDeleteConfirm(true)}
+        onClear={() => setSelectedIds(new Set())}
+      />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard icon="👥" label="Totaal leden" value={data.length} />
@@ -305,6 +389,7 @@ export default function AdminLedenClient() {
             <table className="w-full text-sm min-w-[600px]">
               <thead>
                 <tr className="text-gray-500">
+                  <AdminBulkSelectAllTh pageIds={pageIds} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
                   <th className="text-left p-3">{t("name")}</th>
                   <th className="text-left p-3">{t("email")}</th>
                   <th className="text-left p-3">{t("type")}</th>
@@ -322,6 +407,22 @@ export default function AdminLedenClient() {
                       className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
                       onClick={() => router.push(`/admin/leden/${r.id}`)}
                     >
+                      <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(r.id)}
+                          onChange={() =>
+                            setSelectedIds((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(r.id)) next.delete(r.id);
+                              else next.add(r.id);
+                              return next;
+                            })
+                          }
+                          className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                          aria-label="Selecteer rij"
+                        />
+                      </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <Avatar name={naam} size="sm" />
@@ -359,6 +460,43 @@ export default function AdminLedenClient() {
               </tbody>
             </table>
           </TableWrapper>
+        )}
+        {bulkDeleteConfirm && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,.6)" }}
+            onClick={() => !deleting && setBulkDeleteConfirm(false)}
+          >
+            <div
+              className="max-w-md w-full rounded-xl border p-6"
+              style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+                Weet je zeker dat je {selectedIds.size} lid{selectedIds.size === 1 ? "" : "en"} wilt verwijderen? Dit kan niet ongedaan worden gemaakt na 10 seconden.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => void handleBulkDelete()}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                  style={{ background: "#7B1010" }}
+                >
+                  {deleting ? loadingStr : t("delete")}
+                </button>
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => setBulkDeleteConfirm(false)}
+                  className="px-4 py-2 rounded-lg border text-sm font-medium"
+                  style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+                >
+                  {t("cancel")}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
         {deleteConfirm && (
           <div
@@ -426,6 +564,33 @@ export default function AdminLedenClient() {
           </div>
         )}
       </div>
+
+      {composeOpen && (
+        <ComposeEmailModal
+          open={composeOpen}
+          onClose={() => setComposeOpen(false)}
+          onSent={() => {
+            setComposeOpen(false);
+            setSelectedIds(new Set());
+          }}
+          initialBcc={composeBcc}
+          initialSubject=""
+        />
+      )}
+
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (pendingUndoRows?.length) await restoreMembers(pendingUndoRows);
+          setUndoOpen(false);
+          setPendingUndoRows(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoRows(null);
+        }}
+      />
     </div>
   );
 }

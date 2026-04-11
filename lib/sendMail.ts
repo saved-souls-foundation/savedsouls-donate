@@ -18,6 +18,8 @@ function getClient(): Resend | null {
 
 export type SendMailOptions = {
   to: string | string[];
+  /** BCC-ontvangers (Resend); niet zichtbaar onderling. */
+  bcc?: string | string[];
   subject: string;
   text: string;
   html?: string;
@@ -37,10 +39,16 @@ export async function sendMail(options: SendMailOptions): Promise<{ success: boo
   }
   const from = options.from ?? getFrom();
   const to = Array.isArray(options.to) ? options.to : [options.to];
+  const bccRaw = options.bcc;
+  const bcc =
+    bccRaw == null || bccRaw === ""
+      ? undefined
+      : (Array.isArray(bccRaw) ? bccRaw : [bccRaw]).map((e) => e.trim()).filter(Boolean);
   try {
     const result = await client.emails.send({
       from,
       to,
+      ...(bcc && bcc.length > 0 ? { bcc } : {}),
       replyTo: options.replyTo ?? DEFAULT_REPLY_TO,
       subject: options.subject,
       text: options.text,

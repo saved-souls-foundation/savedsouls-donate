@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { StatCard, TableWrapper, Avatar, QuickActions, EmptyState } from "../components/ui/design-system";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
@@ -63,6 +65,14 @@ export default function AdminSponsorenClient() {
   const [deleteConfirm, setDeleteConfirm] = useState<SponsorRow | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
+  const [selectedSponsorIds, setSelectedSponsorIds] = useState<Set<string>>(new Set());
+  const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoSponsors, setPendingUndoSponsors] = useState<SponsorRow[] | null>(null);
 
   type SponsorLead = {
     id: string;
@@ -115,6 +125,14 @@ export default function AdminSponsorenClient() {
   }, [fetchList]);
 
   useEffect(() => {
+    setSelectedSponsorIds(new Set());
+  }, [page, search, niveauFilter, statusFilter]);
+
+  useEffect(() => {
+    setSelectedLeadIds(new Set());
+  }, [activeTab]);
+
+  useEffect(() => {
     fetch("/api/admin/sponsors/stats")
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => j && setStats(j))
@@ -136,6 +154,68 @@ export default function AdminSponsorenClient() {
       setDeleteConfirm(null);
       setData((prev) => prev.filter((x) => x.id !== row.id));
       setTotal((prev) => Math.max(0, prev - 1));
+    } catch {
+      // ignore
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  const sponsorPageIds = data.map((r) => r.id);
+  const leadPageIds = leads.map((l) => l.id);
+
+  function sponsorBulkEmails(): string {
+    const emails = data.filter((r) => selectedSponsorIds.has(r.id) && r.contactpersoon_email?.trim()).map((r) => r.contactpersoon_email!.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  function leadBulkEmails(): string {
+    const emails = leads.filter((l) => selectedLeadIds.has(l.id) && l.donor_email?.trim()).map((l) => l.donor_email.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function restoreSponsors(rows: SponsorRow[]) {
+    for (const row of rows) {
+      const status = row.status && row.status !== "verwijderd" ? row.status : "actief";
+      await fetch(`/api/admin/sponsors/${row.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bedrijfsnaam: row.bedrijfsnaam ?? "",
+          contactpersoon_naam: row.contactpersoon_naam ?? "",
+          contactpersoon_email: row.contactpersoon_email ?? "",
+          contactpersoon_telefoon: null,
+          website: row.website ?? null,
+          niveau: (row.niveau?.toLowerCase() as "platinum" | "gold" | "silver" | "bronze") || "bronze",
+          bedrag_per_maand: row.bedrag_per_maand ?? null,
+          bijdrage_type: row.bijdrage_type ?? "geld",
+          omschrijving: null,
+          contract_start: row.contract_start,
+          contract_eind: row.contract_eind,
+          status,
+          notities: null,
+        }),
+      });
+    }
+    await fetchList();
+  }
+
+  async function handleBulkDeleteSponsors() {
+    const rows = data.filter((r) => selectedSponsorIds.has(r.id)).map((r) => ({ ...r }));
+    if (rows.length === 0) return;
+    setDeleting(true);
+    try {
+      for (const row of rows) {
+        const res = await fetch(`/api/admin/sponsors/${row.id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error();
+      }
+      setData((prev) => prev.filter((x) => !selectedSponsorIds.has(x.id)));
+      setTotal((prev) => Math.max(0, prev - rows.length));
+      setPendingUndoSponsors(rows);
+      setUndoCount(rows.length);
+      setUndoOpen(true);
+      setSelectedSponsorIds(new Set());
+      setBulkDeleteConfirm(false);
     } catch {
       // ignore
     } finally {
@@ -216,6 +296,23 @@ export default function AdminSponsorenClient() {
           🐾 Dier sponsors
         </button>
       </div>
+      {(activeTab === "bedrijven" ? selectedSponsorIds.size : selectedLeadIds.size) >= 1 ? (
+        <AdminBulkActionBar
+          selectedCount={activeTab === "bedrijven" ? selectedSponsorIds.size : selectedLeadIds.size}
+          hideDelete={activeTab === "dieren"}
+          onEmail={() => {
+            const bcc = activeTab === "bedrijven" ? sponsorBulkEmails() : leadBulkEmails();
+            setComposeBcc(bcc);
+            setComposeOpen(true);
+          }}
+          onDelete={() => {
+            if (activeTab === "bedrijven") setBulkDeleteConfirm(true);
+          }}
+          onClear={() =>
+            activeTab === "bedrijven" ? setSelectedSponsorIds(new Set()) : setSelectedLeadIds(new Set())
+          }
+        />
+      ) : null}
       {activeTab === "bedrijven" && (
         <>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -382,6 +479,11 @@ export default function AdminSponsorenClient() {
             <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="text-gray-500">
+                  <AdminBulkSelectAllTh
+                    pageIds={sponsorPageIds}
+                    selectedIds={selectedSponsorIds}
+                    setSelectedIds={setSelectedSponsorIds}
+                  />
                   <th className="text-left p-3">{t("company")}</th>
                   <th className="text-left p-3">{t("contact")}</th>
                   <th className="text-left p-3">{t("level")}</th>
@@ -401,6 +503,22 @@ export default function AdminSponsorenClient() {
                       className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer"
                       onClick={() => router.push(`/admin/sponsoren/${row.id}`)}
                     >
+                      <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedSponsorIds.has(row.id)}
+                          onChange={() =>
+                            setSelectedSponsorIds((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(row.id)) next.delete(row.id);
+                              else next.add(row.id);
+                              return next;
+                            })
+                          }
+                          className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                          aria-label="Selecteer rij"
+                        />
+                      </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <Avatar name={bedrijfNaam} size="sm" />
@@ -483,6 +601,12 @@ export default function AdminSponsorenClient() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ background: "#f8fafc", borderBottom: `1px solid ${ADM_BORDER}` }}>
+                <AdminBulkSelectAllTh
+                  pageIds={leadPageIds}
+                  selectedIds={selectedLeadIds}
+                  setSelectedIds={setSelectedLeadIds}
+                  className="px-4 py-3 align-top text-left w-[min(12rem,32vw)] min-w-[8.5rem]"
+                />
                 <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Naam</th>
                 <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>E-mail</th>
                 <th className="px-4 py-3 text-left font-medium" style={{ color: ADM_MUTED }}>Dier</th>
@@ -493,20 +617,36 @@ export default function AdminSponsorenClient() {
             <tbody>
               {leadsLoading && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
+                  <td colSpan={6} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
                     Laden...
                   </td>
                 </tr>
               )}
               {!leadsLoading && leads.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
+                  <td colSpan={6} className="px-4 py-8 text-center" style={{ color: ADM_MUTED }}>
                     Geen dier sponsors gevonden
                   </td>
                 </tr>
               )}
               {!leadsLoading && leads.map((lead) => (
                 <tr key={lead.id} style={{ borderBottom: `1px solid ${ADM_BORDER}` }}>
+                  <td className="px-4 py-3 w-12 min-w-[3rem] align-middle">
+                    <input
+                      type="checkbox"
+                      checked={selectedLeadIds.has(lead.id)}
+                      onChange={() =>
+                        setSelectedLeadIds((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(lead.id)) next.delete(lead.id);
+                          else next.add(lead.id);
+                          return next;
+                        })
+                      }
+                      className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                      aria-label="Selecteer rij"
+                    />
+                  </td>
                   <td className="px-4 py-3 font-medium" style={{ color: ADM_TEXT }}>
                     {lead.donor_name}
                   </td>
@@ -536,6 +676,63 @@ export default function AdminSponsorenClient() {
           </table>
         </div>
       )}
+      <ComposeEmailModal
+        open={composeOpen}
+        onClose={() => setComposeOpen(false)}
+        onSent={() => setComposeOpen(false)}
+        initialBcc={composeBcc}
+      />
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (pendingUndoSponsors?.length) await restoreSponsors(pendingUndoSponsors);
+          setUndoOpen(false);
+          setPendingUndoSponsors(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoSponsors(null);
+        }}
+      />
+      {bulkDeleteConfirm ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setBulkDeleteConfirm(false)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+              Weet je zeker dat je {selectedSponsorIds.size}{" "}
+              {selectedSponsorIds.size === 1 ? "sponsor" : "sponsoren"} wilt verwijderen? Ze worden als verwijderd gemarkeerd.
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => void handleBulkDeleteSponsors()}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: "#7B1010" }}
+              >
+                {deleting ? tAdmin("loading") : t("delete")}
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setBulkDeleteConfirm(false)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {t("cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

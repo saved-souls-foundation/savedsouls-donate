@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { EmptyState, StatCard, TableWrapper, Avatar, StatusBadge, QuickActions } from "../components/ui/design-system";
+import { AdminBulkActionBar, AdminBulkSelectAllTh, AdminBulkUndoToast } from "../components/AdminBulkSelection";
+import ComposeEmailModal from "../emails/ComposeEmailModal";
 import CsvImportModal from "@/app/components/admin/CsvImportModal";
 
 const ADM_CARD = "#ffffff";
@@ -65,14 +67,25 @@ export default function AdminDonateursClient() {
   const [toastError, setToastError] = useState<string | null>(null);
   const [stats, setStats] = useState<{ activeCount: number; totalMonthlyAmount: number; paymentIssuesCount: number } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [csvImportOpen, setCsvImportOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [composeOpen, setComposeOpen] = useState(false);
+  const [composeBcc, setComposeBcc] = useState("");
+  const [undoOpen, setUndoOpen] = useState(false);
+  const [undoCount, setUndoCount] = useState(0);
+  const [pendingUndoDonors, setPendingUndoDonors] = useState<OnetimeRow[] | null>(null);
 
   useEffect(() => {
     if (!toastError) return;
     const tid = setTimeout(() => setToastError(null), 4000);
     return () => clearTimeout(tid);
   }, [toastError]);
+
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [tab, page, search, country, dateFrom, dateTo, methodeFilter, statusFilter]);
 
   const fetchOnetime = useCallback(async () => {
     setLoading(true);
@@ -217,6 +230,75 @@ export default function AdminDonateursClient() {
     }
   }
 
+  const currentRows = tab === "onetime" ? onetimeData : recurringData;
+  const pageIds = currentRows.map((r) => r.id);
+
+  function selectedDonorEmails(): string {
+    const rows = tab === "onetime" ? onetimeData : recurringData;
+    const emails = rows.filter((r) => selectedIds.has(r.id) && r.email?.trim()).map((r) => r.email!.trim());
+    return [...new Set(emails)].join(", ");
+  }
+
+  async function restoreDonors(rows: OnetimeRow[]) {
+    for (const r of rows) {
+      const voornaam = r.voornaam?.trim() || "—";
+      const achternaam = r.achternaam?.trim() || "—";
+      const email = r.email?.trim();
+      if (!email) continue;
+      await fetch("/api/admin/donors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          voornaam,
+          achternaam,
+          email,
+          land: r.land ?? "NL",
+        }),
+      });
+    }
+    if (tab === "onetime") await fetchOnetime();
+    else await fetchRecurring();
+  }
+
+  async function handleBulkDeleteDonors() {
+    const rows =
+      tab === "onetime"
+        ? onetimeData.filter((r) => selectedIds.has(r.id)).map((r) => ({ ...r }))
+        : recurringData.filter((r) => selectedIds.has(r.id)).map((r) => ({
+            id: r.id,
+            voornaam: r.voornaam,
+            achternaam: r.achternaam,
+            email: r.email,
+            land: r.land,
+            total_donated: 0,
+            last_donation: null,
+            donation_count: 0,
+          })) as OnetimeRow[];
+    if (rows.length === 0) return;
+    setDeleting(true);
+    setToastError(null);
+    try {
+      for (const r of rows) {
+        const res = await fetch(`/api/admin/donors/${r.id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error();
+      }
+      const ids = new Set(rows.map((r) => r.id));
+      setOnetimeData((prev) => prev.filter((r) => !ids.has(r.id)));
+      setRecurringData((prev) => prev.filter((r) => !ids.has(r.id)));
+      if (tab === "onetime") setOnetimeTotal((p) => Math.max(0, p - rows.length));
+      else setRecurringTotal((p) => Math.max(0, p - rows.length));
+      setPendingUndoDonors(rows);
+      setUndoCount(rows.length);
+      setUndoOpen(true);
+      setSelectedIds(new Set());
+      setBulkDeleteConfirm(false);
+    } catch {
+      setToastError("Verwijderen mislukt");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -274,6 +356,21 @@ export default function AdminDonateursClient() {
           {toastError}
         </div>
       )}
+
+      <AdminBulkActionBar
+        selectedCount={selectedIds.size}
+        onEmail={() => {
+          const bcc = selectedDonorEmails();
+          if (!bcc) {
+            setToastError("Geen geldige e-mailadressen in selectie");
+            return;
+          }
+          setComposeBcc(bcc);
+          setComposeOpen(true);
+        }}
+        onDelete={() => setBulkDeleteConfirm(true)}
+        onClear={() => setSelectedIds(new Set())}
+      />
 
       <div className="flex border-b gap-2" style={{ borderColor: ADM_BORDER }}>
         <button type="button" onClick={() => { setTab("onetime"); setPage(1); }} className="px-4 py-2 text-sm font-medium border-b-2 -mb-px" style={{ borderColor: tab === "onetime" ? ADM_ACCENT : "transparent", color: tab === "onetime" ? ADM_ACCENT : ADM_MUTED }}>
@@ -388,6 +485,7 @@ export default function AdminDonateursClient() {
           <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="text-gray-500">
+                <AdminBulkSelectAllTh pageIds={pageIds} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
                 <th className="text-left p-3">{t("name")}</th>
                 <th className="text-left p-3">{t("email")}</th>
                 {tab === "onetime" ? (
@@ -411,13 +509,29 @@ export default function AdminDonateursClient() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={tab === "onetime" ? 8 : 8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
+                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("loading")}</td></tr>
               ) : tab === "onetime" ? (
                 onetimeData.length === 0 ? (
-                  <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
+                  <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
                 ) : (
                   onetimeData.map((r) => (
                     <tr key={r.id} className="group border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors duration-100 cursor-pointer" onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
+                      <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(r.id)}
+                          onChange={() =>
+                            setSelectedIds((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(r.id)) next.delete(r.id);
+                              else next.add(r.id);
+                              return next;
+                            })
+                          }
+                          className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                          aria-label="Selecteer rij"
+                        />
+                      </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <Avatar name={name(r)} size="sm" />
@@ -444,10 +558,26 @@ export default function AdminDonateursClient() {
                   ))
                 )
               ) : recurringData.length === 0 ? (
-                <tr><td colSpan={8} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
+                <tr><td colSpan={9} className="p-6 text-center" style={{ color: ADM_MUTED }}>{t("noResults")}</td></tr>
               ) : (
                 recurringData.map((r) => (
                   <tr key={r.recurring_id} className="group border-b border-gray-100 hover:bg-gray-50 transition-colors duration-100 cursor-pointer last:border-b-0" onClick={() => router.push(`/admin/donateurs/${r.id}`)}>
+                    <td className="p-3 w-12 min-w-[3rem] align-middle" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.has(r.id)}
+                        onChange={() =>
+                          setSelectedIds((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(r.id)) next.delete(r.id);
+                            else next.add(r.id);
+                            return next;
+                          })
+                        }
+                        className="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#2aa348]"
+                        aria-label="Selecteer rij"
+                      />
+                    </td>
                     <td className="p-3">
                       <div className="flex items-center gap-3">
                         <Avatar name={name(r)} size="sm" />
@@ -480,6 +610,23 @@ export default function AdminDonateursClient() {
           </table>
         </TableWrapper>
         )}
+        {bulkDeleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setBulkDeleteConfirm(false)}>
+            <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
+              <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+                Weet je zeker dat je {selectedIds.size} donateur{selectedIds.size === 1 ? "" : "s"} wilt verwijderen?
+              </p>
+              <div className="flex gap-3">
+                <button type="button" disabled={deleting} onClick={() => void handleBulkDeleteDonors()} className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50" style={{ background: "#7B1010" }}>
+                  {deleting ? tAdmin("loading") : t("delete")}
+                </button>
+                <button type="button" disabled={deleting} onClick={() => setBulkDeleteConfirm(false)} className="px-4 py-2 rounded-lg border text-sm font-medium" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}>
+                  {t("cancel")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {deleteConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.6)" }} onClick={() => !deleting && setDeleteConfirm(null)}>
             <div className="max-w-md w-full rounded-xl border p-6" style={{ background: ADM_CARD, borderColor: ADM_BORDER }} onClick={(e) => e.stopPropagation()}>
@@ -502,6 +649,33 @@ export default function AdminDonateursClient() {
           </div>
         )}
       </div>
+
+      {composeOpen && (
+        <ComposeEmailModal
+          open={composeOpen}
+          onClose={() => setComposeOpen(false)}
+          onSent={() => {
+            setComposeOpen(false);
+            setSelectedIds(new Set());
+          }}
+          initialBcc={composeBcc}
+          initialSubject=""
+        />
+      )}
+
+      <AdminBulkUndoToast
+        open={undoOpen}
+        deletedCount={undoCount}
+        onUndo={async () => {
+          if (pendingUndoDonors?.length) await restoreDonors(pendingUndoDonors);
+          setUndoOpen(false);
+          setPendingUndoDonors(null);
+        }}
+        onExpired={() => {
+          setUndoOpen(false);
+          setPendingUndoDonors(null);
+        }}
+      />
     </div>
   );
 }
