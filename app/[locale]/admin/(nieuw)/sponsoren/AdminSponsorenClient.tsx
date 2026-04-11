@@ -41,6 +41,18 @@ type SponsorRow = {
   bijdrage_type?: string | null;
 };
 
+type SponsorLead = {
+  id: string;
+  animal_id: string;
+  animal_name: string;
+  animal_type: string;
+  donor_name: string;
+  donor_email: string;
+  message: string | null;
+  locale: string | null;
+  created_at: string;
+};
+
 type Stats = {
   activeCount: number;
   totalMonthly: number;
@@ -70,21 +82,12 @@ export default function AdminSponsorenClient() {
   const [composeOpen, setComposeOpen] = useState(false);
   const [composeBcc, setComposeBcc] = useState("");
   const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
+  const [bulkLeadDeleteConfirm, setBulkLeadDeleteConfirm] = useState(false);
   const [undoOpen, setUndoOpen] = useState(false);
   const [undoCount, setUndoCount] = useState(0);
   const [pendingUndoSponsors, setPendingUndoSponsors] = useState<SponsorRow[] | null>(null);
+  const [pendingUndoLeads, setPendingUndoLeads] = useState<SponsorLead[] | null>(null);
 
-  type SponsorLead = {
-    id: string;
-    animal_id: string;
-    animal_name: string;
-    animal_type: string;
-    donor_name: string;
-    donor_email: string;
-    message: string | null;
-    locale: string | null;
-    created_at: string;
-  };
   const [activeTab, setActiveTab] = useState<"bedrijven" | "dieren">("bedrijven");
   const [leads, setLeads] = useState<SponsorLead[]>([]);
   const [leadsLoading, setLeadsLoading] = useState(false);
@@ -130,6 +133,11 @@ export default function AdminSponsorenClient() {
 
   useEffect(() => {
     setSelectedLeadIds(new Set());
+  }, [activeTab]);
+
+  useEffect(() => {
+    setBulkDeleteConfirm(false);
+    setBulkLeadDeleteConfirm(false);
   }, [activeTab]);
 
   useEffect(() => {
@@ -212,10 +220,49 @@ export default function AdminSponsorenClient() {
       setData((prev) => prev.filter((x) => !selectedSponsorIds.has(x.id)));
       setTotal((prev) => Math.max(0, prev - rows.length));
       setPendingUndoSponsors(rows);
+      setPendingUndoLeads(null);
       setUndoCount(rows.length);
       setUndoOpen(true);
       setSelectedSponsorIds(new Set());
       setBulkDeleteConfirm(false);
+    } catch {
+      // ignore
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function restoreLeads(rows: SponsorLead[]) {
+    const res = await fetch("/api/admin/sponsoren/leads/bulk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ leads: rows }),
+    });
+    if (!res.ok) return;
+    const r = await fetch("/api/admin/sponsor-leads");
+    if (!r.ok) return;
+    const j = (await r.json()) as { data?: SponsorLead[] };
+    setLeads(j.data ?? []);
+  }
+
+  async function handleBulkDeleteLeads() {
+    const rows = leads.filter((l) => selectedLeadIds.has(l.id)).map((l) => ({ ...l }));
+    if (rows.length === 0) return;
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/admin/sponsoren/leads/bulk", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: rows.map((r) => r.id) }),
+      });
+      if (!res.ok) throw new Error();
+      setLeads((prev) => prev.filter((l) => !selectedLeadIds.has(l.id)));
+      setPendingUndoLeads(rows);
+      setPendingUndoSponsors(null);
+      setUndoCount(rows.length);
+      setUndoOpen(true);
+      setSelectedLeadIds(new Set());
+      setBulkLeadDeleteConfirm(false);
     } catch {
       // ignore
     } finally {
@@ -299,7 +346,6 @@ export default function AdminSponsorenClient() {
       {(activeTab === "bedrijven" ? selectedSponsorIds.size : selectedLeadIds.size) >= 1 ? (
         <AdminBulkActionBar
           selectedCount={activeTab === "bedrijven" ? selectedSponsorIds.size : selectedLeadIds.size}
-          hideDelete={activeTab === "dieren"}
           onEmail={() => {
             const bcc = activeTab === "bedrijven" ? sponsorBulkEmails() : leadBulkEmails();
             setComposeBcc(bcc);
@@ -307,6 +353,7 @@ export default function AdminSponsorenClient() {
           }}
           onDelete={() => {
             if (activeTab === "bedrijven") setBulkDeleteConfirm(true);
+            else setBulkLeadDeleteConfirm(true);
           }}
           onClear={() =>
             activeTab === "bedrijven" ? setSelectedSponsorIds(new Set()) : setSelectedLeadIds(new Set())
@@ -687,12 +734,15 @@ export default function AdminSponsorenClient() {
         deletedCount={undoCount}
         onUndo={async () => {
           if (pendingUndoSponsors?.length) await restoreSponsors(pendingUndoSponsors);
+          if (pendingUndoLeads?.length) await restoreLeads(pendingUndoLeads);
           setUndoOpen(false);
           setPendingUndoSponsors(null);
+          setPendingUndoLeads(null);
         }}
         onExpired={() => {
           setUndoOpen(false);
           setPendingUndoSponsors(null);
+          setPendingUndoLeads(null);
         }}
       />
       {bulkDeleteConfirm ? (
@@ -724,6 +774,44 @@ export default function AdminSponsorenClient() {
                 type="button"
                 disabled={deleting}
                 onClick={() => setBulkDeleteConfirm(false)}
+                className="px-4 py-2 rounded-lg border text-sm font-medium"
+                style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
+              >
+                {t("cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {bulkLeadDeleteConfirm ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,.6)" }}
+          onClick={() => !deleting && setBulkLeadDeleteConfirm(false)}
+        >
+          <div
+            className="max-w-md w-full rounded-xl border p-6"
+            style={{ background: ADM_CARD, borderColor: ADM_BORDER }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-sm mb-4" style={{ color: ADM_TEXT }}>
+              Weet je zeker dat je {selectedLeadIds.size}{" "}
+              {selectedLeadIds.size === 1 ? "dier sponsor lead" : "dier sponsor leads"} wilt verwijderen?
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => void handleBulkDeleteLeads()}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-50"
+                style={{ background: "#7B1010" }}
+              >
+                {deleting ? tAdmin("loading") : t("delete")}
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setBulkLeadDeleteConfirm(false)}
                 className="px-4 py-2 rounded-lg border text-sm font-medium"
                 style={{ borderColor: ADM_BORDER, color: ADM_TEXT }}
               >
