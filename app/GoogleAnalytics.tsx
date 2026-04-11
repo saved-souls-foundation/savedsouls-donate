@@ -7,8 +7,9 @@ const GA_MEASUREMENT_ID =
 const LOAD_DELAY_MS = 3500;
 
 /**
- * Laadt GA4 (gtag) pas na LOAD_DELAY_MS. Consent default staat in layout (denied);
- * pas bij 'granted' via cookiebanner wordt analytics_storage geüpdatet.
+ * GA4-config pas na LOAD_DELAY_MS. gtag.js wordt al in root layout geladen (Google Ads);
+ * hier alleen nog G- measurement config — geen tweede gtag.js-request.
+ * Consent default staat in layout (denied); bij accepteren cookiebanner wordt storage geüpdatet.
  */
 export function GoogleAnalytics() {
   useEffect(() => {
@@ -20,11 +21,18 @@ export function GoogleAnalytics() {
         window.gtag = (...args: unknown[]) => window.dataLayer.push(args);
       }
 
+      const hasGtagJs = document.querySelector(
+        'script[src^="https://www.googletagmanager.com/gtag/js"]',
+      );
+      if (hasGtagJs) {
+        window.gtag("config", GA_MEASUREMENT_ID);
+        return;
+      }
+
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
       document.head.appendChild(script);
-
       script.onload = () => {
         window.gtag("js", new Date());
         window.gtag("config", GA_MEASUREMENT_ID);

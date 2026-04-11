@@ -7,11 +7,14 @@ import { Link } from "@/i18n/navigation";
 const CONSENT_KEY = "cookie-consent";
 type ConsentStatus = "granted" | "denied";
 
-function updateGtagConsent(analyticsStorage: ConsentStatus): void {
+function updateGtagConsent(status: ConsentStatus): void {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  const v = status;
   window.gtag("consent", "update", {
-    analytics_storage: analyticsStorage,
-    ad_storage: analyticsStorage,
+    analytics_storage: v,
+    ad_storage: v,
+    ad_user_data: v,
+    ad_personalization: v,
   });
 }
 

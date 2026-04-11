@@ -152,6 +152,30 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <head>
+        {/* Consent Mode v2: default denied vóór gtag.js — AVG/GDPR; daarna Google Ads (AW) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  'analytics_storage': 'denied',
+  'ad_storage': 'denied',
+  'ad_user_data': 'denied',
+  'ad_personalization': 'denied'
+});
+            `.trim(),
+          }}
+        />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18059514629" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+gtag('js', new Date());
+gtag('config', 'AW-18059514629');
+            `.trim(),
+          }}
+        />
         {/* Favicons & PWA icons (bestanden in public/) */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
@@ -182,19 +206,6 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
-        {/* Consent Mode v2: default denied vóór GA4 – AVG/GDPR compliant */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied'
-              });
-            `,
-          }}
-        />
         <DeferredStyles />
         <GoogleAnalytics />
         <script

@@ -9,6 +9,7 @@ import { routing } from "@/i18n/routing";
 import ImpactTicker from "@/app/components/ImpactTicker";
 import ThemeRoot from "@/app/components/ThemeRoot";
 import ExitIntentPopup from "@/app/components/ExitIntentPopup";
+import CookieConsent from "@/app/components/CookieConsent";
 import AuthErrorRedirect from "./AuthErrorRedirect";
 
 type Props = {
@@ -134,6 +135,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <ImpactTicker />
       {children}
       <ExitIntentPopup />
+      <CookieConsent />
       <ThemeRoot />
     </NextIntlClientProvider>
   );
