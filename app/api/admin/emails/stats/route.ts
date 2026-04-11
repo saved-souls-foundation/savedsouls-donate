@@ -16,26 +16,24 @@ export async function GET(_request: NextRequest) {
   const { error, supabase } = await requireAdmin();
   if (error) return error;
 
-  const todayStart = new Date();
-  todayStart.setUTCHours(0, 0, 0, 0);
-  const todayStr = todayStart.toISOString();
-
-  const [
-    { count: pending },
-    { count: sentToday },
-    { count: ignored },
-    { count: onbeantwoord },
-  ] = await Promise.all([
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling"),
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "verstuurd").gte("verwerkt_op", todayStr),
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "geneigeerd"),
-    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false"),
+  const [{ count: onbeantwoord }, { count: beantwoord }, sentEmailsCountRes] = await Promise.all([
+    supabase!.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null),
+    supabase!
+      .from("incoming_emails")
+      .select("*", { count: "exact", head: true })
+      .or("status.eq.verstuurd,ai_processed_at.not.is.null"),
+    supabase!.from("sent_emails").select("*", { count: "exact", head: true }),
   ]);
 
+  let sentEmailsCount = sentEmailsCountRes.count ?? 0;
+  if (sentEmailsCountRes.error && (sentEmailsCountRes.error.code === "PGRST204" || /column|schema/i.test(sentEmailsCountRes.error.message ?? ""))) {
+    const retry = await supabase!.from("sent_emails").select("*", { count: "exact", head: true });
+    sentEmailsCount = retry.error ? 0 : retry.count ?? 0;
+  }
+
   return NextResponse.json({
-    pending: pending ?? 0,
-    sentToday: sentToday ?? 0,
-    ignored: ignored ?? 0,
     onbeantwoord: onbeantwoord ?? 0,
+    beantwoord: beantwoord ?? 0,
+    verzonden: sentEmailsCount,
   });
 }

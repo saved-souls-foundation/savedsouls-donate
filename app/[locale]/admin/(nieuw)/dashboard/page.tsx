@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { DashboardClient } from "./DashboardClient";
+import { DashboardClient, type RecentEmailWidgetRij } from "./DashboardClient";
 import { DashboardAutoRepliesNewsletterCards } from "./DashboardAutoRepliesNewsletterCards";
 import { Link } from "@/i18n/navigation";
 
@@ -68,9 +68,7 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
     withTimeout(Promise.resolve(supabase.from("members").select("*", { count: "exact", head: true }).eq("status", "actief"))),
     withTimeout(Promise.resolve(supabase.from("newsletter_subscribers").select("*", { count: "exact", head: true }).eq("actief", true))),
     withTimeout(
-      Promise.resolve(
-        supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null).or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false")
-      )
+      Promise.resolve(supabase.from("incoming_emails").select("*", { count: "exact", head: true }).eq("status", "in_behandeling").is("beantwoord_op", null))
     ).catch(() => ({ count: 0 })),
     withTimeout(
       Promise.resolve(
@@ -79,9 +77,8 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
           .select("id, onderwerp, van_email, van_naam, ontvangen_op, ai_categorie")
           .eq("status", "in_behandeling")
           .is("beantwoord_op", null)
-          .or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false")
           .order("ontvangen_op", { ascending: false })
-          .limit(3)
+          .limit(5)
       )
     ).catch(() => ({ data: [] })),
     withTimeout(
@@ -97,16 +94,77 @@ async function AdminDashboardPage({ params }: { params: Promise<{ locale: string
     ).catch(() => ({ data: [] })),
   ]);
 
-  const recenteEmails = (recenteEmailsData ?? []).map(
-    (r: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string; ai_categorie: string | null }) => ({
-      id: r.id,
-      subject: r.onderwerp,
-      from_email: r.van_email,
-      from_name: r.van_naam,
-      created_at: r.ontvangen_op,
-      category: r.ai_categorie,
-    })
-  );
+  const stripHtmlPreview = (html: string) => html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+
+  type InboundRow = {
+    id: string;
+    onderwerp: string | null;
+    van_email: string | null;
+    van_naam: string | null;
+    ontvangen_op: string;
+    ai_categorie: string | null;
+  };
+
+  const incomingRaw = (recenteEmailsData ?? []) as InboundRow[];
+  const inboundWidget = incomingRaw.map((r) => ({
+    kind: "inbound" as const,
+    id: r.id,
+    subject: r.onderwerp,
+    from_email: r.van_email,
+    from_name: r.van_naam,
+    created_at: r.ontvangen_op,
+    category: r.ai_categorie,
+  }));
+
+  const WIDGET_EMAIL_MAX = 5;
+  const remainingSlots = Math.max(0, WIDGET_EMAIL_MAX - inboundWidget.length);
+  let recenteEmails: RecentEmailWidgetRij[] = [...inboundWidget];
+
+  if (remainingSlots > 0) {
+    const enRes = await supabase
+      .from("sent_emails")
+      .select("id, to_email, subject, body_preview, sent_at")
+      .order("sent_at", { ascending: false })
+      .limit(remainingSlots);
+    let sentRows: { id: string; to_email?: string | null; subject?: string | null; body_preview?: string | null; sent_at?: string | null }[] = [];
+    if (!enRes.error && enRes.data) {
+      sentRows = enRes.data as typeof sentRows;
+    } else if (
+      enRes.error &&
+      (enRes.error.code === "PGRST204" || /column|schema/i.test(enRes.error.message ?? ""))
+    ) {
+      const nlRes = await supabase
+        .from("sent_emails")
+        .select("id, aan, onderwerp, inhoud, verstuurd_op")
+        .order("verstuurd_op", { ascending: false })
+        .limit(remainingSlots);
+      if (!nlRes.error && nlRes.data) {
+        sentRows = (nlRes.data as { id: string; aan?: string | null; onderwerp?: string | null; inhoud?: string | null; verstuurd_op?: string | null }[]).map(
+          (row) => ({
+            id: row.id,
+            to_email: row.aan,
+            subject: row.onderwerp,
+            body_preview: row.inhoud,
+            sent_at: row.verstuurd_op,
+          })
+        );
+      }
+    }
+    recenteEmails = [
+      ...inboundWidget,
+      ...sentRows.map((row) => {
+        const raw = row.body_preview != null ? stripHtmlPreview(String(row.body_preview)) : "";
+        return {
+          kind: "outbound" as const,
+          id: String(row.id),
+          subject: row.subject ?? null,
+          to_email: row.to_email ?? null,
+          created_at: row.sent_at ?? "",
+          preview: raw ? (raw.length > 120 ? `${raw.slice(0, 120)}…` : raw) : null,
+        };
+      }),
+    ];
+  }
   const verlopendeSponsorcontracten = (verlopendeSponsorcontractenData ?? []).map(
     (s: { id: string; bedrijfsnaam: string | null; contract_eind: string | null }) => ({
       id: s.id,

@@ -25,24 +25,29 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") ?? "20", 10)));
   const from = (page - 1) * limit;
 
+  const incomingSelect =
+    "id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, ai_urgency, status, taal, ai_language, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord, ai_automatisch_verstuurd, verwerkt_op, ai_processed_at";
+
   // Alle rijen uit incoming_emails (inkomend); createAdminClient omzeilt RLS
-  let q = admin
-    .from("incoming_emails")
-    .select("id, van_email, van_naam, onderwerp, inhoud, ontvangen_op, ai_categorie, ai_confidence, ai_urgency, status, taal, ai_language, bron, ai_suggestie_template_id, ai_gegenereerd_antwoord, ai_automatisch_verstuurd", { count: "exact" });
+  let q = admin.from("incoming_emails").select(incomingSelect, { count: "exact" });
   if (status && status !== "all") {
     if (status === "onbeantwoord") {
-      q = q
-        .eq("status", "in_behandeling")
-        .is("beantwoord_op", null)
-        .or("ai_automatisch_verstuurd.is.null,ai_automatisch_verstuurd.eq.false");
+      q = q.eq("status", "in_behandeling").is("beantwoord_op", null);
+    } else if (status === "beantwoord") {
+      q = q.or("status.eq.verstuurd,ai_processed_at.not.is.null");
     } else {
       q = q.eq("status", status);
     }
   }
+  if (status === "beantwoord") {
+    q = q.order("verwerkt_op", { ascending: false }).order("ai_processed_at", { ascending: false }).order("ontvangen_op", { ascending: false });
+  } else {
+    q = q.order("ontvangen_op", { ascending: false });
+  }
   if (ai_categorie && ai_categorie !== "all") q = q.eq("ai_categorie", ai_categorie);
   if (taal && taal !== "all") q = q.eq("taal", taal);
   if (search) q = q.or(`van_email.ilike.%${search}%,van_naam.ilike.%${search}%,onderwerp.ilike.%${search}%,inhoud.ilike.%${search}%`);
-  q = q.order("ontvangen_op", { ascending: false }).range(from, from + limit - 1);
+  q = q.range(from, from + limit - 1);
 
   const { data: rows, error: e, count } = await q;
   if (e) return NextResponse.json({ error: e.message }, { status: 500 });

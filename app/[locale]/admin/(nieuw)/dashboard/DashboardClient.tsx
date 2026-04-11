@@ -30,7 +30,8 @@ type Attention = {
 type RecentVolunteer = { name: string | null; step: number; date: string | null };
 type RecentDonation = { name: string | null; amount: number; date: string | null };
 
-export type RecentEmail = {
+export type RecentEmailWidgetInbound = {
+  kind: "inbound";
   id: string;
   subject: string | null;
   from_email: string | null;
@@ -38,6 +39,17 @@ export type RecentEmail = {
   created_at: string;
   category: string | null;
 };
+
+export type RecentEmailWidgetOutbound = {
+  kind: "outbound";
+  id: string;
+  subject: string | null;
+  to_email: string | null;
+  created_at: string;
+  preview: string | null;
+};
+
+export type RecentEmailWidgetRij = RecentEmailWidgetInbound | RecentEmailWidgetOutbound;
 
 export type VerlopendeSponsor = {
   id: string;
@@ -56,7 +68,7 @@ type Props = {
   aantalDieren?: number;
   aantalVrijwilligersActief?: number;
   aantalOpenAdopties?: number;
-  recenteEmails?: RecentEmail[];
+  recenteEmails?: RecentEmailWidgetRij[];
   verlopendeSponsorcontracten?: VerlopendeSponsor[];
   groupBOverview?: ReactNode;
   groupBAttention?: ReactNode;
@@ -219,7 +231,7 @@ export function DashboardClient({
   const greetingKey = dayPart === "morgen" ? "Goedemorgen" : dayPart === "middag" ? "Goedemiddag" : "Goedeavond";
   const greeting = userName ? `${greetingKey} ${userName} 👋` : `${greetingKey} 👋`;
   const firstAttentionHref =
-    recenteEmails.length > 0
+    attention.pendingEmails > 0
       ? "/admin/emails?tab=onbeantwoord"
       : verlopendeSponsorcontracten.length > 0
         ? `/admin/sponsoren/${verlopendeSponsorcontracten[0].id}`
@@ -255,39 +267,69 @@ export function DashboardClient({
         </div>
       </div>
 
-      {/* 2 — Mail (Recente emails); hele kaart klikbaar → Onbeantwoord-tab */}
-      <Link
-        href="/admin/emails?tab=onbeantwoord"
-        className="block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px] cursor-pointer hover:bg-stone-50 transition-colors"
-      >
+      {/* 2 — Mail (Recente emails); rijen linken naar inbox of verzonden-tab */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden min-h-[60px]">
         <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 flex items-center justify-between">
           <div>
             <h2 className="font-extrabold text-gray-900">📧 Recente emails</h2>
-            <p className="text-xs text-gray-500 mt-0.5">Onbeantwoorde berichten</p>
+            <p className="text-xs text-gray-500 mt-0.5">Onbeantwoord bovenaan; recent verzonden</p>
           </div>
-          <span className="text-xs font-semibold text-[#2aa348] hover:underline">Alles bekijken →</span>
+          <Link href="/admin/emails?tab=onbeantwoord" className="text-xs font-semibold text-[#2aa348] hover:underline shrink-0">
+            Alles bekijken →
+          </Link>
         </div>
         <div className="divide-y divide-gray-100">
           {recenteEmails.length > 0 ? (
-            recenteEmails.map((email) => (
-              <span key={email.id} className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50/50 transition-colors block">
-                <Avatar name={email.from_name ?? email.from_email ?? "?"} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-gray-900 truncate">
-                      {email.from_name ?? email.from_email ?? "–"}
-                    </span>
-                    <span className="text-xs text-gray-400 shrink-0 ml-2">{timeAgo(email.created_at)}</span>
+            recenteEmails.map((email) =>
+              email.kind === "inbound" ? (
+                <Link
+                  key={`in-${email.id}`}
+                  href={`/admin/emails?tab=onbeantwoord&id=${email.id}`}
+                  className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50/50 transition-colors"
+                >
+                  <Avatar name={email.from_name ?? email.from_email ?? "?"} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-semibold text-gray-900 truncate">
+                        {email.from_name ?? email.from_email ?? "–"}
+                      </span>
+                      <span className="text-xs text-gray-400 shrink-0">{timeAgo(email.created_at)}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
                   </div>
-                  <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
-                </div>
-              </span>
-            ))
+                </Link>
+              ) : (
+                <Link
+                  key={`out-${email.id}`}
+                  href="/admin/emails?tab=verzonden"
+                  className="flex items-start gap-3 px-5 py-3 hover:bg-gray-50/50 transition-colors"
+                >
+                  <span className="text-lg shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-teal-50 text-teal-700 border border-teal-100" aria-hidden>
+                    ➤
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-teal-800 bg-teal-50 border border-teal-200 rounded-full px-2 py-0.5 shrink-0">
+                        Verzonden
+                      </span>
+                      <span className="text-xs text-gray-400 shrink-0">{timeAgo(email.created_at)}</span>
+                    </div>
+                    <div className="text-sm font-semibold text-gray-900 truncate mt-1">{email.to_email ?? "–"}</div>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">{email.subject ?? "–"}</p>
+                    {email.preview ? (
+                      <p className="text-xs text-gray-400 truncate mt-0.5" title={email.preview}>
+                        {email.preview}
+                      </p>
+                    ) : null}
+                  </div>
+                </Link>
+              )
+            )
           ) : (
-            <div className="px-5 py-8 text-center text-sm text-gray-400">Geen onbeantwoorde emails 🎉</div>
+            <div className="px-5 py-8 text-center text-sm text-gray-400">Geen recente mailactiviteit 🎉</div>
           )}
         </div>
-      </Link>
+      </div>
 
       {/* 3 — Aandacht vereist; hele kaart klikbaar naar eerste item als er items zijn */}
       {firstAttentionHref ? (
@@ -303,8 +345,14 @@ export function DashboardClient({
             <p className="text-xs text-gray-500 mt-0.5">Items die direct actie nodig hebben</p>
           </div>
           <div className="p-4 space-y-3" onClick={(e) => e.stopPropagation()}>
-            {recenteEmails.length > 0 && (
-              <MeldingRij type="warning" icon="📧" tekst={`${recenteEmails.length} email${recenteEmails.length > 1 ? "s" : ""} wacht${recenteEmails.length === 1 ? "" : "en"} op antwoord`} actie="Beantwoorden" href="/admin/emails?tab=onbeantwoord" />
+            {attention.pendingEmails > 0 && (
+              <MeldingRij
+                type="warning"
+                icon="📧"
+                tekst={`${attention.pendingEmails} email${attention.pendingEmails > 1 ? "s" : ""} wacht${attention.pendingEmails === 1 ? "" : "en"} op antwoord`}
+                actie="Beantwoorden"
+                href="/admin/emails?tab=onbeantwoord"
+              />
             )}
             {verlopendeSponsorcontracten.map((s) => (
               <MeldingRij key={s.id} type="danger" icon="📄" tekst={`${s.bedrijfsnaam ?? "Sponsor"} — contract verloopt ${s.contract_eind ? new Date(s.contract_eind).toLocaleDateString("nl-NL") : "–"}`} actie="Bekijken" href={`/admin/sponsoren/${s.id}`} />

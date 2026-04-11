@@ -14,10 +14,6 @@ const ADM_ACCENT = "#0d9488";
 const ADM_RED = "#7B1010";
 const PAGE_SIZE = 20;
 
-const STATUS_OPTIONS = ["all", "in_behandeling", "verstuurd", "geneigeerd"] as const;
-const CATEGORY_OPTIONS = ["all", "adoptie", "vrijwilliger", "donatie", "sponsor", "algemeen"] as const;
-const LANG_OPTIONS = ["all", "nl", "en", "es", "ru", "th", "de", "fr"] as const;
-
 type EmailRow = {
   id: string;
   van_email: string | null;
@@ -40,21 +36,14 @@ type EmailRow = {
 type EmailDetail = EmailRow & { inhoud?: string | null };
 
 type TemplateInfo = { id: string; naam: string | null };
-type Stats = { pending: number; sentToday: number; ignored: number; onbeantwoord: number };
+type Stats = { onbeantwoord: number; beantwoord: number; verzonden: number };
 
-type AiProcessedRow = {
+type SentEmailRow = {
   id: string;
-  van_naam: string | null;
-  van_email: string | null;
-  onderwerp: string | null;
-  ontvangen_op: string;
+  aan: string;
+  onderwerp: string;
   inhoud: string | null;
-  ai_category: string | null;
-  ai_urgency: string | null;
-  ai_language: string | null;
-  ai_suggested_reply: string | null;
-  ai_used_template: boolean | null;
-  ai_processed_at: string | null;
+  verstuurd_op: string;
 };
 
 const cats: Record<string, [string, string, string, string]> = {
@@ -138,17 +127,26 @@ function stripHtml(html: string): string {
 
 type AdminEmailsClientProps = { initialEmailId?: string; initialTab?: string };
 
+type EmailTab = "onbeantwoord" | "beantwoord" | "verzonden";
+
+function initialTabToFilter(tab: string | undefined): EmailTab {
+  if (tab === "verzonden" || tab === "beantwoord") return tab;
+  return "onbeantwoord";
+}
+
 export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminEmailsClientProps = {}) {
   const t = useTranslations("admin.emails");
   const locale = useLocale();
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState(initialTab === "onbeantwoord" ? "onbeantwoord" : "all");
+  const [statusFilter, setStatusFilter] = useState<EmailTab>(() => initialTabToFilter(initialTab));
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [languageFilter, setLanguageFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<EmailRow[]>([]);
   const [total, setTotal] = useState(0);
+  const [sentRows, setSentRows] = useState<SentEmailRow[]>([]);
+  const [sentTotal, setSentTotal] = useState(0);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -169,10 +167,6 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
   const [sentSuccess, setSentSuccess] = useState(false);
   const [replyComposeOpen, setReplyComposeOpen] = useState(false);
   const [composeOpen, setComposeOpen] = useState(false);
-  const [aiProcessedData, setAiProcessedData] = useState<AiProcessedRow[]>([]);
-  const [aiProcessedLoading, setAiProcessedLoading] = useState(false);
-  const [expandedAiReplyIds, setExpandedAiReplyIds] = useState<Set<string>>(new Set());
-  const [expandedOriginalIds, setExpandedOriginalIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!toastError) return;
@@ -183,13 +177,38 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
   const fetchList = useCallback(async () => {
     setLoading(true);
     setError(null);
+    if (statusFilter === "verzonden") {
+      const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("limit", String(PAGE_SIZE));
+      const res = await fetch(`/api/admin/sent-emails?${params}`);
+      if (!res.ok) {
+        setSentRows([]);
+        setSentTotal(0);
+        setError("Kon data niet laden");
+        setLoading(false);
+        return;
+      }
+      const json = await res.json();
+      const rows: SentEmailRow[] = (json.data ?? []).map((r: { aan?: string; onderwerp?: string; inhoud?: string | null; verstuurd_op?: string; id: string }) => ({
+        id: r.id,
+        aan: r.aan ?? "",
+        onderwerp: r.onderwerp ?? "",
+        inhoud: r.inhoud ?? null,
+        verstuurd_op: r.verstuurd_op ?? "",
+      }));
+      setSentRows(rows);
+      setSentTotal(json.total ?? 0);
+      setLoading(false);
+      return;
+    }
     const params = new URLSearchParams();
     params.set("page", String(page));
     params.set("limit", String(PAGE_SIZE));
-    if (statusFilter !== "all") params.set("status", statusFilter);
+    params.set("status", statusFilter);
     if (categoryFilter !== "all") params.set("ai_categorie", categoryFilter);
     if (languageFilter !== "all") params.set("taal", languageFilter);
-    if (search) params.set("search", search);
+    if (search && statusFilter !== "beantwoord") params.set("search", search);
     const res = await fetch(`/api/admin/emails?${params}`);
     if (!res.ok) {
       setData([]);
@@ -207,6 +226,14 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
   useEffect(() => {
     fetchList();
   }, [fetchList]);
+
+  useEffect(() => {
+    if (statusFilter !== "verzonden") return;
+    setSelectedEmail(null);
+    setReplyText("");
+    setAiSuggestion("");
+    setSelectedIds(new Set());
+  }, [statusFilter]);
 
   // Open specifieke email vanaf dashboard-link (/admin/emails?id=xxx)
   useEffect(() => {
@@ -231,16 +258,6 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
-
-  useEffect(() => {
-    if (statusFilter !== "ai_beantwoord") return;
-    setAiProcessedLoading(true);
-    fetch("/api/emails/ai-processed", { credentials: "include" })
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: AiProcessedRow[]) => setAiProcessedData(Array.isArray(data) ? data : []))
-      .catch(() => setAiProcessedData([]))
-      .finally(() => setAiProcessedLoading(false));
-  }, [statusFilter]);
 
   useEffect(() => {
     fetch("/api/admin/email-templates")
@@ -270,12 +287,12 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
     }
   }
 
-  const inboxCount = stats?.pending ?? 0;
-  const sentCount = stats?.sentToday ?? 0;
-  const ignoredCount = stats?.ignored ?? 0;
   const onbeantwoordCount = stats?.onbeantwoord ?? 0;
+  const beantwoordCount = stats?.beantwoord ?? 0;
+  const verzondenCount = stats?.verzonden ?? 0;
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const listTotal = statusFilter === "verzonden" ? sentTotal : total;
+  const totalPages = Math.max(1, Math.ceil(listTotal / PAGE_SIZE));
 
   function formatDate(d: string) {
     return locale === "en"
@@ -355,7 +372,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       });
       if (!sendRes.ok) throw new Error();
       fetchList();
-      if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), sentToday: stats.sentToday + 1 });
+      fetchStats();
       setSentSuccess(true);
       window.dispatchEvent(new CustomEvent("admin-emails-updated"));
     } catch {
@@ -372,7 +389,7 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
       const res = await fetch(`/api/admin/emails/${id}/ignore`, { method: "PUT" });
       if (!res.ok) throw new Error();
       fetchList();
-      if (stats) setStats({ ...stats, pending: Math.max(0, stats.pending - 1), ignored: stats.ignored + 1 });
+      fetchStats();
       setSelectedEmail(null);
       setReplyText("");
       setAiSuggestion("");
@@ -470,41 +487,16 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
 
   const tabCounts = {
     onbeantwoord: onbeantwoordCount,
-    inbox: inboxCount,
-    sent: sentCount,
-    ignored: ignoredCount,
-    all: total,
+    beantwoord: beantwoordCount,
+    verzonden: verzondenCount,
   };
 
-  // Onbeantwoord: API filtert al; Beantwoord-tab: alleen beantwoorde (verstuurd); rest op status
-  const displayData =
-    statusFilter === "ai_beantwoord"
-      ? []
-      : statusFilter === "all" || statusFilter === "onbeantwoord"
-        ? data
-        : data.filter((row) => row.status === statusFilter);
+  const displayData = statusFilter === "verzonden" ? [] : data;
 
-  if (statusFilter === "verstuurd") {
-    console.log("[Beantwoord-tab] Aantal zichtbare emails (alleen beantwoorde):", displayData.length);
-  }
-
-  const isAiBeantwoordTab = statusFilter === "ai_beantwoord";
-
-  function toggleAiReply(id: string) {
-    setExpandedAiReplyIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-  function toggleOriginal(id: string) {
-    setExpandedOriginalIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  function previewBody(text: string | null | undefined, maxLen = 120) {
+    const s = stripHtml(text ?? "").trim();
+    if (s.length <= maxLen) return s || "—";
+    return `${s.slice(0, maxLen)}…`;
   }
 
   return (
@@ -544,37 +536,33 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
         >
           {/* Tabs */}
           <div className="flex border-b border-gray-200 shrink-0 flex-wrap">
-            {[
-              { id: "onbeantwoord", label: "📬 Onbeantwoord", count: tabCounts.onbeantwoord },
-              { id: "in_behandeling", label: t("statuses.in_behandeling"), count: tabCounts.inbox },
-              { id: "verstuurd", label: "Beantwoord", count: tabCounts.sent },
-              { id: "ai_beantwoord", label: "🤖 AI Beantwoord", count: null as number | null },
-              { id: "geneigeerd", label: "Genegeerd", count: tabCounts.ignored },
-              { id: "all", label: "Alles", count: tabCounts.all },
-            ].map((tab) => (
+            {(
+              [
+                { id: "onbeantwoord" as const, label: "📬 Onbeantwoord", count: tabCounts.onbeantwoord },
+                { id: "beantwoord" as const, label: "Beantwoord", count: tabCounts.beantwoord },
+                { id: "verzonden" as const, label: "Verzonden", count: tabCounts.verzonden },
+              ] as const
+            ).map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => {
-                  setStatusFilter(tab.id === "all" ? "all" : tab.id);
+                  setStatusFilter(tab.id);
                   setPage(1);
-                  if (tab.id === "ai_beantwoord") setSelectedEmail(null);
                 }}
                 className={`px-3 py-2.5 text-sm font-semibold border-b-2 transition-colors -mb-px ${
-                  (tab.id === "all" && statusFilter === "all") || statusFilter === tab.id
-                    ? tab.id === "geneigeerd"
-                      ? "border-red-600 text-red-600"
-                      : "border-[#2aa348] text-[#2aa348]"
+                  statusFilter === tab.id
+                    ? "border-[#2aa348] text-[#2aa348]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
-                {tab.label} {tab.count != null && tab.count > 0 ? `(${tab.count})` : ""}
+                {tab.label} {tab.count > 0 ? `(${tab.count})` : ""}
               </button>
             ))}
           </div>
 
           <div className="flex flex-wrap gap-2 p-2 border-b border-gray-100 items-center">
-            {!isAiBeantwoordTab && (
+            {statusFilter !== "verzonden" && (
               <>
             <input
               type="search"
@@ -613,82 +601,46 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            {isAiBeantwoordTab ? (
-              aiProcessedLoading ? (
-                <div className="p-6 text-center text-gray-500 min-h-[60px]">{t("loading")}</div>
-              ) : aiProcessedData.length === 0 ? (
-                <div className="p-6 text-center text-sm text-gray-500 min-h-[60px]">{t("noResults")}</div>
+            {statusFilter === "verzonden" ? (
+              loading ? (
+                <div className="p-6 text-center text-gray-500">{t("loading")}</div>
+              ) : sentRows.length === 0 ? (
+                <div className="p-6 text-center text-sm text-gray-500">{t("noResults")}</div>
               ) : (
-                aiProcessedData.map((row) => {
-                  const sender = row.van_naam || row.van_email || "—";
-                  const urgencyHigh = (row.ai_urgency ?? "").toLowerCase() === "hoog";
-                  const lang = (row.ai_language ?? "").toUpperCase().slice(0, 2) || "—";
-                  const replyOpen = expandedAiReplyIds.has(row.id);
-                  const originalOpen = expandedOriginalIds.has(row.id);
-                  return (
-                    <div
-                      key={row.id}
-                      className="border-b border-gray-100 p-4 min-h-[60px] flex flex-col gap-2"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                        <div className="font-semibold text-sm text-gray-900 break-words">
-                          {sender}
-                        </div>
-                        <div className="text-xs text-gray-500 break-all">{row.van_email ?? "—"}</div>
-                      </div>
-                      <div className="text-sm font-medium text-gray-800 break-words">{row.onderwerp ?? "—"}</div>
-                      <div className="text-xs text-gray-500">
-                        {formatDate(row.ontvangen_op)}
-                      </div>
-                      <div className="flex flex-wrap gap-2 items-center">
-                        <CategoryBadge category={row.ai_category} />
-                        <span
-                          className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
-                            urgencyHigh ? "bg-red-50 text-red-700 border-red-200" : "bg-gray-100 text-gray-600 border-gray-200"
-                          }`}
-                        >
-                          {urgencyHigh ? "Hoog" : "Normaal"}
-                        </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-gray-50 text-gray-700 border-gray-200">
-                          {lang}
-                        </span>
-                        {row.ai_used_template && (
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200">
-                            Template gebruikt
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-1">
-                        <button
-                          type="button"
-                          onClick={() => toggleAiReply(row.id)}
-                          className="text-xs font-medium text-[#2aa348] hover:underline py-2 min-h-[44px] flex items-center"
-                        >
-                          {replyOpen ? "▼ Verberg AI-antwoord" : "▶ Toon AI-antwoord"}
-                        </button>
-                        {replyOpen && row.ai_suggested_reply && (
-                          <div className="text-sm text-gray-700 whitespace-pre-wrap break-words rounded-lg border border-gray-200 bg-gray-50 p-3 mt-1">
-                            {stripHtml(row.ai_suggested_reply) || "—"}
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <button
-                          type="button"
-                          onClick={() => toggleOriginal(row.id)}
-                          className="text-xs font-medium text-gray-600 hover:underline py-2 min-h-[44px] flex items-center"
-                        >
-                          {originalOpen ? "▼ Verberg originele email" : "▶ Toon originele email"}
-                        </button>
-                        {originalOpen && (
-                          <div className="text-sm text-gray-700 whitespace-pre-wrap break-words rounded-lg border border-gray-200 bg-gray-50 p-3 mt-1">
-                            {stripHtml(row.inhoud ?? "") || "—"}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr style={{ color: ADM_MUTED }}>
+                        <th className="text-left p-3">Ontvanger</th>
+                        <th className="text-left p-3">Onderwerp</th>
+                        <th className="text-left p-3">Verstuurd op</th>
+                        <th className="text-left p-3">Korte preview</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sentRows.map((row) => (
+                        <tr key={row.id} className="border-t border-gray-200">
+                          <td className="p-3 align-top break-all" style={{ color: ADM_TEXT }}>
+                            {row.aan || "—"}
+                          </td>
+                          <td className="p-3 align-top max-w-[180px]" style={{ color: ADM_TEXT }}>
+                            <span className="truncate block" title={row.onderwerp}>
+                              {row.onderwerp || "—"}
+                            </span>
+                          </td>
+                          <td className="p-3 align-top whitespace-nowrap" style={{ color: ADM_MUTED }}>
+                            {row.verstuurd_op ? formatDate(row.verstuurd_op) : "—"}
+                          </td>
+                          <td className="p-3 align-top max-w-[220px] text-gray-600">
+                            <span className="line-clamp-2 break-words" title={previewBody(row.inhoud, 500)}>
+                              {previewBody(row.inhoud)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )
             ) : loading ? (
               <div className="p-6 text-center text-gray-500">{t("loading")}</div>
@@ -779,8 +731,8 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
         </div>
 
         {/* RIGHT PANEL — Detail + Reply */}
-        <div className={`flex-1 flex flex-col min-w-0 ${selectedEmail ? "flex md:w-[62%]" : "hidden md:flex md:w-[62%]"}`}>
-          {selectedEmail ? (
+        <div className={`flex-1 flex flex-col min-w-0 ${selectedEmail && statusFilter !== "verzonden" ? "flex md:w-[62%]" : "hidden md:flex md:w-[62%]"}`}>
+          {selectedEmail && statusFilter !== "verzonden" ? (
             <>
               {/* Mobile back */}
               <div className="md:hidden flex items-center gap-2 p-3 border-b border-gray-200">
@@ -1059,10 +1011,10 @@ export default function AdminEmailsClient({ initialEmailId, initialTab }: AdminE
         </div>
       </div>
 
-      {!isAiBeantwoordTab && totalPages > 1 && (
+      {totalPages > 1 && (
         <div className="p-3 border-t flex items-center justify-between flex-wrap gap-2 rounded-b-xl border border-t-0" style={{ borderColor: ADM_BORDER }}>
           <span className="text-sm" style={{ color: ADM_MUTED }}>
-            {total}
+            {listTotal}
           </span>
           <div className="flex gap-2">
             <button
