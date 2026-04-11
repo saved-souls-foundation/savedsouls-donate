@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/scrape-gofundme",
       "schedule": "0 20 * * *"
+    },
+    {
+      "path": "/api/cron/google-ads-reminder",
+      "schedule": "0 9 * * 1"
     }
   ],
   "redirects": [

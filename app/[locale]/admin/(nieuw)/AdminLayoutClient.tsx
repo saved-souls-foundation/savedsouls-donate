@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles, Shield } from "lucide-react";
+import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles, Shield, BarChart3 } from "lucide-react";
 import GlobalSearch from "./components/GlobalSearch";
 
 const ADM_BG = "#f1f5f9";
@@ -364,6 +364,14 @@ export default function AdminLayoutClient({
           icon={<Share2 className="w-[18px] h-[18px]" />}
           label={t("socialeMedia.title")}
           isActive={pathname?.includes("admin/sociale-media") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
+        <NavLink
+          href="/admin/google-ads"
+          icon={<BarChart3 className="w-[18px] h-[18px]" />}
+          label="Google Ads"
+          isActive={pathname?.includes("admin/google-ads") ?? false}
           locale={locale}
           onClick={() => setMobileOpen(false)}
         />
