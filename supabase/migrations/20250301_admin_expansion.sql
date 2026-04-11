@@ -35,8 +35,11 @@ COMMENT ON TABLE members IS 'Leden (persoon of bedrijf); admin-only.';
 
 ALTER TABLE members ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY members_admin_all ON members
-  FOR ALL USING (public.is_admin());
+DO $$ BEGIN
+  CREATE POLICY members_admin_all ON members
+    FOR ALL USING (public.is_admin());
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- =============================================================================
 -- 2. newsletter_subscribers
