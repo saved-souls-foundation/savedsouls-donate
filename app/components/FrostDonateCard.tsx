@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 export default function FrostDonateCard({
   src,
@@ -19,7 +19,7 @@ export default function FrostDonateCard({
   const label = t(labelKey);
 
   return (
-    <Link
+    <TrackedDonateLink
       href="/donate"
       className="group relative block aspect-[4/3] overflow-hidden rounded-2xl border-2 border-stone-200 dark:border-stone-600 shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl"
     >
@@ -47,6 +47,6 @@ export default function FrostDonateCard({
       <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xl md:text-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)] z-10">
         {label}
       </span>
-    </Link>
+    </TrackedDonateLink>
   );
 }

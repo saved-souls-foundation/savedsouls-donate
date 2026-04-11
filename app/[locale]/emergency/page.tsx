@@ -4,8 +4,10 @@ import { Heart } from "lucide-react";
 import DonationLoop from "@/app/components/DonationLoop";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedGoFundMeAnchor from "@/app/components/TrackedGoFundMeAnchor";
+import { GOFUNDME_CAMPAIGN_URL } from "@/lib/gtag";
 
-const GOFUNDME_URL = "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
+const GOFUNDME_URL = GOFUNDME_CAMPAIGN_URL;
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.savedsouls-foundation.org";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -70,10 +72,8 @@ export default async function EmergencyPage({ params }: Props) {
             <p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto mb-10 leading-relaxed">
               {t("heroSubtitle")}
             </p>
-            <a
+            <TrackedGoFundMeAnchor
               href={GOFUNDME_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium text-white transition-all hover:scale-[1.02] hover:opacity-95"
               style={{ backgroundColor: "#7B1010" }}
             >
@@ -89,7 +89,7 @@ export default async function EmergencyPage({ params }: Props) {
               </svg>
               <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
               {t("heroDonateCta") ?? "Donate now"}
-            </a>
+            </TrackedGoFundMeAnchor>
           </div>
         </div>
 
@@ -229,16 +229,14 @@ export default async function EmergencyPage({ params }: Props) {
 
             {/* Final CTA */}
             <div className="text-center">
-              <a
+              <TrackedGoFundMeAnchor
                 href={GOFUNDME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-medium text-white transition-all hover:scale-[1.02] hover:opacity-95"
                 style={{ backgroundColor: "#7B1010" }}
               >
                 <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
                 Donate now — save their home
-              </a>
+              </TrackedGoFundMeAnchor>
               <p className="text-xs text-stone-400 mt-3">
                 Secure · Takes 30 seconds · Every euro counts
               </p>

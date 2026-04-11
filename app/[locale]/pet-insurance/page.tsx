@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -68,13 +69,13 @@ export default function PetInsurancePage() {
         <section className="mb-16 rounded-2xl p-8 md:p-12 text-center bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 border-2 border-emerald-200 dark:border-emerald-800">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("donateTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6 max-w-xl mx-auto">{t("donateText")}</p>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {tCommon("donate")}
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         <section className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -85,13 +86,13 @@ export default function PetInsurancePage() {
           >
             {t("ctaHealth")}
           </Link>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
             style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
           >
             {tCommon("donate")}
-          </Link>
+          </TrackedDonateLink>
         </section>
       </main>
       <Footer />

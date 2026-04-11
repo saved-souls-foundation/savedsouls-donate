@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -156,13 +157,13 @@ export default function ToxicPlantsPage() {
           >
             {t("ctaDangers")}
           </Link>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
             style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
           >
             {tCommon("donate")}
-          </Link>
+          </TrackedDonateLink>
         </section>
       </main>
       <Footer />

@@ -6,6 +6,7 @@ import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
 import Image from "next/image";
 import FrostDonateCard from "@/app/components/FrostDonateCard";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -67,13 +68,13 @@ export default function MovingWithPetPage() {
         <section className="mb-16 rounded-2xl p-8 md:p-12 text-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6">{t("ctaText")}</p>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {t("donateNow")}
-          </Link>
+          </TrackedDonateLink>
         </section>
       </main>
       <Footer />

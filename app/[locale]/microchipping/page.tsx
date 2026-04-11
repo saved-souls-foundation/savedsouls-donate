@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -75,13 +76,13 @@ export default function MicrochippingPage() {
             >
               {tCommon("adopt")}
             </Link>
-            <Link
+            <TrackedDonateLink
               href="/donate"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold border-2 transition-all hover:scale-105 hover:shadow-lg"
               style={{ borderColor: BUTTON_ORANGE, color: BUTTON_ORANGE }}
             >
               {tCommon("donate")}
-            </Link>
+            </TrackedDonateLink>
           </div>
         </section>
       </main>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
 
 interface CampaignBannerProps {
   raised: number;
@@ -205,7 +206,14 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
             </div>
 
             {/* CTA */}
-            <a href={`/${locale}/emergency`} className="donate-btn">
+            <a
+              href={`/${locale}/emergency`}
+              className="donate-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                gtagReportConversion(resolveDonationNavigationUrl("/emergency", locale));
+              }}
+            >
               {lang.donate}
             </a>
           </div>
@@ -253,7 +261,14 @@ export default function CampaignBanner({ raised, goal, donations, locale }: Camp
                 }}
               />
             </div>
-            <a href={`/${locale}/emergency`} className="donate-btn">
+            <a
+              href={`/${locale}/emergency`}
+              className="donate-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                gtagReportConversion(resolveDonationNavigationUrl("/emergency", locale));
+              }}
+            >
               {lang.donate}
             </a>
           </div>

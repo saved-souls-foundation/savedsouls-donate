@@ -7,6 +7,8 @@ import { useParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../../components/ParallaxPage";
 import Footer from "../../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
+import { gtagReportConversion } from "@/lib/gtag";
 import { getPostBySlug, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFacebook, type DbPost } from "@/lib/blog-posts";
 import { notFound } from "next/navigation";
 
@@ -83,7 +85,7 @@ export default function BlogPostPage() {
   const post: BlogPostOrFacebook = staticPost ?? dbPost!;
 
   const handleDonate = () => {
-    window.open("https://paypal.me/savedsoulsfoundation", "_blank");
+    gtagReportConversion("https://paypal.me/savedsoulsfoundation", { navigate: "new-tab" });
   };
 
   const isFacebook = isFacebookPost(post);
@@ -233,14 +235,14 @@ export default function BlogPostPage() {
               <span className="absolute right-[8%] top-[40%] text-lg md:text-xl font-bold text-amber-600/60 animate-money-float-1" aria-hidden>50</span>
               <span className="absolute left-[15%] bottom-[10%] text-base md:text-lg font-bold text-emerald-600/50 animate-money-float-4" aria-hidden>€</span>
               <span className="absolute right-[20%] top-[55%] text-base md:text-lg font-bold text-blue-600/50 animate-money-float-3" aria-hidden>฿</span>
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="relative z-10 inline-flex items-center gap-2 px-6 py-4 rounded-2xl font-bold text-white shadow-xl animate-star-pulse hover:scale-105 transition-transform"
                 style={{ backgroundColor: BUTTON_ORANGE }}
               >
                 <span className="text-2xl" aria-hidden>⭐</span>
                 <span className="text-base md:text-lg">{t(`posts.${slug}.orDonate`)}</span>
-              </Link>
+              </TrackedDonateLink>
             </>
           ) : (
             <>

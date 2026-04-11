@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import { getAllBlogPosts, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFacebook } from "@/lib/blog-posts";
 
 const ACCENT_GREEN = "#2aa348";
@@ -136,13 +137,13 @@ export default function BlogPage() {
         </section>
 
         <div className="mt-16 text-center">
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {t("ctaDonate")}
-          </Link>
+          </TrackedDonateLink>
         </div>
       </main>
       <Footer />

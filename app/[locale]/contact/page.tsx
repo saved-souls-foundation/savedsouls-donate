@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
@@ -186,7 +187,7 @@ export default async function ContactPage({ params }: Props) {
             </div>
             <p className="text-base text-stone-500 dark:text-stone-400 mt-3">
               {tContact("orDonateViaBefore")}
-              <Link href="/#donate" className="underline" style={{ color: ACCENT_GREEN }}>{tContact("orDonateViaLink")}</Link>
+              <TrackedDonateLink href="/#donate" className="underline" style={{ color: ACCENT_GREEN }}>{tContact("orDonateViaLink")}</TrackedDonateLink>
               {tContact("orDonateViaAfter")}
             </p>
           </div>

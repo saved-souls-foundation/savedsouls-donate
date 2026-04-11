@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
+import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
 
 const BUTTON_ORANGE = "#2aa348";
 const ACCENT_GREEN = "#2aa348";
@@ -25,7 +27,10 @@ export default function DogDonateButton({
   imageSrc?: string;
   className?: string;
 }) {
+  const locale = useLocale();
   const color = variant === "orange" ? BUTTON_ORANGE : ACCENT_GREEN;
+  const trackDonation =
+    href === "/donate" || href.startsWith("/donate/") || href.startsWith("/#");
   const glowClass =
     variant === "orange"
       ? "shadow-[0_0_20px_rgba(230,122,76,0.4)] hover:shadow-[0_0_30px_rgba(230,122,76,0.55)]"
@@ -34,6 +39,14 @@ export default function DogDonateButton({
   return (
     <Link
       href={href}
+      onClick={
+        trackDonation
+          ? (e) => {
+              e.preventDefault();
+              gtagReportConversion(resolveDonationNavigationUrl(href, locale));
+            }
+          : undefined
+      }
       className={`group relative overflow-visible rounded-xl inline-flex items-center justify-center px-8 py-4 font-semibold text-white text-base transition-all duration-500 hover:scale-[1.02] min-h-[52px] ${glowClass} ${className}`}
     >
       {/* Dog photo - frost overlay, helder bij hover */}

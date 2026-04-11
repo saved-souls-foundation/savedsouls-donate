@@ -1,7 +1,7 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 export default function DonationCtaBlock() {
   const t = useTranslations("donationCta");
@@ -17,12 +17,12 @@ export default function DonationCtaBlock() {
       <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
         <span className="text-2xl" aria-hidden>🐶</span>
         <span className="text-2xl" aria-hidden>🐱</span>
-        <Link
+        <TrackedDonateLink
           href="/donate"
           className="donate-cta-button"
         >
           {t("buttonText")}
-        </Link>
+        </TrackedDonateLink>
         <span className="text-2xl" aria-hidden>🐾</span>
       </div>
     </section>

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -180,13 +181,13 @@ export default function BehaviorPage() {
           </div>
           <p className="text-stone-600 dark:text-stone-400 text-sm italic mb-6">{t("impactFooter")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <TrackedDonateLink
               href="/#donate"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-lg"
               style={{ backgroundColor: BUTTON_ORANGE }}
             >
               {t("donateCtaButton")}
-            </Link>
+            </TrackedDonateLink>
             <Link
               href="/adopt"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold border-2 transition-all hover:scale-105"

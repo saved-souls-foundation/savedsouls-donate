@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 export const dynamic = "force-dynamic";
 
@@ -156,13 +157,13 @@ export default async function SchoolProjectPage({ params }: { params: Promise<{ 
               >
                 {t("ctaContact")}
               </Link>
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
                 style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
               >
                 {t("ctaDonate")}
-              </Link>
+              </TrackedDonateLink>
             </div>
           </div>
         </section>

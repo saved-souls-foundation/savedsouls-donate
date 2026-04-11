@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
+import { gtagReportConversion } from "@/lib/gtag";
 
 const PRESET_AMOUNTS = [5, 10, 25, 50];
 const PRESET_AMOUNTS_THB = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
@@ -124,18 +126,20 @@ export default function KofiStyleDonate() {
             </p>
             <button
               type="button"
-              onClick={() => window.open("https://paypal.me/savedsoulsfoundation", "_blank")}
+              onClick={() => {
+                gtagReportConversion("https://paypal.me/savedsoulsfoundation", { navigate: "new-tab" });
+              }}
               className="w-full py-3 px-4 rounded-xl font-semibold text-white transition-all hover:opacity-90"
               style={{ backgroundColor: "#2aa348" }}
             >
               {t("monthlyCta")}
             </button>
-            <Link
+            <TrackedDonateLink
               href="/donate/causes"
               className="block text-center text-sm text-stone-500 dark:text-stone-400 hover:text-[#2aa348] underline"
             >
               {t("viewCauses")}
-            </Link>
+            </TrackedDonateLink>
           </div>
         ) : (
           <>

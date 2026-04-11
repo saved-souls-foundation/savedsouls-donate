@@ -21,11 +21,13 @@ import {
   Globe,
   PawPrint,
 } from "lucide-react";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import NavDropdown from "./NavDropdown";
 import type { NavDropdownItem } from "./NavDropdown";
 import SiteSearch from "./SiteSearch";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { showSponsor } from "@/lib/features";
+import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
 
 // Zorg dat LanguageSwitcher in de bundle blijft (voorkomt ReferenceError in client chunk)
 const _languageSwitcherInBundle = LanguageSwitcher;
@@ -344,6 +346,10 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-[1.02] hover:opacity-90 text-white"
               style={{ backgroundColor: "#7B1010" }}
               title={t("donateTooltip")}
+              onClick={(e) => {
+                e.preventDefault();
+                gtagReportConversion(resolveDonationNavigationUrl("/donate", locale));
+              }}
             >
               <span style={{ display: "inline-block", animation: "heartbeat 2.5s ease-in-out infinite" }}>
                 <Heart className="w-4 h-4 shrink-0 fill-white stroke-white" aria-hidden />
@@ -458,9 +464,9 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 </span>
               </Link>
             </div>
-            <Link
+            <TrackedDonateLink
               href="/donate"
-              onClick={closeMobileMenu}
+              onClick={() => closeMobileMenu()}
               className="mobile-donate-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl active:opacity-90 transition-colors text-white mb-6"
             >
               <Heart size={18} className="shrink-0 text-white" aria-hidden />
@@ -469,7 +475,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <span className="text-xs text-white/65 block">350 monden te voeden vandaag</span>
               </div>
               <ChevronRight size={16} className="shrink-0 text-white/60" aria-hidden />
-            </Link>
+            </TrackedDonateLink>
           </div>
 
           {/* Block 2 — Red een dier */}

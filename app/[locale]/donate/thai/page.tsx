@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import ParallaxPage from "../../../components/ParallaxPage";
 import Footer from "../../../components/Footer";
 import LanguageSwitcher from "../../../components/LanguageSwitcher";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const KASIKORN_ACCOUNT = "033-8-13623-4";
@@ -138,19 +139,19 @@ export default function ThaiDonatePage() {
         </section>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-stone-700 dark:text-stone-300 border-2 border-stone-300 dark:border-stone-600 transition-opacity hover:opacity-90"
           >
             {t("btnBack")}
-          </Link>
-          <Link
+          </TrackedDonateLink>
+          <TrackedDonateLink
             href="/#donate"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {t("btnDonateHomepage")}
-          </Link>
+          </TrackedDonateLink>
         </div>
       </main>
       <Footer />

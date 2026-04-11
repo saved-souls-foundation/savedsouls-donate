@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -68,26 +69,26 @@ export default function MinorHotelsPage() {
             >
               {t("ctaMinor")} →
             </a>
-            <Link
+            <TrackedDonateLink
               href="/#donate"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all hover:opacity-90 border-2"
               style={{ backgroundColor: ACCENT_GREEN, borderColor: ACCENT_GREEN }}
             >
               {t("ctaDonate")} →
-            </Link>
+            </TrackedDonateLink>
           </div>
         </section>
 
         <section className="mb-16 rounded-2xl p-6 md:p-10 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg text-center">
           <h2 className="text-2xl font-bold mb-4" style={{ color: ACCENT_GREEN }}>{t("ctaTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6 max-w-xl mx-auto">{t("ctaText")}</p>
-          <Link
+          <TrackedDonateLink
             href="/#donate"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all hover:opacity-90 text-lg"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {t("ctaButton")} →
-          </Link>
+          </TrackedDonateLink>
         </section>
       </main>
       <Footer />

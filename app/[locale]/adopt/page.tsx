@@ -10,6 +10,7 @@ import DashboardLoginBanner from "../../components/DashboardLoginBanner";
 import TurnstileWidget from "../../components/TurnstileWidget";
 import { getISOWeekNumber, getSpotlightDogIndex, getSpotlightCatIndex } from "@/lib/spotlight";
 import { showSponsor } from "@/lib/features";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -421,9 +422,9 @@ export default function AdoptPage() {
                   {t("happyFacesSponsor")}
                 </Link>
               )}
-              <Link href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
+              <TrackedDonateLink href="/donate" className="px-5 py-2.5 rounded-xl font-semibold text-white hover:opacity-90" style={{ backgroundColor: BUTTON_ORANGE }}>
                 {t("happyFacesDonate")}
-              </Link>
+              </TrackedDonateLink>
               <Link href="/volunteer" className="px-5 py-2.5 rounded-xl font-semibold border-2 border-stone-400 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
                 {t("happyFacesVolunteer")}
               </Link>

@@ -8,6 +8,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import KofiStyleDonate from "../../components/KofiStyleDonate";
 import { Heart } from "lucide-react";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -113,12 +114,12 @@ export default function SupportPage() {
           >
             {t("linkFinancialOverview")}
           </Link>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="block text-stone-600 dark:text-stone-400 hover:text-[#2aa348] underline underline-offset-2 text-sm"
           >
             {t("linkDonate")}
-          </Link>
+          </TrackedDonateLink>
         </div>
 
         <Footer />

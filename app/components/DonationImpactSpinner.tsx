@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -56,13 +56,13 @@ export default function DonationImpactSpinner() {
         </p>
       </div>
 
-      <Link
+      <TrackedDonateLink
         href="/donate"
         className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-white transition-opacity hover:opacity-95"
         style={{ backgroundColor: ACCENT_GREEN }}
       >
         {t("btnDonate")}
-      </Link>
+      </TrackedDonateLink>
     </div>
   );
 }

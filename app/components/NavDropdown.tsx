@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
 import { ChevronDown, ChevronRight, Heart, type LucideIcon } from "lucide-react";
 
 export type NavDropdownItem = {
@@ -57,6 +58,10 @@ const ICON_PURPLE = "#7c3aed";
 const CHEVRON_GRAY = "#d1d5db";
 const ICON_BG = "#f0faf0";
 
+function isDonateIntlPath(href: string): boolean {
+  return href === "/donate" || href.startsWith("/donate/") || href.startsWith("/#");
+}
+
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -83,6 +88,7 @@ export default function NavDropdown({
   onOpenChange,
   dropdownStyle,
 }: NavDropdownProps) {
+  const locale = useLocale();
   const t = useTranslations("common");
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onOpenChange !== undefined;
@@ -131,6 +137,16 @@ export default function NavDropdown({
     setOpen(false);
   };
 
+  const onTrackedLinkClick = (e: React.MouseEvent, href: string) => {
+    if (isDonateIntlPath(href)) {
+      e.preventDefault();
+      handleItemClick();
+      gtagReportConversion(resolveDonationNavigationUrl(href, locale));
+    } else {
+      handleItemClick();
+    }
+  };
+
   const dropdownClass = `absolute top-full mt-2 min-w-[280px] rounded-2xl bg-white p-3 shadow-xl shadow-black/10 border border-[#f0f0f0] z-[120] animate-dropdown-open origin-top ${
     align === "right" ? "right-0" : "left-0"
   }`;
@@ -165,7 +181,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={() => handleItemClick()}
+                    onClick={(e) => onTrackedLinkClick(e, item.href)}
                     className="rounded-2xl border border-gray-100 shadow-sm bg-white p-4 flex flex-col items-center gap-2 hover:shadow-md hover:scale-[1.02] transition-all duration-200"
                   >
                     <div
@@ -206,7 +222,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={() => handleItemClick()}
+                    onClick={(e) => onTrackedLinkClick(e, item.href)}
                     className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
@@ -275,7 +291,7 @@ export default function NavDropdown({
                   <Link
                     key={item.href + item.label}
                     href={item.href}
-                    onClick={() => handleItemClick()}
+                    onClick={(e) => onTrackedLinkClick(e, item.href)}
                     className={`relative flex items-center gap-3 rounded-xl transition-colors duration-100 ${
                       isHighlight
                         ? "min-h-[64px] px-3 py-3 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200"
@@ -351,7 +367,7 @@ export default function NavDropdown({
               ) : (
                 <Link
                   href={bottomCta.href}
-                  onClick={() => handleItemClick()}
+                  onClick={(e) => onTrackedLinkClick(e, bottomCta.href)}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-red-50 hover:bg-red-100/80 transition-colors duration-100"
                 >
                   <Heart size={16} fill="#E53E3E" color="#E53E3E" aria-hidden />

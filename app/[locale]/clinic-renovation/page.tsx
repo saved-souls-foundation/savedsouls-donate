@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -23,7 +24,7 @@ export default function ClinicRenovationPage() {
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
         {/* Afbeelding 1 - Helemaal bovenaan */}
         <section className="mb-14 md:mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
             <Image
               src="/clinic-renovation-1.png"
               alt={t("img1Alt")}
@@ -33,7 +34,7 @@ export default function ClinicRenovationPage() {
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent" />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* Hero */}
@@ -85,7 +86,7 @@ export default function ClinicRenovationPage() {
 
         {/* Afbeelding 2 - Dierenarts met dieren */}
         <section className="mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
             <Image
               src="/clinic-renovation-2.png"
               alt={t("img2Alt")}
@@ -94,7 +95,7 @@ export default function ClinicRenovationPage() {
               sizes="(max-width: 768px) 100vw, 896px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent" />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* Droom */}
@@ -112,7 +113,7 @@ export default function ClinicRenovationPage() {
 
         {/* Afbeelding 3 - Animal shelter success */}
         <section className="mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full max-w-2xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full max-w-2xl mx-auto group cursor-pointer">
             <Image
               src="/clinic-renovation-3.png"
               alt={t("img3Alt")}
@@ -120,7 +121,7 @@ export default function ClinicRenovationPage() {
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 672px"
             />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* CTA */}
@@ -139,13 +140,13 @@ export default function ClinicRenovationPage() {
             >
               {t("ctaDonate")}
             </button>
-            <Link
+            <TrackedDonateLink
               href="/donate"
               className="inline-flex items-center justify-center px-10 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105"
               style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
             >
               {t("ctaMoreWays")}
-            </Link>
+            </TrackedDonateLink>
           </div>
         </section>
 

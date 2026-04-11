@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 export const dynamic = "force-dynamic";
@@ -107,7 +108,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
               { icon: "🇹🇭", title: tP("wayThai"), sub: tP("wayThaiSub"), href: "/donate/thai" },
               { icon: "🎯", title: tP("wayCauses"), sub: tP("wayCausesSub"), href: "/donate/causes" },
             ].map((way) => (
-              <Link
+              <TrackedDonateLink
                 key={way.href}
                 href={way.href}
                 className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm hover:bg-stone-50 transition-colors"
@@ -118,7 +119,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
                   <div className="text-xs text-stone-500 mt-0.5">{way.sub}</div>
                 </div>
                 <span className="text-stone-400">›</span>
-              </Link>
+              </TrackedDonateLink>
             ))}
           </div>
 
@@ -129,6 +130,19 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
               { icon: "💰", title: t("linkToFinancialOverview"), sub: tP("footerCardFinancialSub"), href: "/financial-overview" },
               { icon: "🎯", title: t("linkToCauses"), sub: tP("footerCardCausesSub"), href: "/donate/causes" },
             ].map((item) => (
+              item.href.startsWith("/donate") ? (
+              <TrackedDonateLink
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm hover:bg-stone-50 transition-colors"
+              >
+                <span className="text-xl flex-shrink-0">{item.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-stone-800">{item.title}</div>
+                  <div className="text-xs text-stone-500 mt-0.5">{item.sub}</div>
+                </div>
+              </TrackedDonateLink>
+              ) : (
               <Link
                 key={item.href}
                 href={item.href}
@@ -140,6 +154,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
                   <div className="text-xs text-stone-500 mt-0.5">{item.sub}</div>
                 </div>
               </Link>
+              )
             ))}
           </div>
           <p className="text-xs text-stone-400 text-center pb-8">{tP("footerReg")}</p>

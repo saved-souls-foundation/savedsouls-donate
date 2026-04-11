@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { gtagReportConversion } from "@/lib/gtag";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -17,7 +18,7 @@ export default function FeedAYearPage() {
   useEffect(() => setMounted(true), []);
 
   const handleDonate = () => {
-    window.open("https://paypal.me/savedsoulsfoundation/169", "_blank");
+    gtagReportConversion("https://paypal.me/savedsoulsfoundation/169", { navigate: "new-tab" });
   };
 
   if (!mounted) return null;

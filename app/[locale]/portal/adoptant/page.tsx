@@ -7,6 +7,7 @@ import Footer from "@/app/components/Footer";
 import SiteHeader from "@/app/components/SiteHeader";
 import Thermometer, { ADOPTANT_STEPS } from "@/app/components/Thermometer";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const BRAND_GREEN = "#2d5a27";
 
@@ -248,7 +249,7 @@ export default function PortalAdoptantPage() {
                   </div>
                 </div>
               )}
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-lg hover:opacity-95 transition-opacity"
                 style={{ backgroundColor: "#7B1010" }}
@@ -256,7 +257,7 @@ export default function PortalAdoptantPage() {
                 <span aria-hidden>♥</span>
                 {t("portalAdoptionCompleteDonate")}
                 <span aria-hidden>♥</span>
-              </Link>
+              </TrackedDonateLink>
             </div>
           </div>
         )}

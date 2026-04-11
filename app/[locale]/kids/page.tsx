@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const SOFT_CORAL = "#f97316";
@@ -125,13 +126,13 @@ export default async function KidsPage({ params }: Props) {
             {t("ctaText")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <TrackedDonateLink
               href="/donate"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white text-lg transition-opacity hover:opacity-95"
               style={{ backgroundColor: ACCENT_GREEN }}
             >
               {t("ctaDonate")}
-            </Link>
+            </TrackedDonateLink>
             <Link
               href="/school-project"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-opacity hover:opacity-95"

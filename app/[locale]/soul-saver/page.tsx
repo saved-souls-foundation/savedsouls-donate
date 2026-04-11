@@ -7,6 +7,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import IdealDonate from "../../components/IdealDonate";
 import HeroPolaroidCarousel from "../../components/HeroPolaroidCarousel";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const HERO_GREEN = "#2aa348";
@@ -177,7 +178,7 @@ export default function SoulSaverPage() {
               <IdealDonate />
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 hover:shadow-xl"
                 style={{
@@ -186,7 +187,7 @@ export default function SoulSaverPage() {
                 }}
               >
                 {t("moreWays")}
-              </Link>
+              </TrackedDonateLink>
               <a
                 href="https://paypal.me/savedsoulsfoundation"
                 target="_blank"
@@ -216,7 +217,7 @@ export default function SoulSaverPage() {
               <p className="text-lg font-bold drop-shadow-lg">{t("imgCaption")}</p>
             </div>
           </div>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl font-black text-white text-lg transition-all hover:scale-105 hover:shadow-2xl"
             style={{
@@ -227,7 +228,7 @@ export default function SoulSaverPage() {
             <span>♥</span>
             {t("finalCta")}
             <span>♥</span>
-          </Link>
+          </TrackedDonateLink>
         </section>
       </main>
       <Footer />

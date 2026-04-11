@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 /** Ronde preset-bedragen – EUR/USD etc. vanaf 5 */
 const PRESET_AMOUNTS = [5, 10, 15, 20, 25, 50, 75, 100, 125, 150, 200, 250, 500, 1000, 1500, 2000, 2500, 5000, 10000];
@@ -148,9 +148,9 @@ export default function IdealDonate() {
         <a href="https://paypal.me/savedsoulsfoundation" target="_blank" rel="noopener noreferrer" className="hover:opacity-90 flex items-center justify-center">
           <Image src="/logos/paypal-official.png" alt="PayPal" width={100} height={62} className="h-12 w-auto object-contain" />
         </a>
-        <Link href="/donate/thai#promptpay" className="hover:opacity-90 flex items-center justify-center">
+        <TrackedDonateLink href="/donate/thai#promptpay" className="hover:opacity-90 flex items-center justify-center">
           <Image src="/logos/promptpay-official.png" alt="PromptPay" width={107} height={60} className="h-12 w-auto object-contain" />
-        </Link>
+        </TrackedDonateLink>
         <a href="https://donorbox.org/saved-souls-foundation-donation" target="_blank" rel="noopener noreferrer" className="hover:opacity-90 flex items-center justify-center py-2 px-3 rounded-xl border border-stone-300 dark:border-stone-600 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors">
           <Image src="/logos/donorbox-logo.png" alt="Donorbox" width={120} height={36} className="h-12 w-auto object-contain" />
         </a>
@@ -168,10 +168,10 @@ export default function IdealDonate() {
             <Image src="/logos/paypal-official.png" alt="PayPal" width={74} height={46} className="h-10 w-auto object-contain" />
             <span className="text-xs" style={{ color: "#2aa348" }}>→</span>
           </a>
-          <Link href="/donate/thai#promptpay" className="inline-flex items-center justify-center gap-1">
+          <TrackedDonateLink href="/donate/thai#promptpay" className="inline-flex items-center justify-center gap-1">
             <Image src="/logos/promptpay-official.png" alt="PromptPay" width={71} height={40} className="h-10 w-auto object-contain" />
             <span className="text-xs" style={{ color: "#2aa348" }}>{t("thaiPaymentsMethods")} →</span>
-          </Link>
+          </TrackedDonateLink>
           <a href="https://donorbox.org/saved-souls-foundation-donation" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1">
             <Image src="/logos/donorbox-logo.png" alt="Donorbox" width={80} height={24} className="h-6 w-auto object-contain" />
             <span className="text-xs" style={{ color: "#2aa348" }}>→</span>

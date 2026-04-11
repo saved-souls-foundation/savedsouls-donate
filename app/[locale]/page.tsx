@@ -16,6 +16,8 @@ import NewsletterHero from "@/app/components/NewsletterHero";
 import NewsletterFormDark from "@/app/components/NewsletterFormDark";
 import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
+import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const SpotlightSection = dynamic(() => import("../components/SpotlightSection"), {
   ssr: false,
@@ -186,6 +188,10 @@ export default function DonatePage() {
                 href={`/${locale}/donate`}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all hover:scale-[1.02] text-white shadow-lg hover:opacity-95"
                 style={{ backgroundColor: "#7B1010" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  gtagReportConversion(resolveDonationNavigationUrl("/donate", locale));
+                }}
               >
                 <span
                   style={{
@@ -362,13 +368,13 @@ export default function DonatePage() {
               >
                 {tHome("sponsorDog")}
               </Link>
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90"
                 style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
               >
                 {tHome("donateMonthly")}
-              </Link>
+              </TrackedDonateLink>
             </div>
           </div>
         </section>

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "@/app/components/ParallaxPage";
 import Footer from "@/app/components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -88,9 +89,9 @@ export default function ParalyzedDogsGuidePage() {
         <section className="mb-16 rounded-2xl p-8 md:p-12 text-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">{t("ctaTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 mb-6">{t("ctaText")}</p>
-          <Link href="/#donate" className="inline-flex items-center justify-center px-10 py-5 rounded-2xl font-bold text-white text-lg transition-all hover:scale-110 hover:shadow-2xl hover:rotate-1" style={{ backgroundColor: BUTTON_ORANGE }}>
+          <TrackedDonateLink href="/#donate" className="inline-flex items-center justify-center px-10 py-5 rounded-2xl font-bold text-white text-lg transition-all hover:scale-110 hover:shadow-2xl hover:rotate-1" style={{ backgroundColor: BUTTON_ORANGE }}>
             🦽 {t("ctaButton")} — €100
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         <div className="flex justify-center">

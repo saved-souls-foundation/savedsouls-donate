@@ -6,6 +6,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -111,12 +112,12 @@ export default function FinancialOverviewPage() {
             >
               {tCommon("sponsor")}
             </Link>
-            <Link
+            <TrackedDonateLink
               href="/donate/causes"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-all"
             >
               {tCommon("donateCauses")}
-            </Link>
+            </TrackedDonateLink>
           </div>
         </section>
       </main>

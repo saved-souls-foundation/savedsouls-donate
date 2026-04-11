@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../../components/ParallaxPage";
 import Footer from "../../../components/Footer";
 import LanguageSwitcher from "../../../components/LanguageSwitcher";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -217,13 +218,13 @@ export default async function DonateCausesPage() {
         </section>
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: ACCENT_GREEN }}
           >
             {t("btnDonateDirect")}
-          </Link>
+          </TrackedDonateLink>
           <Link
             href="/"
             className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold border-2 transition-opacity hover:opacity-90 text-center"

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const ACCENT_TEAL = "#0d9488";
@@ -111,13 +112,13 @@ export default async function VisitAdoptPage({ params }: { params: Promise<{ loc
           >
             {t("ctaButton")}
           </Link>
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 hover:shadow-lg border-2"
             style={{ borderColor: "#e11d48", color: "#e11d48", backgroundColor: "#fff1f2" }}
           >
             ♥ Help ons meer zielen te redden
-          </Link>
+          </TrackedDonateLink>
         </div>
 
       </main>

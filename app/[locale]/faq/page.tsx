@@ -7,6 +7,7 @@ import { useTranslations, useLocale } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import DonateButton from "../../components/DonateButton";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -303,9 +304,9 @@ export default function FaqPage() {
               </div>
               <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
                 <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderDonate")}</p>
-                <Link href="/#donate" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
+                <TrackedDonateLink href="/#donate" className="font-medium text-stone-800 dark:text-stone-200 hover:underline" style={{ color: ACCENT_GREEN }}>
                   {tCommon("donate")} →
-                </Link>
+                </TrackedDonateLink>
               </div>
               <div className="rounded-xl p-4 bg-stone-50 dark:bg-stone-800/80 border border-stone-200 dark:border-stone-600">
                 <p className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">{t("linksPlaceholderAdopt")}</p>

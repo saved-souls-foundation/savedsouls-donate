@@ -7,6 +7,7 @@ import LanguageSwitcher from "../../components/LanguageSwitcher";
 import ShareStoryButton from "../../components/ShareStoryButton";
 import DonationImpactSpinner from "../../components/DonationImpactSpinner";
 import DogPhotoCard from "../../components/DogPhotoCard";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const ACCENT_GREEN = "#2aa348";
 
@@ -67,7 +68,7 @@ export default async function StreetDogsThailandPage({ params }: Props) {
             </p>
             <div className="grid grid-cols-3 gap-4">
               {DOG_PHOTOS.map((src) => (
-                <Link
+                <TrackedDonateLink
                   key={src}
                   href="/donate"
                   className="block hover:opacity-95 transition-opacity"
@@ -78,7 +79,7 @@ export default async function StreetDogsThailandPage({ params }: Props) {
                     frostOnScroll
                     className="shadow-lg border-2 border-white/50 dark:border-stone-600/50 cursor-pointer"
                   />
-                </Link>
+                </TrackedDonateLink>
               ))}
             </div>
           </section>
@@ -170,24 +171,24 @@ export default async function StreetDogsThailandPage({ params }: Props) {
             </h2>
             <p className="text-stone-800 dark:text-stone-200 font-medium mb-6">{t("ctaText")}</p>
             <div className="flex justify-center mb-8">
-              <Link
+              <TrackedDonateLink
                 href="/donate"
                 className="inline-flex items-center justify-center px-10 py-4 rounded-xl font-semibold text-lg text-white transition-opacity hover:opacity-95"
                 style={{ backgroundColor: ACCENT_GREEN }}
               >
                 {t("btnDonate")}
-              </Link>
+              </TrackedDonateLink>
             </div>
           </section>
 
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center mt-12">
-            <Link
+            <TrackedDonateLink
               href="/donate"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-opacity hover:opacity-95"
               style={{ backgroundColor: ACCENT_GREEN }}
             >
               {t("btnDonate")}
-            </Link>
+            </TrackedDonateLink>
             <Link
               href="/volunteer"
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import TrackedGoFundMeAnchor from "@/app/components/TrackedGoFundMeAnchor";
 
 const GOAL = 120_000;
 
@@ -257,16 +258,13 @@ export default function DonationLoop({
 
         {/* CTA */}
         <div className="text-center mb-8">
-          <a
-            href="https://gofund.me/6df90b013"
-            target="_blank"
-            rel="noopener noreferrer"
+          <TrackedGoFundMeAnchor
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white text-base font-medium transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
             style={{ backgroundColor: "#7B1010" }}
           >
             <span className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
             Donate now — save their home
-          </a>
+          </TrackedGoFundMeAnchor>
           <p className="text-xs text-stone-400 mt-3">Secure. Takes 30 seconds. Every euro counts.</p>
         </div>
 

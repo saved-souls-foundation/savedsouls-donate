@@ -5,6 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
+import { gtagReportConversion } from "@/lib/gtag";
 
 const ACCENT_BLUE = "#2563eb";
 const BUTTON_BLUE = "#2563eb";
@@ -13,7 +15,7 @@ export default function CarActionPage() {
   const t = useTranslations("carAction");
 
   const handleDonate = () => {
-    window.open("https://paypal.me/savedsoulsfoundation", "_blank");
+    gtagReportConversion("https://paypal.me/savedsoulsfoundation", { navigate: "new-tab" });
   };
 
   return (
@@ -21,7 +23,7 @@ export default function CarActionPage() {
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
         {/* Afbeelding 1 */}
         <section className="mb-14 md:mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
             <Image
               src="/volunteers-with-dogs.png"
               alt={t("img1Alt")}
@@ -31,7 +33,7 @@ export default function CarActionPage() {
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent" />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* Hero */}
@@ -83,7 +85,7 @@ export default function CarActionPage() {
 
         {/* Afbeelding 2 */}
         <section className="mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-h-[400px] w-full max-w-3xl mx-auto group cursor-pointer">
             <Image
               src="/team-dogs.webp"
               alt={t("img2Alt")}
@@ -92,7 +94,7 @@ export default function CarActionPage() {
               sizes="(max-width: 768px) 100vw, 896px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent" />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* Droom */}
@@ -110,7 +112,7 @@ export default function CarActionPage() {
 
         {/* Afbeelding 3 */}
         <section className="mb-16">
-          <Link href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full max-w-2xl mx-auto group cursor-pointer">
+          <TrackedDonateLink href="/#donate" className="block relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full max-w-2xl mx-auto group cursor-pointer">
             <Image
               src="/team-thankyou.png"
               alt={t("img3Alt")}
@@ -118,7 +120,7 @@ export default function CarActionPage() {
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 672px"
             />
-          </Link>
+          </TrackedDonateLink>
         </section>
 
         {/* CTA */}
@@ -137,13 +139,13 @@ export default function CarActionPage() {
             >
               {t("ctaDonate")}
             </button>
-            <Link
+            <TrackedDonateLink
               href="/donate"
               className="inline-flex items-center justify-center px-10 py-4 rounded-xl font-semibold border-2 transition-all hover:scale-105"
               style={{ borderColor: ACCENT_BLUE, color: ACCENT_BLUE }}
             >
               {t("ctaMoreWays")}
-            </Link>
+            </TrackedDonateLink>
           </div>
         </section>
 

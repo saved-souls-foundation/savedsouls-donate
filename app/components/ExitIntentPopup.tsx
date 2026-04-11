@@ -4,9 +4,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { GOFUNDME_CAMPAIGN_URL, gtagReportConversion } from "@/lib/gtag";
 
-const GOFUNDME_URL =
-  "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
+const GOFUNDME_URL = GOFUNDME_CAMPAIGN_URL;
 
 const LS_DONATED = "ssf_donated";
 const LS_SHOWN = "ssf_popup_shown";
@@ -236,7 +236,11 @@ export default function ExitIntentPopup() {
             target="_blank"
             rel="noopener noreferrer"
             className="mt-5 block w-full rounded-xl bg-amber-500 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500"
-            onClick={onDonateClick}
+            onClick={(e) => {
+              e.preventDefault();
+              onDonateClick();
+              gtagReportConversion(GOFUNDME_URL, { navigate: "new-tab" });
+            }}
           >
             {t("buttonText")}
           </a>

@@ -7,6 +7,7 @@ import Footer from "@/app/components/Footer";
 import SiteHeader from "@/app/components/SiteHeader";
 import Thermometer, { VRIJWILLIGER_STEPS } from "@/app/components/Thermometer";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 
 const BRAND_GREEN = "#2d5a27";
 
@@ -172,13 +173,13 @@ export default function PortalVrijwilligerClient() {
         <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">Kies hier: Vrijwilliger of Adoptant</p>
 
         <div className="mb-4">
-          <Link
+          <TrackedDonateLink
             href="/donate"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
             style={{ backgroundColor: "#7B1010" }}
           >
             ♥ Doneren
-          </Link>
+          </TrackedDonateLink>
         </div>
 
         <div className="bg-amber-50/90 dark:bg-amber-900/20 rounded-2xl border-2 border-amber-200 dark:border-amber-700 shadow-md p-4 md:p-5 mb-8">
