@@ -289,7 +289,6 @@ export default function AdoptInquiryForm({
 
           {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
             <div ref={securityRef} className="space-y-2 scroll-mt-4">
-              <p className="text-sm text-stone-500 dark:text-stone-400">Security check</p>
               <TurnstileWidget
                 size="flexible"
                 onVerify={setTurnstileToken}
