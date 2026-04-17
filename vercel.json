@@ -19,6 +19,10 @@
     {
       "path": "/api/cron/google-ads-reminder",
       "schedule": "0 9 * * 1"
+    },
+    {
+      "path": "/api/cron/generate-article",
+      "schedule": "0 7 * * *"
     }
   ],
   "redirects": [
