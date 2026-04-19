@@ -1,16 +1,25 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
 
-export async function generateMetadata() {
-  const t = await getTranslations("disclaimer");
+type DisclaimerParams = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: DisclaimerParams): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "disclaimer" });
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    ...(locale === "en" && {
+      other: {
+        "tiktok-developers-site-verification": "caRCaRY0cUxxdkLQDg8H6vs3eoYxgAqo",
+      },
+    }),
   };
 }
 
