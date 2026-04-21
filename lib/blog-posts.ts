@@ -97,6 +97,21 @@ export function isDbPost(post: BlogPostOrFacebook): post is DbPost {
 
 const DEFAULT_BLOG_IMAGE = "/savedsoul-logo-bg.webp";
 
+/** Eerste bruikbare tijdstempel (lijst-API gebruikt `published_at`, detail-API `gepubliceerd_op`). */
+function pickPublishedTimestamp(row: {
+  gepubliceerd_op?: string | null;
+  published_at?: string | null;
+}): string {
+  for (const v of [row.gepubliceerd_op, row.published_at]) {
+    if (v == null) continue;
+    const s = String(v).trim();
+    if (!s) continue;
+    const t = Date.parse(s);
+    if (!Number.isNaN(t)) return new Date(t).toISOString();
+  }
+  return new Date().toISOString();
+}
+
 /** Maakt een DbPost van een API-response (lijst of detail; titel/title, inhoud optioneel). */
 export function toDbPost(row: {
   id: string;
@@ -109,15 +124,21 @@ export function toDbPost(row: {
   hero_image?: string | null;
 }): DbPost {
   const titel = row.titel ?? row.title ?? null;
-  const iso = row.gepubliceerd_op ?? row.published_at ?? new Date().toISOString();
+  const iso = pickPublishedTimestamp(row);
   const date = iso.slice(0, 10);
   const hero = row.hero_image?.trim() || DEFAULT_BLOG_IMAGE;
+  const gepubliceerdOpStored =
+    row.gepubliceerd_op != null && String(row.gepubliceerd_op).trim() !== ""
+      ? String(row.gepubliceerd_op).trim()
+      : row.published_at != null && String(row.published_at).trim() !== ""
+        ? String(row.published_at).trim()
+        : null;
   return {
     id: row.id,
     slug: row.slug ?? row.id,
     titel,
     inhoud: row.inhoud ?? null,
-    gepubliceerd_op: row.gepubliceerd_op ?? row.published_at ?? null,
+    gepubliceerd_op: gepubliceerdOpStored,
     date,
     heroImage: hero,
     listingImage: hero,

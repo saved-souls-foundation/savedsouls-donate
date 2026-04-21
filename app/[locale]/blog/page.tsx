@@ -47,9 +47,10 @@ export default function BlogPage() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch("/api/blog/public")
+    fetch("/api/blog/public", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : { posts: [] }))
       .then((data) => {
+        console.log("[blog page] /api/blog/public response:", data);
         if (cancelled) return;
         const list = Array.isArray(data?.posts) ? data.posts : [];
         setDbPosts(
@@ -73,7 +74,11 @@ export default function BlogPage() {
   const posts = useMemo(() => {
     const staticAndFb = getAllBlogPosts();
     const merged = [...staticAndFb, ...dbPosts];
-    return merged.sort((a, b) => (b.date > a.date ? 1 : -1));
+    return merged.sort((a, b) => {
+      const tb = new Date(b.date).getTime();
+      const ta = new Date(a.date).getTime();
+      return (Number.isNaN(tb) || Number.isNaN(ta) ? b.date.localeCompare(a.date) : tb - ta);
+    });
   }, [dbPosts]);
 
   return (

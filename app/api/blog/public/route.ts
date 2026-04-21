@@ -4,8 +4,9 @@ import { NextResponse } from "next/server";
 /**
  * Publieke lijst van gepubliceerde blogposts (geen auth).
  * Lijst zonder volledige inhoud — detail via /api/blog/public/[slug].
+ * Tijdelijk revalidate=0 zodat nieuwe publicaties direct zichtbaar zijn (geen lange edge-cache).
  */
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export async function GET() {
   try {
@@ -13,7 +14,8 @@ export async function GET() {
     const { data: rows, error } = await admin
       .from("posts")
       .select("id, slug, titel, gepubliceerd_op, category, hero_image")
-      .or("status.eq.published,status.eq.Gepubliceerd")
+      .in("status", ["published", "Gepubliceerd"])
+      .not("gepubliceerd_op", "is", null)
       .order("gepubliceerd_op", { ascending: false, nullsFirst: false });
 
     const count = rows?.length ?? 0;

@@ -173,6 +173,7 @@ gtag('consent', 'default', {
             __html: `
 gtag('js', new Date());
 gtag('config', 'AW-18059514629');
+gtag('config', 'GT-KVFRQZK3');
             `.trim(),
           }}
         />
@@ -185,25 +186,6 @@ gtag('config', 'AW-18059514629');
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
-        {/* Travelpayouts – laadt na window.load om laadsnelheid niet te beïnvloeden */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-(function () {
-  function load() {
-    var script = document.createElement("script");
-    script.async = true;
-    script.src = "https://tpembars.com/NTAzMDQ0.js?t=503044";
-    document.head.appendChild(script);
-  }
-  if (typeof window !== "undefined") {
-    if (document.readyState === "complete") load();
-    else window.addEventListener("load", load);
-  }
-})();
-            `.trim(),
-          }}
-        />
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
         <DeferredStyles />

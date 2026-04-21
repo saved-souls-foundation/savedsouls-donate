@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 /**
  * Eén gepubliceerde post ophalen op slug (publiek, geen auth).
  * Kolommen: titel, inhoud, gepubliceerd_op.
+ * Tijdelijk revalidate=0 — zelfde reden als /api/blog/public.
  */
+export const revalidate = 0;
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -17,7 +20,8 @@ export async function GET(
     const { data: row, error } = await admin
       .from("posts")
       .select("id, slug, titel, inhoud, gepubliceerd_op, body_en, body_th, category, source, hero_image")
-      .or("status.eq.published,status.eq.Gepubliceerd")
+      .in("status", ["published", "Gepubliceerd"])
+      .not("gepubliceerd_op", "is", null)
       .eq("slug", slug)
       .maybeSingle();
 
