@@ -36,7 +36,7 @@ export function gtagReportConversion(url?: string, _legacy?: unknown): boolean {
     if (url) window.location.href = url;
   };
   window.gtag("event", "conversion", {
-    send_to: "AW-18059514629/StDPCKn0oJocEIWmuaND",
+    send_to: "AW-18059514629/67JGCNzMjqEcEIWmuaND",
     value: 1.0,
     currency: "USD",
     event_callback: callback,
