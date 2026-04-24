@@ -26,6 +26,8 @@ declare global {
         }
       ) => string;
       remove?: (widgetId: string) => void;
+      /** Invisible: na render aanroepen om de check te starten. */
+      execute?: (widgetId?: string) => void;
     };
   }
 }
@@ -42,7 +44,6 @@ export default function TurnstileWidget({
   onVerify,
   onExpire,
   onError,
-  size = "flexible",
   theme = "light",
 }: TurnstileWidgetProps) {
   const t = useTranslations("turnstile");
@@ -96,17 +97,18 @@ export default function TurnstileWidget({
         setWidgetError(true);
         onErrorRef.current?.();
       },
-      size,
+      size: "invisible",
       theme,
     });
     widgetIdRef.current = id;
+    window.turnstile.execute?.(id);
     return () => {
       if (widgetIdRef.current != null && window.turnstile?.remove) {
         window.turnstile.remove(widgetIdRef.current);
         widgetIdRef.current = null;
       }
     };
-  }, [loaded, siteKey, containerVisible, size, theme, retryKey]);
+  }, [loaded, siteKey, containerVisible, theme, retryKey]);
 
   const handleLoad = useCallback(() => setLoaded(true), []);
   const handleScriptError = useCallback(() => setWidgetError(true), []);
@@ -134,7 +136,8 @@ export default function TurnstileWidget({
       />
       <div
         ref={containerRef}
-        className="flex justify-center my-4 min-h-[65px] w-full min-w-[280px] sm:min-w-[300px] max-w-full overflow-visible"
+        style={{ display: "none" }}
+        className="overflow-hidden"
         aria-label={t("label")}
       />
       {widgetError && (
