@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import TurnstileWidget from "@/app/components/TurnstileWidget";
 import { COUNTRIES } from "@/lib/countries";
@@ -27,7 +27,12 @@ export default function AdoptInquiryForm({
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const securityRef = useRef<HTMLDivElement>(null);
+  const formContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sent) return;
+    formContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [sent]);
 
   const nameId = `${idPrefix}-name`;
   const emailId = `${idPrefix}-email`;
@@ -42,6 +47,7 @@ export default function AdoptInquiryForm({
 
   return (
     <div
+      ref={formContainerRef}
       className={`relative rounded-3xl shadow-xl border-2 transition-all duration-300 ${
         embedded ? "p-5 md:p-6" : "p-8 md:p-10 hover:shadow-2xl hover:scale-[1.01] group"
       }`}
@@ -288,7 +294,7 @@ export default function AdoptInquiryForm({
           </div>
 
           {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
-            <div ref={securityRef} className="space-y-2 scroll-mt-4">
+            <div className="space-y-2 scroll-mt-4">
               <TurnstileWidget
                 size="flexible"
                 onVerify={setTurnstileToken}
@@ -314,11 +320,6 @@ export default function AdoptInquiryForm({
             {sending ? "Sending…" : "Submit Adoption Inquiry"}
             <span className="text-white/90">♥</span>
           </button>
-          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
-            <p className="text-center text-sm text-stone-500 dark:text-stone-400 mt-1">
-              {t("securityOptional")}
-            </p>
-          )}
         </form>
       )}
     </div>

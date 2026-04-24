@@ -162,8 +162,11 @@ gtag('consent', 'default', {
   'analytics_storage': 'denied',
   'ad_storage': 'denied',
   'ad_user_data': 'denied',
-  'ad_personalization': 'denied'
+  'ad_personalization': 'denied',
+  'wait_for_update': 500
 });
+gtag('set', 'url_passthrough', true);
+gtag('set', 'ads_data_redaction', true);
             `.trim(),
           }}
         />

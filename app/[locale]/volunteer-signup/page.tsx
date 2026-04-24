@@ -296,7 +296,6 @@ function VolunteerSignupForm() {
 
               {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
                 <div className="space-y-2">
-                  <p className="text-sm text-stone-500 dark:text-stone-400">Security check</p>
                   <TurnstileWidget
                     size="flexible"
                     onVerify={setTurnstileToken}
