@@ -73,6 +73,30 @@ export default function TurnstileWidget({
     setSiteKey(isLocalhost ? TURNSTILE_TEST_SITE_KEY : envSiteKey);
   }, [envSiteKey]);
 
+  // next/script onLoad firet soms niet als challenges.cloudflare.com/.../api.js al gecached of al in de pagina
+  // zit (F5, client-navigatie, React Strict Mode). Zonder 'loaded' blijft de 8s-timeout alles blokkeren.
+  useEffect(() => {
+    if (typeof window === "undefined" || !siteKey) return;
+    if (window.turnstile) {
+      setLoaded(true);
+      return;
+    }
+    let n = 0;
+    const maxTries = 200;
+    const id = window.setInterval(() => {
+      n += 1;
+      if (window.turnstile) {
+        setLoaded(true);
+        clearInterval(id);
+        return;
+      }
+      if (n >= maxTries) {
+        clearInterval(id);
+      }
+    }, 25);
+    return () => clearInterval(id);
+  }, [siteKey, retryKey]);
+
   // Retry als script na 8s nog niet geladen is (vaak op mobiel).
   useEffect(() => {
     if (!containerVisible || loaded || !siteKey) return;
