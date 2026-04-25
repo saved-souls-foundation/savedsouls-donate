@@ -26,7 +26,7 @@ export default function AdoptInquiryForm({
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const formContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function AdoptInquiryForm({
                   animalId: animalId || undefined,
                   ...(animal2Name || animal2Id ? { animalName2: animal2Name, animalId2: animal2Id } : {}),
                   ...(animal3Name || animal3Id ? { animalName3: animal3Name, animalId3: animal3Id } : {}),
-                  turnstileToken: turnstileToken ?? undefined,
+                  turnstileToken: turnstileToken || undefined,
                 }),
               });
               const data = await res.json().catch(() => ({}));
@@ -298,7 +298,7 @@ export default function AdoptInquiryForm({
               <TurnstileWidget
                 size="flexible"
                 onVerify={setTurnstileToken}
-                onExpire={() => setTurnstileToken(null)}
+                onExpire={() => setTurnstileToken("")}
               />
             </div>
           )}

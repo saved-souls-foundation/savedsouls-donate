@@ -25,7 +25,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
@@ -55,7 +55,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
           subject,
           message,
           locale: locale.slice(0, 2).toLowerCase(),
-          turnstileToken: turnstileToken ?? undefined,
+          turnstileToken: turnstileToken || undefined,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -68,7 +68,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
       setEmail("");
       setSubject("");
       setMessage("");
-      setTurnstileToken(null);
+      setTurnstileToken("");
     } catch {
       setError(t("contactError"));
     } finally {
@@ -174,7 +174,7 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
                 <TurnstileWidget
                   size="flexible"
                   onVerify={setTurnstileToken}
-                  onExpire={() => setTurnstileToken(null)}
+                  onExpire={() => setTurnstileToken("")}
                 />
               </div>
             )}

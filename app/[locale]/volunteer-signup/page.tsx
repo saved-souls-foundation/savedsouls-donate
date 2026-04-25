@@ -17,7 +17,7 @@ function VolunteerSignupForm() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -175,7 +175,7 @@ function VolunteerSignupForm() {
                       dates: dates || undefined,
                       experience,
                       motivation,
-                      turnstileToken: turnstileToken ?? undefined,
+                      turnstileToken: turnstileToken || undefined,
                     }),
                   });
                   const data = await res.json().catch(() => ({}));
@@ -299,7 +299,7 @@ function VolunteerSignupForm() {
                   <TurnstileWidget
                     size="flexible"
                     onVerify={setTurnstileToken}
-                    onExpire={() => setTurnstileToken(null)}
+                    onExpire={() => setTurnstileToken("")}
                   />
                 </div>
               )}

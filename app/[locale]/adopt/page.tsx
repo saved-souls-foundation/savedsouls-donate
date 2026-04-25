@@ -585,17 +585,12 @@ export default function AdoptPage() {
           </div>
           <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">{t("aiSearch.hint")}</p>
           <div className="flex flex-wrap items-center gap-3">
-            <div
-              style={{
-                position: "absolute",
-                opacity: 0,
-                pointerEvents: "none",
-                width: "1px",
-                height: "1px",
-                overflow: "hidden",
-              }}
-            >
-              <TurnstileWidget size="compact" onVerify={(token) => setTurnstileToken(token)} />
+            <div className="w-full min-w-0 sm:max-w-sm">
+              <TurnstileWidget
+                size="flexible"
+                onVerify={setTurnstileToken}
+                onExpire={() => setTurnstileToken("")}
+              />
             </div>
             {aiLoading && <span className="text-sm text-stone-500 dark:text-stone-400">{t("aiSearch.loading")}</span>}
           </div>

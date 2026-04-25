@@ -21,13 +21,11 @@ declare global {
           callback?: (token: string) => void;
           "expired-callback"?: () => void;
           "error-callback"?: (errorCode?: number) => void;
-          size?: "normal" | "compact" | "flexible" | "invisible";
+          size?: "normal" | "compact" | "flexible";
           theme?: "light" | "dark" | "auto";
         }
       ) => string;
       remove?: (widgetId: string) => void;
-      /** Invisible: na render aanroepen om de check te starten. */
-      execute?: (widgetId?: string) => void;
     };
   }
 }
@@ -36,7 +34,7 @@ type TurnstileWidgetProps = {
   onVerify: (token: string) => void;
   onExpire?: () => void;
   onError?: () => void;
-  size?: "normal" | "compact" | "flexible" | "invisible";
+  size?: "normal" | "compact" | "flexible";
   theme?: "light" | "dark" | "auto";
 };
 
@@ -45,6 +43,7 @@ export default function TurnstileWidget({
   onExpire,
   onError,
   theme = "light",
+  size = "flexible",
 }: TurnstileWidgetProps) {
   const t = useTranslations("turnstile");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,18 +96,17 @@ export default function TurnstileWidget({
         setWidgetError(true);
         onErrorRef.current?.();
       },
-      size: "invisible",
+      size,
       theme,
     });
     widgetIdRef.current = id;
-    window.turnstile.execute?.(id);
     return () => {
       if (widgetIdRef.current != null && window.turnstile?.remove) {
         window.turnstile.remove(widgetIdRef.current);
         widgetIdRef.current = null;
       }
     };
-  }, [loaded, siteKey, containerVisible, theme, retryKey]);
+  }, [loaded, siteKey, containerVisible, theme, size, retryKey]);
 
   const handleLoad = useCallback(() => setLoaded(true), []);
   const handleScriptError = useCallback(() => setWidgetError(true), []);
@@ -136,15 +134,16 @@ export default function TurnstileWidget({
       />
       <div
         ref={containerRef}
-        style={{ display: "none" }}
-        className="overflow-hidden"
+        className="w-full min-h-[1px] overflow-hidden"
         aria-label={t("label")}
       />
       {widgetError && (
         <div className="text-amber-600 dark:text-amber-400 text-sm mt-2 text-center space-y-2">
           <p>
             {t("errorBeforeEmail")}
-            <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">{CONTACT_EMAIL}</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">
+              {CONTACT_EMAIL}
+            </a>
             {t("errorAfterEmail")}
           </p>
           <button
