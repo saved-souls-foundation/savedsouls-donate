@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { CheckCircle2 } from "lucide-react";
 import TurnstileWidget from "./TurnstileWidget";
 
 const ACCENT_GREEN = "#2aa348";
@@ -18,6 +19,7 @@ type ContactFormProps = {
 export default function ContactForm({ idPrefix = "contact", showTitle = true, className = "", locale: localeProp }: ContactFormProps) {
   const localeFromContext = useLocale();
   const locale = (localeProp && localeProp.trim()) || localeFromContext || "en";
+  const tPage = useTranslations("contactPage");
   const t = useTranslations("home");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -82,7 +84,17 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
   return (
     <section className={className}>
       <div className="max-w-xl mx-auto w-full px-4">
-        {showTitle && (
+        {!sent && (
+          <>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
+              {tPage("sendMessageHeading")}
+            </h2>
+            <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
+              {tPage("sendMessageSubtitle")}
+            </p>
+          </>
+        )}
+        {showTitle && !sent && (
           <h2 className="text-xl font-bold mb-6 text-center dark:text-[#2aa348]" style={{ color: ACCENT_GREEN }}>
             {t("contactTitle")}
           </h2>
@@ -90,9 +102,10 @@ export default function ContactForm({ idPrefix = "contact", showTitle = true, cl
         {sent ? (
           <div
             ref={successRef}
-            className="text-center py-8 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700"
+            className="text-center py-12 px-4 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700"
           >
-            <p className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
+            <CheckCircle2 className="h-12 w-12 mx-auto mb-3" style={{ color: ACCENT_GREEN }} strokeWidth={1.5} aria-hidden />
+            <p className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-2" style={{ color: ACCENT_GREEN }}>
               {t("contactThanksTitle")}
             </p>
             <p className="text-stone-600 dark:text-stone-400 text-base">

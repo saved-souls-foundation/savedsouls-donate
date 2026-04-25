@@ -24,7 +24,7 @@ export default async function ContactPage({ params }: Props) {
   const t = await getTranslations("common");
   const tContact = await getTranslations("contactPage");
   return (
-    <ParallaxPage>
+    <ParallaxPage parallax={false}>
       <main className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center">
           {tContact("title")}
@@ -36,12 +36,6 @@ export default async function ContactPage({ params }: Props) {
         <section className="space-y-8 text-stone-700 dark:text-stone-300">
           {/* Contact form */}
           <div id="contact-form" className="mb-8">
-            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: ACCENT_GREEN }}>
-              {tContact("sendMessageHeading")}
-            </h2>
-            <p className="text-stone-600 dark:text-stone-400 text-center mb-8 max-w-xl mx-auto">
-              {tContact("sendMessageSubtitle")}
-            </p>
             <ContactForm idPrefix="contact-page" showTitle={false} className="py-12" locale={locale} />
           </div>
 
