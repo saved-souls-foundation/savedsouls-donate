@@ -73,12 +73,13 @@ export default function TurnstileWidget({
     setSiteKey(isLocalhost ? TURNSTILE_TEST_SITE_KEY : envSiteKey);
   }, [envSiteKey]);
 
-  // Retry als script na 4s nog niet geladen is (vaak op mobiel).
+  // Retry als script na 8s nog niet geladen is (vaak op mobiel).
   useEffect(() => {
     if (!containerVisible || loaded || !siteKey) return;
+    // 8s: widget kan laat mounten (o.a. na data-fetch op detail-pagina's); api.js nodig de tijd om te laden
     const t = setTimeout(() => {
       setWidgetError((e) => (e ? e : true));
-    }, 4000);
+    }, 8000);
     return () => clearTimeout(t);
   }, [containerVisible, loaded, siteKey, retryKey]);
 
