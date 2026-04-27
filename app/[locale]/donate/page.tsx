@@ -31,6 +31,8 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
   const tP = await getTranslations("donatePage");
 
   const isThai = locale === "th";
+  const europeanLocales = ["nl", "de", "fr", "es", "be"];
+  const isMollieFirst = europeanLocales.includes(locale);
 
   const impactAmountsEur = ["5", "25", "55", "100"];
   const impactAmountsTHB = ["100", "500", "1000", "2500"];
@@ -64,11 +66,25 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
       {/* ── MAIN CONTENT ── centered, max-w-lg */}
       <div style={{ background: BEIGE }} className="min-h-screen">
         <div className="max-w-lg mx-auto px-5 py-8">
-          {/* ── DONATION FORM ── overlaps hero */}
-          <div className="-mt-32 relative z-10 px-4 md:px-8">
-            <DonateForm />
-          </div>
-          <div className="mb-8 px-4 md:px-8"><MollieBlock locale={locale} /></div>
+          {isMollieFirst ? (
+            <>
+              <div className="-mt-32 relative z-10 px-4 md:px-8">
+                <MollieBlock locale={locale} />
+              </div>
+              <div className="mb-8 px-4 md:px-8">
+                <DonateForm />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="-mt-32 relative z-10 px-4 md:px-8">
+                <DonateForm />
+              </div>
+              <div className="mb-8 px-4 md:px-8">
+                <MollieBlock locale={locale} />
+              </div>
+            </>
+          )}
 
           {/* ── TRUST ROW ── */}
           <div className="flex items-center justify-center gap-5 flex-wrap mb-8">

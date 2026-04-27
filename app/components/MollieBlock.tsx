@@ -203,13 +203,39 @@ export default function MollieBlock({ locale }: Props) {
         {lang.subtitle}
       </p>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "1.5rem" }}>
-        <img src="https://www.mollie.com/external/icons/payment-methods/ideal.svg" alt="iDEAL" height={36} />
-        <img src="https://www.mollie.com/external/icons/payment-methods/creditcard.svg" alt="Credit card" height={36} />
-        <img src="https://www.mollie.com/external/icons/payment-methods/paypal.svg" alt="PayPal" height={36} />
-        <img src="https://www.mollie.com/external/icons/payment-methods/applepay.svg" alt="Apple Pay" height={36} />
-        <img src="https://www.mollie.com/external/icons/payment-methods/bancontact.svg" alt="Bancontact" height={36} />
-        <img src="https://www.mollie.com/external/icons/payment-methods/sofort.svg" alt="Sofort" height={36} />
+      <div style={{ overflow: "hidden", marginBottom: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            alignItems: "center",
+            animation: "scrollLogos 8s linear infinite",
+            width: "max-content",
+          }}
+        >
+          {[
+            { src: "https://www.mollie.com/external/icons/payment-methods/ideal.svg", alt: "iDEAL" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/creditcard.svg", alt: "Credit card" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/paypal.svg", alt: "PayPal" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/applepay.svg", alt: "Apple Pay" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/bancontact.svg", alt: "Bancontact" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/sofort.svg", alt: "Sofort" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/ideal.svg", alt: "iDEAL" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/creditcard.svg", alt: "Credit card" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/paypal.svg", alt: "PayPal" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/applepay.svg", alt: "Apple Pay" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/bancontact.svg", alt: "Bancontact" },
+            { src: "https://www.mollie.com/external/icons/payment-methods/sofort.svg", alt: "Sofort" },
+          ].map((icon, index) => (
+            <img
+              key={`${icon.alt}-${index}`}
+              src={icon.src}
+              alt={icon.alt}
+              height={40}
+              style={{ display: "flex", alignItems: "center", verticalAlign: "middle" }}
+            />
+          ))}
+        </div>
       </div>
       <p style={{ fontSize: "0.72rem", color: "#9ca3af", marginTop: "0.5rem", marginBottom: "1.5rem", lineHeight: "1.4" }}>
         {lang.disclaimer}

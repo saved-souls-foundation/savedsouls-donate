@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBaseUrl, getMollieClient } from "@/lib/mollie";
 import type { SequenceType } from "@mollie/api-client";
+import { z } from "zod";
 
 type RecurringDonateBody = {
   amount?: number;
@@ -10,25 +11,33 @@ type RecurringDonateBody = {
 };
 
 const DESCRIPTION = "Maandelijkse donatie Saved Souls Foundation";
-const ALLOWED_LOCALES = new Set(["nl", "en", "de", "es", "th", "ru", "fr"]);
+const ALLOWED_LOCALES = ["nl", "en", "de", "es", "fr", "ru", "th"] as const;
+const MAX_AMOUNT = 10000;
 
-function resolveLocale(locale: string | undefined): string {
-  const normalized = (locale || "nl").toLowerCase();
-  return ALLOWED_LOCALES.has(normalized) ? normalized : "nl";
-}
+const RecurringSchema = z.object({
+  amount: z.number().min(1).max(MAX_AMOUNT),
+  locale: z.enum(ALLOWED_LOCALES).default("nl"),
+  name: z.string().min(1).max(100).optional(),
+  email: z.string().email().optional(),
+});
 
-function normalizeAmount(value: number | undefined): string {
-  const parsed = typeof value === "number" ? value : Number.NaN;
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return "10.00";
-  }
-  return parsed.toFixed(2);
+function normalizeAmount(value: number): string {
+  return value.toFixed(2);
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = (await request.json()) as RecurringDonateBody;
-    const locale = resolveLocale(body.locale);
+    const rawBody = (await request.json()) as RecurringDonateBody;
+    const parsedBody = RecurringSchema.safeParse(rawBody);
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        { error: "Ongeldige invoer voor maandelijkse donatie." },
+        { status: 400 }
+      );
+    }
+    const body = parsedBody.data;
+    const localeCandidate = body.locale;
+    const locale = ALLOWED_LOCALES.includes(localeCandidate) ? localeCandidate : "nl";
     const amountValue = normalizeAmount(body.amount);
     const name =
       typeof body.name === "string" && body.name.trim() !== ""

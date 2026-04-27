@@ -171,6 +171,14 @@ async function slaOp(
 export async function POST(req: NextRequest) {
   let chatId = 0;
   try {
+    const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+    if (secret) {
+      const token = req.headers.get("X-Telegram-Bot-Api-Secret-Token");
+      if (token !== secret) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+    }
+
     const body = await req.json();
     chatId = body.message?.chat?.id ?? 0;
 

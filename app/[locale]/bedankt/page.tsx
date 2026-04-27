@@ -1,6 +1,6 @@
 import Footer from "@/app/components/Footer";
+import GiftAnimation from "@/app/components/GiftAnimation";
 import ParallaxPage from "@/app/components/ParallaxPage";
-import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const GREEN_DARK = "#1a5c2e";
@@ -31,27 +31,15 @@ export default async function BedanktPage({ params }: Props) {
 
       <div style={{ background: BEIGE }} className="min-h-screen">
         <div className="max-w-lg mx-auto px-5 py-10">
-          <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
-            <h2 className="text-2xl font-semibold mb-3" style={{ color: GREEN_DARK }}>
-              {t("subtitle")}
-            </h2>
-            <p className="text-stone-700 leading-relaxed">{t("body")}</p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <Link
-                href={`/${locale}`}
-                className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium border border-stone-300 text-stone-800 hover:bg-stone-100"
-              >
-                {t("backHome")}
-              </Link>
-              <Link
-                href={`/${locale}/donate`}
-                className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white"
-                style={{ backgroundColor: GREEN_DARK }}
-              >
-                {t("donateAgain")}
-              </Link>
-            </div>
-          </div>
+          <GiftAnimation
+            title={t("title")}
+            subtitle={t("subtitle")}
+            body={t("body")}
+            backHome={t("backHome")}
+            donateAgain={t("donateAgain")}
+            locale={locale}
+            greenDark="#1a5c2e"
+          />
         </div>
       </div>
 
