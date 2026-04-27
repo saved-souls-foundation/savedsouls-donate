@@ -1,4 +1,11 @@
 {
+  "bedankt": {
+    "title": "Hartelijk bedankt!",
+    "subtitle": "Je donatie is ontvangen",
+    "body": "Namens alle dieren bij Saved Souls Foundation — dank je wel. Jouw bijdrage gaat direct naar zorg, voedsel en medische hulp.",
+    "backHome": "Terug naar home",
+    "donateAgain": "Nog een donatie doen"
+  },
   "cookieConsent": {
     "cookieTitle": "We gebruiken cookies",
     "message": "We gebruiken cookies om Google Analytics te laden en jouw ervaring te verbeteren. Kies hieronder jouw voorkeur.",

@@ -1,4 +1,11 @@
 {
+  "bedankt": {
+    "title": "¡Muchas gracias!",
+    "subtitle": "Tu donación ha sido recibida",
+    "body": "En nombre de todos los animales de Saved Souls Foundation — gracias. Tu contribución va directamente a cuidados, alimentos y ayuda médica.",
+    "backHome": "Volver al inicio",
+    "donateAgain": "Donar de nuevo"
+  },
   "cookieConsent": {
     "cookieTitle": "Usamos cookies",
     "message": "Usamos cookies para cargar Google Analytics y mejorar tu experiencia. Elige tu preferencia abajo.",

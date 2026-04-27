@@ -7,6 +7,7 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import BankTransferAutoOpen from "../../components/BankTransferAutoOpen";
 import DonateForm from "../../components/DonateForm";
+import MollieBlock from "../../components/MollieBlock";
 
 const ORANGE = "#e8622a";
 const GREEN_MID = "#2aa348";
@@ -67,6 +68,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
           <div className="-mt-32 relative z-10 px-4 md:px-8">
             <DonateForm />
           </div>
+          <div className="mb-8 px-4 md:px-8"><MollieBlock locale={locale} /></div>
 
           {/* ── TRUST ROW ── */}
           <div className="flex items-center justify-center gap-5 flex-wrap mb-8">
