@@ -3,6 +3,7 @@ import { routing } from "@/i18n/routing";
 import { fetchAnimalsFromApi } from "@/lib/animals-api";
 import { fetchSponsorAnimalsFromApi } from "@/lib/sponsor-api";
 import { getAllBlogPosts } from "@/lib/blog-posts";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
 const BASE_URL = "https://www.savedsouls-foundation.org";
 
@@ -128,6 +129,39 @@ async function getSponsorAnimalIds(): Promise<{ dogs: string[]; cats: string[] }
   }
 }
 
+async function getPublishedPostsFromSupabase(): Promise<
+  { slug: string; lastModified: Date }[]
+> {
+  if (!isSupabaseAdminConfigured()) return [];
+  try {
+    const admin = createAdminClient();
+    const { data: rows, error } = await admin
+      .from("posts")
+      .select("slug, gepubliceerd_op")
+      .in("status", ["published", "Gepubliceerd"])
+      .not("gepubliceerd_op", "is", null)
+      .not("slug", "is", null);
+
+    if (error) {
+      console.error("[sitemap] Supabase posts error:", error.message);
+      return [];
+    }
+
+    return (rows ?? [])
+      .map((row) => {
+        const slug = row.slug?.trim();
+        if (!slug || !row.gepubliceerd_op) return null;
+        const lastModified = new Date(row.gepubliceerd_op);
+        if (Number.isNaN(lastModified.getTime())) return null;
+        return { slug, lastModified };
+      })
+      .filter((row): row is { slug: string; lastModified: Date } => row !== null);
+  } catch (e) {
+    console.error("[sitemap] Supabase posts fetch failed:", e);
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   let dogs: string[] = [];
@@ -135,16 +169,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let sponsorDogs: string[] = [];
   let sponsorCats: string[] = [];
   let blogPosts: { slug: string }[] = [];
+  let dbBlogPosts: { slug: string; lastModified: Date }[] = [];
 
   try {
-    const [animalIds, sponsorIds] = await Promise.all([
+    const [animalIds, sponsorIds, supabaseBlogPosts] = await Promise.all([
       getAnimalIds(),
       getSponsorAnimalIds(),
+      getPublishedPostsFromSupabase(),
     ]);
     dogs = animalIds.dogs;
     cats = animalIds.cats;
     sponsorDogs = sponsorIds.dogs;
     sponsorCats = sponsorIds.cats;
+    dbBlogPosts = supabaseBlogPosts;
     blogPosts = getAllBlogPosts();
   } catch {
     // Bij API/build-fouten toch een bruikbare sitemap leveren (alleen statische paden)
@@ -182,10 +219,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
+    const staticBlogSlugs = new Set(blogPosts.map((post) => post.slug));
+
     for (const post of blogPosts) {
       entries.push({
         url: `${BASE_URL}${localePrefix}/blog/${post.slug}`,
         lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+
+    for (const post of dbBlogPosts) {
+      if (staticBlogSlugs.has(post.slug)) continue;
+      entries.push({
+        url: `${BASE_URL}${localePrefix}/blog/${post.slug}`,
+        lastModified: post.lastModified,
         changeFrequency: "weekly",
         priority: 0.6,
       });
