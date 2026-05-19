@@ -3,6 +3,16 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { callClaude } from "@/lib/ai/claude-client";
 import { fetchAnimalsFromApi, type AnimalRecord } from "@/lib/animals-api";
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 80)
+    .replace(/^-|-$/g, "");
+}
+
 const SPOTLIGHT_PROMPT = (dier: {
   naam: string;
   soort: string;
@@ -133,10 +143,12 @@ export async function POST(request: NextRequest) {
     }
 
     const title = `Spotlight: ${animal.name ?? "Dier"} – Saved Souls Foundation`;
+    const slug = `spotlight-${slugify(animal.name ?? "dier")}-${Date.now()}`;
 
     const insertData = {
       titel: title,
       inhoud: content,
+      slug,
       status: "concept",
       category: "spotlight",
       source: "manual",

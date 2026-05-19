@@ -17,13 +17,22 @@ export async function GET(
 
   try {
     const admin = createAdminClient();
-    const { data: row, error } = await admin
-      .from("posts")
-      .select("id, slug, titel, inhoud, gepubliceerd_op, body_en, body_th, category, source, hero_image")
-      .in("status", ["published", "Gepubliceerd"])
-      .not("gepubliceerd_op", "is", null)
-      .eq("slug", slug)
-      .maybeSingle();
+    const baseQuery = () =>
+      admin
+        .from("posts")
+        .select("id, slug, titel, inhoud, gepubliceerd_op, body_en, body_th, category, source, hero_image")
+        .in("status", ["published", "Gepubliceerd"])
+        .not("gepubliceerd_op", "is", null);
+
+    let { data: row, error } = await baseQuery().eq("slug", slug).maybeSingle();
+
+    if (!row && !error) {
+      const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(slug);
+      if (isUuid) {
+        ({ data: row, error } = await baseQuery().eq("id", slug).maybeSingle());
+      }
+    }
 
     if (error) {
       console.error("[blog/public/slug] DB-fout:", error);
