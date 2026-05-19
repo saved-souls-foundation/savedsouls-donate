@@ -51,7 +51,7 @@ async function fetchAllPages(
 
   while (hasMore) {
     const url = `${baseUrl}?page=${page}&per_page=${PER_PAGE}`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error(`API error: ${res.status}`);
     const json = await res.json();
     const data = json.data || [];

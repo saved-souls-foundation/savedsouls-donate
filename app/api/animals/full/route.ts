@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { fetchAnimalsFromApi } from "@/lib/animals-api";
 
 /** Zelfde payload als vroeger /api/animals — alleen voor adopt detailpagina's (story, images). */
-export const revalidate = 60;
+export const revalidate = 3600;
 
-const CACHE_CONTROL = "public, s-maxage=60, stale-while-revalidate=120";
+const CACHE_CONTROL = "public, s-maxage=3600, stale-while-revalidate=7200";
 
 export async function GET() {
   try {
