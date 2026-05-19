@@ -71,6 +71,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "db.savedsouls-foundation.org", pathname: "/**" },
       { protocol: "https", hostname: "ae-pic-a1.aliexpress-media.com", pathname: "/**" },
+      { protocol: "https", hostname: "oaeoowdeimccmevmjocv.supabase.co", pathname: "/**" },
     ],
   },
 };
