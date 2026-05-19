@@ -14,8 +14,11 @@ export default function MollieBlock({ locale }: Props) {
     nl: {
       title: "Doneer veilig via Mollie",
       subtitle: "iDEAL · Wero · PayPal · creditcard · Bancontact en meer",
-      disclaimer:
-        "Betalingen worden tijdelijk verwerkt door Allesis.nl namens Saved Souls Foundation. Zodra SSF een eigen betaalrekening heeft, worden donaties rechtstreeks ontvangen door de stichting. Alle donaties gaan 100% naar de dieren.",
+      disclaimerPart1: "Betalingen worden tijdelijk verwerkt door",
+      disclaimerPart2: "namens",
+      disclaimerPart3:
+        ". Zodra SSF een eigen betaalrekening heeft, worden donaties rechtstreeks ontvangen door de stichting. Alle donaties gaan",
+      disclaimerPart4: "naar de dieren.",
       chooseAmount: "Kies een bedrag",
       customAmount: "Of vul zelf een bedrag in",
       frequency: "Frequentie",
@@ -31,8 +34,11 @@ export default function MollieBlock({ locale }: Props) {
     en: {
       title: "Donate safely via Mollie",
       subtitle: "iDEAL · Wero · PayPal · credit card · Bancontact and more",
-      disclaimer:
-        "Payments are temporarily processed by Allesis.nl on behalf of Saved Souls Foundation. Once SSF has its own payment account, donations will be received directly by the foundation. All donations go 100% to the animals.",
+      disclaimerPart1: "Payments are temporarily processed by",
+      disclaimerPart2: "on behalf of",
+      disclaimerPart3:
+        ". Once SSF has its own payment account, donations will be received directly by the foundation. All donations go",
+      disclaimerPart4: "to the animals.",
       chooseAmount: "Choose an amount",
       customAmount: "Or enter your own amount",
       frequency: "Frequency",
@@ -48,8 +54,11 @@ export default function MollieBlock({ locale }: Props) {
     de: {
       title: "Sicher spenden via Mollie",
       subtitle: "iDEAL · Wero · PayPal · Kreditkarte · Bancontact und mehr",
-      disclaimer:
-        "Zahlungen werden vorübergehend von Allesis.nl im Namen der Saved Souls Foundation verarbeitet. Sobald SSF ein eigenes Konto hat, werden Spenden direkt von der Stiftung empfangen. Alle Spenden gehen 100% an die Tiere.",
+      disclaimerPart1: "Zahlungen werden vorübergehend verarbeitet von",
+      disclaimerPart2: "im Namen von",
+      disclaimerPart3:
+        ". Sobald SSF ein eigenes Konto hat, werden Spenden direkt von der Stiftung empfangen. Alle Spenden gehen",
+      disclaimerPart4: "an die Tiere.",
       chooseAmount: "Betrag wählen",
       customAmount: "Oder eigenen Betrag eingeben",
       frequency: "Häufigkeit",
@@ -65,8 +74,11 @@ export default function MollieBlock({ locale }: Props) {
     es: {
       title: "Dona de forma segura via Mollie",
       subtitle: "iDEAL · Wero · PayPal · tarjeta de crédito · Bancontact y más",
-      disclaimer:
-        "Los pagos son procesados temporalmente por Allesis.nl en nombre de Saved Souls Foundation. Una vez que SSF tenga su propia cuenta, las donaciones serán recibidas directamente por la fundación. El 100% va a los animales.",
+      disclaimerPart1: "Los pagos son procesados temporalmente por",
+      disclaimerPart2: "en nombre de",
+      disclaimerPart3:
+        ". Una vez que SSF tenga su propia cuenta, las donaciones serán recibidas directamente. Todas las donaciones van",
+      disclaimerPart4: "a los animales.",
       chooseAmount: "Elige un importe",
       customAmount: "O introduce tu propio importe",
       frequency: "Frecuencia",
@@ -82,8 +94,11 @@ export default function MollieBlock({ locale }: Props) {
     fr: {
       title: "Donnez en toute sécurité via Mollie",
       subtitle: "iDEAL · Wero · PayPal · carte de crédit · Bancontact et plus",
-      disclaimer:
-        "Les paiements sont temporairement traités par Allesis.nl au nom de Saved Souls Foundation. Dès que SSF aura son propre compte, les dons seront reçus directement par la fondation. 100% des dons vont aux animaux.",
+      disclaimerPart1: "Les paiements sont temporairement traités par",
+      disclaimerPart2: "au nom de",
+      disclaimerPart3:
+        ". Dès que SSF aura son propre compte, les dons seront reçus directement. Tous les dons vont",
+      disclaimerPart4: "aux animaux.",
       chooseAmount: "Choisissez un montant",
       customAmount: "Ou entrez votre propre montant",
       frequency: "Fréquence",
@@ -99,8 +114,11 @@ export default function MollieBlock({ locale }: Props) {
     ru: {
       title: "Безопасное пожертвование через Mollie",
       subtitle: "iDEAL · Wero · PayPal · кредитная карта · Bancontact и другие",
-      disclaimer:
-        "Платежи временно обрабатываются Allesis.nl от имени Saved Souls Foundation. Как только SSF получит собственный счёт, пожертвования будут поступать напрямую в фонд. 100% идёт животным.",
+      disclaimerPart1: "Платежи временно обрабатываются",
+      disclaimerPart2: "от имени",
+      disclaimerPart3:
+        ". Как только SSF получит собственный счёт, пожертвования будут поступать напрямую. Все пожертвования идут",
+      disclaimerPart4: "животным.",
       chooseAmount: "Выберите сумму",
       customAmount: "Или введите свою сумму",
       frequency: "Периодичность",
@@ -116,8 +134,11 @@ export default function MollieBlock({ locale }: Props) {
     th: {
       title: "บริจาคอย่างปลอดภัยผ่าน Mollie",
       subtitle: "iDEAL · Wero · PayPal · บัตรเครดิต · Bancontact และอื่นๆ",
-      disclaimer:
-        "การชำระเงินได้รับการดำเนินการชั่วคราวโดย Allesis.nl ในนามของ Saved Souls Foundation เมื่อ SSF มีบัญชีของตนเอง เงินบริจาคจะถูกรับโดยมูลนิธิโดยตรง 100% ไปที่สัตว์",
+      disclaimerPart1: "กำลังดำเนินการ การชำระเงิน",
+      disclaimerPart2: "ในนามของ",
+      disclaimerPart3:
+        ". เมื่อ SSF มีบัญชีของตนเอง เงินบริจาคจะถูกรับโดยตรง เงินบริจาคทั้งหมด",
+      disclaimerPart4: "ไปที่สัตว์",
       chooseAmount: "เลือกจำนวนเงิน",
       customAmount: "หรือกรอกจำนวนเงินของคุณเอง",
       frequency: "ความถี่",
@@ -237,8 +258,14 @@ export default function MollieBlock({ locale }: Props) {
           ))}
         </div>
       </div>
-      <p style={{ fontSize: "0.72rem", color: "#9ca3af", marginTop: "0.5rem", marginBottom: "1.5rem", lineHeight: "1.4" }}>
-        {lang.disclaimer}
+      <p style={{ fontSize: "0.72rem", color: "#9ca3af", marginTop: "0.5rem", marginBottom: "1rem", lineHeight: "1.6" }}>
+        {lang.disclaimerPart1}{" "}
+        <strong style={{ color: "#111", fontWeight: 800 }}>Allesis.nl</strong>{" "}
+        {lang.disclaimerPart2}{" "}
+        <strong style={{ color: "#111", fontWeight: 800 }}>Saved Souls Foundation</strong>
+        {lang.disclaimerPart3}{" "}
+        <strong style={{ color: "#1a5c2e", fontWeight: 800, fontSize: "0.85rem" }}>100%</strong>
+        {lang.disclaimerPart4}
       </p>
 
       <div className="mb-5">

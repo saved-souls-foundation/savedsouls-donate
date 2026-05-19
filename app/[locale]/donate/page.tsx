@@ -71,7 +71,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
               <div className="-mt-32 relative z-10 px-4 md:px-8">
                 <MollieBlock locale={locale} />
               </div>
-              <div className="mb-8 px-4 md:px-8">
+              <div className="mb-8 px-4 md:px-8" style={{ marginTop: "1rem" }}>
                 <DonateForm />
               </div>
             </>

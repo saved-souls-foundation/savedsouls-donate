@@ -11,6 +11,7 @@ import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import { gtagReportConversion } from "@/lib/gtag";
 import { getPostBySlug, isFacebookPost, isDbPost, toDbPost, type BlogPostOrFacebook, type DbPost } from "@/lib/blog-posts";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -160,12 +161,9 @@ export default function BlogPostPage() {
 
           {isDb && (
             <div className="prose prose-lg dark:prose-invert max-w-none">
-              <div
-                className="text-stone-600 dark:text-stone-400 leading-relaxed text-lg"
-                dangerouslySetInnerHTML={{
-                  __html: (post.inhoud ?? "").replace(/\n/g, "<br />"),
-                }}
-              />
+              <ReactMarkdown>
+                {post.inhoud ?? ""}
+              </ReactMarkdown>
             </div>
           )}
 
