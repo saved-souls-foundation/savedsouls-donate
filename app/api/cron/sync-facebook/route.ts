@@ -10,6 +10,7 @@ export const maxDuration = 60;
 const PAGE_ID = "SavedSoulsFoundation";
 const MAX_POSTS = 10;
 const GRAPH_FIELDS = "id,message,created_time,full_picture,permalink_url";
+const BUCKET = "blog-images";
 
 type FacebookPublishedPost = {
   id: string;
@@ -24,13 +25,74 @@ type GraphPublishedPostsResponse = {
   error?: { message: string; code?: number };
 };
 
+type AdminClient = ReturnType<typeof createAdminClient>;
+
 function titelFromMessage(message: string): string {
   const trimmed = message.trim();
   if (!trimmed) return "Facebook update";
   return trimmed.length > 100 ? trimmed.slice(0, 100) : trimmed;
 }
 
-function rowFromPost(post: FacebookPublishedPost) {
+function storagePathForPost(facebookPostId: string): string {
+  const safeId = facebookPostId.replace(/\//g, "_");
+  return `facebook/${safeId}.jpg`;
+}
+
+async function ensureBlogImagesBucket(admin: AdminClient): Promise<void> {
+  const { data: buckets, error: listError } = await admin.storage.listBuckets();
+  if (!listError && buckets?.some((b) => b.name === BUCKET)) {
+    return;
+  }
+
+  const { error: createError } = await admin.storage.createBucket(BUCKET, {
+    public: true,
+  });
+
+  if (createError && !/already exists|duplicate/i.test(createError.message)) {
+    console.warn("[cron/sync-facebook] createBucket:", createError.message);
+  }
+}
+
+async function resolveHeroImage(
+  admin: AdminClient,
+  post: FacebookPublishedPost
+): Promise<string | null> {
+  const facebookUrl = post.full_picture?.trim();
+  if (!facebookUrl) return null;
+
+  const path = storagePathForPost(post.id);
+
+  try {
+    const res = await fetch(facebookUrl);
+    if (!res.ok) {
+      throw new Error(`Download failed: HTTP ${res.status}`);
+    }
+
+    const contentType = res.headers.get("content-type");
+    const buffer = Buffer.from(await res.arrayBuffer());
+
+    const { error: uploadErr } = await admin.storage.from(BUCKET).upload(path, buffer, {
+      contentType:
+        contentType && contentType.startsWith("image/") ? contentType : "image/jpeg",
+      upsert: true,
+    });
+    if (uploadErr) {
+      throw new Error(uploadErr.message);
+    }
+
+    const { data: urlData } = admin.storage.from(BUCKET).getPublicUrl(path);
+    return urlData.publicUrl;
+  } catch (e) {
+    console.warn(
+      "[cron/sync-facebook] image upload failed for",
+      post.id,
+      e instanceof Error ? e.message : e
+    );
+    return facebookUrl;
+  }
+}
+
+function rowFromPost(post: FacebookPublishedPost, heroImage: string | null) {
   const message = post.message ?? "";
   return {
     facebook_post_id: post.id,
@@ -40,7 +102,7 @@ function rowFromPost(post: FacebookPublishedPost) {
     status: "published",
     gepubliceerd_op: post.created_time ?? new Date().toISOString(),
     source: "facebook",
-    hero_image: post.full_picture ?? null,
+    hero_image: heroImage,
     category: "facebook",
   };
 }
@@ -89,11 +151,19 @@ export async function GET(request: NextRequest) {
   }
 
   const admin = createAdminClient();
-  const rows = posts.map(rowFromPost);
+  await ensureBlogImagesBucket(admin);
+
+  const rows = await Promise.all(
+    posts.map(async (post) => {
+      const heroImage = await resolveHeroImage(admin, post);
+      return rowFromPost(post, heroImage);
+    })
+  );
+
   const { data, error } = await admin
     .from("posts")
     .upsert(rows, { onConflict: "facebook_post_id" })
-    .select("id, facebook_post_id, slug");
+    .select("id, facebook_post_id, slug, hero_image");
 
   if (error) {
     console.error("[cron/sync-facebook] Supabase upsert error:", error);
