@@ -123,6 +123,12 @@
     "dogBarking": "Hond blaft",
     "catIndoorOutdoor": "Kat binnen of buiten",
     "dogVomitingDiarrhea": "Hond braakt of diarree",
+    "dogAteChocolate": "Hond at chocolade",
+    "dogNotEating": "Hond eet niet",
+    "catNotDrinking": "Kat drinkt niet genoeg",
+    "dogVomiting": "Hond braakt",
+    "puppySchedule": "Puppy schema",
+    "catScratchingFurniture": "Kat krabt meubels",
     "dogAndCatTogether": "Hond en kat samen",
     "walkingDog": "Uitlaten en wandelen",
     "disabledDogGuide": "Gids gehandicapte hond",
@@ -1202,6 +1208,36 @@
       "dogVomitingDiarrhea": {
         "title": "Hond braakt of diarree",
         "teaser": "Wanneer is het onschuldig en wanneer moet je direct naar de dierenarts?",
+        "readMore": "Lees de gids"
+      },
+      "dogAteChocolate": {
+        "title": "Hond at chocolade",
+        "teaser": "Snel handelen: symptomen, risico en exact wat je direct moet doen.",
+        "readMore": "Lees de gids"
+      },
+      "dogNotEating": {
+        "title": "Hond eet niet",
+        "teaser": "De meest voorkomende oorzaken, wanneer het zorgelijk is en wat wel helpt.",
+        "readMore": "Lees de gids"
+      },
+      "catNotDrinking": {
+        "title": "Kat drinkt niet genoeg",
+        "teaser": "Uitdroging bij katten is gevaarlijk. Waarom katten water vermijden en hoe je dit oplost.",
+        "readMore": "Lees de gids"
+      },
+      "dogVomiting": {
+        "title": "Hond braakt",
+        "teaser": "Geel gal, wit schuim of bloed: wat de kleur betekent en wanneer het spoed is.",
+        "readMore": "Lees de gids"
+      },
+      "puppySchedule": {
+        "title": "Puppy schema",
+        "teaser": "Voeding, slaap, zindelijkheid en training: een week-tot-week schema voor de eerste maanden.",
+        "readMore": "Lees de gids"
+      },
+      "catScratchingFurniture": {
+        "title": "Kat krabt meubels",
+        "teaser": "Waarom je kat dit doet en hoe je krabgedrag effectief omleidt zonder straf.",
         "readMore": "Lees de gids"
       },
       "dogAndCatTogether": {
@@ -3120,6 +3156,18 @@
     "petInsuranceLink": "Vergelijk en lees meer →",
     "seniorPetPrompt": "Senior huisdier? ",
     "seniorPetLink": "Zorg voor oudere hond of kat →",
+    "dogAteChocolatePrompt": "Hond at chocolade? ",
+    "dogAteChocolateLink": "Directe noodgids →",
+    "dogNotEatingPrompt": "Hond eet niet? ",
+    "dogNotEatingLink": "Oorzaken en alarmsignalen →",
+    "catNotDrinkingPrompt": "Kat drinkt weinig? ",
+    "catNotDrinkingLink": "Uitdroging herkennen en oplossen →",
+    "dogVomitingPrompt": "Hond braakt? ",
+    "dogVomitingLink": "Wat de kleur je vertelt →",
+    "puppySchedulePrompt": "Nieuwe puppy in huis? ",
+    "puppyScheduleLink": "Week-tot-week schema →",
+    "catScratchingPrompt": "Kat krabt meubels? ",
+    "catScratchingLink": "Krabgedrag slim omleiden →",
     "imgCareAlt": "Hond krijgt zorg bij Saved Souls",
     "vaccinationsTitle": "💉 Vaccinaties op tijd",
     "vaccinationsText": "Vaccinaties beschermen tegen dodelijke ziektes zoals hondenziekte, parvo, kattenziekte en rabiës. Puppy's en kittens krijgen een basisreeks; daarna zijn herhalingsvaccinaties nodig (vaak jaarlijks of om de 3 jaar, afhankelijk van het vaccin). Zet vaccinaties in je agenda—je dierenarts helpt je met een schema.",
@@ -4976,5 +5024,77 @@
     "visitText": "Je bent altijd welkom om ons shelter te bezoeken — neem contact op om een afspraak te maken:",
     "ctaButton": "Start je adoptieaanvraag →",
     "backToAdopt": "← Terug naar adopteren"
+  },
+  "dogAteChocolate": {
+    "badge": "Hond at chocolade",
+    "title": "Hond at chocolade — wat nu direct doen?",
+    "subtitle": "Symptomen, risiconiveaus en exacte stappen bij chocolade-inname.",
+    "metaTitle": "Hond at chocolade? Snel handelen — symptomen, gevaar en wat te doen | Saved Souls",
+    "metaDescription": "Heeft je hond chocolade gegeten? Ontdek direct hoe gevaarlijk het is, welke symptomen je moet volgen en welke stappen je nu moet nemen.",
+    "metaKeywords": "hond at chocolade, chocoladevergiftiging hond, is chocolade giftig voor honden, wat doen als hond chocolade eet, hoeveel chocolade is giftig hond, symptomen chocolade hond, theobromine hond, pure chocolade hond, cacao hond vergiftiging, chocolade toxiciteit hond",
+    "img1Alt": "Hondenzorg en veiligheid",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Help geredde honden met medische zorg",
+    "ctaText": "Saved Souls Foundation vangt honderden honden op in Thailand. Jouw donatie helpt met voer, medische behandeling en een kans op een nieuw thuis."
+  },
+  "dogNotEating": {
+    "badge": "Hond eet niet",
+    "title": "Hond eet niet — normaal of zorgelijk?",
+    "subtitle": "De meest voorkomende oorzaken en wanneer je direct moet bellen.",
+    "metaTitle": "Hond eet niet? Oorzaken, alarmsignalen en wat je kunt doen | Saved Souls",
+    "metaDescription": "Weigert je hond eten? Ontdek de meest voorkomende oorzaken, wanneer het spoed is en welke aanpak echt helpt.",
+    "metaKeywords": "hond eet niet, hond wil niet eten, verlies van eetlust hond, hond eet niet maar drinkt wel, puppy eet niet, oude hond eet niet, hond eet 2 dagen niet, hond plotseling eet niet",
+    "img1Alt": "Hond naast voerbak",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Steun honden die herstellen",
+    "ctaText": "Veel rescuehonden komen ondervoed binnen. Met jouw donatie kunnen wij voeding, herstelzorg en veilige opvang bieden."
+  },
+  "catNotDrinking": {
+    "badge": "Kat drinkt niet genoeg",
+    "title": "Kat drinkt niet genoeg — wanneer moet je ingrijpen?",
+    "subtitle": "Uitdroging bij katten is gevaarlijk: oorzaken, signalen en oplossingen.",
+    "metaTitle": "Kat drinkt niet genoeg? Oorzaken, risico's en oplossingen | Saved Souls",
+    "metaDescription": "Drinkt je kat weinig of niet? Leer uitdroging herkennen, ontdek waarom katten water vermijden en hoe je je kat veilig meer laat drinken.",
+    "metaKeywords": "kat drinkt niet, kat uitdroging, hoe laat je kat meer drinken, kat weigert water, kat drinkfontein, tekenen uitdroging kat, hoeveel drinkt kat per dag",
+    "img1Alt": "Kat en hydratatie",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Help katten in onze opvang",
+    "ctaText": "Saved Souls verzorgt tientallen katten in Thailand. Jouw donatie helpt met schoon water, goede voeding en dierenartszorg."
+  },
+  "dogVomiting": {
+    "badge": "Hond braakt",
+    "title": "Hond braakt — wat zegt de kleur?",
+    "subtitle": "Geel gal, wit schuim of bloed: wanneer afwachten en wanneer spoed.",
+    "metaTitle": "Hond braakt geel, wit of schuim — oorzaken en wanneer de dierenarts bellen | Saved Souls",
+    "metaDescription": "Geeft je hond geel gal, wit schuim of onverteerd voer over? Ontdek wat de kleur betekent en wanneer je direct naar de dierenarts moet.",
+    "metaKeywords": "hond braakt geel, hond braakt gal, hond braakt wit schuim, oorzaken braken hond, hond blijft braken, hond braakt en eet niet, wanneer dierenarts bij braken hond",
+    "img1Alt": "Hondgezondheid en braken",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Steun spoedzorg voor rescuehonden",
+    "ctaText": "Straathonden arriveren vaak ziek en uitgedroogd. Jouw donatie helpt ons snelle en levensreddende zorg te bieden."
+  },
+  "puppySchedule": {
+    "badge": "Puppy schema",
+    "title": "Compleet puppy schema — week voor week",
+    "subtitle": "Voeding, slaap, zindelijkheid en training voor een sterke start.",
+    "metaTitle": "Puppy schema: voeding, slaap, training en zindelijkheid — week voor week | Saved Souls",
+    "metaDescription": "Volledig puppy schema voor de eerste weken: hoe vaak voeren, slaappatroon, zindelijkheid en eerste commando's.",
+    "metaKeywords": "puppy schema, puppy voedingsschema, hoe vaak puppy voeren, puppy slaap schema, puppy zindelijkheid schema, dagelijkse routine puppy, 8 weken puppy schema",
+    "img1Alt": "Puppy met verzorger",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Geef puppies een veilige start",
+    "ctaText": "Saved Souls redt puppies van straat en uit de vleeshandel. Met jouw donatie krijgen ze zorg, stabiliteit en kans op adoptie."
+  },
+  "catScratchingFurniture": {
+    "badge": "Kat krabt meubels",
+    "title": "Kat krabt meubels — waarom en wat werkt echt",
+    "subtitle": "Krabgedrag omleiden zonder straffen of ontklauwen.",
+    "metaTitle": "Kat krabt meubels? Waarom katten dit doen en hoe je het stopt | Saved Souls",
+    "metaDescription": "Sloopt je kat de bank? Ontdek waarom katten krabben en welke methodes echt helpen om krabgedrag veilig om te leiden.",
+    "metaKeywords": "kat krabt meubels, kat krabt bank, hoe stop je kat krabben, krabpaal kat, krabgedrag omleiden, anti krab spray kat, alternatief ontklauwen",
+    "img1Alt": "Kat bij krabpaal",
+    "donateNow": "Doneer nu",
+    "ctaTitle": "Steun katten die wachten op adoptie",
+    "ctaText": "Elke kat verdient verrijking en goede zorg. Jouw donatie helpt met krabpalen, voeding en medische ondersteuning."
   }
 }

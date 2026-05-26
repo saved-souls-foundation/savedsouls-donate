@@ -119,6 +119,24 @@ export default function HealthPage() {
             <p className="mt-2 text-stone-600 dark:text-stone-400">
               🐾 {t("seniorPetPrompt")}<Link href="/senior-pet" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("seniorPetLink")}</Link>
             </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🍫 {t("dogAteChocolatePrompt")}<Link href="/dog-ate-chocolate" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("dogAteChocolateLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🍽️ {t("dogNotEatingPrompt")}<Link href="/dog-not-eating" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("dogNotEatingLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              💧 {t("catNotDrinkingPrompt")}<Link href="/cat-not-drinking" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("catNotDrinkingLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🤢 {t("dogVomitingPrompt")}<Link href="/dog-vomiting" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("dogVomitingLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🐶 {t("puppySchedulePrompt")}<Link href="/puppy-schedule" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("puppyScheduleLink")}</Link>
+            </p>
+            <p className="mt-2 text-stone-600 dark:text-stone-400">
+              🛋️ {t("catScratchingPrompt")}<Link href="/cat-scratching-furniture" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("catScratchingLink")}</Link>
+            </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
             <Image src="/dog-care.webp" alt={t("imgCareAlt")} width={400} height={300} className="w-full h-64 object-cover" />

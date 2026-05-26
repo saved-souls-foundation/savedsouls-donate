@@ -30,6 +30,10 @@ export const GIDSEN_GROUPS: GuideGroup[] = [
       { href: "/pet-insurance", labelKey: "petInsurance" },
       { href: "/senior-pet", labelKey: "seniorPet" },
       { href: "/dog-vomiting-diarrhea", labelKey: "dogVomitingDiarrhea" },
+      { href: "/dog-ate-chocolate", labelKey: "dogAteChocolate" },
+      { href: "/dog-not-eating", labelKey: "dogNotEating" },
+      { href: "/cat-not-drinking", labelKey: "catNotDrinking" },
+      { href: "/dog-vomiting", labelKey: "dogVomiting" },
     ],
   },
   {
@@ -62,6 +66,7 @@ export const GIDSEN_GROUPS: GuideGroup[] = [
       { href: "/house-training", labelKey: "houseTraining" },
       { href: "/moving-with-pet", labelKey: "movingWithPet" },
       { href: "/puppy-socialization", labelKey: "puppySocialization" },
+      { href: "/puppy-schedule", labelKey: "puppySchedule" },
       { href: "/dog-barking", labelKey: "dogBarking" },
       { href: "/dog-and-cat-together", labelKey: "dogAndCatTogether" },
     ],
@@ -78,6 +83,7 @@ export const GIDSEN_GROUPS: GuideGroup[] = [
     placeholderKey: "infoPlaceholderCats",
     links: [
       { href: "/cat-hairball", labelKey: "catHairball" },
+      { href: "/cat-scratching-furniture", labelKey: "catScratchingFurniture" },
       { href: "/cat-indoor-outdoor", labelKey: "catIndoorOutdoor" },
     ],
   },

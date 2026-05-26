@@ -123,6 +123,12 @@
     "dogBarking": "Dog barking",
     "catIndoorOutdoor": "Cat indoor or outdoor",
     "dogVomitingDiarrhea": "Dog vomiting or diarrhea",
+    "dogAteChocolate": "Dog ate chocolate",
+    "dogNotEating": "Dog not eating",
+    "catNotDrinking": "Cat not drinking water",
+    "dogVomiting": "Dog vomiting",
+    "puppySchedule": "Puppy schedule",
+    "catScratchingFurniture": "Cat scratching furniture",
     "dogAndCatTogether": "Dog and cat together",
     "walkingDog": "Walking and potty",
     "disabledDogGuide": "Disabled dog guide",
@@ -1203,6 +1209,36 @@
       "dogVomitingDiarrhea": {
         "title": "Dog vomiting or diarrhea",
         "teaser": "When is it harmless and when should you go to the vet immediately?",
+        "readMore": "Read the guide"
+      },
+      "dogAteChocolate": {
+        "title": "Dog ate chocolate",
+        "teaser": "Act fast — symptoms, toxicity levels and exactly what to do right now.",
+        "readMore": "Read the guide"
+      },
+      "dogNotEating": {
+        "title": "Dog not eating",
+        "teaser": "Common causes, when to worry, and what actually helps when your dog refuses food.",
+        "readMore": "Read the guide"
+      },
+      "catNotDrinking": {
+        "title": "Cat not drinking water",
+        "teaser": "Dehydration is dangerous for cats. Why they avoid water and how to fix it.",
+        "readMore": "Read the guide"
+      },
+      "dogVomiting": {
+        "title": "Dog vomiting",
+        "teaser": "Yellow bile, white foam or blood — what each color means and when it's an emergency.",
+        "readMore": "Read the guide"
+      },
+      "puppySchedule": {
+        "title": "Puppy schedule",
+        "teaser": "Feeding, sleep, toilet training and first commands — week by week for new puppy owners.",
+        "readMore": "Read the guide"
+      },
+      "catScratchingFurniture": {
+        "title": "Cat scratching furniture",
+        "teaser": "Why cats scratch your sofa and what actually works to redirect them.",
         "readMore": "Read the guide"
       },
       "dogAndCatTogether": {
@@ -3119,6 +3155,18 @@
     "petInsuranceLink": "Compare and read more →",
     "seniorPetPrompt": "Senior pet? ",
     "seniorPetLink": "Care for older dog or cat →",
+    "dogAteChocolatePrompt": "Dog ate chocolate? ",
+    "dogAteChocolateLink": "Emergency guide →",
+    "dogNotEatingPrompt": "Dog not eating? ",
+    "dogNotEatingLink": "Causes and when to worry →",
+    "catNotDrinkingPrompt": "Cat not drinking? ",
+    "catNotDrinkingLink": "Dehydration risks and solutions →",
+    "dogVomitingPrompt": "Dog vomiting? ",
+    "dogVomitingLink": "What the color means →",
+    "puppySchedulePrompt": "New puppy? ",
+    "puppyScheduleLink": "Complete week-by-week schedule →",
+    "catScratchingPrompt": "Cat scratching furniture? ",
+    "catScratchingLink": "How to redirect scratching →",
     "imgCareAlt": "Dog receiving care at Saved Souls",
     "vaccinationsTitle": "💉 Vaccinations on time",
     "vaccinationsText": "Vaccinations protect against deadly diseases like distemper, parvo, parvovirus and rabies. Puppies and kittens get a core series; afterwards booster shots are needed (often yearly or every 3 years, depending on the vaccine). Put vaccinations in your calendar—your vet will help you with a schedule.",
@@ -5028,5 +5076,77 @@
     "visitText": "You're always welcome to visit our shelter — just contact us to schedule an appointment:",
     "ctaButton": "Start your adoption inquiry →",
     "backToAdopt": "← Back to adopt"
+  },
+  "dogAteChocolate": {
+    "badge": "Dog ate chocolate",
+    "title": "Dog ate chocolate — what to do RIGHT NOW",
+    "subtitle": "Symptoms, danger levels, and exactly what to do if your dog ate chocolate.",
+    "metaTitle": "Dog ate chocolate? Act fast — symptoms, danger & what to do | Saved Souls",
+    "metaDescription": "Dog ate chocolate? Find out immediately how dangerous it is, what symptoms to watch for, and exactly what to do right now. Complete guide with dose calculator.",
+    "metaKeywords": "dog ate chocolate, dog chocolate poisoning, is chocolate toxic to dogs, my dog ate chocolate what do i do, how much chocolate is toxic to dogs, dog chocolate symptoms, theobromine dogs, dark chocolate dog ate, dog ate cocoa, chocolate toxicity dog calculator, dog poisoning symptoms, what to do if dog eats chocolate",
+    "img1Alt": "Dog care and safety",
+    "donateNow": "Donate now",
+    "ctaTitle": "Help rescued dogs get the care they need",
+    "ctaText": "Saved Souls Foundation rescues and cares for hundreds of dogs in Thailand. Your donation provides food, medical care, and a path to a loving home."
+  },
+  "dogNotEating": {
+    "badge": "Dog not eating",
+    "title": "Dog not eating — normal or serious?",
+    "subtitle": "Discover the most common causes and find out when it's urgent.",
+    "metaTitle": "Dog not eating? Causes, when to worry & what to do | Saved Souls",
+    "metaDescription": "Is your dog refusing food? Discover the most common causes — from stress to illness — and find out when it's urgent and what actually helps.",
+    "metaKeywords": "dog not eating, dog won't eat, dog refuses food, dog loss of appetite, why is my dog not eating, dog not eating but drinking water, puppy not eating, old dog not eating, dog not eating for 2 days, dog anorexia causes, how to get dog to eat, dog stopped eating suddenly",
+    "img1Alt": "Dog and food bowl",
+    "donateNow": "Donate now",
+    "ctaTitle": "Support dogs waiting for a home",
+    "ctaText": "Many rescued dogs arrive malnourished and need extra care. Your donation helps Saved Souls feed and rehabilitate them."
+  },
+  "catNotDrinking": {
+    "badge": "Cat not drinking water",
+    "title": "Cat not drinking water — should you worry?",
+    "subtitle": "Dehydration is dangerous for cats. Here's what's normal, what's not, and how to fix it.",
+    "metaTitle": "Cat not drinking water? Causes, risks & solutions | Saved Souls",
+    "metaDescription": "Cat refusing water? Dehydration is dangerous for cats. Find out why cats avoid water, how to spot dehydration, and how to get your cat to drink more.",
+    "metaKeywords": "cat not drinking water, cat dehydration, how to get cat to drink water, cat refuses water, cat drinking from tap, cat water fountain, cat not drinking but eating, signs of dehydration in cats, how much water should a cat drink, cat kidney disease water, wet food vs dry food hydration",
+    "img1Alt": "Cat care and hydration",
+    "donateNow": "Donate now",
+    "ctaTitle": "Help cats in our shelter",
+    "ctaText": "Saved Souls cares for dozens of cats in Thailand. Your donation helps provide food, water, and veterinary care."
+  },
+  "dogVomiting": {
+    "badge": "Dog vomiting",
+    "title": "Dog vomiting — what does the color tell you?",
+    "subtitle": "Yellow bile, white foam, or blood — when it's harmless and when it's an emergency.",
+    "metaTitle": "Dog vomiting yellow, white or foam — causes & when to call the vet | Saved Souls",
+    "metaDescription": "Dog throwing up yellow bile, white foam or undigested food? Find out what each color means, when it's harmless and when it's an emergency.",
+    "metaKeywords": "dog vomiting yellow, dog throwing up yellow bile, dog vomiting white foam, dog vomiting causes, dog keeps vomiting, dog vomiting and not eating, dog vomiting yellow foam, why is my dog throwing up, dog upset stomach, dog vomiting blood, when to call vet dog vomiting, dog bilious vomiting syndrome",
+    "img1Alt": "Dog health and vomiting",
+    "donateNow": "Donate now",
+    "ctaTitle": "Support rescued dogs in need",
+    "ctaText": "Street dogs in Thailand often arrive sick and dehydrated. Your donation helps Saved Souls provide urgent veterinary care."
+  },
+  "puppySchedule": {
+    "badge": "Puppy schedule",
+    "title": "Complete puppy schedule — week by week",
+    "subtitle": "Feeding, sleep, toilet training and first commands for new puppy owners.",
+    "metaTitle": "Puppy schedule: feeding, sleep, training & toilet — week by week | Saved Souls",
+    "metaDescription": "Complete puppy schedule for the first weeks: how often to feed, when to sleep, toilet training and first commands. Week-by-week guide for new puppy owners.",
+    "metaKeywords": "puppy feeding schedule, puppy schedule, how often to feed a puppy, puppy sleep schedule, puppy toilet training schedule, new puppy schedule, 8 week old puppy schedule, puppy daily routine, puppy training schedule, how much to feed a puppy, puppy development stages, first week with puppy",
+    "img1Alt": "Puppy and owner",
+    "donateNow": "Donate now",
+    "ctaTitle": "Give puppies a safe start in life",
+    "ctaText": "Saved Souls rescues puppies from the streets and meat trade. Your donation helps them grow up healthy and find loving homes."
+  },
+  "catScratchingFurniture": {
+    "badge": "Cat scratching furniture",
+    "title": "Cat scratching furniture — why it happens and how to stop it",
+    "subtitle": "Redirect scratching without declawing or punishment.",
+    "metaTitle": "Cat scratching furniture? Why cats do it & how to stop it | Saved Souls",
+    "metaDescription": "Cat destroying your sofa? Find out why cats scratch furniture and what actually works to redirect them — without declawing or punishment.",
+    "metaKeywords": "cat scratching furniture, how to stop cat scratching sofa, cat scratching couch, cat scratching post, why do cats scratch furniture, stop cat scratching, cat claw caps, best cat scratching post, cat scratching deterrent, cat scratch spray, redirect cat scratching, declawing cats alternative",
+    "img1Alt": "Cat scratching post",
+    "donateNow": "Donate now",
+    "ctaTitle": "Support cats waiting for adoption",
+    "ctaText": "Every cat at Saved Souls deserves enrichment and care. Your donation helps us provide scratching posts, food, and medical attention."
   }
 }
