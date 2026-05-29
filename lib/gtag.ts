@@ -31,10 +31,23 @@ export function resolveDonationNavigationUrl(href: string, locale: string): stri
  * Tweede argument wordt genegeerd (backward compatible met oudere aanroepen elders in de repo).
  */
 export function gtagReportConversion(url?: string, _legacy?: unknown): boolean {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return false;
-  const callback = () => {
+  if (typeof window === "undefined") return false;
+
+  if (typeof window.gtag !== "function") {
     if (url) window.location.href = url;
+    return false;
+  }
+
+  let navigated = false;
+  const callback = () => {
+    if (url && !navigated) {
+      navigated = true;
+      window.location.href = url;
+    }
   };
+
+  if (url) setTimeout(callback, 1000);
+
   window.gtag("event", "conversion", {
     send_to: "AW-18059514629/67JGCNzMjqEcEIWmuaND",
     value: 1.0,
