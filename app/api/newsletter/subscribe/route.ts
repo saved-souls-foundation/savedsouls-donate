@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
 
 const VALID_TAAL = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
 
@@ -37,18 +36,15 @@ async function handleSubscribe(request: NextRequest) {
 
   console.log("[newsletter/subscribe] Received:", { email, voornaam: voornaam ?? null, achternaam: achternaam ?? null, type, language });
 
-  let supabase: Awaited<ReturnType<typeof createClient>> | ReturnType<typeof createAdminClient>;
-  if (isSupabaseAdminConfigured()) {
-    try {
-      supabase = createAdminClient();
-    } catch (e) {
-      console.error("[newsletter/subscribe] Admin client failed, falling back to server client:", e);
-      supabase = await createClient();
-    }
-  } else {
-    supabase = await createClient();
+  if (!isSupabaseAdminConfigured()) {
+    console.error("[newsletter/subscribe] Supabase admin not configured (SUPABASE_SERVICE_ROLE_KEY)");
+    return NextResponse.json(
+      { error: "Newsletter subscription is temporarily unavailable." },
+      { status: 503 }
+    );
   }
-  console.log("[newsletter/subscribe] Using table: newsletter_subscribers");
+
+  const supabase = createAdminClient();
 
   const { data: existing } = await supabase
     .from("newsletter_subscribers")
