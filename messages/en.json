@@ -1874,7 +1874,14 @@
     },
     "ctaTitle": "Visit our shop",
     "ctaText": "All proceeds go to our 430 dogs and 91 cats. Shop hoodies, calendars, tote bags and more.",
-    "ctaButton": "Go to shop"
+    "ctaButton": "Go to shop",
+    "addToCart": "Add to cart",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "orderSuccess": "Thank you for your order!",
+    "selectSize": "Select size",
+    "selectColor": "Select color",
+    "currency": "Currency"
   },
   "affiliate": {
     "metaTitle": "Support Our Rescue Animals — Shop & Help | Saved Souls Foundation",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { alternatesForPath } from "@/lib/metadata";
+import ShopProviders from "./ShopProviders";
 
 type Props = {
   children: React.ReactNode;
@@ -26,5 +27,5 @@ export default async function ShopLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return children;
+  return <ShopProviders>{children}</ShopProviders>;
 }

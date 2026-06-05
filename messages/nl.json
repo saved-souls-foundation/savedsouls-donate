@@ -1873,7 +1873,14 @@
     },
     "ctaTitle": "Bezoek onze shop",
     "ctaText": "Alle opbrengsten gaan naar onze 430 honden en 91 katten. Shop hoodies, kalenders, tassen en meer.",
-    "ctaButton": "Naar de shop"
+    "ctaButton": "Naar de shop",
+    "addToCart": "In winkelwagen",
+    "cart": "Winkelwagen",
+    "checkout": "Afrekenen",
+    "orderSuccess": "Bedankt voor je bestelling!",
+    "selectSize": "Kies maat",
+    "selectColor": "Kies kleur",
+    "currency": "Valuta"
   },
   "affiliate": {
     "metaTitle": "Steun onze opvangdieren — Shop & help | Saved Souls Foundation",

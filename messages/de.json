@@ -1147,7 +1147,14 @@
     },
     "ctaTitle": "Besuche unseren Shop",
     "ctaText": "Alle Einnahmen gehen an unsere 430 Hunde und 91 Katzen. Hoodies, Kalender, Taschen und mehr.",
-    "ctaButton": "Zum Shop"
+    "ctaButton": "Zum Shop",
+    "addToCart": "In den Warenkorb",
+    "cart": "Warenkorb",
+    "checkout": "Zur Kasse",
+    "orderSuccess": "Vielen Dank für Ihre Bestellung!",
+    "selectSize": "Größe wählen",
+    "selectColor": "Farbe wählen",
+    "currency": "Währung"
   },
   "affiliate": {
     "metaTitle": "Untere Tierheimtiere unterstützen — Einkaufen & Helfen | Saved Souls Foundation",

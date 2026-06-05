@@ -73,6 +73,73 @@ export async function verifyPayPalWebhookSignature(
   return json.verification_status === "SUCCESS";
 }
 
+type PayPalOrderDetails = {
+  id?: string;
+  status?: string;
+  purchase_units?: Array<{
+    amount?: { value?: string; currency_code?: string };
+    payments?: {
+      captures?: Array<{ id?: string; status?: string; amount?: { value?: string; currency_code?: string } }>;
+    };
+  }>;
+};
+
+export async function getPayPalOrder(orderId: string): Promise<PayPalOrderDetails | null> {
+  const token = await getPayPalAccessToken();
+  if (!token) return null;
+  const res = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return null;
+  return (await res.json()) as PayPalOrderDetails;
+}
+
+export async function capturePayPalOrder(orderId: string): Promise<{
+  ok: boolean;
+  captureId?: string;
+  amount?: number;
+  currency?: string;
+  payerEmail?: string;
+}> {
+  const existing = await getPayPalOrder(orderId);
+  if (!existing) return { ok: false };
+
+  if (existing.status === "COMPLETED") {
+    const unit = existing.purchase_units?.[0];
+    const capture = unit?.payments?.captures?.[0];
+    return {
+      ok: true,
+      captureId: capture?.id,
+      amount: capture?.amount?.value ? parseFloat(capture.amount.value) : undefined,
+      currency: capture?.amount?.currency_code,
+    };
+  }
+
+  const token = await getPayPalAccessToken();
+  if (!token) return { ok: false };
+
+  const res = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}/capture`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) return { ok: false };
+
+  const json = (await res.json()) as PayPalOrderDetails;
+  const unit = json.purchase_units?.[0];
+  const capture = unit?.payments?.captures?.[0];
+  if (capture?.status !== "COMPLETED") return { ok: false };
+
+  return {
+    ok: true,
+    captureId: capture.id,
+    amount: capture.amount?.value ? parseFloat(capture.amount.value) : undefined,
+    currency: capture.amount?.currency_code,
+  };
+}
+
 /** Create a PayPal order for one-time payment. Returns order id for client to approve. */
 export async function createPayPalOrder(amount: number, currency: string): Promise<string | null> {
   const token = await getPayPalAccessToken();
