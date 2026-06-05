@@ -40,7 +40,7 @@ function CurrencySelector() {
 export default function ShopPage() {
   const t = useTranslations("shop");
   const tCommon = useTranslations("common");
-  const { formatPrice, itemCount } = useCart();
+  const { formatPrice } = useCart();
   const [products, setProducts] = useState<ShopProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -73,13 +73,6 @@ export default function ShopPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <CurrencySelector />
-          <Link
-            href="/shop/cart"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-white transition-all hover:scale-105"
-            style={{ backgroundColor: ACCENT_GREEN }}
-          >
-            🛒 {t("cart")} {itemCount > 0 ? `(${itemCount})` : ""}
-          </Link>
         </div>
 
         <section className="mb-16 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 relative aspect-[21/9]" suppressHydrationWarning>
@@ -158,13 +151,6 @@ export default function ShopPage() {
             {t("ctaText")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/shop/cart"
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-lg text-white transition-all hover:scale-105 hover:shadow-lg shrink-0"
-              style={{ backgroundColor: ACCENT_GREEN }}
-            >
-              {t("cart")} →
-            </Link>
             <Link
               href="/affiliate"
               className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-lg text-white transition-all hover:scale-105 hover:shadow-lg shrink-0"

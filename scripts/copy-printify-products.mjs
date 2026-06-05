@@ -16,14 +16,29 @@ const API_BASE = "https://api.printify.com/v1";
 
 const SOURCE_SHOP = "19346156";
 const DEST_SHOP = "27754716";
+const FOUNDATION_LOGO_ID =
+  process.env.PRINTIFY_LOGO_IMAGE_ID?.trim() || "6a225eafe7c50defefa09cb1";
+
+/** Blueprints waar het logo gecentreerd op de voorkant moet (wrap/handle-producten). */
+const CENTERED_FRONT_BLUEPRINTS = new Set([1125, 34]);
 
 const PRODUCTS_TO_COPY = [
   { id: "695238678c9632253d0e2680", title: "Desk Calendar 2026", blueprintId: 1239 },
   { id: "6789ddb9d70ae6618d0204b3", title: "Fine Art Postcards", blueprintId: 842 },
   { id: "6762856805f17769e301dd5a", title: "College Hoodie", blueprintId: 92, skipIfBlueprintExists: 92 },
   { id: "6752618689910a1b260ea70b", title: "Ceramic Cup", blueprintId: 1125 },
-  { id: "674c043610f623adb40342c3", title: "Desk Calendar (2025)", blueprintId: 1352 },
 ];
+
+const PRODUCTS_TO_DELETE = [
+  { title: "Desk Calendar (2025)" },
+];
+
+const PRODUCTS_TO_RECREATE = new Set(
+  (process.env.RECREATE_TITLES || "Ceramic Cup")
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean)
+);
 
 function loadEnvLocal() {
   const envPath = path.join(ROOT, ".env.local");
@@ -73,6 +88,7 @@ async function printifyFetch(endpoint, options = {}) {
 async function fetchDestCatalog() {
   const titles = new Set();
   const blueprintIds = new Set();
+  const byTitle = new Map();
   let page = 1;
   let lastPage = 1;
 
@@ -81,14 +97,55 @@ async function fetchDestCatalog() {
       `/shops/${DEST_SHOP}/products.json?limit=50&page=${page}`
     );
     for (const p of data.data ?? []) {
-      if (p.title) titles.add(p.title.trim());
+      if (p.title) {
+        const trimmed = p.title.trim();
+        titles.add(trimmed);
+        byTitle.set(trimmed, p);
+      }
       if (p.blueprint_id != null) blueprintIds.add(p.blueprint_id);
     }
     lastPage = data.last_page ?? 1;
     page += 1;
   } while (page <= lastPage);
 
-  return { titles, blueprintIds };
+  return { titles, blueprintIds, byTitle };
+}
+
+async function deleteDestProduct(productId, title) {
+  console.log(`\n🗑️  Verwijderen: ${title} (${productId})`);
+  await printifyFetch(`/shops/${DEST_SHOP}/products/${productId}.json`, {
+    method: "DELETE",
+  });
+  console.log("   ✓ Verwijderd");
+}
+
+function pickFrontPlaceholder(placeholders = []) {
+  return (
+    placeholders.find((p) => p.position === "front") ??
+    placeholders.find((p) => p.position === "wrap") ??
+    placeholders[0] ??
+    null
+  );
+}
+
+function logoScaleForBlueprint(blueprintId) {
+  if (CENTERED_FRONT_BLUEPRINTS.has(blueprintId)) return 0.35;
+  return 0.75;
+}
+
+function buildFrontLogoPlaceholder(position, blueprintId) {
+  return {
+    position: position ?? "front",
+    images: [
+      {
+        id: FOUNDATION_LOGO_ID,
+        x: 0.5,
+        y: 0.5,
+        scale: logoScaleForBlueprint(blueprintId),
+        angle: 0,
+      },
+    ],
+  };
 }
 
 const uploadIdCache = new Map();
@@ -131,39 +188,28 @@ async function resolveUploadId(img) {
   return null;
 }
 
-async function sanitizePrintAreas(printAreas = []) {
+function sanitizePrintAreas(printAreas = [], blueprintId) {
   const areas = [];
 
   for (const area of printAreas) {
-    const placeholders = [];
+    if (!area.variant_ids?.length) continue;
 
-    for (const ph of area.placeholders ?? []) {
-      const images = [];
-      const seen = new Set();
+    const frontPh = pickFrontPlaceholder(area.placeholders ?? []);
+    areas.push({
+      variant_ids: area.variant_ids,
+      ...(area.background ? { background: area.background } : {}),
+      placeholders: [buildFrontLogoPlaceholder(frontPh?.position, blueprintId)],
+    });
+  }
 
-      for (const img of ph.images ?? []) {
-        const resolvedId = await resolveUploadId(img);
-        if (!resolvedId || seen.has(resolvedId)) continue;
-        seen.add(resolvedId);
-        images.push({
-          id: resolvedId,
-          x: img.x,
-          y: img.y,
-          scale: img.scale,
-          angle: img.angle ?? 0,
-        });
-      }
-
-      if (images.length > 0) {
-        placeholders.push({ position: ph.position, images });
-      }
-    }
-
-    if (placeholders.length > 0) {
+  if (areas.length === 0) {
+    const allVariantIds = [
+      ...new Set(printAreas.flatMap((area) => area.variant_ids ?? [])),
+    ];
+    if (allVariantIds.length > 0) {
       areas.push({
-        variant_ids: area.variant_ids,
-        ...(area.background ? { background: area.background } : {}),
-        placeholders,
+        variant_ids: allVariantIds,
+        placeholders: [buildFrontLogoPlaceholder("front", blueprintId)],
       });
     }
   }
@@ -182,7 +228,7 @@ async function buildCreatePayload(product) {
       price: v.price,
       is_enabled: v.is_enabled ?? true,
     })),
-    print_areas: await sanitizePrintAreas(product.print_areas),
+    print_areas: sanitizePrintAreas(product.print_areas, product.blueprint_id),
   };
 
   if (product.tags?.length) payload.tags = product.tags;
@@ -234,11 +280,55 @@ async function copyProduct(spec) {
 async function main() {
   console.log("🐾 Printify product copy");
   console.log(`   Van shop ${SOURCE_SHOP} → ${DEST_SHOP}`);
+  console.log(`   Foundation logo: ${FOUNDATION_LOGO_ID}`);
 
-  const { titles, blueprintIds } = await fetchDestCatalog();
+  let { titles, blueprintIds, byTitle } = await fetchDestCatalog();
   console.log(`   Bestemming heeft ${titles.size} product(en), blueprints: [${[...blueprintIds].join(", ")}]`);
 
-  const results = { copied: 0, skipped: 0, failed: 0 };
+  const results = { copied: 0, skipped: 0, failed: 0, deleted: 0 };
+
+  for (const spec of PRODUCTS_TO_DELETE) {
+    const existing = byTitle.get(spec.title);
+    if (!existing) {
+      console.log(`\n⏭️  Al verwijderd of niet gevonden: ${spec.title}`);
+      continue;
+    }
+    try {
+      await deleteDestProduct(existing.id, spec.title);
+      titles.delete(spec.title);
+      byTitle.delete(spec.title);
+      if (existing.blueprint_id != null) {
+        const stillHasBlueprint = [...byTitle.values()].some(
+          (p) => p.blueprint_id === existing.blueprint_id
+        );
+        if (!stillHasBlueprint) blueprintIds.delete(existing.blueprint_id);
+      }
+      results.deleted += 1;
+    } catch (err) {
+      results.failed += 1;
+      console.error(`   ❌ Verwijderen mislukt: ${err.message}`);
+    }
+  }
+
+  for (const title of PRODUCTS_TO_RECREATE) {
+    const existing = byTitle.get(title);
+    if (!existing) continue;
+    try {
+      await deleteDestProduct(existing.id, title);
+      titles.delete(title);
+      byTitle.delete(title);
+      if (existing.blueprint_id != null) {
+        const stillHasBlueprint = [...byTitle.values()].some(
+          (p) => p.blueprint_id === existing.blueprint_id
+        );
+        if (!stillHasBlueprint) blueprintIds.delete(existing.blueprint_id);
+      }
+      results.deleted += 1;
+    } catch (err) {
+      results.failed += 1;
+      console.error(`   ❌ Recreate-verwijdering mislukt (${title}): ${err.message}`);
+    }
+  }
 
   for (const spec of PRODUCTS_TO_COPY) {
     if (spec.skipIfBlueprintExists != null && blueprintIds.has(spec.skipIfBlueprintExists)) {
@@ -247,7 +337,8 @@ async function main() {
       continue;
     }
 
-    if (titles.has(spec.title)) {
+    const shouldRecreate = PRODUCTS_TO_RECREATE.has(spec.title);
+    if (titles.has(spec.title) && !shouldRecreate) {
       console.log(`\n⏭️  Overgeslagen: ${spec.title} (titel bestaat al in bestemming)`);
       results.skipped += 1;
       continue;
@@ -266,7 +357,7 @@ async function main() {
   }
 
   console.log(
-    `\n📊 Klaar: ${results.copied} gekopieerd, ${results.skipped} overgeslagen, ${results.failed} mislukt`
+    `\n📊 Klaar: ${results.copied} gekopieerd, ${results.deleted} verwijderd, ${results.skipped} overgeslagen, ${results.failed} mislukt`
   );
 
   if (results.failed > 0) process.exit(1);

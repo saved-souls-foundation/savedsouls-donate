@@ -59,6 +59,93 @@ const PRODUCTS = [
     colors: ["white", "black"],
     sizes: null,
   },
+  {
+    key: "zip-hoodie",
+    title: "Saved Souls Foundation Zip Hoodie",
+    blueprintId: 445,
+    priceEur: 45.0,
+    colors: ["black", "navy"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+  },
+  {
+    key: "kids-tee",
+    title: "Saved Souls Foundation Kids T-Shirt",
+    blueprintId: 157,
+    priceEur: 22.0,
+    colors: ["white", "black"],
+    sizes: ["S", "M", "L", "XL"],
+  },
+  {
+    key: "womens-tee",
+    title: "Saved Souls Foundation Women's T-Shirt",
+    blueprintId: 9,
+    priceEur: 28.0,
+    colors: ["white", "black", "navy"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+  },
+  {
+    key: "phone-case",
+    title: "Saved Souls Foundation iPhone Case",
+    blueprintId: 421,
+    priceEur: 22.0,
+    phoneModels: [
+      "iPhone 15",
+      "iPhone 15 Pro",
+      "iPhone 14",
+      "iPhone 14 Pro",
+      "iPhone 13",
+      "iPhone 13 Pro",
+    ],
+    surface: "Glossy",
+  },
+  {
+    key: "sticker",
+    title: "Saved Souls Foundation Sticker",
+    blueprintId: 400,
+    priceEur: 15.0,
+    colors: null,
+    sizes: null,
+  },
+  {
+    key: "tote-zip",
+    title: "Saved Souls Foundation Tote Bag with Zipper",
+    blueprintId: 553,
+    priceEur: 29.0,
+    colors: null,
+    sizes: null,
+  },
+  {
+    key: "poster",
+    title: "Saved Souls Foundation Poster 18x24",
+    blueprintId: 282,
+    priceEur: 24.0,
+    colors: null,
+    sizes: null,
+  },
+  {
+    key: "pillow",
+    title: "Saved Souls Foundation Pillow",
+    blueprintId: 220,
+    priceEur: 32.0,
+    colors: null,
+    sizes: null,
+  },
+  {
+    key: "notebook",
+    title: "Saved Souls Foundation Notebook",
+    blueprintId: 74,
+    priceEur: 18.0,
+    colors: null,
+    sizes: null,
+  },
+  {
+    key: "beanie",
+    title: "Saved Souls Foundation Beanie",
+    blueprintId: 576,
+    priceEur: 22.0,
+    colors: null,
+    sizes: null,
+  },
 ];
 
 function loadEnvLocal() {
@@ -272,6 +359,25 @@ function resolveVariants(product, catalogVariants) {
   const priceCents = eurToCents(product.priceEur);
   const enabled = [];
 
+  if (product.phoneModels?.length) {
+    for (const model of product.phoneModels) {
+      const variant = catalogVariants.find((v) => {
+        const opts = v.options ?? {};
+        const sizeOk = opts.size === model;
+        const surfaceOk = product.surface ? opts.surface === product.surface : true;
+        return sizeOk && surfaceOk;
+      });
+      if (!variant) {
+        console.warn(`   ⚠️  Phone variant niet gevonden: ${model}`);
+        continue;
+      }
+      if (!enabled.some((e) => e.id === variant.id)) {
+        enabled.push({ id: variant.id, price: priceCents, is_enabled: true });
+      }
+    }
+    return enabled;
+  }
+
   if (!product.colors && !product.sizes) {
     for (const v of catalogVariants) {
       enabled.push({ id: v.id, price: priceCents, is_enabled: true });
@@ -366,7 +472,8 @@ async function main() {
     process.exit(1);
   }
 
-  const existingLogoId = process.env.PRINTIFY_LOGO_IMAGE_ID?.trim();
+  const existingLogoId =
+    process.env.PRINTIFY_LOGO_IMAGE_ID?.trim() || "6a225eafe7c50defefa09cb1";
   let imageId;
   if (existingLogoId) {
     imageId = existingLogoId;
