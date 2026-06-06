@@ -19,9 +19,6 @@ const DEST_SHOP = "27754716";
 const FOUNDATION_LOGO_ID =
   process.env.PRINTIFY_LOGO_IMAGE_ID?.trim() || "6a225eafe7c50defefa09cb1";
 
-/** Blueprints waar het logo gecentreerd op de voorkant moet (wrap/handle-producten). */
-const CENTERED_FRONT_BLUEPRINTS = new Set([1125, 34]);
-
 const PRODUCTS_TO_COPY = [
   { id: "695238678c9632253d0e2680", title: "Desk Calendar 2026", blueprintId: 1239 },
   { id: "6789ddb9d70ae6618d0204b3", title: "Fine Art Postcards", blueprintId: 842 },
@@ -128,9 +125,8 @@ function pickFrontPlaceholder(placeholders = []) {
   );
 }
 
-function logoScaleForBlueprint(blueprintId) {
-  if (CENTERED_FRONT_BLUEPRINTS.has(blueprintId)) return 0.35;
-  return 0.75;
+function logoScaleForBlueprint(_blueprintId) {
+  return 0.4;
 }
 
 function buildFrontLogoPlaceholder(position, blueprintId) {

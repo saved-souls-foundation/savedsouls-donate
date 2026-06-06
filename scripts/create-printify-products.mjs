@@ -18,6 +18,163 @@ const API_BASE = "https://api.printify.com/v1";
 const DESCRIPTION =
   "Support 430 dogs and 91 cats in Khon Kaen, Thailand. Every purchase goes directly to animal care.";
 
+/** Logo max 40% of print-area width, gecentreerd op voorkant. */
+export const LOGO_IMAGE_ID =
+  process.env.PRINTIFY_LOGO_IMAGE_ID?.trim() || "6a225eafe7c50defefa09cb1";
+export const LOGO_MAX_SCALE = 0.4;
+export const LOGO_POSITION = { x: 0.5, y: 0.5, angle: 0 };
+
+function pickFrontPlaceholder(placeholders = []) {
+  return (
+    placeholders.find((p) => p.position === "front") ??
+    placeholders.find((p) => p.position === "wrap") ??
+    placeholders[0] ??
+    null
+  );
+}
+
+export function buildFrontLogoPrintAreas(printAreas = [], imageId = LOGO_IMAGE_ID) {
+  const areas = [];
+  const productUsesFoundationLogo = printAreas.some((area) =>
+    (area.placeholders ?? []).some((ph) =>
+      (ph.images ?? []).some((img) => img.id === imageId)
+    )
+  );
+
+  for (const area of printAreas) {
+    if (!area.variant_ids?.length) continue;
+
+    const placeholders = area.placeholders ?? [];
+    const hasImages = placeholders.some((ph) => (ph.images ?? []).length > 0);
+
+    if (!hasImages && !productUsesFoundationLogo) {
+      areas.push({
+        variant_ids: area.variant_ids,
+        ...(area.background ? { background: area.background } : {}),
+        placeholders: [],
+      });
+      continue;
+    }
+
+    if (!hasImages && productUsesFoundationLogo) {
+      areas.push({
+        variant_ids: area.variant_ids,
+        ...(area.background ? { background: area.background } : {}),
+        placeholders: [
+          {
+            position: "front",
+            images: [
+              {
+                id: imageId,
+                x: LOGO_POSITION.x,
+                y: LOGO_POSITION.y,
+                scale: LOGO_MAX_SCALE,
+                angle: LOGO_POSITION.angle,
+              },
+            ],
+          },
+        ],
+      });
+      continue;
+    }
+
+    const hasFoundationLogo = placeholders.some((ph) =>
+      (ph.images ?? []).some((img) => img.id === imageId)
+    );
+
+    if (!hasFoundationLogo) {
+      areas.push({
+        variant_ids: area.variant_ids,
+        ...(area.background ? { background: area.background } : {}),
+        placeholders: placeholders.map((ph) => ({
+          position: ph.position,
+          images: (ph.images ?? []).map((img) => ({
+            id: img.id,
+            x: img.x,
+            y: img.y,
+            scale: img.scale,
+            angle: img.angle ?? 0,
+          })),
+        })),
+      });
+      continue;
+    }
+
+    const frontPh = pickFrontPlaceholder(placeholders);
+    areas.push({
+      variant_ids: area.variant_ids,
+      ...(area.background ? { background: area.background } : {}),
+      placeholders: [
+        {
+          position: frontPh?.position ?? "front",
+          images: [
+            {
+              id: imageId,
+              x: LOGO_POSITION.x,
+              y: LOGO_POSITION.y,
+              scale: LOGO_MAX_SCALE,
+              angle: LOGO_POSITION.angle,
+            },
+          ],
+        },
+      ],
+    });
+  }
+
+  if (areas.length === 0) {
+    const allVariantIds = [
+      ...new Set(printAreas.flatMap((area) => area.variant_ids ?? [])),
+    ];
+    if (allVariantIds.length > 0) {
+      areas.push({
+        variant_ids: allVariantIds,
+        placeholders: [
+          {
+            position: "front",
+            images: [
+              {
+                id: imageId,
+                x: LOGO_POSITION.x,
+                y: LOGO_POSITION.y,
+                scale: LOGO_MAX_SCALE,
+                angle: LOGO_POSITION.angle,
+              },
+            ],
+          },
+        ],
+      });
+    }
+  }
+
+  return areas;
+}
+
+function buildPrintAreas(variantIds, catalogVariants, imageId) {
+  const sample = catalogVariants.find((v) => variantIds.includes(v.id)) ?? catalogVariants[0];
+  const placeholder = pickFrontPlaceholder(sample?.placeholders ?? []);
+  const position = placeholder?.position ?? "front";
+
+  return [
+    {
+      variant_ids: variantIds,
+      placeholders: [
+        {
+          position,
+          images: [
+            {
+              id: imageId,
+              x: LOGO_POSITION.x,
+              y: LOGO_POSITION.y,
+              scale: LOGO_MAX_SCALE,
+              angle: LOGO_POSITION.angle,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+}
+
 const PRODUCTS = [
   {
     key: "tshirt",
@@ -319,42 +476,6 @@ function eurToCents(eur) {
   return Math.round(eur * 100);
 }
 
-function getFrontPlaceholder(variant) {
-  const placeholders = variant.placeholders ?? [];
-  return (
-    placeholders.find((p) => p.position === "front") ??
-    placeholders[0] ??
-    null
-  );
-}
-
-function buildPrintAreas(variantIds, catalogVariants, imageId) {
-  const sample = catalogVariants.find((v) => variantIds.includes(v.id)) ?? catalogVariants[0];
-  const placeholder = getFrontPlaceholder(sample);
-  const position = placeholder?.position ?? "front";
-  const scale = 0.75;
-
-  return [
-    {
-      variant_ids: variantIds,
-      placeholders: [
-        {
-          position,
-          images: [
-            {
-              id: imageId,
-              x: 0.5,
-              y: 0.5,
-              scale,
-              angle: 0,
-            },
-          ],
-        },
-      ],
-    },
-  ];
-}
-
 function resolveVariants(product, catalogVariants) {
   const priceCents = eurToCents(product.priceEur);
   const enabled = [];
@@ -472,8 +593,7 @@ async function main() {
     process.exit(1);
   }
 
-  const existingLogoId =
-    process.env.PRINTIFY_LOGO_IMAGE_ID?.trim() || "6a225eafe7c50defefa09cb1";
+  const existingLogoId = LOGO_IMAGE_ID;
   let imageId;
   if (existingLogoId) {
     imageId = existingLogoId;
@@ -525,7 +645,13 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("❌ Onverwachte fout:", err.message);
-  process.exit(1);
-});
+const isMain =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
+  main().catch((err) => {
+    console.error("❌ Onverwachte fout:", err.message);
+    process.exit(1);
+  });
+}
