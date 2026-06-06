@@ -149,7 +149,7 @@ export function buildFrontLogoPrintAreas(printAreas = [], imageId = LOGO_IMAGE_I
   return areas;
 }
 
-function buildPrintAreas(variantIds, catalogVariants, imageId) {
+function buildPrintAreas(variantIds, catalogVariants, imageId, logoScale = LOGO_MAX_SCALE) {
   const sample = catalogVariants.find((v) => variantIds.includes(v.id)) ?? catalogVariants[0];
   const placeholder = pickFrontPlaceholder(sample?.placeholders ?? []);
   const position = placeholder?.position ?? "front";
@@ -165,7 +165,7 @@ function buildPrintAreas(variantIds, catalogVariants, imageId) {
               id: imageId,
               x: LOGO_POSITION.x,
               y: LOGO_POSITION.y,
-              scale: LOGO_MAX_SCALE,
+              scale: logoScale,
               angle: LOGO_POSITION.angle,
             },
           ],
@@ -203,8 +203,11 @@ const PRODUCTS = [
   {
     key: "mug",
     title: "Saved Souls Foundation Mug 11oz",
-    blueprintId: 34,
+    // Catalog blueprint 34 = Infant Fine Jersey Tee; Mug 11oz = blueprint 68.
+    blueprintId: 68,
+    printProviderId: 1,
     priceEur: 19.9,
+    logoScale: 0.5,
     colors: null,
     sizes: null,
   },
@@ -414,7 +417,9 @@ async function uploadLogo() {
   return result;
 }
 
-async function getPrintProviderId(blueprintId) {
+async function getPrintProviderId(blueprintId, preferredId) {
+  if (preferredId != null) return preferredId;
+
   const providers = await printifyFetch(`/catalog/blueprints/${blueprintId}/print_providers.json`);
   if (!Array.isArray(providers) || providers.length === 0) {
     throw new Error(`Geen print providers voor blueprint ${blueprintId}`);
@@ -529,7 +534,7 @@ async function createProduct(product, imageId) {
   console.log(`\n🛍️  Product aanmaken: ${product.title}`);
   console.log(`   Blueprint ${product.blueprintId}…`);
 
-  const printProviderId = await getPrintProviderId(product.blueprintId);
+  const printProviderId = await getPrintProviderId(product.blueprintId, product.printProviderId);
   console.log(`   Print provider: ${printProviderId}`);
 
   const catalogVariants = await getCatalogVariants(product.blueprintId, printProviderId);
@@ -545,7 +550,8 @@ async function createProduct(product, imageId) {
   console.log(`   ${variants.length} variant(en) ingeschakeld`);
 
   const variantIds = variants.map((v) => v.id);
-  const printAreas = buildPrintAreas(variantIds, catalogVariants, imageId);
+  const logoScale = product.logoScale ?? LOGO_MAX_SCALE;
+  const printAreas = buildPrintAreas(variantIds, catalogVariants, imageId, logoScale);
 
   const body = {
     title: product.title,
