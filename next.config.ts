@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
     return [
       { source: "/pressПресса", destination: "/nl/press", permanent: true },
       {
+        source: "/:locale(nl|en|de|es|th|ru|fr)/partners/layan-vet-bedankt",
+        destination: "/:locale/partners/bedankt-donatiebox-medespelers",
+        permanent: true,
+      },
+      {
+        source: "/partners/layan-vet-bedankt",
+        destination: "/nl/partners/bedankt-donatiebox-medespelers",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "www.savedsouls-foundation.com" }],
         destination: "https://www.savedsouls-foundation.org/:path*",

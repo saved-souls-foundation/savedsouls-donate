@@ -153,6 +153,69 @@ export default function PartnersPage() {
           </div>
         </section>
 
+        {/* Eerste donatiebox Phuket — Layan Vet Clinic */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: PINK }}>
+            {t("donationBoxSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("donationBoxSectionSubtitle")}
+          </p>
+
+          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-rose-200/50 dark:border-rose-900/30 mb-4">
+            <img
+              src="/partners/layan-vet/hero.png"
+              alt={t("donationBoxHeroAlt")}
+              className="w-full h-auto max-h-[480px] object-cover object-center"
+            />
+          </div>
+
+          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700 mb-8">
+            <img
+              src="/partners/layan-vet/reception.png"
+              alt={t("donationBoxPhotoAlt1")}
+              className="w-full aspect-[16/10] object-cover object-center"
+            />
+          </div>
+
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-rose-200/50 dark:border-rose-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p>{t("donationBoxSectionIntro")}</p>
+            <p>{t("donationBoxSectionStory")}</p>
+            <p className="font-semibold text-stone-800 dark:text-stone-100">{t("donationBoxSectionFirstInPhuket")}</p>
+            <p className="text-sm text-stone-600 dark:text-stone-400">{t("donationBoxSectionFreeNote")}</p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href="https://www.layanvetclinic.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: PINK }}
+              >
+                {t("donationBoxSectionLayanLink")} →
+              </a>
+              <Link
+                href="/partners/bedankt-donatiebox-medespelers"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionReadMore")}
+              </Link>
+              <Link
+                href="/partners/flyer-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionFlyerLink")}
+              </Link>
+              <Link
+                href="/partners/donatiebox-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionBoxLink")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Tekst in placeholders met symbolen */}
         <section className="mb-16 md:mb-20">
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-8 text-center" style={{ color: PINK }}>

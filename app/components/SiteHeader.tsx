@@ -544,8 +544,38 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
             </div>
           </div>
 
+          {/* Flyer & donatiebox — tussen Red een dier en Doe mee */}
+          <div className="mt-4 mb-2 animate-fade-in" style={{ animationDelay: "75ms" }}>
+            <Link
+              href="/partners/bedankt-donatiebox-medespelers"
+              onClick={closeMobileMenu}
+              className="relative flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-[#f3f4f6] shadow-sm active:bg-gray-50 transition-all hover:shadow-md"
+              style={{ backgroundColor: "#fdf0f8" }}
+            >
+              <span
+                className="absolute top-2 right-3 whitespace-nowrap"
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  color: "#9d174d",
+                  background: "#fce7f3",
+                  borderRadius: "6px",
+                  padding: "2px 10px",
+                }}
+              >
+                {t("menuDonationBoxBadge")}
+              </span>
+              <PawPrint size={18} color="#db2777" aria-hidden />
+              <div className="flex-1 min-w-0 pr-14">
+                <span className="font-medium text-[15px] text-gray-800 block">{t("menuDonationBoxTitle")}</span>
+                <span className="text-xs text-gray-500 block">{t("menuDonationBoxSubtext")}</span>
+              </div>
+              <ChevronRight size={16} color={CHEVRON_GRAY} aria-hidden />
+            </Link>
+          </div>
+
           {/* Block 3 — Doe mee */}
-          <div className="mt-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+          <div className="mt-4 animate-fade-in" style={{ animationDelay: "100ms" }}>
             <p className="text-xs font-semibold tracking-widest text-[#9ca3af] uppercase mb-3 pl-3 border-l-2 border-[#2aa348]">
               {t("menuSectionGetInvolved")}
             </p>
