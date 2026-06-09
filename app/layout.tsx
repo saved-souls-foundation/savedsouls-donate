@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { headers } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -190,23 +189,8 @@ gtag('config', 'GT-KVFRQZK3');
         {/* LCP: hero op homepage – mobiel lichte variant, desktop volledige */}
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
-        <Script id="gtm-init" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KPHCG78M');`}
-        </Script>
       </head>
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KPHCG78M"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         <DeferredStyles />
         <GoogleAnalytics />
         <script
