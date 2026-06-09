@@ -171,12 +171,12 @@ gtag('set', 'ads_data_redaction', true);
             `.trim(),
           }}
         />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18059514629" />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
 gtag('js', new Date());
-gtag('config', 'AW-18059514629');
+gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
 gtag('config', 'GT-KVFRQZK3');
             `.trim(),
           }}

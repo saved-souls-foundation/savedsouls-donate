@@ -49,7 +49,7 @@ export function gtagReportConversion(url?: string, _legacy?: unknown): boolean {
   if (url) setTimeout(callback, 1000);
 
   window.gtag("event", "conversion", {
-    send_to: "AW-18059514629/67JGCNzMjqEcEIWmuaND",
+    send_to: `${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}/${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL}`,
     value: 1.0,
     currency: "USD",
     event_callback: callback,
