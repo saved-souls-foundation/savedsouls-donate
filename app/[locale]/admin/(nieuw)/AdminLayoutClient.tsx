@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles, Shield, BarChart3 } from "lucide-react";
+import { Users, Mail, Heart, Building, Inbox, Share2, Calendar, Sparkles, Shield, BarChart3, QrCode } from "lucide-react";
 import GlobalSearch from "./components/GlobalSearch";
 
 const ADM_BG = "#f1f5f9";
@@ -329,6 +329,14 @@ export default function AdminLayoutClient({
           icon={<Building className="w-[18px] h-[18px]" />}
           label={t("sponsors.title")}
           isActive={pathname?.includes("admin/sponsoren") ?? false}
+          locale={locale}
+          onClick={() => setMobileOpen(false)}
+        />
+        <NavLink
+          href="/admin/qr-scans"
+          icon={<QrCode className="w-[18px] h-[18px]" />}
+          label="QR Scans"
+          isActive={pathname?.includes("admin/qr-scans") ?? false}
           locale={locale}
           onClick={() => setMobileOpen(false)}
         />
