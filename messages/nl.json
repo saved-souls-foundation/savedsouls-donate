@@ -2519,7 +2519,15 @@
     "donationBoxThalangHeroAlt": "Thalang Animal Hospital in Phuket",
     "donationBoxThalangVideoAlt": "Saved Souls donatiebox bij Thalang Animal Hospital",
     "donationBoxThalangPhotoAlt1": "Donatiebox op de balie van Thalang Animal Hospital",
-    "donationBoxThalangPhotoAlt2": "Receptie Thalang Animal Hospital"
+    "donationBoxThalangPhotoAlt2": "Receptie Thalang Animal Hospital",
+    "flyerHaarlemSectionTitle": "Flyer-partner in Nederland",
+    "flyerHaarlemSectionSubtitle": "Samen met DierenDokters Haarlem",
+    "flyerHaarlemSectionIntro": "DierenDokters Haarlem heeft onze Saved Souls-flyer opgehangen in de wachtruimte. Zo bereiken we dierenbezitters in Haarlem die onze reddingsactie voor honden en katten in Khon Kaen willen steunen.",
+    "flyerHaarlemSectionHighlight": "Persoonlijke aandacht voor mens en dier — precies de waarden die we delen.",
+    "flyerHaarlemSectionVisit": "Bezoek DierenDokters Haarlem",
+    "flyerHaarlemSectionPhone": "Bel 023 870 0303",
+    "flyerHaarlemTeamAlt": "Team van DierenDokters Haarlem",
+    "flyerHaarlemFlyerAlt": "Saved Souls-flyer in de wachtruimte van DierenDokters Haarlem"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Bedankt Thalang Animal Hospital | Saved Souls Foundation",
@@ -2544,6 +2552,26 @@
     "heroAlt": "Thalang Animal Hospital gevel in Phuket",
     "photoAlt1": "Saved Souls donatiebox op de balie",
     "photoAlt2": "Receptie Thalang Animal Hospital"
+  },
+  "bedanktDierenDoktersHaarlem": {
+    "metaTitle": "Bedankt DierenDokters Haarlem | Saved Souls Foundation",
+    "metaDescription": "Hartelijk dank aan DierenDokters Haarlem voor het ophangen van onze Saved Souls-flyer in de wachtruimte.",
+    "title": "Hartelijk bedankt, DierenDokters Haarlem!",
+    "subtitle": "Persoonlijke aandacht voor mens en dier",
+    "location": "De Ruijterweg 18, 2014 AV Haarlem",
+    "intro": "We zijn ontzettend dankbaar dat DierenDokters Haarlem onze Saved Souls-flyer heeft opgehangen in de wachtruimte. Dankzij dit warme team in Haarlem kunnen bezoekers en dierenbezitters kennismaken met onze reddingsactie voor honden en katten in Khon Kaen, Thailand.",
+    "partnershipTitle": "Een betrouwbare partner in Haarlem",
+    "partnershipText": "DierenDokters Haarlem is een complete dierenkliniek met een enthousiast team van dierenartsen en paraveterinairen. Met persoonlijke aandacht voor mens en dier sluiten zij perfect aan bij onze missie: elk dier verdient liefde, medische zorg en een veilig thuis.",
+    "flyerTitle": "Onze flyer in de wachtruimte",
+    "flyerText": "De flyer hangt zichtbaar in de wachtruimte — naast de speciale kattenparkeerplek voor minder stress. Zo bereiken we mensen op het moment dat zij al bezig zijn met de zorg voor hun huisdier. Elke donatie via de QR-code op de flyer helpt onze honden en katten in Thailand.",
+    "teamAlt": "Team van DierenDokters Haarlem",
+    "flyerAlt": "Saved Souls-flyer opgehangen in de wachtruimte van DierenDokters Haarlem",
+    "flyerCaption": "Onze flyer in de wachtruimte van DierenDokters Haarlem",
+    "visitClinic": "Bezoek de website",
+    "callClinic": "Bel 023 870 0303",
+    "requestFlyer": "Gratis flyer aanvragen",
+    "freeNote": "Flyers zijn gratis. Wij voeren vooraf een screening uit zodat donaties veilig blijven.",
+    "backToPartners": "Terug naar partners"
   },
   "bedanktDonatieboxMedespelers": {
     "metaTitle": "Bedankt donatiebox-medespelers | Saved Souls Foundation",
