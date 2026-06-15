@@ -81,6 +81,7 @@ export async function POST(req: Request) {
     source: body.source ?? "manual",
     slug,
     meta_description: body.meta_description ?? null,
+    hero_image: body.hero_image ?? null,
     gepubliceerd_op: gepubliceerdOp,
   };
   console.log("[blog] POST insert:", { titel: insertData.titel?.slice(0, 40), status, slug });

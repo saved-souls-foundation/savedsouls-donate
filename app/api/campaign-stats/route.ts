@@ -1,13 +1,26 @@
 /**
  * GET /api/campaign-stats — laatste campaign_stats voor emergency/frontend.
- * Cache: revalidate elke 3600 seconden.
+ * Cache: 1 uur via Cache-Control (geen build-time prerender).
  */
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+
+const CACHE_CONTROL = "public, s-maxage=3600, stale-while-revalidate=86400";
+
+const FALLBACK = {
+  raised: 0,
+  goal: 120_000,
+  donations: [] as unknown[],
+  updated_at: null as string | null,
+};
 
 export async function GET() {
+  if (!isSupabaseAdminConfigured()) {
+    return NextResponse.json(FALLBACK, { headers: { "Cache-Control": CACHE_CONTROL } });
+  }
+
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("campaign_stats")
@@ -21,18 +34,16 @@ export async function GET() {
   }
 
   if (!data) {
-    return NextResponse.json({
-      raised: 0,
-      goal: 120_000,
-      donations: [],
-      updated_at: null,
-    });
+    return NextResponse.json(FALLBACK, { headers: { "Cache-Control": CACHE_CONTROL } });
   }
 
-  return NextResponse.json({
-    raised: data.raised_eur,
-    goal: data.goal_eur,
-    donations: data.donations ?? [],
-    updated_at: data.updated_at,
-  });
+  return NextResponse.json(
+    {
+      raised: data.raised_eur,
+      goal: data.goal_eur,
+      donations: data.donations ?? [],
+      updated_at: data.updated_at,
+    },
+    { headers: { "Cache-Control": CACHE_CONTROL } }
+  );
 }

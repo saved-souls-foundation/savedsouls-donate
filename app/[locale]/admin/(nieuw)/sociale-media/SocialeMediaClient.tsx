@@ -45,6 +45,19 @@ function truncate(s: string, len: number): string {
   return s.slice(0, len) + "…";
 }
 
+async function uploadBlogImage(file: File): Promise<string> {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch("/api/admin/blog/upload", { method: "POST", body: form });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error((data as { error?: string }).error ?? "Afbeelding uploaden mislukt");
+  }
+  const url = (data as { url?: string }).url;
+  if (!url) throw new Error("Geen URL ontvangen na upload");
+  return url;
+}
+
 type TabId = "compose" | "platforms" | "calendar" | "blog";
 
 interface BlogPost {
@@ -62,6 +75,7 @@ interface BlogPost {
   created_at: string | null;
   updated_at: string | null;
   facebook_post_id: string | null;
+  hero_image: string | null;
 }
 
 export default function SocialeMediaClient() {
@@ -111,6 +125,9 @@ export default function SocialeMediaClient() {
   const [blogAiWriting, setBlogAiWriting] = useState(false);
   const [blogAiTranslating, setBlogAiTranslating] = useState(false);
   const [blogSaving, setBlogSaving] = useState(false);
+  const [blogHeroImage, setBlogHeroImage] = useState<string | null>(null);
+  const [blogHeroImageFile, setBlogHeroImageFile] = useState<File | null>(null);
+  const [blogHeroUploading, setBlogHeroUploading] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
   const [saveError, setSaveError] = useState("");
 
@@ -280,6 +297,14 @@ export default function SocialeMediaClient() {
         fetchPosts();
       }
       if (activePlatforms.includes("blog")) {
+        let heroImageUrl: string | null = null;
+        if (postImage) {
+          try {
+            heroImageUrl = await uploadBlogImage(postImage);
+          } catch (e) {
+            throw new Error(e instanceof Error ? e.message : "Afbeelding uploaden mislukt");
+          }
+        }
         const res = await fetch("/api/blog", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -288,6 +313,7 @@ export default function SocialeMediaClient() {
             body: postText.trim(),
             status: scheduleMode === "now" ? "published" : "concept",
             source: "manual",
+            hero_image: heroImageUrl,
             published_at:
               scheduleMode === "now" ? new Date().toISOString() : null,
           }),
@@ -390,6 +416,13 @@ export default function SocialeMediaClient() {
       .slice(0, 60);
     setBlogSaving(true);
     try {
+      let heroImageUrl = blogHeroImage;
+      if (blogHeroImageFile) {
+        setBlogHeroUploading(true);
+        heroImageUrl = await uploadBlogImage(blogHeroImageFile);
+        setBlogHeroImage(heroImageUrl);
+        setBlogHeroImageFile(null);
+      }
       const res = await fetch(
         editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog",
         {
@@ -404,6 +437,7 @@ export default function SocialeMediaClient() {
             status: blogStatus,
             source: "manual",
             slug,
+            hero_image: heroImageUrl,
             published_at: blogStatus === "published" ? new Date().toISOString() : null,
           }),
         }
@@ -417,10 +451,11 @@ export default function SocialeMediaClient() {
       setTimeout(() => setSaveToast(false), 3000);
       setBlogView("list");
       loadBlogPosts();
-    } catch {
-      setSaveError("Netwerkfout. Probeer opnieuw.");
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "Netwerkfout. Probeer opnieuw.");
     } finally {
       setBlogSaving(false);
+      setBlogHeroUploading(false);
     }
   }
 
@@ -919,6 +954,8 @@ export default function SocialeMediaClient() {
                     setBlogBodyTh("");
                     setBlogCategory("nieuws");
                     setBlogStatus("concept");
+                    setBlogHeroImage(null);
+                    setBlogHeroImageFile(null);
                     setBlogView("editor");
                   }}
                   className="px-4 py-2 rounded-xl bg-[#2aa348] text-white font-semibold text-sm hover:bg-[#166534] transition-colors"
@@ -942,6 +979,8 @@ export default function SocialeMediaClient() {
                     setBlogBodyTh("");
                     setBlogCategory("nieuws");
                     setBlogStatus("concept");
+                    setBlogHeroImage(null);
+                    setBlogHeroImageFile(null);
                     setBlogView("editor");
                   }}
                 />
@@ -1025,6 +1064,8 @@ export default function SocialeMediaClient() {
                                     setBlogBodyTh(String(post.body_th ?? ""));
                                     setBlogCategory(String(post.category ?? "nieuws"));
                                     setBlogStatus(String(post.status ?? "concept"));
+                                    setBlogHeroImage(post.hero_image ?? null);
+                                    setBlogHeroImageFile(null);
                                     setBlogView("editor");
                                   },
                                 },
@@ -1146,6 +1187,48 @@ export default function SocialeMediaClient() {
                   </div>
                 </div>
                 <div className="space-y-4">
+                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                      Coverafbeelding
+                    </label>
+                    {(blogHeroImage || blogHeroImageFile) && (
+                      <div className="mb-3 relative">
+                        <img
+                          src={blogHeroImageFile ? URL.createObjectURL(blogHeroImageFile) : blogHeroImage!}
+                          alt=""
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBlogHeroImage(null);
+                            setBlogHeroImageFile(null);
+                          }}
+                          className="absolute top-2 right-2 bg-white/90 text-red-500 rounded-full w-6 h-6 text-xs font-bold shadow"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/gif,image/webp"
+                      id="blog-hero-image"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] ?? null;
+                        setBlogHeroImageFile(file);
+                        e.target.value = "";
+                      }}
+                    />
+                    <label
+                      htmlFor="blog-hero-image"
+                      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 border-dashed border-gray-300 text-sm text-gray-500 hover:border-[#2aa348] hover:text-[#2aa348] cursor-pointer transition-colors ${blogHeroUploading ? "opacity-60 pointer-events-none" : ""}`}
+                    >
+                      📷 {blogHeroUploading ? "Uploaden…" : blogHeroImage || blogHeroImageFile ? "Afbeelding wijzigen" : "Afbeelding toevoegen"}
+                    </label>
+                    <p className="text-xs text-gray-400 mt-1">JPG, PNG, GIF of WebP, max 10 MB. Opgeslagen in Supabase Storage.</p>
+                  </div>
                   <div className="bg-white rounded-xl border border-gray-200 p-4">
                     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                       Status

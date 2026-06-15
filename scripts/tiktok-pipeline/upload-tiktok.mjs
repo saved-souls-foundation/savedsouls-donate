@@ -10,8 +10,9 @@
  *   node scripts/tiktok-pipeline/upload-tiktok.mjs --auth
  *   Redirect URI in Developer Portal: http://localhost:3456/callback
  *
- * Stap 2 — 1 testvideo uploaden (Amber, id 307):
+ * Stap 2 — testupload (1–2 video's uit upload-queue.csv):
  *   node scripts/tiktok-pipeline/upload-tiktok.mjs --test
+ *   node scripts/tiktok-pipeline/upload-tiktok.mjs --test --limit 2
  *
  * Vereist in .env.local (project root):
  *   TIKTOK_CLIENT_KEY=...
@@ -35,6 +36,9 @@ const ENV_FILE = join(PROJECT_ROOT, ".env.local");
 const BASE_DIR = "/Users/mike/Documents/savedsouls-tiktok";
 const TOKEN_FILE = join(BASE_DIR, "tiktok-token.json");
 const VIDEOS_DIR = join(BASE_DIR, "videos");
+const UPLOAD_QUEUE = join(BASE_DIR, "upload-queue.csv");
+const UPLOAD_STATUS = join(BASE_DIR, "upload-status.json");
+const UPLOAD_DELAY_MS = 10_000;
 
 const API_BASE = "https://open.tiktokapis.com";
 const AUTH_URL = "https://www.tiktok.com/v2/auth/authorize/";
@@ -50,11 +54,89 @@ const TEST_CAPTION =
   "Meet Amber! 🐾 Looking for a forever home 🏠 savedsouls-foundation.org/adopt";
 const TEST_HASHTAGS = "#rescuedog #adoptdontshop #ThailandRescue #savedsouls";
 
+const runAuth = process.argv.includes("--auth");
+const runTest = process.argv.includes("--test");
+
+function parseLimitArg() {
+  const idx = process.argv.indexOf("--limit");
+  if (idx === -1) return 1;
+  const n = Number(process.argv[idx + 1]);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 1;
+}
+
 const MIN_CHUNK_BYTES = 5 * 1024 * 1024;
 const DEFAULT_CHUNK_BYTES = 10 * 1024 * 1024;
 
-const runAuth = process.argv.includes("--auth");
-const runTest = process.argv.includes("--test");
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        field += c;
+      }
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ",") {
+      row.push(field);
+      field = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field);
+      field = "";
+      if (row.some((cell) => cell.length > 0)) rows.push(row);
+      row = [];
+    } else {
+      field += c;
+    }
+  }
+
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    if (row.some((cell) => cell.length > 0)) rows.push(row);
+  }
+
+  return rows;
+}
+
+async function loadUploadQueue() {
+  const raw = await readFile(UPLOAD_QUEUE, "utf8");
+  const rows = parseCsv(raw);
+  if (rows.length < 2) return [];
+
+  const header = rows[0];
+  return rows.slice(1).map((cells) => {
+    const entry = {};
+    for (let i = 0; i < header.length; i++) {
+      entry[header[i]] = cells[i] ?? "";
+    }
+    return entry;
+  });
+}
+
+async function loadUploadStatus() {
+  if (!(await fileExists(UPLOAD_STATUS))) return {};
+  try {
+    return JSON.parse(await readFile(UPLOAD_STATUS, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+async function saveUploadStatus(status) {
+  await writeFile(UPLOAD_STATUS, JSON.stringify(status, null, 2) + "\n", "utf8");
+}
 
 function log(label, data) {
   console.log(`\n=== ${label} ===`);
@@ -482,37 +564,25 @@ async function publishComment(accessToken, videoId, text) {
   });
 }
 
-async function uploadTestVideo(accessToken) {
-  if (!(await fileExists(TEST_VIDEO))) {
-    throw new Error(`Testvideo niet gevonden: ${TEST_VIDEO}`);
+async function uploadSingleVideo(accessToken, { videoPath, caption, hashtags, label }) {
+  if (!(await fileExists(videoPath))) {
+    throw new Error(`Video niet gevonden: ${videoPath}`);
   }
 
-  const videoBuffer = await readFile(TEST_VIDEO);
+  const videoBuffer = await readFile(videoPath);
   const videoSize = videoBuffer.length;
   const chunkPlan = buildChunkPlan(videoSize);
 
-  log("Test upload start", {
-    video: TEST_VIDEO,
+  log(`Upload start: ${label}`, {
+    video: videoPath,
     bytes: videoSize,
-    caption: TEST_CAPTION,
-    hashtags: TEST_HASHTAGS,
+    caption,
+    hashtags,
     privacy_level: PRIVACY_LEVEL,
     sandbox: SANDBOX,
   });
 
-  const creatorInfo = await queryCreatorInfo(accessToken);
-  const privacyOptions =
-    creatorInfo.data?.privacy_level_options ||
-    creatorInfo.data?.creator_info?.privacy_level_options;
-
-  if (privacyOptions && !privacyOptions.includes(PRIVACY_LEVEL)) {
-    log("Waarschuwing", {
-      message: `${PRIVACY_LEVEL} niet in toegestane opties`,
-      privacyOptions,
-    });
-  }
-
-  const initRes = await initVideoUpload(accessToken, videoSize, TEST_CAPTION);
+  const initRes = await initVideoUpload(accessToken, videoSize, caption);
   const publishId = initRes.data?.publish_id;
   const uploadUrl = initRes.data?.upload_url;
 
@@ -528,34 +598,149 @@ async function uploadTestVideo(accessToken) {
   let commentResult = null;
   const postIds = finalStatus.publicaly_available_post_id || [];
 
-  if (postIds.length > 0) {
+  if (postIds.length > 0 && hashtags) {
     try {
-      commentResult = await publishComment(
-        accessToken,
-        postIds[0],
-        TEST_HASHTAGS
-      );
+      commentResult = await publishComment(accessToken, postIds[0], hashtags);
     } catch (err) {
       log("Comment mislukt (kan bij SELF_ONLY / sandbox)", {
         error: err instanceof Error ? err.message : String(err),
       });
     }
-  } else {
+  } else if (hashtags) {
     log(
       "Geen publicaly_available_post_id — comment overgeslagen",
-      "Bij SELF_ONLY sandbox-posts is dit normaal; hashtags staan al in caption indien nodig."
+      "Hashtags kunnen in caption staan of later handmatig."
     );
   }
 
-  log("Upload resultaat", {
+  const result = {
     publish_id: publishId,
     status: finalStatus.status,
     fail_reason: finalStatus.fail_reason || null,
     post_ids: postIds,
     comment: commentResult?.data || null,
+  };
+
+  log(`Upload resultaat: ${label}`, result);
+
+  if (finalStatus.status === "FAILED") {
+    throw new Error(finalStatus.fail_reason || "Publish FAILED");
+  }
+
+  return result;
+}
+
+async function runTestBatch(accessToken, limit) {
+  const queue = await loadUploadQueue();
+  if (queue.length === 0) {
+    throw new Error(`Geen rijen in ${UPLOAD_QUEUE}`);
+  }
+
+  const status = await loadUploadStatus();
+  let creatorChecked = false;
+  const batch = [];
+  let skipped = 0;
+
+  for (const row of queue) {
+    if (batch.length >= limit) break;
+
+    const filename = row.filename?.trim();
+    if (!filename) continue;
+
+    const id = filename.replace(/\.mp4$/i, "");
+    if (status[id]?.status === "ok") {
+      skipped++;
+      continue;
+    }
+
+    const videoPath = join(VIDEOS_DIR, filename);
+    if (!(await fileExists(videoPath))) {
+      log("Skip — geen videobestand", videoPath);
+      continue;
+    }
+
+    batch.push({
+      id,
+      filename,
+      videoPath,
+      caption: row.caption?.trim() || "",
+      hashtags: row.hashtags?.trim() || "",
+      label: `${row.animal_name || id} (${filename})`,
+    });
+  }
+
+  log("Test batch", {
+    limit,
+    selected: batch.length,
+    skipped_already_uploaded: skipped,
+    queue_total: queue.length,
   });
 
-  return { publishId, finalStatus, commentResult };
+  if (batch.length === 0) {
+    console.log("Geen video's om te uploaden (alles al gedaan of geen bestanden).");
+    return;
+  }
+
+  for (let i = 0; i < batch.length; i++) {
+    const item = batch[i];
+    console.log(`\n▶️  Video ${i + 1}/${batch.length}: ${item.label}`);
+
+    if (!creatorChecked) {
+      const creatorInfo = await queryCreatorInfo(accessToken);
+      const privacyOptions =
+        creatorInfo.data?.privacy_level_options ||
+        creatorInfo.data?.creator_info?.privacy_level_options;
+
+      if (privacyOptions && !privacyOptions.includes(PRIVACY_LEVEL)) {
+        log("Waarschuwing", {
+          message: `${PRIVACY_LEVEL} niet in toegestane opties`,
+          privacyOptions,
+        });
+      }
+      creatorChecked = true;
+    }
+
+    try {
+      const result = await uploadSingleVideo(accessToken, item);
+      status[item.id] = {
+        status: "ok",
+        filename: item.filename,
+        animal_name: item.label,
+        publish_id: result.publish_id,
+        tiktok_status: result.status,
+        uploaded_at: new Date().toISOString(),
+      };
+      await saveUploadStatus(status);
+      console.log(`   ✅ ${item.filename}`);
+    } catch (err) {
+      status[item.id] = {
+        status: "failed",
+        filename: item.filename,
+        error: err instanceof Error ? err.message : String(err),
+        failed_at: new Date().toISOString(),
+      };
+      await saveUploadStatus(status);
+      console.error(`   ❌ ${item.label}:`, err instanceof Error ? err.message : err);
+    }
+
+    if (i < batch.length - 1) {
+      log(`Wacht ${UPLOAD_DELAY_MS / 1000}s (rate limit)…`);
+      await sleep(UPLOAD_DELAY_MS);
+    }
+  }
+
+  console.log("\n--- Summary ---");
+  console.log(`Verwerkt: ${batch.length}`);
+  console.log(`Status:   ${UPLOAD_STATUS}`);
+}
+
+async function uploadTestVideo(accessToken) {
+  return uploadSingleVideo(accessToken, {
+    videoPath: TEST_VIDEO,
+    caption: TEST_CAPTION,
+    hashtags: TEST_HASHTAGS,
+    label: "Amber (307.mp4)",
+  });
 }
 
 async function main() {
@@ -567,26 +752,32 @@ async function main() {
     sandbox: SANDBOX,
     privacy_level: PRIVACY_LEVEL,
     token_file: TOKEN_FILE,
-    test_video: TEST_VIDEO,
+    upload_queue: UPLOAD_QUEUE,
   });
 
   if (runAuth) {
     await runOAuthFlow();
     console.log("\n✅ OAuth klaar. Draai daarna:");
-    console.log("   node scripts/tiktok-pipeline/upload-tiktok.mjs --test");
+    console.log("   node scripts/tiktok-pipeline/upload-tiktok.mjs --test --limit 2");
     return;
   }
 
   if (runTest) {
     const token = await ensureAccessToken();
-    await uploadTestVideo(token.access_token);
+    const limit = parseLimitArg();
+    if (limit === 1 && process.argv.indexOf("--limit") === -1) {
+      await uploadTestVideo(token.access_token);
+    } else {
+      await runTestBatch(token.access_token, limit);
+    }
     console.log("\n✅ Test upload afgerond.");
     return;
   }
 
   console.log("Gebruik:");
-  console.log("  node scripts/tiktok-pipeline/upload-tiktok.mjs --auth   # OAuth2 flow");
-  console.log("  node scripts/tiktok-pipeline/upload-tiktok.mjs --test   # 1 testvideo uploaden");
+  console.log("  node scripts/tiktok-pipeline/upload-tiktok.mjs --auth              # OAuth2 flow");
+  console.log("  node scripts/tiktok-pipeline/upload-tiktok.mjs --test              # 1 video (Amber)");
+  console.log("  node scripts/tiktok-pipeline/upload-tiktok.mjs --test --limit 2    # 2 video's uit CSV");
 }
 
 main().catch((err) => {

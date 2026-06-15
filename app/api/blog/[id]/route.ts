@@ -68,6 +68,7 @@ export async function PUT(
     ...(body.source != null && { source: body.source }),
     ...(body.slug != null && body.slug !== "" && { slug: body.slug }),
     ...(body.meta_description != null && { meta_description: body.meta_description }),
+    ...(body.hero_image !== undefined && { hero_image: body.hero_image }),
     ...(gepubliceerdOp !== undefined && { gepubliceerd_op: gepubliceerdOp }),
   };
 

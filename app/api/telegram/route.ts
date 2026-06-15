@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 // Tijdelijke opslag voor bevestigingen (in memory, per chatId)
 const pendingConfirmations = new Map<number, {
@@ -76,6 +72,8 @@ async function slaOp(
   data: Record<string, unknown>,
   afzender: string
 ) {
+  const supabase = createAdminClient();
+
   if (type === "afspraak") {
     const datum = data.datum ? String(data.datum).trim() : "";
     const tijd = data.tijd ? String(data.tijd).trim() : "09:00";
