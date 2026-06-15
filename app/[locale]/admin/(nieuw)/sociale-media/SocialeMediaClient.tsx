@@ -48,13 +48,35 @@ function truncate(s: string, len: number): string {
 async function uploadBlogImage(file: File): Promise<string> {
   const form = new FormData();
   form.append("file", file);
-  const res = await fetch("/api/admin/blog/upload", { method: "POST", body: form });
+  const uploadUrl = `${window.location.origin}/api/admin/blog/upload`;
+  console.log("[blog upload] POST", uploadUrl, {
+    name: file.name,
+    type: file.type,
+    size: file.size,
+  });
+  const res = await fetch(uploadUrl, {
+    method: "POST",
+    body: form,
+    credentials: "include",
+  });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error((data as { error?: string }).error ?? "Afbeelding uploaden mislukt");
+    console.error("[blog upload] failed:", {
+      status: res.status,
+      statusText: res.statusText,
+      url: uploadUrl,
+      body: data,
+    });
+    const msg = (data as { error?: string }).error;
+    throw new Error(
+      msg
+        ? `${msg} (HTTP ${res.status})`
+        : `Afbeelding uploaden mislukt (HTTP ${res.status} ${res.statusText})`
+    );
   }
   const url = (data as { url?: string }).url;
   if (!url) throw new Error("Geen URL ontvangen na upload");
+  console.log("[blog upload] success:", url);
   return url;
 }
 
@@ -95,6 +117,8 @@ export default function SocialeMediaClient() {
 
   const [postText, setPostText] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
+  const [postImageUrl, setPostImageUrl] = useState<string | null>(null);
+  const [postImageUploading, setPostImageUploading] = useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = useState({
     facebook: true,
     instagram: true,
@@ -297,13 +321,8 @@ export default function SocialeMediaClient() {
         fetchPosts();
       }
       if (activePlatforms.includes("blog")) {
-        let heroImageUrl: string | null = null;
-        if (postImage) {
-          try {
-            heroImageUrl = await uploadBlogImage(postImage);
-          } catch (e) {
-            throw new Error(e instanceof Error ? e.message : "Afbeelding uploaden mislukt");
-          }
+        if (postImage && !postImageUrl) {
+          throw new Error("Afbeelding wordt nog geüpload, wacht even en probeer opnieuw.");
         }
         const res = await fetch("/api/blog", {
           method: "POST",
@@ -313,7 +332,7 @@ export default function SocialeMediaClient() {
             body: postText.trim(),
             status: scheduleMode === "now" ? "published" : "concept",
             source: "manual",
-            hero_image: heroImageUrl,
+            hero_image: postImageUrl,
             published_at:
               scheduleMode === "now" ? new Date().toISOString() : null,
           }),
@@ -328,12 +347,51 @@ export default function SocialeMediaClient() {
       );
       setPostText("");
       setPostImage(null);
+      setPostImageUrl(null);
       setAiPrompt("");
     } catch (e) {
       console.error("Publish error:", e);
       showToast(e instanceof Error ? e.message : "Publiceren mislukt");
     } finally {
       setIsPublishing(false);
+    }
+  }
+
+  async function handleBlogHeroImageSelect(file: File | null) {
+    if (!file) return;
+    setBlogHeroImageFile(file);
+    setBlogHeroUploading(true);
+    setSaveError("");
+    try {
+      const url = await uploadBlogImage(file);
+      setBlogHeroImage(url);
+      setBlogHeroImageFile(null);
+    } catch (e) {
+      setBlogHeroImageFile(null);
+      setBlogHeroImage(null);
+      setSaveError(e instanceof Error ? e.message : "Afbeelding uploaden mislukt");
+    } finally {
+      setBlogHeroUploading(false);
+    }
+  }
+
+  async function handlePostImageSelect(file: File | null) {
+    if (!file) {
+      setPostImage(null);
+      setPostImageUrl(null);
+      return;
+    }
+    setPostImage(file);
+    setPostImageUploading(true);
+    try {
+      const url = await uploadBlogImage(file);
+      setPostImageUrl(url);
+    } catch (e) {
+      setPostImage(null);
+      setPostImageUrl(null);
+      showToast(e instanceof Error ? e.message : "Afbeelding uploaden mislukt");
+    } finally {
+      setPostImageUploading(false);
     }
   }
 
@@ -416,13 +474,6 @@ export default function SocialeMediaClient() {
       .slice(0, 60);
     setBlogSaving(true);
     try {
-      let heroImageUrl = blogHeroImage;
-      if (blogHeroImageFile) {
-        setBlogHeroUploading(true);
-        heroImageUrl = await uploadBlogImage(blogHeroImageFile);
-        setBlogHeroImage(heroImageUrl);
-        setBlogHeroImageFile(null);
-      }
       const res = await fetch(
         editingBlogPost ? `/api/blog/${editingBlogPost.id}` : "/api/blog",
         {
@@ -437,7 +488,7 @@ export default function SocialeMediaClient() {
             status: blogStatus,
             source: "manual",
             slug,
-            hero_image: heroImageUrl,
+            hero_image: blogHeroImage,
             published_at: blogStatus === "published" ? new Date().toISOString() : null,
           }),
         }
@@ -455,7 +506,6 @@ export default function SocialeMediaClient() {
       setSaveError(e instanceof Error ? e.message : "Netwerkfout. Probeer opnieuw.");
     } finally {
       setBlogSaving(false);
-      setBlogHeroUploading(false);
     }
   }
 
@@ -619,21 +669,28 @@ export default function SocialeMediaClient() {
           <div className="mt-3">
             <input
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/gif,image/webp"
               id="post-image"
               className="hidden"
-              onChange={(e) => setPostImage(e.target.files?.[0] ?? null)}
+              disabled={postImageUploading}
+              onChange={(e) => {
+                void handlePostImageSelect(e.target.files?.[0] ?? null);
+                e.target.value = "";
+              }}
             />
             <label
               htmlFor="post-image"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-gray-300 text-sm text-gray-500 hover:border-[#2aa348] hover:text-[#2aa348] cursor-pointer transition-colors w-fit"
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-gray-300 text-sm text-gray-500 hover:border-[#2aa348] hover:text-[#2aa348] cursor-pointer transition-colors w-fit ${postImageUploading ? "opacity-60 pointer-events-none" : ""}`}
             >
-              📎 {postImage ? postImage.name : "Afbeelding toevoegen"}
+              📎 {postImageUploading ? "Uploaden…" : postImage ? postImage.name : "Afbeelding toevoegen"}
             </label>
             {postImage && (
               <button
                 type="button"
-                onClick={() => setPostImage(null)}
+                onClick={() => {
+                  setPostImage(null);
+                  setPostImageUrl(null);
+                }}
                 className="ml-2 text-xs text-red-400 hover:text-red-600"
               >
                 ✕ verwijderen
@@ -1215,9 +1272,9 @@ export default function SocialeMediaClient() {
                       accept="image/jpeg,image/png,image/gif,image/webp"
                       id="blog-hero-image"
                       className="hidden"
+                      disabled={blogHeroUploading}
                       onChange={(e) => {
-                        const file = e.target.files?.[0] ?? null;
-                        setBlogHeroImageFile(file);
+                        void handleBlogHeroImageSelect(e.target.files?.[0] ?? null);
                         e.target.value = "";
                       }}
                     />
