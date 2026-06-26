@@ -1,52 +1,45 @@
 # Saved Souls Foundation
-> Animal rescue sanctuary in Khon Kaen, Thailand — specialized in disabled, 
-> paralyzed, and abused dogs and cats.
 
-## About
-Saved Souls Foundation (SSF) is a registered non-profit organization 
-(registration number 1/2560) founded in 2010 by Gabriela Leonhard in 
-Ban Kok Gnam, Khon Kaen, northeastern Thailand.
+> Animal rescue sanctuary in Khon Kaen, Thailand — specialized in disabled, paralyzed, and abused dogs and cats.
 
-SSF specializes in rescuing and caring for disabled and paralyzed animals 
-that other shelters would euthanize. The foundation rescues dogs and cats 
-from the illegal dog meat trade, abusive situations, and accidents.
+Saved Souls Foundation (SSF) is a registered non-profit (registration 1/2560) founded in 2010 in Ban Kok Gnam, Khon Kaen, Thailand. We care for 300+ dogs and 90+ cats, including 60+ disabled or paralyzed animals that other shelters would euthanize.
 
-## What We Do
-- Rescue disabled, paralyzed, blind, and abused dogs and cats
-- Provide wheelchairs and mobility aids for disabled dogs
-- Daily swimming therapy for paralyzed animals
-- On-site veterinary care including sterilizations and amputations
-- Sterilization campaigns for street animals in surrounding areas
-- Adoption program (local and international)
-- Volunteer program
+## Belangrijkste pagina's
 
-## Key Facts
-- Founded: 2010
-- Registered non-profit: October 9, 2017
-- Location: Ban Kok Gnam, Ban Fang, Khon Kaen, Thailand
-- Animals in care: 300+ dogs, 90+ cats
-- Disabled/paralyzed dogs: 60+
-- Daily food cost: 5,000 THB (~€145) per day
-- Website: https://www.savedsouls-foundation.org
+- [Home](https://www.savedsouls-foundation.org/en): Homepage with mission, news, and ways to help
+- [About us](https://www.savedsouls-foundation.org/en/about-us): Organization history, team, and registration details
+- [Our story](https://www.savedsouls-foundation.org/en/story): How Saved Souls Foundation began in 2010
+- [Contact](https://www.savedsouls-foundation.org/en/contact): Email, phone, and visit information
+- [FAQ](https://www.savedsouls-foundation.org/en/faq): Frequently asked questions about SSF, adoption, and donations
 
-## How to Support
-- Donate: https://www.savedsouls-foundation.org/en/donate
-- Sponsor a dog: https://www.savedsouls-foundation.org/en/sponsor
-- Volunteer: https://www.savedsouls-foundation.org/en/volunteer
-- Adopt: https://www.savedsouls-foundation.org/en/adopt
+## Donate & support
 
-## Contact
-- Email: info@savedsouls-foundation.org
-- Phone: +66 62 369 8246 (office hours: 8:00 AM – 4:00 PM ICT)
-- Facebook: https://www.facebook.com/SavedSoulsFoundation
-- Instagram: https://www.instagram.com/savedsoulsfoundation
+- [Donate](https://www.savedsouls-foundation.org/en/donate): One-time or recurring donations via Mollie
+- [Donation causes](https://www.savedsouls-foundation.org/en/donate/causes): Targeted campaigns and urgent needs
+- [Sponsor a dog](https://www.savedsouls-foundation.org/en/sponsor): Monthly sponsorship for individual animals
+- [Financial overview](https://www.savedsouls-foundation.org/en/financial-overview): Monthly costs and financial transparency
 
-## Languages
-This website is available in 7 languages:
-- English: https://www.savedsouls-foundation.org/en
-- Nederlands: https://www.savedsouls-foundation.org/nl
-- Deutsch: https://www.savedsouls-foundation.org/de
-- Español: https://www.savedsouls-foundation.org/es
-- ภาษาไทย: https://www.savedsouls-foundation.org/th
-- Русский: https://www.savedsouls-foundation.org/ru
-- Français: https://www.savedsouls-foundation.org/fr
+## Get involved
+
+- [Adopt](https://www.savedsouls-foundation.org/en/adopt): Available dogs and cats for local and international adoption
+- [Adoption inquiry](https://www.savedsouls-foundation.org/en/adopt-inquiry): Start the adoption process online
+- [Volunteer](https://www.savedsouls-foundation.org/en/volunteer): Volunteer at the sanctuary in Thailand
+- [International adoption (Luchtbrug)](https://www.savedsouls-foundation.org/en/luchtbrug): Flying animals to new homes abroad
+
+## Guides & information
+
+- [Pet care guides](https://www.savedsouls-foundation.org/en/gidsen): All educational guides in one place
+- [Blog](https://www.savedsouls-foundation.org/en/blog): News and updates from the sanctuary
+- [Disabled dog guide](https://www.savedsouls-foundation.org/en/disabled-dog-guide): Caring for disabled and wheelchair dogs
+- [Paralyzed dogs guide](https://www.savedsouls-foundation.org/en/paralyzed-dogs-guide): Therapy and care for paralyzed animals
+
+## Optional
+
+- [Dutch site](https://www.savedsouls-foundation.org/nl): Nederlandse versie van de website
+- [German site](https://www.savedsouls-foundation.org/de): Deutsche Version der Website
+- [Thai site](https://www.savedsouls-foundation.org/th): Thai language version
+- [Facebook](https://www.facebook.com/SavedSoulsFoundation): Social media updates and photos
+- [Instagram](https://www.instagram.com/savedsoulsfoundation): Photos and stories from daily sanctuary life
+- [context.json](https://www.savedsouls-foundation.org/context.json): Structured NGO data (Schema.org)
+- [ai.txt](https://www.savedsouls-foundation.org/ai.txt): Extended context for AI agents
+- [Sitemap](https://www.savedsouls-foundation.org/sitemap.xml): Full list of indexable pages
