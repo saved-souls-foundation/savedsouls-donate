@@ -3,6 +3,8 @@
  * {@link https://support.google.com/google-ads/answer/6331314}
  */
 
+console.log('BUILD-TIME CHECK:', process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL);
+
 export const GOFUNDME_CAMPAIGN_URL =
   "https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope";
 
