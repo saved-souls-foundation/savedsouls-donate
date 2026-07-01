@@ -22,6 +22,7 @@ const STATIC_PATHS = [
   "/influencers",
   "/about-us",
   "/story",
+  "/trust-impact",
   "/contact",
   "/partners",
   "/shelters",
@@ -205,6 +206,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/support",
     "/blog",
     "/story",
+    "/trust-impact",
     "/gallery",
   ]);
 

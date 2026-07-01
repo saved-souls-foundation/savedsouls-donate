@@ -18,6 +18,7 @@ import {
   Cat,
   Megaphone,
   HelpCircle,
+  BadgeCheck,
   Globe,
   PawPrint,
 } from "lucide-react";
@@ -86,6 +87,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
   const overOnsItems: NavDropdownItem[] = useMemo(() => [
     { href: "/story", label: locale === "nl" ? "Ons verhaal" : locale === "de" ? "Unsere Geschichte" : "Our story", description: tNav("ourStoryDesc"), icon: BookOpen, badgeLabel: tNav("badge1999"), badgeBg: "#e8f5ec", badgeColor: "#1a5c2e" },
     { href: "/about-us", label: locale === "nl" ? "Ons werk" : locale === "de" ? "Unsere Arbeit" : "Our work", description: tNav("ourWorkDesc"), icon: PawPrint, badgeLabel: tNav("badgeYoutube"), badgeBg: "#fff0f0", badgeColor: "#cc0000" },
+    { href: "/trust-impact", label: locale === "nl" ? "Geverifieerde feiten" : locale === "de" ? "Verifizierte Fakten" : "Verified impact", description: locale === "nl" ? "Feiten en impact die je kunt verifiëren" : locale === "de" ? "Überprüfbare Fakten und Wirkung" : "Facts and impact you can verify", icon: BadgeCheck },
     { href: "/faq", label: "FAQ", description: locale === "nl" ? "Veelgestelde vragen" : locale === "de" ? "Häufige Fragen" : "Frequently asked questions", icon: HelpCircle },
     { href: "/donate", label: locale === "nl" ? "Doneer nu" : locale === "de" ? "Jetzt spenden" : "Donate now", icon: Heart },
   ], [locale, tNav]);

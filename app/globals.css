@@ -23,6 +23,20 @@ html {
   --color-brand-red: #7B1010;
   --color-brand-red-light: #C0392B;
   --animate-star-pulse-green: star-pulse-green 2s ease-in-out infinite;
+  --color-ink: #132420;
+  --color-ink2: #1b332c;
+  --color-rice: #F7F1E3;
+  --color-ricedim: #EDE4CE;
+  --color-saffron: #E8A33D;
+  --color-saffrondim: #c98a2c;
+  --color-ember: #E15B44;
+  --color-bamboo: #4C7A63;
+  --color-bamboodim: #3a5f4c;
+  --color-amethyst: #6E4A9E;
+  --color-amethystdim: #573A80;
+  --color-dusk: #3B2A5C;
+  --color-stamp: #8B3A2A;
+  --color-inktext: #152420;
 }
 
 body {

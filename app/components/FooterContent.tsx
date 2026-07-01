@@ -1,6 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
+import DonateQrSeal from "@/components/trust-impact/DonateQrSeal";
+import { TI_IMAGES } from "@/components/trust-impact/images";
 
 const FOOTER_BG = "#1a3d2b";
 
@@ -50,9 +54,34 @@ function SocialIcon({ icon, className }: { icon: string; className?: string }) {
   return icons[icon] ?? null;
 }
 
+function FooterVerifiedBadge() {
+  return (
+    <svg
+      width={16}
+      height={16}
+      viewBox="0 0 16 16"
+      fill="none"
+      className="shrink-0"
+      style={{ color: "var(--color-rice)" }}
+      aria-hidden="true"
+    >
+      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1" />
+      <path
+        d="M5 8.2 7.1 10.3 11 6.4"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function FooterContent() {
   const t = useTranslations("common");
   const locale = useLocale();
+  const pathname = usePathname();
+  const isTrustImpact = pathname.includes("/trust-impact");
   const base = `/${locale}`;
 
   return (
@@ -81,6 +110,24 @@ export default function FooterContent() {
           <p className="text-white/50 text-xs mt-1">
             <span suppressHydrationWarning>{t("footerRegistrationShort")}</span>
           </p>
+          {isTrustImpact && (
+            <figure className="ti-footer-photo mt-5 max-w-[220px] mx-auto">
+              <Image
+                src={TI_IMAGES.teamDonations.src}
+                alt={TI_IMAGES.teamDonations.alt}
+                width={TI_IMAGES.teamDonations.width}
+                height={TI_IMAGES.teamDonations.height}
+                className="ti-footer-photo__img"
+                sizes="220px"
+              />
+              <figcaption className="ti-footer-photo__caption" style={{ fontFamily: "var(--font-ibm-plex-mono)" }}>
+                Volunteers dropping off donated food, Khon Kaen.
+              </figcaption>
+            </figure>
+          )}
+          <div className="mt-4">
+            <DonateQrSeal variant="compact" />
+          </div>
         </div>
 
         <div className="flex items-center justify-center gap-3 mt-4">
@@ -114,6 +161,15 @@ export default function FooterContent() {
               <li key="story"><a href={`${base}/story`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("ourStory")}</span></a></li>
               <li key="contact"><a href={`${base}/contact`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("contact")}</span></a></li>
               <li key="about-us"><a href={`${base}/about-us`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("aboutUs")}</span></a></li>
+              <li key="trust-impact">
+                <a
+                  href={`${base}/trust-impact`}
+                  className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
+                >
+                  <FooterVerifiedBadge />
+                  {locale === "nl" ? "Geverifieerde feiten" : locale === "de" ? "Verifizierte Fakten" : "Verified impact"}
+                </a>
+              </li>
               <li key="blog"><a href={`${base}/blog`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("blog")}</span></a></li>
               <li key="faq"><a href={`${base}/faq`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("faq")}</span></a></li>
               <li key="disclaimer"><a href={`${base}/disclaimer`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("disclaimer")}</span></a></li>

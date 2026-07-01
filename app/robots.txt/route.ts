@@ -25,6 +25,7 @@ User-agent: Claude-Web
 User-agent: ClaudeBot
 User-agent: Claude-SearchBot
 User-agent: PerplexityBot
+User-agent: CCBot
 User-agent: Cohere-AI
 User-agent: Bytespider
 Allow: /
