@@ -107,6 +107,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
       { href: "/sponsor", label: t("sponsor"), description: tNav("sponsorDesc"), icon: Heart },
       { href: "/volunteer", label: t("volunteer"), description: tNav("volunteerDesc"), icon: Sun },
       { href: "/influencers", label: t("influencers"), description: tNav("influencerDesc"), icon: Megaphone, highlight: true },
+      { href: "/dierenvriend-partner", label: t("dierenvriendPartner"), description: tNav("dierenvriendPartnerDesc"), icon: PawPrint },
       { href: "/gidsen", label: t("menuGidsenLabel"), description: tNav("guidesDesc"), icon: BookOpen, highlightYellow: true, badgeLabel: t("menuInformativeBadge") },
       { href: "/shop", label: t("shop"), description: tNav("shopDesc"), icon: ShoppingBag },
       { href: "/street-dogs-thailand", label: t("menuStreetDogsShort"), description: tNav("streetDogsDesc"), icon: MapPin },
