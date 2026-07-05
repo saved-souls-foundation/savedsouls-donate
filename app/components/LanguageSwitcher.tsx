@@ -18,9 +18,14 @@ const LOCALE_NAMES: Record<string, string> = {
   pl: "Polski",
   sv: "Svenska",
   cs: "Čeština",
-  "de-CH": "Schweizerdeutsch",
+  "de-CH": "Deutsch (CH)",
   ko: "한국어",
   ja: "日本語",
+  da: "Dansk",
+  no: "Norsk",
+  "zh-TW": "繁體中文",
+  it: "Italiano",
+  "pt-BR": "Português",
 };
 
 /** Short codes for minimal inline display */
@@ -38,6 +43,11 @@ const LOCALE_SHORT: Record<string, string> = {
   "de-CH": "CH",
   ko: "KO",
   ja: "JA",
+  da: "DA",
+  no: "NO",
+  "zh-TW": "TW",
+  it: "IT",
+  "pt-BR": "PT",
 };
 
 export default function LanguageSwitcher({ compact = false, minimal = false, overlay = false }: { compact?: boolean; minimal?: boolean; overlay?: boolean }) {

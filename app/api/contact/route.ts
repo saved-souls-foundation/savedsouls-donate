@@ -118,6 +118,8 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
 function getLocaleSegment(locale: string): string {
   const lower = (locale || "en").trim().toLowerCase();
   if (lower === "de-ch" || lower.startsWith("de-ch")) return "de-CH";
+  if (lower === "zh-tw" || lower.startsWith("zh-tw")) return "zh-TW";
+  if (lower === "pt-br" || lower.startsWith("pt-br")) return "pt-BR";
   return lower.slice(0, 2);
 }
 
@@ -129,17 +131,17 @@ function getAutoReplyContent(locale: string): AutoReplyContent {
 
 function getDonateUrl(locale: string): string {
   const seg = getLocaleSegment(locale);
-  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"];
   return `${BASE_URL}/${supported.includes(seg) ? seg : "en"}/donate`;
 }
 
 function getContactPageUrl(locale: string): string {
   const seg = getLocaleSegment(locale);
-  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"];
   return `${BASE_URL}/${supported.includes(seg) ? seg : "en"}/contact`;
 }
 
-const SUPPORTED_LOCALES = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
+const SUPPORTED_LOCALES = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const;
 
 /** Bepaalt taal uit Referer-URL (bv. …/de/contact → "de") als fallback als body geen geldige locale stuurt. */
 function getLocaleFromReferer(referer: string | null): string | null {
@@ -147,7 +149,7 @@ function getLocaleFromReferer(referer: string | null): string | null {
   try {
     const url = new URL(referer);
     const path = url.pathname;
-    const match = path.match(/^\/(en|nl|de|de-CH|es|th|ru|fr|pl|sv|cs|ko|ja)(?:\/|$)/);
+    const match = path.match(/^\/(en|nl|de|de-CH|es|th|ru|fr|pl|sv|cs|ko|ja|da|no|zh-TW|it|pt-BR)(?:\/|$)/);
     return match ? match[1] : null;
   } catch {
     return null;

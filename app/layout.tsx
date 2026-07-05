@@ -145,6 +145,11 @@ const LOCALE_TO_LANG: Record<string, string> = {
   "de-CH": "de-CH",
   ko: "ko",
   ja: "ja",
+  da: "da",
+  no: "no",
+  "zh-TW": "zh-Hant",
+  it: "it",
+  "pt-BR": "pt-BR",
 };
 
 export default async function RootLayout({

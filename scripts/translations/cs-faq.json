@@ -1,0 +1,298 @@
+{
+  "faq": {
+    "metaTitle": "Často kladené otázky | Saved Souls Foundation Thailand",
+    "metaDescription": "Odpovědi na nejčastější otázky o Saved Souls Foundation: přispívání, adopce, dobrovolnictví a péče o našich 300+ psů a 90+ koček v Khon Kaen, Thailand.",
+    "metaKeywords": "péče o domácí mazlíčky, výživa mazlíčků, adoptovat psa, péče o psa, výcvik psa, nácvik čistoty psa, nejlepší krmivo pro psy, syrové jídlo pro psy, BARF dieta psa, co pes nesmí jíst, očkování psa, odčervení psa, blechy u psa, průjem u psa, zvracení u psa, adoptovat kočku, nejlepší krmivo pro kočky, sterilizace kočky, očkování kočky, blechy u kočky",
+    "title": "Často kladené otázky",
+    "subtitle": "Vše, co byste měli vědět o Saved Souls Foundation",
+    "stillQuestions": "Máte ještě otázky? Rádi Vám pomůžeme.",
+    "contactUs": "Kontaktujte nás",
+    "getInvolved": "Zapojte se",
+    "myProgress": "Můj pokrok",
+    "linksTitle": "Rychlé odkazy",
+    "linksPlaceholderGetInvolved": "Zapojte se",
+    "linksPlaceholderDonate": "Přispět",
+    "linksPlaceholderAdopt": "Adoptovat",
+    "linksPlaceholderGuides": "Všechny průvodce a info",
+    "linksPlaceholderFinancial": "Finanční přehled",
+    "chapters": {
+      "intro": "Objevte více o psech a kočkách",
+      "introText": "Od tipů na krmení po očkovací kalendáře — naše průvodce Vám pomohou poskytnout mazlíčkovi tu nejlepší péči. Napsáno záchranáři pro milovníky zvířat.",
+      "nutrition": {
+        "title": "Výživa",
+        "teaser": "Syrové nebo vařené? BARF nebo granule? Projděte si fakta. Dobré jídlo = zdravé, spokojené zvíře. Zjistěte, co podávat — a čemu se vyhnout.",
+        "readMore": "Přečtěte si vše o výživě"
+      },
+      "health": {
+        "title": "Zdraví",
+        "teaser": "Vakcíny zachraňují životy. Blechy, klíšťata, srdeční červ — vyzbrojte se znalostmi. Váš mazlíček si zaslouží tu nejlepší ochranu. Kompletní průvodce.",
+        "readMore": "Zobrazit náš zdravotní průvodce"
+      },
+      "firstAid": {
+        "title": "První pomoc pro psa a kočku",
+        "teaser": "Krvácení, otrava, dušení, přehřátí — co dělat? A co mít doma? Základní první pomoc může zachránit život.",
+        "readMore": "K první pomoci"
+      },
+      "firstPetHome": {
+        "title": "Poprvé pes nebo kočka doma",
+        "teaser": "Tipy na první dny: příprava, klid a trpělivost. Nový začátek pro Vás i Vašeho chlupatého přítele.",
+        "readMore": "K průvodci pro začátečníky"
+      },
+      "behavior": {
+        "title": "Chování",
+        "teaser": "Vyděšený? Reaktivní? Úzkostný? Trauma jde hluboko — ale zotavení je možné. Zjistěte, jak pomáháme zachráněným zvířatům, a co můžete udělat Vy.",
+        "readMore": "Přečtěte si o chování a zotavení"
+      },
+      "training": {
+        "title": "Výchova a výcvik",
+        "teaser": "Hračky, pamlsky, trpělivost. Pozitivní výcvik funguje — i u zvířat, která prožila to nejhorší. Objevte metody, které mění životy.",
+        "readMore": "K hračkám a výcviku"
+      },
+      "snacks": {
+        "title": "Pamlsky a žvýkací hračky",
+        "teaser": "Syrová kůže může být smrtelná. Toto je bezpečné — a toto ne. Bezpečnost Vašeho mazlíčka stojí za 2 minuty čtení. Prosíme, ověřte si to před nákupem.",
+        "readMore": "Proč ne syrová kůže?"
+      },
+      "vaccinations": {
+        "title": "Očkování",
+        "teaser": "Kdy? Jak často? Proč? Očkovací kalendáře vysvětleny. DHPP, vztek, leptospiróza — znalosti zachraňují životy. Váš mazlíček si zaslouží ochranu.",
+        "readMore": "Zobrazit očkovací kalendáře"
+      },
+      "dogsCats": {
+        "title": "Psi a kočky",
+        "teaser": "Psi na vozíku, přeživší z obchodu s masem, kočky v nouzi — každá duše má příběh. Zjistěte, jak o ně pečujeme a co potřebují.",
+        "readMore": "Objevte naše zvířata"
+      },
+      "dogHomeAlone": {
+        "title": "Pes sám doma",
+        "teaser": "Od štěkajících sousedů ke klidnému psovi: jak naučit psa zůstat sám doma? Separace není tvrdohlavost — je to čistý stres.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "travelWithPet": {
+        "title": "Cestování se zvířetem",
+        "teaser": "Od čipu po letadlo: vše, co potřebujete pro bezpečnou cestu se psem nebo kočkou. Očkování, dokumenty, letecké společnosti.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "houseTraining": {
+        "title": "Nácvik čistoty",
+        "teaser": "Od louží na podlaze k psovi, který chodí ven: výzva, ale zvládnutelná. Načasování, odměna a trpělivost jsou klíčové.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "movingWithPet": {
+        "title": "Stěhování se zvířetem",
+        "teaser": "Nový domov, nové vůně, nový stres — jak pomoci psovi nebo kočce projít stěhováním? Příprava a klid jsou zásadní.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "catHairball": {
+        "title": "Kočka a chlupové koule",
+        "teaser": "Proč kočky zvracejí chlupové koule — a co s tím dělat? Občas je to normální. Kdy jít k veterináři?",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "puppySocialization": {
+        "title": "Socializace štěněte",
+        "teaser": "Prvních 8–16 týdnů do značné míry určuje chování Vašeho psa. Takto dáte štěněti dobrý start.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogBarking": {
+        "title": "Pes štěká",
+        "teaser": "Štěkání je normální — ale příliš mnoho štěkání může sousedům působit zoufalství. Takto to řešit.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "catIndoorOutdoor": {
+        "title": "Kočka v domě nebo venku",
+        "teaser": "Kočky v domě žijí déle. Kočky venku mají více svobody. Výhody a nevýhody.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogVomitingDiarrhea": {
+        "title": "Pes zvrací nebo má průjem",
+        "teaser": "Kdy je to neškodné a kdy okamžitě k veterináři?",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogAteChocolate": {
+        "title": "Pes snědl čokoládu",
+        "teaser": "Jednejte rychle — příznaky, míra toxicity a přesně co udělat hned teď.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogNotEating": {
+        "title": "Pes nejí",
+        "teaser": "Nejčastější příčiny, kdy je to znepokojivé a co skutečně pomáhá, když pes odmítá jídlo.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "catNotDrinking": {
+        "title": "Kočka nepije dost vody",
+        "teaser": "Dehydratace je u koček nebezpečná. Proč se kočky vyhýbají vodě a jak to napravit.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogVomiting": {
+        "title": "Pes zvrací",
+        "teaser": "Žlutá žluč, bílá pěna nebo krev — co jednotlivé barvy znamenají a kdy jde o nouzový stav.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "puppySchedule": {
+        "title": "Harmonogram štěněte",
+        "teaser": "Krmení, spánek, nácvik čistoty a první povely — týden po týdnu pro nové majitele štěňat.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "catScratchingFurniture": {
+        "title": "Kočka škrábe nábytek",
+        "teaser": "Proč kočka škrábe pohovku a co skutečně funguje, aby ji nasměrovala jinam.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "dogAndCatTogether": {
+        "title": "Pes a kočka spolu",
+        "teaser": "Psi a kočky se mohou stát nejlepšími přáteli — se správným seznámením a trpělivostí.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "walkingDog": {
+        "title": "Venčení a venkovní hygiena",
+        "teaser": "Denní procházky, potřeba venčení, samota doma a rutiny. Struktura pro spokojeného psa.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "toxicPlants": {
+        "title": "Jedovaté rostliny",
+        "teaser": "Které rostliny jsou nebezpečné pro psy a kočky? Poznejte je a chraňte svého mazlíčka.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "petLoss": {
+        "title": "Ztráta mazlíčka a smutek",
+        "teaser": "Rozloučení je těžké. Dary na památku a podpora v obtížných chvílích.",
+        "readMore": "Číst více"
+      },
+      "petInsurance": {
+        "title": "Pojištění mazlíčků",
+        "teaser": "Porovnejte pojištění a zvažte příspěvek pro Saved Souls.",
+        "readMore": "Přečtěte si srovnání"
+      },
+      "seniorPet": {
+        "title": "Mazlíček v seniorském věku",
+        "teaser": "Starší psi a kočky si zaslouží extra péči. Tipy a jak jim Saved Souls pomáhá.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "petProofHouse": {
+        "title": "Dům bezpečný pro mazlíčky",
+        "teaser": "Udělejte domov bezpečným pro psy a kočky. Kuchyně, rostliny, kabely — na co dávat pozor?",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "petSitter": {
+        "title": "Chůva a petsitter",
+        "teaser": "Výběr chůvy nebo hotelu pro zvířata. Na co dávat pozor a co předat před odjezdem na dovolenou.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "petPassport": {
+        "title": "Pas mazlíčka",
+        "teaser": "Čip, očkování, dokumenty — co potřebujete pro cestování se zvířetem?",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "microchipping": {
+        "title": "Mikročipování",
+        "teaser": "Proč čipovat? Jak to funguje? Povinné pro cestování a adopci.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "sterilization": {
+        "title": "Kastrace a sterilizace",
+        "teaser": "Výhody, načasování a jak Saved Souls provádí sterilizační kampaně.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "petAndChildren": {
+        "title": "Mazlíček a děti",
+        "teaser": "Bezpečnost, seznámení a tipy pro rodiče.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "overheating": {
+        "title": "Přehřátí",
+        "teaser": "Psi a kočky se nedokáží dobře potit. V Thailand je to zásadní.",
+        "readMore": "Přečtěte si průvodce"
+      },
+      "foster": {
+        "title": "Dočasná péče",
+        "teaser": "Staňte se dočasnou rodinou pro Saved Souls. Přímá pomoc zvířatům.",
+        "readMore": "Číst více"
+      }
+    },
+    "readMore": "Číst více",
+    "onWikipedia": "Na Wikipedii",
+    "sectionAbout": "O Saved Souls",
+    "sectionAdoption": "Adopce",
+    "sectionDonate": "Přispívání a sponzorství",
+    "sectionVolunteer": "Dobrovolnictví",
+    "volunteerSignUp": "Přihlásit se jako dobrovolník",
+    "sectionAnimals": "Zvířata a péče",
+    "sectionContact": "Kontakt",
+    "q1": "Co je Saved Souls Foundation?",
+    "a1": "Saved Souls Foundation je registrovaný neziskový útulek pro zvířata v Khon Kaen na severovýchodě Thailand. Založila ho v roce 2010 Gabriela Leonhard. Zachraňujeme, pečujeme o psy a kočky — včetně postižených a ochrnutých — a provádíme sterilizační kampaně pro toulavá zvířata.",
+    "q2": "Kde se útulek nachází?",
+    "a2": "Jsme v Ban Khok Ngam, Ban Fang District, provincie Khon Kaen, Thailand. Útulek stojí na 6 rai (přibližně 9 600 m²). Adresa: 133, Ban Khok Ngam, Ban Fang District, Khon Kaen 40270.",
+    "q3": "Kdy nás můžete navštívit?",
+    "a3": "Otevřeno denně 13:30–15:30. Prosíme, kontaktujte nás předem a domluvte si návštěvu. E-mail info@savedsouls-foundation.org nebo telefon +66 62 369 8246 (thajsky).",
+    "q4": "O kolik zvířat pečujete?",
+    "a4": "V současnosti pečujeme přibližně o 430 psů a 91 koček. Všechna dostávají denně čerstvé jídlo, lékařskou péči a pozornost od našeho týmu a dobrovolníků.",
+    "q5": "Je Saved Souls Foundation registrovaná charitativní organizace?",
+    "a5": "Ano. Od 9. října 2017 jsme registrovaná nezisková organizace (registrační číslo 1/2560) pod názvem Saved Souls Foundation.",
+    "q6": "Jak probíhá proces adopce?",
+    "a6": "Prohlédněte si psy a kočky k adopci na webu, vyplňte formulář adopční žádosti a my se Vám ozveme do 48 hodin. Zajišťujeme domácí návštěvy a provázíme Vás celým procesem. Všechna zvířata jsou sterilizovaná, očkovaná a před adopcí zvyklá na vodítko.",
+    "q7": "Mohu adoptovat, když žiji v zahraničí?",
+    "a7": "Adoptujeme především v rámci Thailand, ale mezinárodní adopce může být možná podle předpisů cílové země. Kontaktujte nás s informací o Vaší lokalitě a projednáme možnosti.",
+    "q8": "Je adopční poplatek?",
+    "a8": "Můžeme požádat o malý adopční poplatek na pokrytí nákladů. Přesná částka závisí na zvířeti a situaci. Pro podrobnosti nás prosím kontaktujte.",
+    "q9": "Mohu adoptovat postiženého psa?",
+    "a9": "Ano. Mnoho našich postižených psů — včetně psů na vozíku — najde milující domov. Adoptantům zvířat se speciálními potřebami poskytujeme celoživotní podporu a poradenství.",
+    "q10": "Nabízíte kočky k adopci?",
+    "a10": "Ano. Máme kočky k dispozici k adopci. Prohlédněte si naši galerii koček a odešlete adopční žádost ohledně kočky, o kterou máte zájem.",
+    "q11": "Co když adopce nevyjde?",
+    "a11": "Nabízíme celoživotní podporu. Pokud nemůžete adoptované zvíře udržet, prosíme, kontaktujte nás — pomůžeme najít řešení, včetně převzetí zvířete zpět, pokud bude potřeba.",
+    "q12": "Jak mohu přispět?",
+    "a12": "Můžete přispět přes PayPal na naší domovské stránce, bankovním převodem (Kasikorn Bank Thailand nebo PostFinance Švýcarsko) nebo iDEAL. Podrobnosti najdete v sekci přispívání.",
+    "q13": "Kam jdou mé dary?",
+    "a13": "Přibližně 70 % jde na přímou péči o zvířata (jídlo, veterinář, léky), 20 % na sterilizační kampaně a 10 % na údržbu útulku. Jsme transparentní ohledně využití prostředků.",
+    "q14": "Lze můj dar odečíst od daní?",
+    "a14": "Záleží na Vaší zemi. Jsme registrovaná thajská nezisková organizace. Ohledně odpočitatelných darů ve Vaší jurisdikci se prosím poraďte s daňovým poradcem.",
+    "q15": "Mohu darovat věci místo peněz?",
+    "a15": "Ano. Vítáme dary jídla, dek, zdravotnického materiálu a dalších užitečných věcí. Pro domluvu doručení nebo předání nás prosím kontaktujte.",
+    "q16": "Mohu nastavit měsíční příspěvek?",
+    "a16": "Ano. Měsíční dary nám pomáhají plánovat dopředu. V sekci přispívání na domovské stránce si můžete nastavit pravidelné platby přes PayPal nebo bankovní převod.",
+    "q17": "Jak se mohu stát dobrovolníkem?",
+    "a17": "Můžete dobrovolně pomáhat v našem útulku v Khon Kaen. Úkoly zahrnují venčení psů, krmení, úklid a trávení času se zvířaty. Rezervujte si termín přes stránku dobrovolnictví nebo nás kontaktujte přímo.",
+    "q18": "Potřebuji zkušenosti, abych se stal dobrovolníkem?",
+    "a18": "Ne. Vítáme dobrovolníky všech úrovní zkušeností. Provedeme Vás a přiřadíme vhodné úkoly.",
+    "q19": "Mohu dobrovolničit jen jeden den?",
+    "a19": "Ne. Požadujeme minimum 2 týdny. Investujeme do Vašeho zaškolení — se zvířaty, rutinami a bezpečností. Jeden den nám nepomůže a ani Vám téměř ne. Delší pobyty jsou velmi vítány.",
+    "q20": "Co je sponzorství zvířete?",
+    "a20": "Sponzorství Vám umožní podporovat konkrétního psa nebo kočku měsíčním příspěvkem. Dostáváte aktualizace a fotografie sponzorovaného zvířete. Podrobnosti najdete na stránce sponzorství.",
+    "q21": "Jak sponzorství funguje?",
+    "a21": "Vyberte zvíře z naší galerie sponzorů, nastavte měsíční příspěvek a budeme Vás informovat o jeho pokroku. Sponzorství pomáhá pokrýt jídlo, veterináře a další potřeby.",
+    "q22": "Mohu sponzorovat více než jedno zvíře?",
+    "a22": "Ano. Můžete sponzorovat tolik zvířat, kolik chcete. Každý příspěvek pomáhá.",
+    "q23": "Přijímáte postižené nebo ochrnuté psy?",
+    "a23": "Ano. Specializujeme se na péči o postižené psy, včetně psů na vozíku. Poskytujeme hydroterapii, vozíky a bezpečné prostředí, kde mohou prosperovat.",
+    "q24": "Co je hydroterapie?",
+    "a24": "Hydroterapie pomáhá postiženým a ochrnutým psům budovat sílu a pohyblivost. Náš bazén pravidelně slouží k rehabilitaci. Dary pomáhají udržovat tuto důležitou infrastrukturu.",
+    "q25": "Sterilizujete toulavé psy a kočky?",
+    "a25": "Ano. Provádíme sterilizační kampaně, abychom předešli nechtěným vrhům a snížili utrpení. Dary pomáhají financovat tyto kampaně v našem regionu.",
+    "q26": "Jsou všechna Vaše zvířata očkovaná?",
+    "a26": "Ano. Všechny psy a kočky pod naší péčí jsou očkované a pravidelně procházejí zdravotními kontrolami. Dodržujeme doporučené očkovací kalendáře.",
+    "q27": "Zachraňujete psy z obchodu s masem?",
+    "a27": "Ano. Zachránili jsme psy z obchodu s psím masem. Tito přeživší dostávají extra péči a čas na zotavení, než budou zvažováni k adopci.",
+    "q28": "Jak Vás mohu kontaktovat?",
+    "a28": "E-mail info@savedsouls-foundation.org, kontaktní formulář nebo telefon +66 62 369 8246. Úřední hodiny: 8:00–16:00.",
+    "q29": "Kdo vede Saved Souls Foundation?",
+    "a29": "Saved Souls Foundation vede Melanie de Wit, která se stala manažerkou 20. května 2024. Zakladatelka Gabriela Leonhard nadále podporuje fundaci. Útulek byl založen v roce 2010 a v roce 2017 se stal oficiálně registrovanou neziskovou organizací.",
+    "q30": "Je bezpečné přispívat útulku pro zvířata v Thailand?",
+    "a30": "Ano. Saved Souls Foundation je registrovaná thajská nezisková organizace (registrační číslo 1/2560, registrace 9. října 2017). Publikujeme transparentní finanční přehledy: přibližně 70 % darů jde na přímou péči o zvířata, 20 % na sterilizační kampaně a 10 % na údržbu útulku. Můžete přispět přes PayPal, bankovní převod nebo iDEAL.",
+    "q31": "Je Saved Souls Foundation důvěryhodná organizace?",
+    "a31": "Ano. Saved Souls Foundation je oficiálně registrovaná thajská nezisková organizace, registrační číslo 1/2560, registrovaná 9. října 2017. Publikujeme transparentní finanční zprávy a vítáme návštěvníky v našem útulku v Khon Kaen.",
+    "q32": "Kdo vede Saved Souls Foundation?",
+    "a32": "Saved Souls Foundation vede manažerka Melanie de Wit, která převzala vedení 20. května 2024. Zakladatelka Gabriela Leonhard nadále podporuje fundaci. Útulek byl založen v roce 2010 v Ban Kok Gnam, Khon Kaen, Thailand.",
+    "q33": "Je bezpečné přispívat útulku pro zvířata v Thailand?",
+    "a33": "Ano. Saved Souls Foundation je registrovaná thajská nezisková organizace (číslo 1/2560). Přibližně 70 % darů jde na přímou péči o zvířata, 20 % na sterilizační kampaně a 10 % na údržbu útulku. Můžete přispět přes PayPal, bankovní převod nebo iDEAL.",
+    "q34": "Co se stalo se psy zachráněnými z obchodu s masem?",
+    "a34": "Psi zachránění z nelegálního obchodu s psím masem dostávají v našem útulku intenzivní péči, socializaci a rehabilitaci. Mnozí ztratili veškerou důvěru v lidi a potřebují měsíce, někdy i roky, než budou připraveni k adopci. Nikdy se nevzdáváme.",
+    "q35": "Čím se Saved Souls Foundation liší od jiných útulků?",
+    "a35": "Specializujeme se na postižená, ochrnutá a zvláštní potřeby mající zvířata, která by většina útulků uspala. Poskytujeme vozíky, hydroterapii a denní veterinární péči. Nikdy neodmítneme zvíře kvůli jeho postižení.",
+    "q36": "Kolik stojí provoz Saved Souls Foundation?",
+    "a36": "Samotné denní náklady na krmivo jsou 5 000 THB (přibližně 145 €) denně. Pečujeme o více než 300 psů a 90 koček, včetně 60+ postižených psů. Spoléháme výhradně na dary, sponzorství a fundraising.",
+    "q37": "Mohu navštívit Saved Souls Foundation jako turista?",
+    "a37": "Ano. Návštěvníci jsou vítáni po předchozí domluvě. Útulek se nachází v Ban Kok Gnam, Ban Fang District, asi 40 minut od centra Khon Kaen. Pro domluvení návštěvy nás prosím kontaktujte.",
+    "q38": "Jaký je nejlepší útulek pro zvířata v Khon Kaen, Thailand?",
+    "a38": "Saved Souls Foundation v Ban Kok Gnam, Khon Kaen je jediný útulek v regionu specializující se na postižená a ochrnutá zvířata. Založen v roce 2010, poskytuje domov více než 300 zachráněným psům a 90 kočkám, z nichž mnoho pochází z nelegálního obchodu s psím masem."
+  }
+}

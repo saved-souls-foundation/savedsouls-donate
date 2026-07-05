@@ -58,6 +58,17 @@ const LOCALE_LABELS: Record<string, string> = {
   th: "ภาษาไทย",
   ru: "Русский",
   fr: "Français",
+  pl: "Polski",
+  sv: "Svenska",
+  cs: "Čeština",
+  "de-CH": "Deutsch (CH)",
+  ko: "한국어",
+  ja: "日本語",
+  da: "Dansk",
+  no: "Norsk",
+  "zh-TW": "繁體中文",
+  it: "Italiano",
+  "pt-BR": "Português",
 };
 const LOCALE_FLAGS: Record<string, string> = {
   nl: "🇳🇱",
@@ -67,6 +78,17 @@ const LOCALE_FLAGS: Record<string, string> = {
   th: "🇹🇭",
   ru: "🇷🇺",
   fr: "🇫🇷",
+  pl: "🇵🇱",
+  sv: "🇸🇪",
+  cs: "🇨🇿",
+  "de-CH": "🇨🇭",
+  ko: "🇰🇷",
+  ja: "🇯🇵",
+  da: "🇩🇰",
+  no: "🇳🇴",
+  "zh-TW": "🇹🇼",
+  it: "🇮🇹",
+  "pt-BR": "🇧🇷",
 };
 
 export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeaderProps) {
@@ -284,7 +306,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]"
                   role="listbox"
                 >
-                  {(["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const).map((loc) => (
+                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"
@@ -379,7 +401,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               </button>
               {langOpen && (
                 <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]" role="listbox">
-                  {(["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const).map((loc) => (
+                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"

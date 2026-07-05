@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const BASE_URL = "https://www.savedsouls-foundation.org";
-const LOCALES = ["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+const LOCALES = ["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"];
 
 const disallow = [
   "/admin",

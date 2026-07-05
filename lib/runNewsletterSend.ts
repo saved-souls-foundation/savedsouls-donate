@@ -9,7 +9,7 @@ const BASE_URL = (typeof process.env.NEXT_PUBLIC_SITE_URL === "string" && proces
   ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
   : "https://www.savedsouls-foundation.org";
 const BATCH_SIZE = 50;
-const LANGUAGES = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
+const LANGUAGES = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const;
 
 const UNSUBSCRIBE_LINK_TEXT: Record<(typeof LANGUAGES)[number], string> = {
   nl: "Uitschrijven",
@@ -25,6 +25,11 @@ const UNSUBSCRIBE_LINK_TEXT: Record<(typeof LANGUAGES)[number], string> = {
   "de-CH": "Abmelden",
   ko: "Unsubscribe",
   ja: "Unsubscribe",
+  da: "Afmeld",
+  no: "Avmeld",
+  "zh-TW": "取消訂閱",
+  it: "Annulla iscrizione",
+  "pt-BR": "Cancelar inscrição",
 };
 
 type Lang = (typeof LANGUAGES)[number];

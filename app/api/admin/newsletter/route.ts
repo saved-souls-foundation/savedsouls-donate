@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
   }
   const voornaam = typeof body.voornaam === "string" ? body.voornaam.trim() || null : null;
   const achternaam = typeof body.achternaam === "string" ? body.achternaam.trim() || null : null;
-  const language = typeof body.language === "string" && ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"].includes(body.language) ? body.language : "nl";
+  const language = typeof body.language === "string" && ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"].includes(body.language) ? body.language : "nl";
   const type = body.type === "bedrijf" || body.type === "persoon" ? body.type : null;
 
   const { data: existing } = await supabase!.from("newsletter_subscribers").select("id, actief").eq("email", email).maybeSingle();

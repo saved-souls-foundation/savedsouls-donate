@@ -12,7 +12,7 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
-const VALID_LANGUAGE = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
+const VALID_LANGUAGE = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const;
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { error, supabase } = await requireAdmin();

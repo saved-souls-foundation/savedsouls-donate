@@ -38,7 +38,7 @@ export type WrapAutoReplyOptions = {
 };
 
 function getDonateUrl(locale?: string): string {
-  const seg = locale && ["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"].includes(locale) ? locale : "en";
+  const seg = locale && ["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"].includes(locale) ? locale : "en";
   return `${EMAIL_BASE_URL}/${seg}/donate`;
 }
 

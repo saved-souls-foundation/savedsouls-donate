@@ -11,7 +11,7 @@ type RecurringDonateBody = {
 };
 
 const DESCRIPTION = "Maandelijkse donatie Saved Souls Foundation";
-const ALLOWED_LOCALES = ["nl", "en", "de", "es", "fr", "ru", "th", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
+const ALLOWED_LOCALES = ["nl", "en", "de", "es", "fr", "ru", "th", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const;
 const MAX_AMOUNT = 10000;
 
 const RecurringSchema = z.object({

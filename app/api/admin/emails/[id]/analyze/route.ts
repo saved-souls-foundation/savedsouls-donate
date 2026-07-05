@@ -12,7 +12,7 @@ function wrapHtml(body: string): string {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;line-height:1.5;">${body}</body></html>`;
 }
 
-const LANG_KEYS = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
+const LANG_KEYS = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const;
 
 async function requireAdmin() {
   const supabase = await createClient();

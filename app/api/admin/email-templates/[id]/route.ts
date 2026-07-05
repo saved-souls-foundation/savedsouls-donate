@@ -36,7 +36,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   if (typeof body.naam === "string") payload.naam = body.naam.trim() || null;
   if (typeof body.categorie === "string") payload.categorie = body.categorie.trim() || null;
   if (typeof body.actief === "boolean") payload.actief = body.actief;
-  const langs = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+  const langs = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"];
   for (const lang of langs) {
     const o = body[`onderwerp_${lang}`];
     const i = body[`inhoud_${lang}`];

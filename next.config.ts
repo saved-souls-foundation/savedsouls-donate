@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/pressПресса", destination: "/nl/press", permanent: true },
       {
-        source: "/:locale(nl|en|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja)/partners/layan-vet-bedankt",
+        source: "/:locale(nl|en|pt-BR|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja|da|no|zh-TW|it)/partners/layan-vet-bedankt",
         destination: "/:locale/partners/bedankt-donatiebox-medespelers",
         permanent: true,
       },

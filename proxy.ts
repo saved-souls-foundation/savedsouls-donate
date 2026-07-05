@@ -18,7 +18,7 @@ function getRequestHostname(request: NextRequest): string {
 
 const LEGACY_WWW_COM = "www.savedsouls-foundation.com";
 
-const LOCALE_SEGMENT = "(nl|en|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja)";
+const LOCALE_SEGMENT = "(nl|en|pt-BR|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja|da|no|zh-TW|it)";
 
 export default async function proxy(request: NextRequest) {
   const hostname = getRequestHostname(request);

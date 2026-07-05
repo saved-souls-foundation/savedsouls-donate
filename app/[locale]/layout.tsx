@@ -5,7 +5,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { Noto_Sans_JP, Noto_Sans_KR } from "next/font/google";
+import { Noto_Sans_JP, Noto_Sans_KR, Noto_Sans_TC } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import ImpactTicker from "@/app/components/ImpactTicker";
 import ThemeRoot from "@/app/components/ThemeRoot";
@@ -27,6 +27,13 @@ const notoSansJp = Noto_Sans_JP({
   display: "swap",
 });
 
+const notoSansTc = Noto_Sans_TC({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-tc",
+  display: "swap",
+});
+
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -39,7 +46,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const LOCALE_PREFIX = /^\/(nl|en|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja)(\/|$)/;
+const LOCALE_PREFIX = /^\/(nl|en|pt-BR|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja|da|no|zh-TW|it)(\/|$)/;
 function stripLeadingLocales(path: string): string {
   let p = path || "/";
   while (LOCALE_PREFIX.test(p)) {
@@ -68,13 +75,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ru: `${BASE_URL}/ru${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         th: `${BASE_URL}/th${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         de: `${BASE_URL}/de${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        "de-CH": `${BASE_URL}/de-CH${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         fr: `${BASE_URL}/fr${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         pl: `${BASE_URL}/pl${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         sv: `${BASE_URL}/sv${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         cs: `${BASE_URL}/cs${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
-        "de-CH": `${BASE_URL}/de-CH${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         ko: `${BASE_URL}/ko${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         ja: `${BASE_URL}/ja${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        da: `${BASE_URL}/da${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        no: `${BASE_URL}/no${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        "zh-TW": `${BASE_URL}/zh-TW${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        it: `${BASE_URL}/it${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
+        "pt-BR": `${BASE_URL}/pt-BR${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
         "x-default": `${BASE_URL}/en${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`,
       },
     },
@@ -148,7 +160,13 @@ export default async function LocaleLayout({ children, params }: Props) {
     <NextIntlClientProvider key={locale} locale={locale} messages={messages}>
       <div
         className={
-          locale === "ko" ? notoSansKr.className : locale === "ja" ? notoSansJp.className : undefined
+          locale === "ko"
+            ? notoSansKr.className
+            : locale === "ja"
+              ? notoSansJp.className
+              : locale === "zh-TW"
+                ? notoSansTc.className
+                : undefined
         }
       >
       <script

@@ -30,7 +30,7 @@ const TABS: { id: TabId; label: string; icon: string }[] = [
 ];
 
 function getSubjectAndContent(template: Template, locale: string): { subject: string; content: string } {
-  const lang = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"].includes(locale) ? locale : "nl";
+  const lang = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"].includes(locale) ? locale : "nl";
   const subject =
     (template[`onderwerp_${lang}`] as string) ??
     (template.onderwerp as string) ??
