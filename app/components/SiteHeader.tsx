@@ -284,7 +284,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]"
                   role="listbox"
                 >
-                  {(["nl", "en", "de", "es", "th", "ru", "fr"] as const).map((loc) => (
+                  {(["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"
@@ -379,7 +379,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               </button>
               {langOpen && (
                 <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]" role="listbox">
-                  {(["nl", "en", "de", "es", "th", "ru", "fr"] as const).map((loc) => (
+                  {(["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"

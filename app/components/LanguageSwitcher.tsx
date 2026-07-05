@@ -15,6 +15,12 @@ const LOCALE_NAMES: Record<string, string> = {
   th: "ไทย",
   ru: "Русский",
   fr: "Français",
+  pl: "Polski",
+  sv: "Svenska",
+  cs: "Čeština",
+  "de-CH": "Schweizerdeutsch",
+  ko: "한국어",
+  ja: "日本語",
 };
 
 /** Short codes for minimal inline display */
@@ -26,6 +32,12 @@ const LOCALE_SHORT: Record<string, string> = {
   th: "TH",
   ru: "RU",
   fr: "FR",
+  pl: "PL",
+  sv: "SV",
+  cs: "CS",
+  "de-CH": "CH",
+  ko: "KO",
+  ja: "JA",
 };
 
 export default function LanguageSwitcher({ compact = false, minimal = false, overlay = false }: { compact?: boolean; minimal?: boolean; overlay?: boolean }) {

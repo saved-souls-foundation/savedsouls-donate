@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 
-const VALID_TAAL = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+const VALID_TAAL = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 export async function POST(request: NextRequest) {
   try {

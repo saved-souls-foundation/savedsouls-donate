@@ -138,6 +138,13 @@ const LOCALE_TO_LANG: Record<string, string> = {
   es: "es",
   th: "th",
   ru: "ru",
+  fr: "fr",
+  pl: "pl",
+  sv: "sv",
+  cs: "cs",
+  "de-CH": "de-CH",
+  ko: "ko",
+  ja: "ja",
 };
 
 export default async function RootLayout({

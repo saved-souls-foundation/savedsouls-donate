@@ -15,7 +15,7 @@ async function requireAdmin() {
   return { error: null, supabase: createAdminClient() };
 }
 
-const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 type RestoreSubscriber = {
   email?: string | null;

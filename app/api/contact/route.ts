@@ -115,26 +115,31 @@ const AUTO_REPLY_I18N: Record<string, AutoReplyContent> = {
   },
 };
 
+function getLocaleSegment(locale: string): string {
+  const lower = (locale || "en").trim().toLowerCase();
+  if (lower === "de-ch" || lower.startsWith("de-ch")) return "de-CH";
+  return lower.slice(0, 2);
+}
+
 function getAutoReplyContent(locale: string): AutoReplyContent {
-  const lang = (locale || "en").slice(0, 2).toLowerCase();
+  const lang = getLocaleSegment(locale);
+  if (lang === "de-CH") return AUTO_REPLY_I18N.de;
   return AUTO_REPLY_I18N[lang] ?? AUTO_REPLY_I18N.en;
 }
 
 function getDonateUrl(locale: string): string {
-  const lang = (locale || "en").slice(0, 2).toLowerCase();
-  const supported = ["en", "nl", "de", "es", "th", "ru"];
-  const seg = supported.includes(lang) ? lang : "en";
-  return `${BASE_URL}/${seg}/donate`;
+  const seg = getLocaleSegment(locale);
+  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+  return `${BASE_URL}/${supported.includes(seg) ? seg : "en"}/donate`;
 }
 
 function getContactPageUrl(locale: string): string {
-  const lang = (locale || "en").slice(0, 2).toLowerCase();
-  const supported = ["en", "nl", "de", "es", "th", "ru"];
-  const seg = supported.includes(lang) ? lang : "en";
-  return `${BASE_URL}/${seg}/contact`;
+  const seg = getLocaleSegment(locale);
+  const supported = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
+  return `${BASE_URL}/${supported.includes(seg) ? seg : "en"}/contact`;
 }
 
-const SUPPORTED_LOCALES = ["en", "nl", "de", "es", "th", "ru"] as const;
+const SUPPORTED_LOCALES = ["en", "nl", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 /** Bepaalt taal uit Referer-URL (bv. …/de/contact → "de") als fallback als body geen geldige locale stuurt. */
 function getLocaleFromReferer(referer: string | null): string | null {
@@ -142,7 +147,7 @@ function getLocaleFromReferer(referer: string | null): string | null {
   try {
     const url = new URL(referer);
     const path = url.pathname;
-    const match = path.match(/^\/(en|nl|de|es|th|ru)(?:\/|$)/);
+    const match = path.match(/^\/(en|nl|de|de-CH|es|th|ru|fr|pl|sv|cs|ko|ja)(?:\/|$)/);
     return match ? match[1] : null;
   } catch {
     return null;

@@ -26,7 +26,7 @@ function getSubjectAndContent(
   template: Record<string, unknown>,
   locale: string
 ): { subject: string; content: string } {
-  const lang = ["nl", "en", "es", "ru", "th", "de", "fr"].includes(locale) ? locale : "nl";
+  const lang = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"].includes(locale) ? locale : "nl";
   const onderwerpKey = `onderwerp_${lang}`;
   const inhoudKey = `inhoud_${lang}`;
   const subject =

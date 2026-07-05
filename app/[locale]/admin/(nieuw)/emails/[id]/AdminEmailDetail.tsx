@@ -30,7 +30,7 @@ type Email = {
   status: string;
 };
 
-const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+const LANGS = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 type Template = {
   id: string;
   naam: string | null;

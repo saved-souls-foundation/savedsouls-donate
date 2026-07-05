@@ -35,7 +35,7 @@ const AREA_OPTIONS: { value: string; label: string }[] = [
   { value: "lokaal", label: "Vanuit huis" },
   { value: "beide", label: "Beide" },
 ];
-const LANGUAGE_OPTIONS = ["nl", "en", "de", "es", "fr", "ru", "th"] as const;
+const LANGUAGE_OPTIONS = ["nl", "en", "de", "es", "fr", "ru", "th", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 export default function AdminVrijwilligersClient({ initialRows }: { initialRows: VolunteerRow[] }) {
   const t = useTranslations("admin");

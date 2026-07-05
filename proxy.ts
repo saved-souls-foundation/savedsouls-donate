@@ -18,6 +18,8 @@ function getRequestHostname(request: NextRequest): string {
 
 const LEGACY_WWW_COM = "www.savedsouls-foundation.com";
 
+const LOCALE_SEGMENT = "(nl|en|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja)";
+
 export default async function proxy(request: NextRequest) {
   const hostname = getRequestHostname(request);
   if (hostname === LEGACY_WWW_COM) {
@@ -30,15 +32,15 @@ export default async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  const localeMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)(\/|$)/);
+  const localeMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}(\\/|$)`));
   const locale = localeMatch?.[1] ?? "nl";
 
-  const portalMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/portal(\/|$)/);
-  const adminDashboardMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/admin\/dashboard/);
+  const portalMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/portal(\\/|$)`));
+  const adminDashboardMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/admin\\/dashboard`));
   const isProtected = portalMatch || adminDashboardMatch;
 
   // Nieuwe admin-routes (dashboard, vrijwilligers, adoptanten, documenten): eigen login
-  const adminSubRouteMatch = pathname.match(/^\/(nl|en|de|es|th|ru|fr)\/admin\/(dashboard|vrijwilligers|adoptanten|documenten)(\/|$)/);
+  const adminSubRouteMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/admin\\/(dashboard|vrijwilligers|adoptanten|documenten)(\\/|$)`));
   const isAdminSubRoute = Boolean(adminSubRouteMatch);
 
   if (isAdminSubRoute && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -85,7 +87,7 @@ export default async function proxy(request: NextRequest) {
   }
 
   // Strip alle vooraan staande locale-segmenten (voorkomt dubbele-locale hreflang zoals /de/es/...)
-  const localeSegment = /^\/(nl|en|de|es|th|ru|fr)(\/|$)/;
+  const localeSegment = new RegExp(`^\\/${LOCALE_SEGMENT}(\\/|$)`);
   let pathWithoutLocale = pathname;
   while (localeSegment.test(pathWithoutLocale)) {
     pathWithoutLocale = pathWithoutLocale.replace(localeSegment, "$2") || "/";

@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const MAX_ROWS = 1000;
-const LANG_VALUES = ["nl", "en", "es", "ru", "th", "de", "fr"] as const;
+const LANG_VALUES = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 async function requireAdmin() {
   const supabase = await createClient();

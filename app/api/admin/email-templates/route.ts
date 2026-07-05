@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
   const categorie = typeof body.categorie === "string" ? body.categorie.trim() || null : null;
   const actief = body.actief !== false;
   const payload: Record<string, unknown> = { naam: naam || null, categorie, actief };
-  const langs = ["nl", "en", "es", "ru", "th", "de", "fr"];
+  const langs = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja"];
   for (const lang of langs) {
     const o = body[`onderwerp_${lang}`];
     const i = body[`inhoud_${lang}`];

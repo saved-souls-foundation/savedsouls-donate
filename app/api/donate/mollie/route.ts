@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const MIN_AMOUNT = 1;
 const MAX_AMOUNT = 10000;
-const ALLOWED_LOCALES = ["nl", "en", "de", "es", "fr", "ru", "th"] as const;
+const ALLOWED_LOCALES = ["nl", "en", "de", "es", "fr", "ru", "th", "pl", "sv", "cs", "de-CH", "ko", "ja"] as const;
 
 const DonateSchema = z.object({
   amount: z.number().min(MIN_AMOUNT).max(MAX_AMOUNT),
