@@ -15,7 +15,7 @@ type Partner = {
   url?: string;
 };
 
-const PREFERENCE_KEYS = ["digital", "a3", "a4", "moreInfo"] as const;
+const PREFERENCE_KEYS = ["digital", "a4", "moreInfo"] as const;
 
 export default function DierenvriendPartnerPage() {
   const t = useTranslations("dierenvriendPartner");
@@ -69,7 +69,6 @@ export default function DierenvriendPartnerPage() {
             (
               {
                 digital: t("preferenceDigital"),
-                a3: t("preferenceA3"),
                 a4: t("preferenceA4"),
                 moreInfo: t("preferenceMoreInfo"),
               } as Record<string, string>
@@ -175,34 +174,72 @@ export default function DierenvriendPartnerPage() {
             <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6" style={{ color: ACCENT_GREEN }}>
               {t("posterTitle")}
             </h2>
-            <div className="rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 shadow-md mb-6 max-w-md mx-auto bg-white">
-              <Image
-                src="/images/poster-ssf-a4.png"
-                alt={t("posterAlt")}
-                width={1753}
-                height={2480}
-                className="w-full h-auto"
-                priority
-                unoptimized
-              />
+
+            <div className="flex flex-col items-center mb-8">
+              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4">{t("flyerTitle")}</h3>
+              <div className="rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 shadow-md mb-4 w-full max-w-md mx-auto bg-white">
+                <Image
+                  src="/images/flyer-ssf-a4-nl.png"
+                  alt={t("flyerAlt")}
+                  width={854}
+                  height={1200}
+                  className="w-full h-auto"
+                  priority
+                  unoptimized
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/downloads/SSF-flyer-A4.pdf"
+                  download="SSF-flyer-A4.pdf"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: ACCENT_GREEN }}
+                >
+                  {t("downloadButton")}
+                </a>
+                <button
+                  type="button"
+                  onClick={scrollToForm}
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
+                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+                >
+                  {t("requestButton")}
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/downloads/SSF_poster_NL_A4.pdf"
-                download="SSF_poster_NL_A4.pdf"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: ACCENT_GREEN }}
-              >
-                {t("downloadButton")}
-              </a>
-              <button
-                type="button"
-                onClick={scrollToForm}
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
-                style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
-              >
-                {t("requestButton")}
-              </button>
+
+            <hr className="border-stone-200 dark:border-stone-700 mb-8" />
+
+            <div className="flex flex-col items-center mb-6">
+              <p className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-4">{t("posterFormatA4")}</p>
+              <div className="rounded-xl overflow-hidden border border-stone-200 dark:border-stone-700 shadow-md mb-4 w-full max-w-md mx-auto bg-white">
+                <Image
+                  src="/images/poster-ssf-a4.png"
+                  alt={t("posterAlt")}
+                  width={1753}
+                  height={2480}
+                  className="w-full h-auto"
+                  unoptimized
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/downloads/SSF_poster_NL_A4.pdf"
+                  download="SSF_poster_NL_A4.pdf"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: ACCENT_GREEN }}
+                >
+                  {t("downloadButton")}
+                </a>
+                <button
+                  type="button"
+                  onClick={scrollToForm}
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-opacity hover:opacity-90"
+                  style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+                >
+                  {t("requestButton")}
+                </button>
+              </div>
             </div>
           </div>
 

@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Cormorant_Garamond } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -210,6 +211,7 @@ gtag('config', 'GT-KVFRQZK3');
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );
