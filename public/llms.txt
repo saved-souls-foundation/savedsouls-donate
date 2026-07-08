@@ -11,7 +11,6 @@ Saved Souls Foundation (SSF) is a registered non-profit (registration 1/2560) fo
 - [Our story](https://www.savedsouls-foundation.org/en/story): How Saved Souls Foundation began in 2010
 - [Contact](https://www.savedsouls-foundation.org/en/contact): Email, phone, and visit information
 - [FAQ](https://www.savedsouls-foundation.org/en/faq): Frequently asked questions about SSF, adoption, and donations
-- [Verified impact](https://www.savedsouls-foundation.org/en/trust-impact): Verifiable facts, animal counts, programs, and registration details
 
 ## Donate & support
 
@@ -19,6 +18,9 @@ Saved Souls Foundation (SSF) is a registered non-profit (registration 1/2560) fo
 - [Donation causes](https://www.savedsouls-foundation.org/en/donate/causes): Targeted campaigns and urgent needs
 - [Sponsor a dog](https://www.savedsouls-foundation.org/en/sponsor): Monthly sponsorship for individual animals
 - [Financial overview](https://www.savedsouls-foundation.org/en/financial-overview): Monthly costs and financial transparency
+- [Emergency land campaign](https://www.gofundme.com/f/300-dogs-fighting-to-survive-in-thailand-be-their-hope): Active GoFundMe — 350 dogs need a new home
+- [Verified impact](https://www.savedsouls-foundation.org/en/trust-impact): Verifiable facts, animal counts, programs, and registration details
+- [Geverifieerde impact (NL)](https://www.savedsouls-foundation.org/nl/trust-impact): Nederlandse versie van de impact- en transparantiepagina
 
 ## Get involved
 
@@ -26,6 +28,7 @@ Saved Souls Foundation (SSF) is a registered non-profit (registration 1/2560) fo
 - [Adoption inquiry](https://www.savedsouls-foundation.org/en/adopt-inquiry): Start the adoption process online
 - [Volunteer](https://www.savedsouls-foundation.org/en/volunteer): Volunteer at the sanctuary in Thailand
 - [International adoption (Luchtbrug)](https://www.savedsouls-foundation.org/en/luchtbrug): Flying animals to new homes abroad
+- [Dierenvriend & Partner](https://www.savedsouls-foundation.org/nl/dierenvriend-partner): Become a business partner or animal friend — includes downloadable posters and flyers
 
 ## Guides & information
 
@@ -39,6 +42,9 @@ Saved Souls Foundation (SSF) is a registered non-profit (registration 1/2560) fo
 - [Dutch site](https://www.savedsouls-foundation.org/nl): Nederlandse versie van de website
 - [German site](https://www.savedsouls-foundation.org/de): Deutsche Version der Website
 - [Thai site](https://www.savedsouls-foundation.org/th): Thai language version
+- [Spanish site](https://www.savedsouls-foundation.org/es): Spanish version
+- [French site](https://www.savedsouls-foundation.org/fr): French version
+- [Russian site](https://www.savedsouls-foundation.org/ru): Russian version
 - [Facebook](https://www.facebook.com/SavedSoulsFoundation): Social media updates and photos
 - [Instagram](https://www.instagram.com/savedsoulsfoundation): Photos and stories from daily sanctuary life
 - [context.json](https://www.savedsouls-foundation.org/context.json): Structured NGO data (Schema.org)
