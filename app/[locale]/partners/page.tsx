@@ -13,6 +13,9 @@ const ROSE = "#f472b6";
 const SOFT_PINK = "#fce7f3";
 const DIERENDOKTERS_BLUE = "#0054a6";
 const DIERENDOKTERS_URL = "https://www.dierendokters.com/dierenarts-dierenkliniek/haarlem";
+const SHAMU_ORANGE = "#f97316";
+const SHAMU_MAPS_URL = "https://www.google.com/maps/search/Shamu+Shamu+Pet+Center+Thalang+Phuket";
+const SHAMU_PHONE = "+66623249295";
 
 const PARTNERS = [
   { name: "TVAV", key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png" },
@@ -293,6 +296,64 @@ export default function PartnersPage() {
               <Link
                 href="/partners/flyer-aanvragen"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
+              >
+                {t("donationBoxSectionFlyerLink")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Derde donatiebox Phuket — Shamu Shamu Pet Center */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: SHAMU_ORANGE }}>
+            {t("donationBoxShamuSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("donationBoxShamuSectionSubtitle")}
+          </p>
+
+          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-orange-200/50 dark:border-orange-900/30 mb-8">
+            <img
+              src="/partners/shamu-pet-center/exterior.png"
+              alt={t("donationBoxShamuHeroAlt")}
+              className="w-full h-auto max-h-[480px] object-cover object-center"
+            />
+          </div>
+
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-orange-200/50 dark:border-orange-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p className="text-xl md:text-2xl font-bold text-stone-800 dark:text-stone-100 text-center">
+              {t("donationBoxShamuThankYouHeader")}
+            </p>
+            <p className="whitespace-pre-line text-center max-w-2xl mx-auto">{t("donationBoxShamuThankYouText")}</p>
+
+            <ul className="text-sm text-stone-600 dark:text-stone-400 space-y-1 max-w-xl mx-auto pt-2">
+              <li><span className="font-semibold text-stone-700 dark:text-stone-300">{t("donationBoxShamuCategory")}</span> · {t("donationBoxShamuLocation")}</li>
+              <li>{t("donationBoxShamuAddress")}</li>
+              <li>{t("donationBoxShamuHours")}</li>
+              <li>{t("donationBoxShamuRating")}</li>
+            </ul>
+
+            <p className="text-sm text-stone-600 dark:text-stone-400 text-center">{t("donationBoxSectionFreeNote")}</p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href={SHAMU_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: SHAMU_ORANGE }}
+              >
+                {t("donationBoxShamuSectionVisit")} →
+              </a>
+              <a
+                href={`tel:${SHAMU_PHONE}`}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-orange-300 dark:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors"
+              >
+                {t("donationBoxShamuSectionPhone")}
+              </a>
+              <Link
+                href="/partners/flyer-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-orange-300 dark:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors"
               >
                 {t("donationBoxSectionFlyerLink")}
               </Link>
