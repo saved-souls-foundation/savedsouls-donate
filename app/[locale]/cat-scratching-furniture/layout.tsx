@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { seoGuideMetadata } from "@/lib/seo-guide-metadata";
+import { setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({
   params,
@@ -10,6 +11,14 @@ export async function generateMetadata({
   return seoGuideMetadata("/cat-scratching-furniture", "catScratchingFurniture", locale);
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return children;
 }

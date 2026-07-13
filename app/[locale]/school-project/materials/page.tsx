@@ -6,7 +6,13 @@ import Footer from "@/app/components/Footer";
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
 
-export default async function MaterialsPage() {
+export default async function MaterialsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("schoolProject.materials");
   const tCommon = await getTranslations("common");
 

@@ -10,7 +10,13 @@ export type DocRow = {
   bestandsnaam: string;
 };
 
-export default async function AdminDocumentenPage() {
+export default async function AdminDocumentenPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("admin");
   const supabase = await createClient();
   const { data: rows } = await supabase

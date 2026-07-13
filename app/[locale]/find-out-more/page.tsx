@@ -15,7 +15,13 @@ export const metadata: Metadata = {
   description: "How we rescue and care for dogs in Thailand. Donate, transfer, sponsor a dog or get in touch.",
 };
 
-export default async function FindOutMorePage() {
+export default async function FindOutMorePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("common");
   const tHome = await getTranslations("home");
   const tSoulSaver = await getTranslations("soulSaver");

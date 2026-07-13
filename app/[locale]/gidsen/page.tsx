@@ -7,7 +7,13 @@ import GidsenHub from "./GidsenHub";
 import GidsenAccordion from "./GidsenAccordion";
 import AnimalWelfareOrgsSection from "./AnimalWelfareOrgsSection";
 
-export default async function GidsenPage() {
+export default async function GidsenPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("gidsen");
   const tCommon = await getTranslations("common");
 

@@ -5,7 +5,13 @@ import Footer from "@/app/components/Footer";
 
 const ACCENT_GREEN = "#2aa348";
 
-export default async function Lesson2Page() {
+export default async function Lesson2Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("schoolProject.materials.lesson2");
 
   return (

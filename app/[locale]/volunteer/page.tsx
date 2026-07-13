@@ -21,7 +21,13 @@ export const metadata: Metadata = {
     "Join the Furry Revolution! Volunteer with Saved Souls Foundation in Khon Kaen, Thailand. Minimum 2 weeks. Help rescued dogs and cats. Apply now.",
 };
 
-export default async function VolunteerPage() {
+export default async function VolunteerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("volunteer");
   const tCommon = await getTranslations("common");
 

@@ -8,7 +8,13 @@ import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
 
-export default async function DonateCausesPage() {
+export default async function DonateCausesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("donate");
 
   return (
