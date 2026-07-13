@@ -5,23 +5,38 @@ import { Link } from "@/i18n/navigation";
 import Footer from "../../components/Footer";
 import ParallaxPage from "../../components/ParallaxPage";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import enMessages from "@/messages/en.json";
 
 const ACCENT_GREEN = "#2aa348";
 const PINK = "#ec4899";
 const ROSE = "#f472b6";
 const SOFT_PINK = "#fce7f3";
-const DIERENDOKTERS_BLUE = "#0054a6";
 const DIERENDOKTERS_URL = "https://www.dierendokters.com/dierenarts-dierenkliniek/haarlem";
 const SHAMU_ORANGE = "#f97316";
 const SHAMU_MAPS_URL = "https://www.google.com/maps/search/Shamu+Shamu+Pet+Center+Thalang+Phuket";
 const SHAMU_PHONE = "+66623249295";
 
-const PARTNERS = [
+type PartnerEntry = {
+  name: string;
+  key: string;
+  url: string;
+  logo?: string;
+  shimmer?: boolean;
+  logoClassName?: string;
+  logoLayout?: "default" | "banner";
+};
+
+const GROENPRINT_EN = (enMessages.partners as { groenprint: { fullName: string; description: string } }).groenprint;
+const DIERENDOKTERS_EN = (enMessages.partners as { dierendoktershaarlem: { fullName: string; description: string } }).dierendoktershaarlem;
+
+const PARTNERS: PartnerEntry[] = [
   { name: "TVAV", key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png" },
   { name: "K9Aid", key: "k9aid", url: "https://k9aid.org", logo: "/partners/k9aid.png" },
   { name: "Project Street Dogs Thailand", key: "streetdogsthailand", url: "https://streetdogsthailand.com", logo: "/partners/streetdogsthailand.png" },
   { name: "GiftHoney", key: "gifthoney", url: "https://gifthoney.co", logo: "/partners/gifthoney.png" },
+  { name: "Groenprint", key: "groenprint", url: "https://www.groenprint.nl/", logo: "/groenprint-logo.webp", shimmer: true },
+  { name: "DierenDokters Haarlem", key: "dierendoktershaarlem", url: DIERENDOKTERS_URL, logo: "/partners/dierendokters-haarlem/team.png", logoLayout: "banner" },
 ];
 
 function PartnerCard({
@@ -31,12 +46,14 @@ function PartnerCard({
   description,
   visitWebsite,
 }: {
-  partner: (typeof PARTNERS)[0];
+  partner: PartnerEntry;
   index: number;
   fullName: string;
   description: string;
   visitWebsite: string;
 }) {
+  const isBanner = partner.logoLayout === "banner" && Boolean(partner.logo);
+
   return (
     <a
       href={partner.url}
@@ -45,21 +62,41 @@ function PartnerCard({
       className="group block partner-card"
       style={{ ["--card-i" as string]: index }}
     >
-      <article className="relative overflow-hidden rounded-3xl bg-white/95 dark:bg-stone-900/95 border-2 border-rose-200/50 dark:border-rose-900/30 shadow-xl hover:shadow-2xl hover:border-rose-300 dark:hover:border-rose-800/50 transition-all duration-500 p-8 md:p-10">
+      <article
+        className={`relative overflow-hidden rounded-3xl bg-white/95 dark:bg-stone-900/95 border-2 shadow-xl hover:shadow-2xl transition-all duration-500 p-8 md:p-10 ${
+          partner.shimmer
+            ? "golden-shimmer border-amber-300/60 dark:border-amber-700/40 hover:border-amber-400 dark:hover:border-amber-600/50"
+            : "border-rose-200/50 dark:border-rose-900/30 hover:border-rose-300 dark:hover:border-rose-800/50"
+        }`}
+      >
         <div className="relative flex flex-col items-center text-center">
-          <div className="relative w-48 h-48 mb-6">
+          <div
+            className={`relative mb-6 ${
+              isBanner
+                ? "w-[calc(100%+4rem)] md:w-[calc(100%+5rem)] -mx-8 md:-mx-10 aspect-[1024/443] overflow-hidden rounded-2xl"
+                : "w-48 h-48"
+            }`}
+          >
             <div className="partner-logo-hearts absolute inset-0 flex items-center justify-center">
-              <img
-                src={partner.logo}
-                alt={`${partner.name} logo`}
-                className="w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110"
-                onError={(e) => {
-                  const el = e.target as HTMLImageElement;
-                  el.style.display = "none";
-                  el.nextElementSibling?.classList.remove("hidden");
-                }}
-              />
-              <span className="hidden text-4xl font-bold text-stone-600 dark:text-stone-400">
+              {partner.logo ? (
+                <img
+                  src={partner.logo}
+                  alt={`${partner.name} logo`}
+                  className={
+                    isBanner
+                      ? "w-full h-full object-cover object-center z-10 transition-transform duration-700 group-hover:scale-105"
+                      : `w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110${partner.logoClassName ? ` ${partner.logoClassName}` : ""}`
+                  }
+                  onError={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    el.style.display = "none";
+                    el.nextElementSibling?.classList.remove("hidden");
+                  }}
+                />
+              ) : null}
+              <span
+                className={`w-40 h-40 flex items-center justify-center text-center text-2xl md:text-3xl font-bold text-stone-600 dark:text-stone-400 leading-tight px-2${partner.logo ? " hidden" : ""}`}
+              >
                 {partner.name}
               </span>
             </div>
@@ -102,7 +139,21 @@ function PartnerCard({
 
 export default function PartnersPage() {
   const t = useTranslations("partners");
+  const locale = useLocale();
   const tCommon = useTranslations("common");
+
+  function partnerText(key: string) {
+    if (key === "groenprint" && locale !== "nl" && locale !== "en") {
+      return GROENPRINT_EN;
+    }
+    if (key === "dierendoktershaarlem" && locale !== "nl" && locale !== "en") {
+      return DIERENDOKTERS_EN;
+    }
+    return {
+      fullName: t(`${key}.fullName`),
+      description: t(`${key}.description`),
+    };
+  }
   const ctaRef = useRef<HTMLElement>(null);
   const [ctaVisible, setCtaVisible] = useState(false);
 
@@ -145,16 +196,19 @@ export default function PartnersPage() {
             {t("ourPartnersTitle")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-            {PARTNERS.map((partner, index) => (
-              <PartnerCard
-                key={partner.name}
-                partner={partner}
-                index={index}
-                fullName={t(`${partner.key}.fullName`)}
-                description={t(`${partner.key}.description`)}
-                visitWebsite={t("visitWebsite")}
-              />
-            ))}
+            {PARTNERS.map((partner, index) => {
+              const text = partnerText(partner.key);
+              return (
+                <PartnerCard
+                  key={partner.name}
+                  partner={partner}
+                  index={index}
+                  fullName={text.fullName}
+                  description={text.description}
+                  visitWebsite={t("visitWebsite")}
+                />
+              );
+            })}
           </div>
         </section>
 
@@ -354,68 +408,6 @@ export default function PartnersPage() {
               <Link
                 href="/partners/flyer-aanvragen"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-orange-300 dark:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors"
-              >
-                {t("donationBoxSectionFlyerLink")}
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Flyer-partner Nederland — DierenDokters Haarlem */}
-        <section className="mb-16 md:mb-20">
-          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: DIERENDOKTERS_BLUE }}>
-            {t("flyerHaarlemSectionTitle")}
-          </h2>
-          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
-            {t("flyerHaarlemSectionSubtitle")}
-          </p>
-
-          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-blue-200/50 dark:border-blue-900/30 mb-4">
-            <img
-              src="/partners/dierendokters-haarlem/team.png"
-              alt={t("flyerHaarlemTeamAlt")}
-              className="w-full h-auto max-h-[480px] object-cover object-center"
-            />
-          </div>
-
-          <div className="max-w-md mx-auto mb-8 rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700">
-            <img
-              src="/partners/dierendokters-haarlem/flyer.png"
-              alt={t("flyerHaarlemFlyerAlt")}
-              className="w-full h-auto object-cover object-center"
-            />
-          </div>
-
-          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-blue-200/50 dark:border-blue-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
-            <p>{t("flyerHaarlemSectionIntro")}</p>
-            <p className="font-semibold text-stone-800 dark:text-stone-100">{t("flyerHaarlemSectionHighlight")}</p>
-            <p className="text-sm text-stone-600 dark:text-stone-400">{t("donationBoxSectionFreeNote")}</p>
-
-            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
-              <a
-                href={DIERENDOKTERS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
-                style={{ backgroundColor: DIERENDOKTERS_BLUE }}
-              >
-                {t("flyerHaarlemSectionVisit")} →
-              </a>
-              <a
-                href="tel:0238700303"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-blue-300 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
-              >
-                {t("flyerHaarlemSectionPhone")}
-              </a>
-              <Link
-                href="/partners/bedankt-dierendokters-haarlem"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-blue-300 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
-              >
-                {t("donationBoxSectionReadMore")}
-              </Link>
-              <Link
-                href="/partners/flyer-aanvragen"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-blue-300 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
               >
                 {t("donationBoxSectionFlyerLink")}
               </Link>

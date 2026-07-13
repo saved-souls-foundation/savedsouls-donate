@@ -388,7 +388,15 @@
       "cancel": "Annuleren",
       "delete": "Verwijderen",
       "deleteShiftConfirm": "Shift verwijderen?",
-      "daysShort": ["ma", "di", "wo", "do", "vr", "za", "zo"],
+      "daysShort": [
+        "ma",
+        "di",
+        "wo",
+        "do",
+        "vr",
+        "za",
+        "zo"
+      ],
       "toastSaved": "Shift opgeslagen",
       "toastDeleted": "Shift verwijderd",
       "toastWeekCopied": "Week gekopieerd",
@@ -533,7 +541,7 @@
       "sendConfirm": "Je staat op het punt {count} abonnees te mailen. Doorgaan?",
       "sendSuccess": "Nieuwsbrief verstuurd naar {count} abonnees",
       "sendError": "Er ging iets mis bij het versturen",
-      "recipientCount": "Versturen naar {count} actieve abonnees",
+      "recipientCount": "Aantal ontvangers",
       "loadSampleNewsletter": "Laad voorbeeldnieuwsbrief",
       "noResults": "Geen abonnees gevonden",
       "addSubscriber": "Abonnee toevoegen",
@@ -571,7 +579,6 @@
       "sentNewslettersTitle": "Verzonden nieuwsbrieven",
       "sentNewslettersDescription": "Overzicht wat er wanneer naar hoeveel ontvangers is verzonden.",
       "sentAt": "Verzonden op",
-      "recipientCount": "Aantal ontvangers",
       "recipients": "ontvangers",
       "sendsTotal": "verzendingen",
       "noSends": "Nog geen nieuwsbrieven verzonden.",
@@ -1601,7 +1608,7 @@
     "heroOneliner": "2.500+ zielen gered · Rolstoelen · Zwemtherapie · Liefde zonder opgeven",
     "statsSouls": "2.500+",
     "statsSoulsLabel": "Zielen gered",
-    "statsWheelchairs": "Rolstoelen",
+    "statsWheelchairs": "Rolstoelen in gebruik",
     "statsWheelchairsLabel": "Voor verlamde honden",
     "statsSwim": "Zwemtherapie",
     "statsSwimLabel": "Revalidatie & herstel",
@@ -1705,7 +1712,6 @@
     "oneTimeDonation": "Eenmalige donatie",
     "monthlySoulSaver": "Maandelijks zielenredder",
     "statsRescued": "Geredde honden & katten geholpen",
-    "statsWheelchairs": "Rolstoelen in gebruik",
     "statsTimeline": "In 2010 bouwden we een opvang voor honden die niemand wilde. 2.500+ zielen later bouwen we nog steeds — aan tweede kansen.",
     "statsPrefixMoreThan": "Meer dan ",
     "statsPrefixSince": "Sinds ",
@@ -1917,18 +1923,54 @@
       "aliexpress": "AliExpress"
     },
     "products": {
-      "dogFood": { "name": "Hondenvoer", "description": "Kwaliteitsvoeding voor je hond. Elke bak ondersteunt ook onze opvanghonden." },
-      "dogCarrier": { "name": "Reismand", "description": "Veilige en comfortabele reismanden voor honden van alle formaten." },
-      "dogFlea": { "name": "Vlooienbehandeling", "description": "Effectieve bescherming tegen vlooien en teken voor een gezonde hond." },
-      "dogCollarLeash": { "name": "Halsband & riem", "description": "Sterke halsbanden en riemen voor veilige wandelingen en identificatie." },
-      "dogBed": { "name": "Hondenmand", "description": "Gezellige manden om uit te rusten—net zoals onze opvanghonden ze liefhebben." },
-      "dogToys": { "name": "Speelgoed", "description": "Leuk en stevig speelgoed om je hond actief en gelukkig te houden." },
-      "catFood": { "name": "Kattenvoer", "description": "Voedzame voeding voor je kat. Ondersteunt ook onze opvangkatten." },
-      "catCarrier": { "name": "Reismand", "description": "Veilige reismanden voor bezoeken aan de dierenarts en reizen met je kat." },
-      "catFlea": { "name": "Vlooienbehandeling", "description": "Zachte vlooienbestrijding om je kat en huis te beschermen." },
-      "catCollarLeash": { "name": "Halsband & riem", "description": "Veilige halsbanden en riemen voor buitenavonturen met je kat." },
-      "catBed": { "name": "Kattenmand", "description": "Comfortabele manden en schuilplekken om te ontspannen." },
-      "catToys": { "name": "Speelgoed", "description": "Uitdagend speelgoed voor spel en mentale stimulatie." }
+      "dogFood": {
+        "name": "Hondenvoer",
+        "description": "Kwaliteitsvoeding voor je hond. Elke bak ondersteunt ook onze opvanghonden."
+      },
+      "dogCarrier": {
+        "name": "Reismand",
+        "description": "Veilige en comfortabele reismanden voor honden van alle formaten."
+      },
+      "dogFlea": {
+        "name": "Vlooienbehandeling",
+        "description": "Effectieve bescherming tegen vlooien en teken voor een gezonde hond."
+      },
+      "dogCollarLeash": {
+        "name": "Halsband & riem",
+        "description": "Sterke halsbanden en riemen voor veilige wandelingen en identificatie."
+      },
+      "dogBed": {
+        "name": "Hondenmand",
+        "description": "Gezellige manden om uit te rusten—net zoals onze opvanghonden ze liefhebben."
+      },
+      "dogToys": {
+        "name": "Speelgoed",
+        "description": "Leuk en stevig speelgoed om je hond actief en gelukkig te houden."
+      },
+      "catFood": {
+        "name": "Kattenvoer",
+        "description": "Voedzame voeding voor je kat. Ondersteunt ook onze opvangkatten."
+      },
+      "catCarrier": {
+        "name": "Reismand",
+        "description": "Veilige reismanden voor bezoeken aan de dierenarts en reizen met je kat."
+      },
+      "catFlea": {
+        "name": "Vlooienbehandeling",
+        "description": "Zachte vlooienbestrijding om je kat en huis te beschermen."
+      },
+      "catCollarLeash": {
+        "name": "Halsband & riem",
+        "description": "Veilige halsbanden en riemen voor buitenavonturen met je kat."
+      },
+      "catBed": {
+        "name": "Kattenmand",
+        "description": "Comfortabele manden en schuilplekken om te ontspannen."
+      },
+      "catToys": {
+        "name": "Speelgoed",
+        "description": "Uitdagend speelgoed voor spel en mentale stimulatie."
+      }
     },
     "featuredProductPopmart": {
       "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
@@ -2491,9 +2533,13 @@
       "fullName": "GiftHoney",
       "description": "Thailands eerste cadeauplatform om cadeaus direct naar Thailand te sturen. Geen bezorgadres nodig—ideaal om iemand in Thailand te verrassen."
     },
-    "dogsbymerlyn": {
-      "fullName": "Stichting Dogs by Merlyn",
-      "description": "Opgericht in 2016. Zet zich in voor een beter leven voor zwerfhonden in Roemenië via opvang, neutralisaties, voeding en adoptie. Een speciale ere vermelding voor hun onvermoeibare werk."
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "Een bijzonder woord van dank aan Groenprint — een duurzame drukkerij die werkt met 100% CO2-neutraal FSC®-papier, zonder bomen te kappen. Groenprint heeft ons 250 posters volledig gratis gedrukt én verzonden. Zo kunnen wij meer mensen bereiken en meer dieren redden. Wij zijn ontzettend dankbaar voor deze geweldige steun! 🌱 Duurzaam voor de planeet, hoopvol voor de dieren."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem heeft onze Saved Souls-flyer opgehangen in de wachtruimte. Zo bereiken we dierenbezitters in Haarlem die onze reddingsactie voor honden en katten in Khon Kaen willen steunen."
     },
     "dierenthuis": {
       "fullName": "Stichting Dierenthuis",

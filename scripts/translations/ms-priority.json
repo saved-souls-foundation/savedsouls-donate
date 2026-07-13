@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Saved Souls Foundation — Perlindungan Haiwan Thailand",
+    "description": "Kami menyelamatkan anjing dan kucing jalanan di Thailand, memberi mereka peluang kedua sejak 2010"
+  },
+  "nav": {
+    "ourStoryDesc": "Ditubuhkan 2010, sejak itu 2,500+ diselamatkan",
+    "badgeDogs": "350 anjing · 50 kurang upaya"
+  },
+  "common": {
+    "home": "Laman Utama",
+    "donate": "Derma",
+    "aboutUs": "Tentang Kami",
+    "partners": "Rakan Kongsi",
+    "volunteer": "Sukarelawan",
+    "contact": "Hubungi Kami",
+    "menuEmergency": "Kecemasan"
+  },
+  "bedankt": {
+    "title": "Terima Kasih Banyak!",
+    "subtitle": "Derma anda telah diterima",
+    "body": "Bagi pihak semua haiwan di Saved Souls Foundation — terima kasih! Kebaikan anda menyelamatkan nyawa."
+  },
+  "donate": {
+    "title": "Derma",
+    "subtitle": "Setiap baht menyelamatkan nyawa",
+    "payTitle": "Derma Sekarang ❤️",
+    "monthly": "Derma Bulanan",
+    "oneTime": "Derma Sekali"
+  },
+  "emergency": {
+    "heroTitle": "Derma Kecemasan",
+    "heroSubtitle": "Haiwan-haiwan ini memerlukan bantuan anda sekarang",
+    "heroDonateCta": "Derma Kecemasan ❤️",
+    "metaDescription": "Sesetengah haiwan kami memerlukan rawatan perubatan segera. Derma anda akan digunakan terus untuk kos perubatan."
+  },
+  "aboutUs": {
+    "heroTitle": "Tentang Kami",
+    "heroIntro": "Memberi peluang kedua kepada jiwa-jiwa yang patah di Khon Kaen, Thailand sejak 2010",
+    "intro1": "Kami adalah tempat perlindungan haiwan bukan untung di Khon Kaen, Thailand yang telah menyelamatkan ribuan anjing dan kucing jalanan, termasuk haiwan kurang upaya."
+  },
+  "partners": {
+    "donationBoxShamuSectionTitle": "Kotak derma ketiga di Phuket",
+    "donationBoxShamuThankYouHeader": "Terima kasih banyak! 🙏",
+    "donationBoxShamuThankYouText": "Kami amat berterima kasih kepada Shamu Shamu Pet Center kerana memberikan kotak derma kami tempat yang mesra di kedai mereka. Setiap baht yang didermakan terus ke anjing dan kucing kami di Khon Kaen."
+  }
+}

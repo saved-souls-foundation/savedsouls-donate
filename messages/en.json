@@ -388,7 +388,15 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "deleteShiftConfirm": "Delete shift?",
-      "daysShort": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "daysShort": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
       "toastSaved": "Shift saved",
       "toastDeleted": "Shift deleted",
       "toastWeekCopied": "Week copied",
@@ -533,7 +541,7 @@
       "sendConfirm": "You are about to email {count} subscribers. Continue?",
       "sendSuccess": "Newsletter sent to {count} subscribers",
       "sendError": "Something went wrong while sending",
-      "recipientCount": "Sending to {count} active subscribers",
+      "recipientCount": "Recipient count",
       "loadSampleNewsletter": "Load sample newsletter",
       "noResults": "No subscribers found",
       "addSubscriber": "Add subscriber",
@@ -571,7 +579,6 @@
       "sentNewslettersTitle": "Sent newsletters",
       "sentNewslettersDescription": "Overview of what was sent when and to how many recipients.",
       "sentAt": "Sent at",
-      "recipientCount": "Recipient count",
       "recipients": "recipients",
       "sendsTotal": "sends",
       "noSends": "No newsletters sent yet.",
@@ -1602,7 +1609,7 @@
     "heroOneliner": "2,500+ souls saved · Wheelchairs · Swim therapy · Love that never gives up",
     "statsSouls": "2,500+",
     "statsSoulsLabel": "Souls saved",
-    "statsWheelchairs": "Wheelchairs",
+    "statsWheelchairs": "Wheelchairs in use",
     "statsWheelchairsLabel": "For paralyzed dogs",
     "statsSwim": "Swim therapy",
     "statsSwimLabel": "Rehabilitation & recovery",
@@ -1706,7 +1713,6 @@
     "oneTimeDonation": "One-time donation",
     "monthlySoulSaver": "Monthly Soul Saver",
     "statsRescued": "Rescued dogs & cats helped",
-    "statsWheelchairs": "Wheelchairs in use",
     "statsTimeline": "In 2010, we built a shelter for dogs nobody wanted. 2,500+ souls later, we're still building — second chances.",
     "statsPrefixMoreThan": "More than ",
     "statsPrefixSince": "Since ",
@@ -1918,18 +1924,54 @@
       "aliexpress": "AliExpress"
     },
     "products": {
-      "dogFood": { "name": "Pet food", "description": "Quality nutrition for your dog. Every bowl helps our rescue dogs too." },
-      "dogCarrier": { "name": "Carrier", "description": "Safe and comfortable travel carriers for dogs of all sizes." },
-      "dogFlea": { "name": "Flea treatment", "description": "Effective flea and tick prevention to keep your dog healthy." },
-      "dogCollarLeash": { "name": "Collar & leash", "description": "Durable collars and leashes for safe walks and identification." },
-      "dogBed": { "name": "Pet bed", "description": "Cozy beds for rest and recovery—just like our shelter dogs love." },
-      "dogToys": { "name": "Toys", "description": "Fun and durable toys to keep your dog happy and active." },
-      "catFood": { "name": "Pet food", "description": "Nutritious food for your cat. Supports our rescue cats as well." },
-      "catCarrier": { "name": "Carrier", "description": "Secure carriers for vet visits and travel with your cat." },
-      "catFlea": { "name": "Flea treatment", "description": "Gentle flea control to protect your cat and your home." },
-      "catCollarLeash": { "name": "Collar & leash", "description": "Safe collars and leashes for outdoor adventures with your cat." },
-      "catBed": { "name": "Pet bed", "description": "Comfortable beds and hideaways for your cat to relax." },
-      "catToys": { "name": "Toys", "description": "Engaging toys for play and mental stimulation." }
+      "dogFood": {
+        "name": "Pet food",
+        "description": "Quality nutrition for your dog. Every bowl helps our rescue dogs too."
+      },
+      "dogCarrier": {
+        "name": "Carrier",
+        "description": "Safe and comfortable travel carriers for dogs of all sizes."
+      },
+      "dogFlea": {
+        "name": "Flea treatment",
+        "description": "Effective flea and tick prevention to keep your dog healthy."
+      },
+      "dogCollarLeash": {
+        "name": "Collar & leash",
+        "description": "Durable collars and leashes for safe walks and identification."
+      },
+      "dogBed": {
+        "name": "Pet bed",
+        "description": "Cozy beds for rest and recovery—just like our shelter dogs love."
+      },
+      "dogToys": {
+        "name": "Toys",
+        "description": "Fun and durable toys to keep your dog happy and active."
+      },
+      "catFood": {
+        "name": "Pet food",
+        "description": "Nutritious food for your cat. Supports our rescue cats as well."
+      },
+      "catCarrier": {
+        "name": "Carrier",
+        "description": "Secure carriers for vet visits and travel with your cat."
+      },
+      "catFlea": {
+        "name": "Flea treatment",
+        "description": "Gentle flea control to protect your cat and your home."
+      },
+      "catCollarLeash": {
+        "name": "Collar & leash",
+        "description": "Safe collars and leashes for outdoor adventures with your cat."
+      },
+      "catBed": {
+        "name": "Pet bed",
+        "description": "Comfortable beds and hideaways for your cat to relax."
+      },
+      "catToys": {
+        "name": "Toys",
+        "description": "Engaging toys for play and mental stimulation."
+      }
     },
     "featuredProductPopmart": {
       "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
@@ -2490,9 +2532,13 @@
       "fullName": "GiftHoney",
       "description": "Thailand's first gift platform to send gifts instantly to Thailand. No delivery address needed—perfect for surprising someone in Thailand."
     },
-    "dogsbymerlyn": {
-      "fullName": "Stichting Dogs by Merlyn",
-      "description": "Founded in 2016. Dedicated to giving stray dogs in Romania a better life through shelter, neutering, feeding, and adoption. A special honorary mention for their tireless work."
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "A very special thank you to Groenprint — a sustainable printing company using 100% CO2-neutral FSC® certified paper, without cutting down trees. Groenprint generously printed and shipped 250 posters for us, completely free of charge. This allows us to reach more people and save more animals. We are incredibly grateful for their amazing support! 🌱 Sustainable for the planet, hopeful for the animals."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem has displayed our Saved Souls flyer in their waiting room. This helps us reach pet owners in Haarlem who want to support our rescue work for dogs and cats in Khon Kaen."
     },
     "dierenthuis": {
       "fullName": "Stichting Dierenthuis",

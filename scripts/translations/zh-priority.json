@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Saved Souls Foundation — 泰国动物救助",
+    "description": "我们在泰国救助流浪狗和猫，自2010年起给它们第二次机会"
+  },
+  "nav": {
+    "ourStoryDesc": "成立于2010年，已救助2,500+动物",
+    "badgeDogs": "350只狗 · 50只残疾"
+  },
+  "common": {
+    "home": "首页",
+    "donate": "捐款",
+    "aboutUs": "关于我们",
+    "partners": "合作伙伴",
+    "volunteer": "志愿者",
+    "contact": "联系我们",
+    "menuEmergency": "紧急捐款"
+  },
+  "bedankt": {
+    "title": "非常感谢！",
+    "subtitle": "您的捐款已收到",
+    "body": "代表Saved Souls Foundation的所有动物——谢谢您！您的善举拯救了生命。"
+  },
+  "donate": {
+    "title": "捐款",
+    "subtitle": "每一泰铢都能拯救生命",
+    "payTitle": "立即捐款 ❤️",
+    "monthly": "每月捐款",
+    "oneTime": "单次捐款"
+  },
+  "emergency": {
+    "heroTitle": "紧急捐款",
+    "heroSubtitle": "这些动物现在需要您的帮助",
+    "heroDonateCta": "紧急捐款 ❤️",
+    "metaDescription": "我们的一些动物需要紧急医疗救助。您的捐款将直接用于医疗费用。"
+  },
+  "aboutUs": {
+    "heroTitle": "关于我们",
+    "heroIntro": "自2010年起在泰国孔敬给破碎的灵魂第二次机会",
+    "intro1": "我们是泰国孔敬的非营利动物救助机构，已救助数千只流浪狗和猫，包括残疾动物。"
+  },
+  "partners": {
+    "donationBoxShamuSectionTitle": "普吉岛第三个捐款箱",
+    "donationBoxShamuThankYouHeader": "非常感谢！🙏",
+    "donationBoxShamuThankYouText": "我们非常感谢Shamu Shamu Pet Center为我们的捐款箱提供了温暖的家。每一泰铢都直接用于孔敬的狗和猫。"
+  }
+}

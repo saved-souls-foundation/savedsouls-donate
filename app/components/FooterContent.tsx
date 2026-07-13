@@ -185,7 +185,14 @@ export default function FooterContent() {
               <li key="dashboard"><a href={`${base}/dashboard`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("myProgress")}</span></a></li>
               <li key="shop"><a href={`${base}/shop`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("shop")}</span></a></li>
               <li key="affiliate"><a href={`${base}/affiliate`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("helpAndShop")}</span></a></li>
-              <li key="partners"><a href={`${base}/partners`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("partners")}</span></a></li>
+              <li key="partners">
+                <a
+                  href={`${base}/partners`}
+                  className="golden-shimmer inline-block rounded px-1 -mx-1 text-sm text-white/70 hover:text-white transition-colors"
+                >
+                  <span suppressHydrationWarning>{t("partners")}</span>
+                </a>
+              </li>
               <li key="dierenvriend-partner"><a href={`${base}/dierenvriend-partner`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("dierenvriendPartner")}</span></a></li>
               <li key="shelters"><a href={`${base}/shelters`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("shelters")}</span></a></li>
               <li key="thank-you"><a href={`${base}/thank-you`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("thankYou")}</span></a></li>

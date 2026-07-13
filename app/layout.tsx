@@ -151,7 +151,24 @@ const LOCALE_TO_LANG: Record<string, string> = {
   "zh-TW": "zh-Hant",
   it: "it",
   "pt-BR": "pt-BR",
+  zh: "zh",
+  ms: "ms",
+  vi: "vi",
 };
+
+const LOCALE_PATH_PREFIX =
+  /^\/(nl|en|pt-BR|de-CH|de|es|th|ru|fr|pl|sv|cs|ko|ja|da|no|zh-TW|it|zh|ms|vi)(\/|$)/;
+
+function resolveLocaleFromHeaders(headersList: Awaited<ReturnType<typeof headers>>): string {
+  const fromIntl = headersList.get("x-next-intl-locale");
+  if (fromIntl) return fromIntl;
+
+  const pathname = headersList.get("x-pathname") ?? "";
+  const fromPath = pathname.match(LOCALE_PATH_PREFIX)?.[1];
+  if (fromPath) return fromPath;
+
+  return "nl";
+}
 
 export default async function RootLayout({
   children,
@@ -159,11 +176,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
-  const locale = headersList.get("x-next-intl-locale") || "nl";
+  const locale = resolveLocaleFromHeaders(headersList);
   const lang = LOCALE_TO_LANG[locale] || locale;
 
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         {/* Consent Mode v2: default denied vóór gtag.js — AVG/GDPR; daarna Google Ads (AW) */}
         <script

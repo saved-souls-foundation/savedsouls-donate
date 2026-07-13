@@ -26,6 +26,9 @@ const LOCALE_NAMES: Record<string, string> = {
   "zh-TW": "繁體中文",
   it: "Italiano",
   "pt-BR": "Português",
+  zh: "简体中文",
+  ms: "Bahasa Melayu",
+  vi: "Tiếng Việt",
 };
 
 /** Short codes for minimal inline display */
@@ -48,6 +51,9 @@ const LOCALE_SHORT: Record<string, string> = {
   "zh-TW": "TW",
   it: "IT",
   "pt-BR": "PT",
+  zh: "ZH",
+  ms: "MS",
+  vi: "VI",
 };
 
 export default function LanguageSwitcher({ compact = false, minimal = false, overlay = false }: { compact?: boolean; minimal?: boolean; overlay?: boolean }) {

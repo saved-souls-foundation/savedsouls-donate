@@ -245,7 +245,7 @@ function Step3({ files, setFiles, t }: { files: FilesState; setFiles: React.Disp
       <h2 className="vol-step-title">{t("step3Title")}</h2>
       <p className="vol-step-sub">{t("step3Sub")}</p>
       <a
-        href="https://savedsouls-foundation.org/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
+        href="/Savedsoulsfoundation_volunteering.pdf"
         target="_blank"
         rel="noopener noreferrer"
         className="vol-brochure-link"

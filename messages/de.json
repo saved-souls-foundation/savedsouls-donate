@@ -590,11 +590,31 @@
         "teaser": "Chip, Impfungen, Dokumente—was brauchst du für Reisen mit dem Haustier?",
         "readMore": "Leitfaden lesen"
       },
-      "microchipping": { "title": "Mikrochip", "teaser": "Warum chippen? Wie funktioniert es? Pflicht für Reisen und Adoption.", "readMore": "Leitfaden lesen" },
-      "sterilization": { "title": "Kastration & Sterilisation", "teaser": "Vorteile, Zeitpunkt und Sterilisationskampagnen von Saved Souls.", "readMore": "Leitfaden lesen" },
-      "petAndChildren": { "title": "Haustier und Kinder", "teaser": "Sicherheit, Einführung und Tipps für Eltern.", "readMore": "Leitfaden lesen" },
-      "overheating": { "title": "Überhitzung", "teaser": "Hunde und Katzen können nicht gut schwitzen. Wichtig in Thailand.", "readMore": "Leitfaden lesen" },
-      "foster": { "title": "Pflegefamilie", "teaser": "Werde temporäre Pflegefamilie für Saved Souls.", "readMore": "Mehr lesen" }
+      "microchipping": {
+        "title": "Mikrochip",
+        "teaser": "Warum chippen? Wie funktioniert es? Pflicht für Reisen und Adoption.",
+        "readMore": "Leitfaden lesen"
+      },
+      "sterilization": {
+        "title": "Kastration & Sterilisation",
+        "teaser": "Vorteile, Zeitpunkt und Sterilisationskampagnen von Saved Souls.",
+        "readMore": "Leitfaden lesen"
+      },
+      "petAndChildren": {
+        "title": "Haustier und Kinder",
+        "teaser": "Sicherheit, Einführung und Tipps für Eltern.",
+        "readMore": "Leitfaden lesen"
+      },
+      "overheating": {
+        "title": "Überhitzung",
+        "teaser": "Hunde und Katzen können nicht gut schwitzen. Wichtig in Thailand.",
+        "readMore": "Leitfaden lesen"
+      },
+      "foster": {
+        "title": "Pflegefamilie",
+        "teaser": "Werde temporäre Pflegefamilie für Saved Souls.",
+        "readMore": "Mehr lesen"
+      }
     },
     "readMore": "Mehr lesen",
     "onWikipedia": "Auf Wikipedia",
@@ -875,7 +895,7 @@
     "heroOneliner": "2.500+ gerettete Seelen · Rollstühle · Schwimmtherapie · Liebe ohne aufzugeben",
     "statsSouls": "2.500+",
     "statsSoulsLabel": "Gerettete Seelen",
-    "statsWheelchairs": "Rollstühle",
+    "statsWheelchairs": "Rollstühle im Einsatz",
     "statsWheelchairsLabel": "Für gelähmte Hunde",
     "statsSwim": "Schwimmtherapie",
     "statsSwimLabel": "Rehabilitation & Erholung",
@@ -979,7 +999,6 @@
     "oneTimeDonation": "Einmalige Spende",
     "monthlySoulSaver": "Monatlicher Seelenretter",
     "statsRescued": "Gerettete Hunde & Katzen geholfen",
-    "statsWheelchairs": "Rollstühle im Einsatz",
     "statsTimeline": "2010 bauten wir ein Tierheim für Hunde, die niemand wollte. 2.500+ Seelen später bauen wir noch immer — an zweiten Chancen.",
     "statsPrefixMoreThan": "Mehr als ",
     "statsPrefixSince": "Seit ",
@@ -1191,18 +1210,54 @@
       "aliexpress": "AliExpress"
     },
     "products": {
-      "dogFood": { "name": "Hundefutter", "description": "Qualitätsnahrung für Ihren Hund. Jede Schüssel hilft auch unseren Tierheimhunden." },
-      "dogCarrier": { "name": "Transportbox", "description": "Sichere und bequeme Transportboxen für Hunde aller Größen." },
-      "dogFlea": { "name": "Flohbehandlung", "description": "Wirksamer Floh- und Zeckenschutz für einen gesunden Hund." },
-      "dogCollarLeash": { "name": "Halsband & Leine", "description": "Robuste Halsbänder und Leinen für sichere Spaziergänge und Kennzeichnung." },
-      "dogBed": { "name": "Hundebett", "description": "Gemütliche Betten zum Ausruhen—genau wie unsere Tierheimhunde sie lieben." },
-      "dogToys": { "name": "Spielzeug", "description": "Spaßiges und robustes Spielzeug für einen glücklichen, aktiven Hund." },
-      "catFood": { "name": "Katzenfutter", "description": "Nahrhaftes Futter für Ihre Katze. Unterstützt auch unsere Tierheimkatzen." },
-      "catCarrier": { "name": "Transportbox", "description": "Sichere Transportboxen für Tierarztbesuche und Reisen mit Ihrer Katze." },
-      "catFlea": { "name": "Flohbehandlung", "description": "Sanfte Flohbekämpfung zum Schutz von Katze und Zuhause." },
-      "catCollarLeash": { "name": "Halsband & Leine", "description": "Sichere Halsbänder und Leinen für Abenteuer mit Ihrer Katze." },
-      "catBed": { "name": "Katzenbett", "description": "Bequeme Betten und Verstecke zum Entspannen." },
-      "catToys": { "name": "Spielzeug", "description": "Anregendes Spielzeug für Spiel und geistige Förderung." }
+      "dogFood": {
+        "name": "Hundefutter",
+        "description": "Qualitätsnahrung für Ihren Hund. Jede Schüssel hilft auch unseren Tierheimhunden."
+      },
+      "dogCarrier": {
+        "name": "Transportbox",
+        "description": "Sichere und bequeme Transportboxen für Hunde aller Größen."
+      },
+      "dogFlea": {
+        "name": "Flohbehandlung",
+        "description": "Wirksamer Floh- und Zeckenschutz für einen gesunden Hund."
+      },
+      "dogCollarLeash": {
+        "name": "Halsband & Leine",
+        "description": "Robuste Halsbänder und Leinen für sichere Spaziergänge und Kennzeichnung."
+      },
+      "dogBed": {
+        "name": "Hundebett",
+        "description": "Gemütliche Betten zum Ausruhen—genau wie unsere Tierheimhunde sie lieben."
+      },
+      "dogToys": {
+        "name": "Spielzeug",
+        "description": "Spaßiges und robustes Spielzeug für einen glücklichen, aktiven Hund."
+      },
+      "catFood": {
+        "name": "Katzenfutter",
+        "description": "Nahrhaftes Futter für Ihre Katze. Unterstützt auch unsere Tierheimkatzen."
+      },
+      "catCarrier": {
+        "name": "Transportbox",
+        "description": "Sichere Transportboxen für Tierarztbesuche und Reisen mit Ihrer Katze."
+      },
+      "catFlea": {
+        "name": "Flohbehandlung",
+        "description": "Sanfte Flohbekämpfung zum Schutz von Katze und Zuhause."
+      },
+      "catCollarLeash": {
+        "name": "Halsband & Leine",
+        "description": "Sichere Halsbänder und Leinen für Abenteuer mit Ihrer Katze."
+      },
+      "catBed": {
+        "name": "Katzenbett",
+        "description": "Bequeme Betten und Verstecke zum Entspannen."
+      },
+      "catToys": {
+        "name": "Spielzeug",
+        "description": "Anregendes Spielzeug für Spiel und geistige Förderung."
+      }
     },
     "featuredProductPopmart": {
       "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
@@ -1764,10 +1819,6 @@
     "gifthoney": {
       "fullName": "GiftHoney",
       "description": "Thailands erste Geschenkplattform zum sofortigen Versand von Geschenken nach Thailand. Keine Lieferadresse nötig—ideal, um jemanden in Thailand zu überraschen."
-    },
-    "dogsbymerlyn": {
-      "fullName": "Stichting Dogs by Merlyn",
-      "description": "Gegründet 2016. Setzt sich für ein besseres Leben von Straßenhunden in Rumänien ein—durch Unterbringung, Kastration, Fütterung und Adoption. Eine besondere Ehrenerwähnung für ihre unermüdliche Arbeit."
     },
     "dierenthuis": {
       "fullName": "Stichting Dierenthuis",

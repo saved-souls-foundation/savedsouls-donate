@@ -69,6 +69,9 @@ const LOCALE_LABELS: Record<string, string> = {
   "zh-TW": "繁體中文",
   it: "Italiano",
   "pt-BR": "Português",
+  zh: "简体中文",
+  ms: "Bahasa Melayu",
+  vi: "Tiếng Việt",
 };
 const LOCALE_FLAGS: Record<string, string> = {
   nl: "🇳🇱",
@@ -89,6 +92,9 @@ const LOCALE_FLAGS: Record<string, string> = {
   "zh-TW": "🇹🇼",
   it: "🇮🇹",
   "pt-BR": "🇧🇷",
+  zh: "🇨🇳",
+  ms: "🇲🇾",
+  vi: "🇻🇳",
 };
 
 export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeaderProps) {
@@ -298,7 +304,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 aria-haspopup="listbox"
               >
                 <Globe className="w-4 h-4 shrink-0" aria-hidden />
-                <span>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
+                <span suppressHydrationWarning>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
                 <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${langOpen ? "rotate-180" : ""}`} aria-hidden />
               </button>
               {langOpen && (
@@ -306,7 +312,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                   className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]"
                   role="listbox"
                 >
-                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const).map((loc) => (
+                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR", "zh", "ms", "vi"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"
@@ -317,7 +323,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                       className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-stone-50 text-sm w-full text-left transition-colors"
                       role="option"
                     >
-                      <span>{LOCALE_FLAGS[loc]}</span>
+                      <span suppressHydrationWarning>{LOCALE_FLAGS[loc]}</span>
                       <span className="text-stone-800">{LOCALE_LABELS[loc]}</span>
                     </button>
                   ))}
@@ -396,12 +402,12 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 aria-expanded={langOpen}
               >
                 <Globe className="w-4 h-4 shrink-0" aria-hidden />
-                <span>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
+                <span suppressHydrationWarning>{LOCALE_FLAGS[locale] ?? "🌐"}</span>
                 <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${langOpen ? "rotate-180" : ""}`} aria-hidden />
               </button>
               {langOpen && (
                 <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]" role="listbox">
-                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"] as const).map((loc) => (
+                  {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR", "zh", "ms", "vi"] as const).map((loc) => (
                     <button
                       key={loc}
                       type="button"
@@ -409,7 +415,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                       className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-stone-50 text-sm w-full text-left"
                       role="option"
                     >
-                      <span>{LOCALE_FLAGS[loc]}</span>
+                      <span suppressHydrationWarning>{LOCALE_FLAGS[loc]}</span>
                       <span className="text-stone-800">{LOCALE_LABELS[loc]}</span>
                     </button>
                   ))}

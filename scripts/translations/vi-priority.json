@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Saved Souls Foundation — Trại Cứu Trợ Động Vật Thái Lan",
+    "description": "Chúng tôi cứu chó và mèo hoang ở Thái Lan, cho chúng cơ hội thứ hai từ năm 2010"
+  },
+  "nav": {
+    "ourStoryDesc": "Thành lập năm 2010, đã cứu 2.500+ động vật",
+    "badgeDogs": "350 chó · 50 khuyết tật"
+  },
+  "common": {
+    "home": "Trang Chủ",
+    "donate": "Quyên Góp",
+    "aboutUs": "Về Chúng Tôi",
+    "partners": "Đối Tác",
+    "volunteer": "Tình Nguyện",
+    "contact": "Liên Hệ",
+    "menuEmergency": "Khẩn Cấp"
+  },
+  "bedankt": {
+    "title": "Cảm Ơn Rất Nhiều!",
+    "subtitle": "Quyên góp của bạn đã được nhận",
+    "body": "Thay mặt tất cả động vật tại Saved Souls Foundation — cảm ơn bạn! Lòng tốt của bạn cứu sống sinh mạng."
+  },
+  "donate": {
+    "title": "Quyên Góp",
+    "subtitle": "Mỗi baht đều cứu một sinh mạng",
+    "payTitle": "Quyên Góp Ngay ❤️",
+    "monthly": "Quyên Góp Hàng Tháng",
+    "oneTime": "Quyên Góp Một Lần"
+  },
+  "emergency": {
+    "heroTitle": "Quyên Góp Khẩn Cấp",
+    "heroSubtitle": "Những con vật này cần sự giúp đỡ của bạn ngay bây giờ",
+    "heroDonateCta": "Quyên Góp Khẩn Cấp ❤️",
+    "metaDescription": "Một số động vật của chúng tôi cần chăm sóc y tế khẩn cấp. Quyên góp của bạn sẽ được dùng trực tiếp cho chi phí y tế."
+  },
+  "aboutUs": {
+    "heroTitle": "Về Chúng Tôi",
+    "heroIntro": "Cho những tâm hồn tan vỡ cơ hội thứ hai tại Khon Kaen, Thái Lan từ năm 2010",
+    "intro1": "Chúng tôi là tổ chức cứu trợ động vật phi lợi nhuận tại Khon Kaen, Thái Lan, đã cứu hàng nghìn chó và mèo hoang, kể cả động vật khuyết tật."
+  },
+  "partners": {
+    "donationBoxShamuSectionTitle": "Hộp quyên góp thứ ba ở Phuket",
+    "donationBoxShamuThankYouHeader": "Cảm ơn rất nhiều! 🙏",
+    "donationBoxShamuThankYouText": "Chúng tôi vô cùng biết ơn Shamu Shamu Pet Center đã tạo cho hộp quyên góp của chúng tôi một ngôi nhà ấm áp trong cửa hàng của họ. Mỗi baht quyên góp đều trực tiếp đến những chú chó và mèo của chúng tôi ở Khon Kaen."
+  }
+}

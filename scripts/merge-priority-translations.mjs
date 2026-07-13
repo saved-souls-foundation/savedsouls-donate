@@ -16,9 +16,24 @@ const messagesPath = resolve(`messages/${locale}.json`);
 const patch = JSON.parse(readFileSync(resolve(patchPath), "utf8"));
 const messages = JSON.parse(readFileSync(messagesPath, "utf8"));
 
-for (const [key, value] of Object.entries(patch)) {
-  messages[key] = value;
+function deepMerge(target, source) {
+  for (const [key, value] of Object.entries(source)) {
+    if (
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      target[key] &&
+      typeof target[key] === "object" &&
+      !Array.isArray(target[key])
+    ) {
+      deepMerge(target[key], value);
+    } else {
+      target[key] = value;
+    }
+  }
 }
+
+deepMerge(messages, patch);
 
 writeFileSync(messagesPath, JSON.stringify(messages, null, 2) + "\n", "utf8");
 console.log(`Merged ${Object.keys(patch).length} namespaces into ${messagesPath}`);

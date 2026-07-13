@@ -480,6 +480,47 @@ body h1 {
   }
 }
 
+/* Golden shimmer — Groenprint partner highlight (card + footer link) */
+@keyframes golden-shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.golden-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.golden-shimmer > * {
+  position: relative;
+  z-index: 1;
+}
+
+.golden-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.1) 20%,
+    rgba(245, 158, 11, 0.38) 50%,
+    rgba(251, 191, 36, 0.1) 80%,
+    transparent 100%
+  );
+  animation: golden-shimmer-sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
 /* Print styles for course materials */
 @media print {
   .print\:hidden {

@@ -45,7 +45,7 @@ export default function AdminDocumentenClient({ docs }: { docs: DocRow[] }) {
           {t("documentenIntro")}
         </p>
         <a
-          href="https://savedsouls-foundation.org/wp-content/uploads/2023/07/Savedsoulsfoundation_volunteering.pdf"
+          href="/Savedsoulsfoundation_volunteering.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold"

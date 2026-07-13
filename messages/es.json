@@ -590,11 +590,31 @@
         "teaser": "Chip, vacunas, documentos—¿qué necesitas para viajar con tu mascota?",
         "readMore": "Leer la guía"
       },
-      "microchipping": { "title": "Microchip", "teaser": "¿Por qué chip? ¿Cómo funciona? Obligatorio para viajes y adopción.", "readMore": "Leer la guía" },
-      "sterilization": { "title": "Castración y esterilización", "teaser": "Beneficios, cuándo y campañas de Saved Souls.", "readMore": "Leer la guía" },
-      "petAndChildren": { "title": "Mascota y niños", "teaser": "Seguridad, introducción y consejos para padres.", "readMore": "Leer la guía" },
-      "overheating": { "title": "Sobrecalentamiento", "teaser": "Perros y gatos no sudan bien. Crucial en Tailandia.", "readMore": "Leer la guía" },
-      "foster": { "title": "Familia de acogida", "teaser": "Sé acogida temporal para Saved Souls.", "readMore": "Leer más" }
+      "microchipping": {
+        "title": "Microchip",
+        "teaser": "¿Por qué chip? ¿Cómo funciona? Obligatorio para viajes y adopción.",
+        "readMore": "Leer la guía"
+      },
+      "sterilization": {
+        "title": "Castración y esterilización",
+        "teaser": "Beneficios, cuándo y campañas de Saved Souls.",
+        "readMore": "Leer la guía"
+      },
+      "petAndChildren": {
+        "title": "Mascota y niños",
+        "teaser": "Seguridad, introducción y consejos para padres.",
+        "readMore": "Leer la guía"
+      },
+      "overheating": {
+        "title": "Sobrecalentamiento",
+        "teaser": "Perros y gatos no sudan bien. Crucial en Tailandia.",
+        "readMore": "Leer la guía"
+      },
+      "foster": {
+        "title": "Familia de acogida",
+        "teaser": "Sé acogida temporal para Saved Souls.",
+        "readMore": "Leer más"
+      }
     },
     "readMore": "Leer más",
     "onWikipedia": "En Wikipedia",
@@ -875,7 +895,7 @@
     "heroOneliner": "2.500+ almas salvadas · Sillas de ruedas · Terapia acuática · Amor sin rendirse",
     "statsSouls": "2.500+",
     "statsSoulsLabel": "Almas salvadas",
-    "statsWheelchairs": "Sillas de ruedas",
+    "statsWheelchairs": "Sillas de ruedas en uso",
     "statsWheelchairsLabel": "Para perros paralizados",
     "statsSwim": "Terapia acuática",
     "statsSwimLabel": "Rehabilitación y recuperación",
@@ -979,7 +999,6 @@
     "oneTimeDonation": "Donación única",
     "monthlySoulSaver": "Salvador de Almas mensual",
     "statsRescued": "Perros y gatos rescatados ayudados",
-    "statsWheelchairs": "Sillas de ruedas en uso",
     "statsTimeline": "En 2010 construimos un refugio para perros que nadie quería. Más de 2.500 almas después, seguimos construyendo — segundas oportunidades.",
     "statsPrefixMoreThan": "More than ",
     "statsPrefixSince": "Since ",
@@ -1184,18 +1203,54 @@
       "aliexpress": "AliExpress"
     },
     "products": {
-      "dogFood": { "name": "Comida para perros", "description": "Nutrición de calidad para tu perro. Cada bol también ayuda a nuestros perros rescatados." },
-      "dogCarrier": { "name": "Transportín", "description": "Transportines seguros y cómodos para perros de todos los tamaños." },
-      "dogFlea": { "name": "Tratamiento antipulgas", "description": "Protección eficaz contra pulgas y garrapatas para un perro sano." },
-      "dogCollarLeash": { "name": "Collar y correa", "description": "Collares y correas resistentes para paseos seguros e identificación." },
-      "dogBed": { "name": "Cama para perros", "description": "Camas cómodas para descansar—como les encantan a nuestros perros del refugio." },
-      "dogToys": { "name": "Juguetes", "description": "Juguetes divertidos y resistentes para mantener a tu perro feliz y activo." },
-      "catFood": { "name": "Comida para gatos", "description": "Alimentación nutritiva para tu gato. También apoya a nuestros gatos rescatados." },
-      "catCarrier": { "name": "Transportín", "description": "Transportines seguros para visitas al veterinario y viajes con tu gato." },
-      "catFlea": { "name": "Tratamiento antipulgas", "description": "Control suave de pulgas para proteger a tu gato y tu hogar." },
-      "catCollarLeash": { "name": "Collar y correa", "description": "Collares y correas seguros para aventuras al aire libre con tu gato." },
-      "catBed": { "name": "Cama para gatos", "description": "Camas y escondites cómodos para que tu gato descanse." },
-      "catToys": { "name": "Juguetes", "description": "Juguetes entretenidos para juego y estimulación mental." }
+      "dogFood": {
+        "name": "Comida para perros",
+        "description": "Nutrición de calidad para tu perro. Cada bol también ayuda a nuestros perros rescatados."
+      },
+      "dogCarrier": {
+        "name": "Transportín",
+        "description": "Transportines seguros y cómodos para perros de todos los tamaños."
+      },
+      "dogFlea": {
+        "name": "Tratamiento antipulgas",
+        "description": "Protección eficaz contra pulgas y garrapatas para un perro sano."
+      },
+      "dogCollarLeash": {
+        "name": "Collar y correa",
+        "description": "Collares y correas resistentes para paseos seguros e identificación."
+      },
+      "dogBed": {
+        "name": "Cama para perros",
+        "description": "Camas cómodas para descansar—como les encantan a nuestros perros del refugio."
+      },
+      "dogToys": {
+        "name": "Juguetes",
+        "description": "Juguetes divertidos y resistentes para mantener a tu perro feliz y activo."
+      },
+      "catFood": {
+        "name": "Comida para gatos",
+        "description": "Alimentación nutritiva para tu gato. También apoya a nuestros gatos rescatados."
+      },
+      "catCarrier": {
+        "name": "Transportín",
+        "description": "Transportines seguros para visitas al veterinario y viajes con tu gato."
+      },
+      "catFlea": {
+        "name": "Tratamiento antipulgas",
+        "description": "Control suave de pulgas para proteger a tu gato y tu hogar."
+      },
+      "catCollarLeash": {
+        "name": "Collar y correa",
+        "description": "Collares y correas seguros para aventuras al aire libre con tu gato."
+      },
+      "catBed": {
+        "name": "Cama para gatos",
+        "description": "Camas y escondites cómodos para que tu gato descanse."
+      },
+      "catToys": {
+        "name": "Juguetes",
+        "description": "Juguetes entretenidos para juego y estimulación mental."
+      }
     },
     "featuredProductPopmart": {
       "name": "POP MART Hirono Road Journal Series-Plush Doll Pendant Blind Box 1PC/6PCS",
@@ -1757,10 +1812,6 @@
     "gifthoney": {
       "fullName": "GiftHoney",
       "description": "Thailand's first gift platform to send gifts instantly to Thailand. No delivery address needed—perfect for surprising someone in Thailand."
-    },
-    "dogsbymerlyn": {
-      "fullName": "Stichting Dogs by Merlyn",
-      "description": "Founded in 2016. Dedicated to giving stray dogs in Romania a better life through shelter, neutering, feeding, and adoption. A special honorary mention for their tireless work."
     },
     "dierenthuis": {
       "fullName": "Stichting Dierenthuis",
