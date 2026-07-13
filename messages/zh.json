@@ -2578,7 +2578,15 @@
     "flyerHaarlemSectionVisit": "访问 DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "致电 023 870 0303",
     "flyerHaarlemTeamAlt": "DierenDokters Haarlem 的团队",
-    "flyerHaarlemFlyerAlt": "DierenDokters Haarlem 候诊室中的 Saved Souls 传单"
+    "flyerHaarlemFlyerAlt": "DierenDokters Haarlem 候诊室中的 Saved Souls 传单",
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "非常感谢Groenprint——一家可持续印刷公司，使用100%碳中立FSC®认证纸张，无需砍伐树木。Groenprint慷慨地为我们免费印刷并运送了250张海报。这使我们能够接触到更多人，拯救更多动物。我们对他们的鼎力支持非常感激！🌱 可持续发展造福地球，希望造福动物。"
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem在他们的等候室展示了我们的Saved Souls传单。这帮助我们接触到Haarlem中想要支持我们在Khon Kaen救援犬和猫工作的宠物主人。"
+    }
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "感谢Thalang Animal Hospital | Saved Souls Foundation",

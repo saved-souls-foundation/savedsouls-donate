@@ -146,7 +146,7 @@
     "petProofHouse": "Rumah yang selamat untuk hewan peliharaan",
     "petSitter": "Pengasuh hewan peliharaan & oppas",
     "petPassport": "Paspor hewan peliharaan",
-    "microchipping": "Microchipping",
+    "microchipping": "Pencipan mikro",
     "sterilization": "Pengestrilan & sterilisasi",
     "petAndChildren": "Hewan peliharaan dan anak-anak",
     "overheating": "Kepanasan berlebihan",
@@ -337,7 +337,7 @@
     "sidebarSectionPlanning": "Perancangan & Komunikasi",
     "sidebarSectionCommunication": "Komunikasi",
     "agenda": {
-      "title": "Agenda",
+      "title": "Jadual",
       "month": "Bulan",
       "week": "Minggu",
       "day": "Hari",
@@ -441,7 +441,7 @@
     "deleteVolunteerConfirm": "Apakah Anda yakin ingin menghapus sukarelawan ini?",
     "vrijwilligersIntro": "Sukarelawan bepergian dari Eropa ke lokasi proyek kami di Thailand.",
     "searchPlaceholderVol": "Cari berdasarkan nama atau email…",
-    "area": "Area",
+    "area": "Kawasan",
     "areaLokaal": "Secara lokal dari rumah",
     "areaThailand": "Di lokasi di Thailand",
     "phone": "Telepon",
@@ -785,7 +785,7 @@
       "view": "Lihat",
       "backToList": "← Kembali ke senarai",
       "analyzeError": "Analisis gagal",
-      "editTemplateForm": "Edit template",
+      "editTemplateForm": "Sunting templat",
       "inactive": "Tidak aktif",
       "originalEmail": "E-mel asal",
       "aiAssistant": "Pembantu AI",
@@ -801,7 +801,7 @@
       "placeholders": "Pemboleh ubah",
       "placeholderNaam": "{{naam}}",
       "placeholderDier": "{{dier}}",
-      "placeholderOrg": "{{organisatie}}",
+      "placeholderOrg": "{{organisasi}}",
       "save": "Simpan",
       "cancel": "Batal",
       "delete": "Padam",
@@ -957,7 +957,7 @@
     "errorGeneric": "Sesuatu tidak kena. Sila cuba lagi kemudian."
   },
   "blog": {
-    "metaTitle": "Blog – Saved Souls Foundation",
+    "metaTitle": "Blog – Yayasan Saved Souls",
     "metaDescription": "Berita, cerita dan kemaskini dari Saved Souls Foundation di Khon Kaen, Thailand. Kos makanan, penjagaan perubatan, dan bagaimana anda boleh membantu.",
     "badge": "Blog",
     "title": "Blog",
@@ -1756,7 +1756,7 @@
     "title": "Hubungi Kami",
     "subtitle": "Pertanyaan umum, kunjungan atau adopsi? Hubungi kami.",
     "openingHours": "Jam operasi: 1:30 – 3:30 petang setiap hari. Sila hubungi kami untuk menjadualkan janji temu.",
-    "emailHeading": "Email",
+    "emailHeading": "E-mel",
     "emailLinkBefore": "Untuk pertanyaan umum atau gunakan ",
     "emailLinkLabel": "borang hubungi kami di halaman utama kami",
     "emailLinkAfter": ".",
@@ -2579,7 +2579,15 @@
     "flyerHaarlemSectionVisit": "Lawati DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "Hubungi 023 870 0303",
     "flyerHaarlemTeamAlt": "Pasukan di DierenDokters Haarlem",
-    "flyerHaarlemFlyerAlt": "Risalah Saved Souls di ruang tunggu DierenDokters Haarlem"
+    "flyerHaarlemFlyerAlt": "Risalah Saved Souls di ruang tunggu DierenDokters Haarlem",
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "Terima kasih yang sangat istimewa kepada Groenprint — sebuah syarikat percetakan berkelanjutan yang menggunakan 100% kertas FSC® bersertifikat netral CO2, tanpa menebang pohon. Groenprint dengan murah hati mencetak dan menghantar 250 poster untuk kami, sepenuhnya tanpa caj. Ini membolehkan kami menjangkau lebih banyak orang dan menyelamatkan lebih banyak haiwan. Kami sangat berterima kasih atas sokongan luar biasa mereka! 🌱 Berkelanjutan untuk planet ini, penuh harapan untuk haiwan."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem telah memaparkan selebaran Saved Souls kami di ruang tunggu mereka. Ini membantu kami menjangkau pemilik haiwan peliharaan di Haarlem yang ingin menyokong kerja penyelamatan kami untuk anjing dan kucing di Khon Kaen."
+    }
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Terima kasih Thalang Animal Hospital | Saved Souls Foundation",
@@ -3660,7 +3668,7 @@
     "story4Text": "Rocky takut pada orang. Setelah berbulan-bulan kesabaran di Belgia dia sekarang juara peluk.",
     "story5Name": "Coco – kursi roda + terapi renang",
     "story5Text": "Coco berenang setiap minggu. Kaki belakangnya yang lumpuh mendapatkan kekuatan. Dia tinggal di Thailand dengan penerimanya.",
-    "faqTitle": "FAQ",
+    "faqTitle": "Soalan Lazim",
     "faqQ1": "Boleh saya mengadopsi anjing kurang upaya jika saya bekerja sepenuh masa?",
     "faqA1": "Ya, jika anda membuat pengaturan: rutin berjalan, kemungkinan bantuan, rumah tahan kerusi roda. Kami membincangkan ini dalam padanan.",
     "faqQ2": "Berapa lama proses ini mengambil masa?",
@@ -4536,7 +4544,7 @@
     "ctaText": "Saved Souls membantu haiwan sesat di Thailand. Derma anda menyediakan makanan, rawatan perubatan dan rumah yang selamat."
   },
   "microchipping": {
-    "badge": "Microchipping",
+    "badge": "Pencip Mikro",
     "title": "Microchipping: cip anjing atau kucing anda",
     "subtitle": "Mengapa perlu cip? Bagaimana ia berfungsi? Dan mengapa ia diperlukan untuk perjalanan dan adopsi?",
     "metaTitle": "Microchipping anjing kucing | Cip diperlukan perjalanan | Saved Souls",

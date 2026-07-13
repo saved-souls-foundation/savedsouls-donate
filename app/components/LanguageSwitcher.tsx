@@ -154,7 +154,7 @@ export default function LanguageSwitcher({ compact = false, minimal = false, ove
         <ul
           id="locale-listbox"
           role="listbox"
-          className="absolute right-0 top-full mt-1 py-2 min-w-[160px] max-h-[70vh] overflow-y-auto rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-xl z-[120]"
+          className="absolute right-0 top-full mt-1 py-2 min-w-[160px] max-md:max-h-[60vh] max-md:overflow-y-auto max-md:overscroll-contain rounded-xl bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 shadow-xl z-[120]"
         >
           {locales.map((loc) => (
             <li key={loc} role="option" aria-selected={loc === locale}>

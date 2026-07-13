@@ -76,7 +76,7 @@
     "gidsen": "Hướng dẫn & thông tin",
     "press": "Báo chí",
     "partners": "Đối Tác",
-    "dierenvriendPartner": "Dierenvriend Partner",
+    "dierenvriendPartner": "Đối tác Dierenvriend",
     "volunteer": "Tình Nguyện",
     "volunteerSignUp": "Đăng ký tình nguyện viên",
     "adopt": "Nhận nuôi",
@@ -957,7 +957,7 @@
     "errorGeneric": "Đã xảy ra lỗi. Vui lòng thử lại sau."
   },
   "blog": {
-    "metaTitle": "Blog – Saved Souls Foundation",
+    "metaTitle": "Blog – Quỹ Saved Souls",
     "metaDescription": "Tin tức, câu chuyện và cập nhật từ Saved Souls Foundation ở Khon Kaen, Thailand. Chi phí thức ăn, chăm sóc y tế và cách bạn có thể giúp đỡ.",
     "badge": "Blog",
     "title": "Blog",
@@ -2307,7 +2307,7 @@
     "tipButton": "Tip €{amount}",
     "tipButtonThb": "Tip ฿{amount}",
     "loading": "Đang tải…",
-    "poweredBy": "Powered by Mollie",
+    "poweredBy": "Được cung cấp bởi Mollie",
     "errorGeneric": "Có lỗi xảy ra. Vui lòng thử PayPal.",
     "monthlyDescription": "Hỗ trợ chúng tôi hàng tháng thông qua PayPal và giúp đỡ có cấu trúc về thức ăn, chăm sóc y tế và bảo trì.",
     "monthlyCta": "Hỗ trợ hàng tháng qua PayPal",
@@ -2578,7 +2578,15 @@
     "flyerHaarlemSectionVisit": "Ghé thăm DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "Gọi 023 870 0303",
     "flyerHaarlemTeamAlt": "Đội ngũ tại DierenDokters Haarlem",
-    "flyerHaarlemFlyerAlt": "Tờ rơi Saved Souls trong phòng chờ tại DierenDokters Haarlem"
+    "flyerHaarlemFlyerAlt": "Tờ rơi Saved Souls trong phòng chờ tại DierenDokters Haarlem",
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "Cảm ơn rất nhiều Groenprint — một công ty in ấn bền vững sử dụng 100% giấy FSC® được chứng nhận trung lập về CO2, không khai thác rừng. Groenprint đã hào phóng in và vận chuyển 250 áp phích cho chúng tôi hoàn toàn miễn phí. Điều này giúp chúng tôi tiếp cận nhiều người hơn và cứu sống nhiều động vật hơn. Chúng tôi vô cùng biết ơn vì sự hỗ trợ tuyệt vời của họ! 🌱 Bền vững cho hành tinh, hy vọng cho các động vật."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem đã trưng bày tờ rơi Saved Souls của chúng tôi trong phòng chờ. Điều này giúp chúng tôi tiếp cận những chủ vật nuôi ở Haarlem muốn hỗ trợ công tác cứu hộ chó và mèo của chúng tôi ở Khon Kaen."
+    }
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Cảm ơn Thalang Animal Hospital | Saved Souls Foundation",
@@ -3659,7 +3667,7 @@
     "story4Text": "Rocky sợ hãi những người khác. Sau những tháng kiên nhẫn ở Bỉ, giờ cậu ấy là nhà vô địch ôm.",
     "story5Name": "Coco – xe lăn + liệu pháp bơi",
     "story5Text": "Coco bơi hàng tuần. Chân sau liệt của cô ấy lấy lại sức mạnh. Cô ấy sống ở Thailand với một người nhận nuôi.",
-    "faqTitle": "FAQ",
+    "faqTitle": "Câu hỏi thường gặp",
     "faqQ1": "Tôi có thể nhận nuôi một chú chó khuyết tật nếu tôi làm việc toàn thời gian không?",
     "faqA1": "Có, nếu bạn sắp xếp được: lịch trình đi dạo, có thể cần sự giúp đỡ, nhà phù hợp với xe lăn. Chúng tôi sẽ thảo luận điều này trong quá trình ghép đôi.",
     "faqQ2": "Quá trình này mất bao lâu?",

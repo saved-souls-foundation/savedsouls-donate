@@ -49,6 +49,9 @@ const CHEVRON_GRAY = "#d1d5db";
 /** Vaste classNames voor header-rechterkant om hydration mismatch te voorkomen (server/client moeten identiek zijn) */
 const HEADER_RIGHT_WRAPPER = "flex items-center gap-2 md:gap-6 shrink-0";
 const HEADER_DESKTOP_ACTIONS = "hidden md:flex items-center gap-6 lg:gap-8";
+const LANG_DROPDOWN_PANEL =
+  "absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]";
+const LANG_DROPDOWN_PANEL_MOBILE = `${LANG_DROPDOWN_PANEL} max-h-[60vh] overflow-y-auto overscroll-contain`;
 
 const LOCALE_LABELS: Record<string, string> = {
   nl: "Nederlands",
@@ -309,7 +312,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
               </button>
               {langOpen && (
                 <div
-                  className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]"
+                  className={LANG_DROPDOWN_PANEL}
                   role="listbox"
                 >
                   {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR", "zh", "ms", "vi"] as const).map((loc) => (
@@ -406,7 +409,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${langOpen ? "rotate-180" : ""}`} aria-hidden />
               </button>
               {langOpen && (
-                <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-stone-100 p-2 min-w-[180px] z-[200]" role="listbox">
+                <div className={LANG_DROPDOWN_PANEL_MOBILE} role="listbox">
                   {(["nl", "en", "de", "de-CH", "es", "th", "ru", "fr", "pl", "sv", "cs", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR", "zh", "ms", "vi"] as const).map((loc) => (
                     <button
                       key={loc}

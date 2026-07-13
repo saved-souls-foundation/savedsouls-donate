@@ -5,8 +5,7 @@ import { Link } from "@/i18n/navigation";
 import Footer from "../../components/Footer";
 import ParallaxPage from "../../components/ParallaxPage";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
-import { useTranslations, useLocale } from "next-intl";
-import enMessages from "@/messages/en.json";
+import { useTranslations } from "next-intl";
 
 const ACCENT_GREEN = "#2aa348";
 const PINK = "#ec4899";
@@ -26,9 +25,6 @@ type PartnerEntry = {
   logoClassName?: string;
   logoLayout?: "default" | "banner";
 };
-
-const GROENPRINT_EN = (enMessages.partners as { groenprint: { fullName: string; description: string } }).groenprint;
-const DIERENDOKTERS_EN = (enMessages.partners as { dierendoktershaarlem: { fullName: string; description: string } }).dierendoktershaarlem;
 
 const PARTNERS: PartnerEntry[] = [
   { name: "TVAV", key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png" },
@@ -139,16 +135,9 @@ function PartnerCard({
 
 export default function PartnersPage() {
   const t = useTranslations("partners");
-  const locale = useLocale();
   const tCommon = useTranslations("common");
 
   function partnerText(key: string) {
-    if (key === "groenprint" && locale !== "nl" && locale !== "en") {
-      return GROENPRINT_EN;
-    }
-    if (key === "dierendoktershaarlem" && locale !== "nl" && locale !== "en") {
-      return DIERENDOKTERS_EN;
-    }
     return {
       fullName: t(`${key}.fullName`),
       description: t(`${key}.description`),
