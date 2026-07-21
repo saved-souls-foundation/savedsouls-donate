@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     const baseUrl = getBaseUrl(req);
-    const redirectUrl = `${baseUrl}/${locale}/thank-you?payment=mollie`;
+    const redirectUrl = `${baseUrl}/${locale}/thank-you?payment=mollie&amount=${(amountCents / 100).toFixed(2)}`;
     const webhookUrl = `${baseUrl}/api/payments/webhook`;
 
     const mollieClient = createMollieClient({ apiKey });

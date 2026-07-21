@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import { useTranslations } from "next-intl";
+import { ConversionTracker } from "@/components/ConversionTracker";
 
 const ACCENT_GREEN = "#2aa348";
 const BUTTON_ORANGE = "#2aa348";
@@ -102,6 +103,9 @@ export default function ThankYouPage() {
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
+      <Suspense fallback={null}>
+        <ConversionTracker />
+      </Suspense>
       {/* Hearts running across the screen - on top with pointer-events-none so they're visible */}
       <div className="pointer-events-none fixed inset-0 z-[15] overflow-visible" aria-hidden>
         <RunningHeart delay={0} top="10%" size={32} duration={10} />

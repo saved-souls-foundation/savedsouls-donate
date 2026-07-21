@@ -14,11 +14,10 @@ export default function MollieBlock({ locale }: Props) {
     nl: {
       title: "Doneer veilig via Mollie",
       subtitle: "iDEAL · Wero · PayPal · creditcard · Bancontact en meer",
-      disclaimerPart1: "Betalingen worden tijdelijk verwerkt door",
+      disclaimerPart1: "Donaties worden verwerkt via",
       disclaimerPart2: "namens",
-      disclaimerPart3:
-        ". Zodra SSF een eigen betaalrekening heeft, worden donaties rechtstreeks ontvangen door de stichting. Alle donaties gaan",
-      disclaimerPart4: "naar de dieren.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "van jouw donatie gaat naar de dieren.",
       chooseAmount: "Kies een bedrag",
       customAmount: "Of vul zelf een bedrag in",
       frequency: "Frequentie",
@@ -34,11 +33,10 @@ export default function MollieBlock({ locale }: Props) {
     en: {
       title: "Donate safely via Mollie",
       subtitle: "iDEAL · Wero · PayPal · credit card · Bancontact and more",
-      disclaimerPart1: "Payments are temporarily processed by",
+      disclaimerPart1: "Donations are processed via",
       disclaimerPart2: "on behalf of",
-      disclaimerPart3:
-        ". Once SSF has its own payment account, donations will be received directly by the foundation. All donations go",
-      disclaimerPart4: "to the animals.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "of your donation goes to the animals.",
       chooseAmount: "Choose an amount",
       customAmount: "Or enter your own amount",
       frequency: "Frequency",
@@ -54,11 +52,10 @@ export default function MollieBlock({ locale }: Props) {
     de: {
       title: "Sicher spenden via Mollie",
       subtitle: "iDEAL · Wero · PayPal · Kreditkarte · Bancontact und mehr",
-      disclaimerPart1: "Zahlungen werden vorübergehend verarbeitet von",
+      disclaimerPart1: "Spenden werden verarbeitet über",
       disclaimerPart2: "im Namen von",
-      disclaimerPart3:
-        ". Sobald SSF ein eigenes Konto hat, werden Spenden direkt von der Stiftung empfangen. Alle Spenden gehen",
-      disclaimerPart4: "an die Tiere.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "Ihrer Spende gehen an die Tiere.",
       chooseAmount: "Betrag wählen",
       customAmount: "Oder eigenen Betrag eingeben",
       frequency: "Häufigkeit",
@@ -74,11 +71,10 @@ export default function MollieBlock({ locale }: Props) {
     es: {
       title: "Dona de forma segura via Mollie",
       subtitle: "iDEAL · Wero · PayPal · tarjeta de crédito · Bancontact y más",
-      disclaimerPart1: "Los pagos son procesados temporalmente por",
+      disclaimerPart1: "Las donaciones se procesan vía",
       disclaimerPart2: "en nombre de",
-      disclaimerPart3:
-        ". Una vez que SSF tenga su propia cuenta, las donaciones serán recibidas directamente. Todas las donaciones van",
-      disclaimerPart4: "a los animales.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "de tu donación va a los animales.",
       chooseAmount: "Elige un importe",
       customAmount: "O introduce tu propio importe",
       frequency: "Frecuencia",
@@ -94,11 +90,10 @@ export default function MollieBlock({ locale }: Props) {
     fr: {
       title: "Donnez en toute sécurité via Mollie",
       subtitle: "iDEAL · Wero · PayPal · carte de crédit · Bancontact et plus",
-      disclaimerPart1: "Les paiements sont temporairement traités par",
+      disclaimerPart1: "Les dons sont traités via",
       disclaimerPart2: "au nom de",
-      disclaimerPart3:
-        ". Dès que SSF aura son propre compte, les dons seront reçus directement. Tous les dons vont",
-      disclaimerPart4: "aux animaux.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "de votre don va aux animaux.",
       chooseAmount: "Choisissez un montant",
       customAmount: "Ou entrez votre propre montant",
       frequency: "Fréquence",
@@ -114,11 +109,10 @@ export default function MollieBlock({ locale }: Props) {
     ru: {
       title: "Безопасное пожертвование через Mollie",
       subtitle: "iDEAL · Wero · PayPal · кредитная карта · Bancontact и другие",
-      disclaimerPart1: "Платежи временно обрабатываются",
+      disclaimerPart1: "Пожертвования обрабатываются через",
       disclaimerPart2: "от имени",
-      disclaimerPart3:
-        ". Как только SSF получит собственный счёт, пожертвования будут поступать напрямую. Все пожертвования идут",
-      disclaimerPart4: "животным.",
+      disclaimerPart3: ".",
+      disclaimerPart4: "вашего пожертвования идут животным.",
       chooseAmount: "Выберите сумму",
       customAmount: "Или введите свою сумму",
       frequency: "Периодичность",
@@ -134,11 +128,10 @@ export default function MollieBlock({ locale }: Props) {
     th: {
       title: "บริจาคอย่างปลอดภัยผ่าน Mollie",
       subtitle: "iDEAL · Wero · PayPal · บัตรเครดิต · Bancontact และอื่นๆ",
-      disclaimerPart1: "กำลังดำเนินการ การชำระเงิน",
+      disclaimerPart1: "การบริจาคดำเนินการผ่าน",
       disclaimerPart2: "ในนามของ",
-      disclaimerPart3:
-        ". เมื่อ SSF มีบัญชีของตนเอง เงินบริจาคจะถูกรับโดยตรง เงินบริจาคทั้งหมด",
-      disclaimerPart4: "ไปที่สัตว์",
+      disclaimerPart3: ".",
+      disclaimerPart4: "ของการบริจาคของคุณไปที่สัตว์",
       chooseAmount: "เลือกจำนวนเงิน",
       customAmount: "หรือกรอกจำนวนเงินของคุณเอง",
       frequency: "ความถี่",
@@ -264,7 +257,7 @@ export default function MollieBlock({ locale }: Props) {
         {lang.disclaimerPart2}{" "}
         <strong style={{ color: "#111", fontWeight: 800 }}>Saved Souls Foundation</strong>
         {lang.disclaimerPart3}{" "}
-        <strong style={{ color: "#1a5c2e", fontWeight: 800, fontSize: "0.85rem" }}>100%</strong>
+        <strong style={{ color: "#1a5c2e", fontWeight: 800, fontSize: "0.85rem" }}>100%</strong>{" "}
         {lang.disclaimerPart4}
       </p>
 

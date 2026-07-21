@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Footer from "@/app/components/Footer";
 import GiftAnimation from "@/app/components/GiftAnimation";
 import ParallaxPage from "@/app/components/ParallaxPage";
+import { ConversionTracker } from "@/components/ConversionTracker";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const GREEN_DARK = "#1a5c2e";
@@ -17,6 +19,9 @@ export default async function BedanktPage({ params }: Props) {
 
   return (
     <ParallaxPage overlayClassName="bg-white/[0.99] dark:bg-stone-950/[0.99]">
+      <Suspense fallback={null}>
+        <ConversionTracker />
+      </Suspense>
       <div className="relative w-full overflow-hidden" style={{ height: "38vh", minHeight: 280, maxHeight: 420 }}>
         <img
           src="/woman-dog-wheelchair.webp"

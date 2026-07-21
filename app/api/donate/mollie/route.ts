@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     const mollieClient = getMollieClient();
     const baseUrl = getBaseUrl();
-    const redirectUrl = `${baseUrl}/${locale}/bedankt`;
+    const redirectUrl = `${baseUrl}/${locale}/bedankt?amount=${amount.toFixed(2)}`;
     const webhookUrl = `${baseUrl}/api/webhook/mollie`;
 
     const payment = await mollieClient.payments.create({
