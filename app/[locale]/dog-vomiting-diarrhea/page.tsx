@@ -12,6 +12,7 @@ const ACCENT_GREEN = "#2aa348";
 
 export default function DogVomitingDiarrheaPage() {
   const t = useTranslations("dogVomitingDiarrhea");
+  const tCommon = useTranslations("common");
 
   return (
     <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp">
@@ -54,6 +55,9 @@ export default function DogVomitingDiarrheaPage() {
         <section className="mb-16 rounded-2xl p-6 md:p-10 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-700 shadow-lg">
           <h2 className="text-2xl font-bold mb-6" style={{ color: ACCENT_GREEN }}>🏠 {t("homeCareTitle")}</h2>
           <p className="text-stone-600 dark:text-stone-400 leading-relaxed">{t("homeCare")}</p>
+          <p className="mt-4 text-stone-600 dark:text-stone-400">
+            🍽️ <Link href="/dog-not-eating" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{tCommon("dogNotEating")} →</Link>
+          </p>
         </section>
 
         <section className="mb-16 rounded-2xl p-8 md:p-12 text-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-900 border-2 border-stone-200 dark:border-stone-600">

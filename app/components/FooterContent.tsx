@@ -217,6 +217,7 @@ export default function FooterContent() {
             </p>
             <ul className="space-y-3">
               <li key="gidsen"><a href={`${base}/gidsen`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("gidsen")}</span></a></li>
+              <li key="dog-not-eating"><a href={`${base}/dog-not-eating`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("dogNotEating")}</span></a></li>
               <li key="links"><a href={`${base}/links`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("usefulLinks")}</span></a></li>
               <li key="street-dogs-thailand"><a href={`${base}/street-dogs-thailand`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("streetDogsThailand")}</span></a></li>
               <li key="school-project"><a href={`${base}/school-project`} className="text-sm text-white/70 hover:text-white transition-colors"><span suppressHydrationWarning>{t("schoolProject")}</span></a></li>

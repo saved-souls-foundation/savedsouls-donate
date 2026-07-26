@@ -50,6 +50,8 @@ export default function NutritionPage() {
               🏠 {t("firstPetHomePrompt")}<Link href="/first-pet-home" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("firstPetHomeLink")}</Link>
               {" · "}
               <Link href="/health" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{t("healthLink")}</Link>
+              {" · "}
+              🍽️ <Link href="/dog-not-eating" className="font-semibold underline hover:no-underline" style={{ color: ACCENT_GREEN }}>{tCommon("dogNotEating")} →</Link>
             </p>
           </div>
           <div className="flex-shrink-0 w-full md:w-80 rounded-2xl overflow-hidden shadow-xl border-2 border-stone-200 dark:border-stone-600 animate-banner-glow transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">

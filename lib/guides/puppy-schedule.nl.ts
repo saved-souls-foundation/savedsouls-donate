@@ -231,6 +231,7 @@ export const PUPPY_SCHEDULE_GUIDE_NL: GuideContent = {
   relatedTitle: "Gerelateerde gidsen",
   relatedLinks: [
     { href: "/nutrition", label: "Voeding voor huisdieren" },
+    { href: "/dog-not-eating", label: "Hond eet niet" },
     { href: "/dog-home-alone", label: "Hond alleen thuis" },
     { href: "/vaccinations", label: "Vaccinaties" },
     { href: "/health", label: "Gezondheid van hond en kat" },

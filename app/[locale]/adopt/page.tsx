@@ -342,6 +342,13 @@ export default function AdoptPage() {
             >
               {t("firstPetLink")}
             </Link>
+            <Link
+              href="/dog-not-eating"
+              className="inline-block px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-opacity hover:opacity-90"
+              style={{ borderColor: ACCENT_GREEN, color: ACCENT_GREEN }}
+            >
+              {t("dogNotEatingLink")}
+            </Link>
           </div>
         </header>
 

@@ -231,6 +231,7 @@ export const PUPPY_SCHEDULE_GUIDE: GuideContent = {
   relatedTitle: "Related guides",
   relatedLinks: [
     { href: "/nutrition", label: "Pet nutrition" },
+    { href: "/dog-not-eating", label: "Dog not eating" },
     { href: "/dog-home-alone", label: "Dog home alone" },
     { href: "/vaccinations", label: "Vaccinations" },
     { href: "/health", label: "Dog and cat health" },

@@ -157,24 +157,36 @@ export const DOG_NOT_EATING_GUIDE_NL: GuideContent = {
   ],
   faq: [
     {
-      q: "Is het normaal dat honden soms een maaltijd overslaan?",
-      a: "Ja, bij veel volwassen honden kan dat incidenteel voorkomen. Een gemiste maaltijd na opwinding, reizen of hitte is vaak onschuldig als energie en hydratatie goed blijven. Het patroon is belangrijk: regelmatig overslaan, afvallen of bijkomende klachten is niet normaal. Houd bij hoeveel maaltijden worden geweigerd en of je hond nog wel enthousiast is voor snacks. Een hond die het avondeten laat staan maar om kaas bedelt, kan meer selectief dan ziek zijn.",
+      q: "Hoe lang kan een hond zonder eten?",
+      a: "De meeste gezonde volwassen honden kunnen 3 tot 5 dagen zonder voedsel voordat ernstige gezondheidsgevolgen ontstaan, maar dat betekent niet dat je zo lang moet wachten. Een hond die langer dan 48 uur niet eet, heeft een dierenartscontrole nodig. Pups moeten binnen 12 uur na voedselweigering gezien worden vanwege het risico op hypoglykemie.",
     },
     {
-      q: "Moet ik iets door het voer doen om het aantrekkelijker te maken?",
-      a: "Tijdelijke smaakversterkers zoals een lepel natvoer, ongekruide kip of een door de dierenarts geadviseerd supplement kunnen helpen bij herstel of milde misselijkheid. Op lange termijn kan structureel \"opleuken\" van brokken juist kieskeurig eetgedrag versterken. Heb je blijvend toevoegingen nodig, bespreek dan een uitgebalanceerde aanpak met je dierenarts. Sommige dieetvoeders zijn specifiek ontwikkeld voor hoge smakelijkheid zonder voedingsbalans te verstoren.",
+      q: "Waarom eet mijn hond niet maar gedraagt hij zich normaal?",
+      a: "Een hond die voedsel weigert maar speels, alert en actief blijft, heeft meestal een gedragsmatige of milde oorzaak — stress, voerverveling, te veel snacks, of een recente vaccinatie. Monitor 24 uur goed. Als de weigering aanhoudt of andere symptomen ontstaan, neem contact op met je dierenarts.",
     },
     {
-      q: "Kan stress ervoor zorgen dat een hond stopt met eten?",
-      a: "Absoluut. Verhuizing, nieuwe huisdieren, bezoek, onweer of afwezigheid van de eigenaar zorgen regelmatig voor 24-48 uur minder eetlust. Stressgerelateerde anorexie verbetert meestal zodra routine en veiligheid terugkeren. Herstelt de eetlust niet binnen twee dagen, of zie je verstoppen, trillen of braken, plan dan een dierenartscontrole. Stress en ziekte kunnen tegelijk aanwezig zijn.",
+      q: "Wat kan ik geven aan een hond die niet wil eten?",
+      a: "Probeer ongekruide gekookte kipfilet met witte rijst, licht opgewarmd natvoer, of natriumarme kippenbouillon bij de brokken. Kleine porties met de hand in een rustige ruimte helpen vaak. Voeg nooit ui, knoflook of kruiden toe. Weigert de hond na 24 uur nog steeds, ga naar de dierenarts in plaats van eindeloos andere voeders te proberen.",
     },
     {
-      q: "Mijn hond eet alleen als ik met de hand voer. Hoe komt dat?",
-      a: "Handmatig voeren geeft aandacht en kan daardoor \"belonender\" worden dan zelfstandig eten. Het kan ook wijzen op angst, nek-/rugpijn (staan bij de bak is ongemakkelijk) of sociale druk van andere huisdieren. Probeer de voerbak op hoogte te brengen, voer op een rustige plek en bouw handvoeren geleidelijk af met vaste voertijden. Blijft je hond de bak volledig weigeren, laat dan pijn of misselijkheid medisch beoordelen.",
+      q: "Moet ik me zorgen maken als mijn hond één maaltijd overslaat?",
+      a: "Eén maaltijd overslaan bij een verder gezonde volwassen hond is meestal geen spoedgeval. Honden hebben niet elke dag op hetzelfde moment honger — een grote maaltijd de avond ervoor, warm weer of milde stress kan een gemiste maaltijd veroorzaken. Let op andere symptomen. Slaat de hond een tweede opeenvolgende maaltijd over of toont hij ziekteverschijnselen, neem dan contact op met je dierenarts.",
     },
     {
-      q: "Wanneer is niet eten echt een spoedgeval?",
-      a: "Meteen bij pups die 12 uur niet eten, elke hond met herhaald braken op lege maag, opgezette buik, instorten, vermoeden van toxische inname of bekende ernstige aandoeningen. Bij gezonde volwassenen geldt: 48 uur zonder eten of 24 uur zonder eten met extra symptomen vraagt urgente beoordeling. Twijfel je, bel je dierenarts; een snelle triage aan de telefoon voorkomt vaak grotere problemen.",
+      q: "Mijn hond eet niet en braakt — wat moet ik doen?",
+      a: "Niet eten in combinatie met braken is een reden om dezelfde dag je dierenarts te bellen, niet om te wachten. Deze combinatie kan wijzen op gastritis, pancreatitis, darmafsluiting, parvovirus of inname van iets giftigs. Bij herhaald braken, zwakte of sloomheid, een opgezette buik, of bloed in het braaksel: behandel het als spoedgeval en ga meteen naar een kliniek.",
+    },
+    {
+      q: "Waarom eet mijn pup niet?",
+      a: "Pups stoppen vaak met eten door stress na scheiding van het nest, darmparasieten, infecties of parvovirus. Anders dan volwassen honden hebben pups zeer kleine energiereserves en kunnen ze binnen uren gevaarlijk lage bloedsuiker (hypoglykemie) ontwikkelen. Een pup die langer dan 12 uur voedsel weigert, of die sloom is, braakt of diarree heeft, heeft dringend veterinaire zorg nodig.",
+    },
+    {
+      q: "Kan een hond niet eten door stress?",
+      a: "Ja — stress is een van de meest voorkomende redenen waarom honden voedsel weigeren. Verhuizen, een nieuw huisdier of persoon in huis, hard geluid, vuurwerk of een veranderde routine kunnen allemaal de eetlust onderdrukken. Herstel voorspelbare voertijden, bied voer aan op een rustige plek en haal concurrentie van andere huisdieren weg. De eetlust keert meestal binnen 24 tot 48 uur terug zodra de stress afneemt.",
+    },
+    {
+      q: "Mijn hond eet niet maar drinkt wel water — is dat ernstig?",
+      a: "Normaal drinken terwijl hij voedsel weigert wijst vaker op misselijkheid, mondpijn of een onderliggende aandoening zoals nierziekte, diabetes of leverziekte dan op puur kieskeurig gedrag. Let op urineproductie en energieniveau. Houdt de weigering langer dan 24 uur aan of zie je meer drinken, gewichtsverlies of sloomheid, plan dan een dierenartsafspraak voor bloedonderzoek.",
     },
   ],
   faqTitle: "Veelgestelde vragen",
