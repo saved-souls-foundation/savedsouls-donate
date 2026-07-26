@@ -892,6 +892,8 @@
     "location": "Khon Kaen, Tailandia",
     "headline": "Donde las almas rotas vuelven a aprender a amar",
     "heroSubtitle": "Llegaron rotos. Se van enteros. Tú marcas la diferencia.",
+    "helpAnimalNow": "Ayuda a {name} ahora →",
+    "heroCtaAnimal": "Salva a {name} y sus amigos →",
     "heroOneliner": "2.500+ almas salvadas · Sillas de ruedas · Terapia acuática · Amor sin rendirse",
     "statsSouls": "2.500+",
     "statsSoulsLabel": "Almas salvadas",
@@ -4510,5 +4512,38 @@
     "visitText": "Siempre es bienvenido a visitar nuestro refugio — contáctenos para concertar una cita:",
     "ctaButton": "Iniciar solicitud de adopción →",
     "backToAdopt": "← Volver a adoptar"
+  },
+  "thailandSoul": {
+    "eyebrow": "NENEROYAL · Phuket, Tailandia",
+    "headline": "Tailandia tiene dos caras",
+    "body": "En Phuket suena música rock en vivo. En Khon Kaen, perros esperan una segunda oportunidad. Estamos aquí para esos perros.",
+    "ctaPrimary": "Leer la historia →",
+    "ctaSecondary": "Salva a Leo y sus amigos →"
+  },
+  "neneroyal": {
+    "heroHeadline": "NENEROYAL en vivo en Phuket — Tailandia tiene dos caras",
+    "heroIntro": "NENEROYAL (นีนี่รอยัล) es una cantante de rock tailandesa que actúa regularmente en vivo en el Naka Market de Phuket — el mercado de fin de semana más grande de Tailandia. Filmamos su actuación. Esta es nuestra historia sobre un país con dos caras.",
+    "nakaH2": "El Naka Market Phuket — donde Tailandia realmente vive",
+    "nakaP1": "El Naka Market (ตลาดนาคา), también conocido como Talad Tai Rot o Phuket Weekend Market, es el mercado nocturno más grande de Phuket. Cada sábado y domingo de 16:00 a 22:30, cientos de puestos llenan el terreno en Wirat Hong Yok Road, cerca de Central Festival Phuket Town. Los locales también lo llaman 'Phuket Chatuchak' — una referencia al famoso mercado de fin de semana de Bangkok.",
+    "nakaP2": "El mercado ofrece comida callejera, ropa, souvenirs, entretenimiento en vivo y un ambiente único. En el nuevo escenario del Naka Market, NENEROYAL actúa en vivo — una de las actuaciones más enérgicas de la isla. El público canta, la energía se siente, y Tailandia muestra su mejor cara.",
+    "neneroylH2": "Sobre NENEROYAL",
+    "neneroyalP1": "NENEROYAL (también escrita como Nene Royal o Nene x Royal, tailandés: นีนี่รอยัล) es una cantante de rock tailandesa activa en la escena musical en vivo de Phuket. Es conocida por su voz potente, su energía cruda en el escenario y su capacidad para llevar al público en un viaje musical.",
+    "neneroyalP2": "Su escenario habitual es el Naka Market Phuket, donde actúa semana tras semana ante locales y visitantes internacionales. NENEROYAL representa una Tailandia que los turistas rara vez ven — no una postal, sino cultura real, gente real, música real.",
+    "neneroyalP3": "Las imágenes de esta página fueron grabadas en vivo por Saved Souls Foundation durante una actuación de NENEROYAL en el Naka Market de Phuket. Sin versión de estudio, sin playback — puro directo.",
+    "bridgeH2": "Tailandia: música y compasión — un país, dos historias",
+    "bridgeP1": "En Phuket, la música rock de NENEROYAL llena el Naka Market cada fin de semana. A más de 1.000 kilómetros al norte, en Khon Kaen en el corazón de Isaan, se desarrolla otra historia. Saved Souls Foundation rescata cada día perros y gatos que nadie más quiere acoger — perros callejeros, supervivientes del comercio de carne, y perros paralizados que aprenden a caminar en silla de ruedas.",
+    "bridgeP2": "Ambas historias ocurren en el mismo país. Ambas merecen atención. La música cura a las personas. El amor cura a los animales. Tailandia tiene espacio para ambas.",
+    "bridgeP3": "Saved Souls Foundation estuvo presente en el Naka Market y filmó a NENEROYAL en vivo. No como patrocinador, no como socio — sino como testigo de lo que Tailandia realmente es. Un país donde belleza y lucha existen lado a lado.",
+    "ssfH2": "Sobre Saved Souls Foundation",
+    "ssfP1": "Saved Souls Foundation es una organización sin fines de lucro oficial con sede en Khon Kaen, Tailandia (número de registro 1/2560). Desde 2010 rescatamos perros callejeros, perros discapacitados y gatos que otros refugios rechazan — incluidos perros paralizados que reciben terapia acuática y aprenden a moverse en silla de ruedas.",
+    "ssfP2": "350 perros y 98 gatos viven actualmente en nuestro santuario en Ban Khok Ngam, Ban Fang, Khon Kaen. Cada animal tiene un nombre, una historia y una oportunidad de una nueva vida — gracias a donantes y voluntarios de más de 18 países.",
+    "ssfCta": "Salva a Leo y sus amigos →",
+    "thaiH2": "เกี่ยวกับ NENEROYAL และตลาดนาคา ภูเก็ต",
+    "thaiP1": "NENEROYAL (นีนี่รอยัล) เป็นนักร้องร็อคชาวไทยที่มีชื่อเสียงในภูเก็ต ประเทศไทย เธอแสดงสดเป็นประจำที่ตลาดนาคา ภูเก็ต (ตลาดไทรอด / Talad Tai Rot) ซึ่งเป็นตลาดกลางคืนที่ใหญ่ที่สุดบนเกาะ เปิดทุกวันเสาร์และอาทิตย์ เวลา 16:00 ถึง 22:30 น. ตั้งอยู่บนถนนวิรัตน์หงษ์ยนต์ ใกล้กับเซ็นทรัล เฟสติวัล ภูเก็ต",
+    "thaiP2": "ตลาดนาคามีร้านค้าหลายร้อยร้าน อาหารข้างถนน เสื้อผ้า ของที่ระลึก และความบันเทิงสด NENEROYAL แสดงบนเวทีใหม่ของตลาดนาคาและเป็นหนึ่งในศิลปินที่ได้รับความนิยมมากที่สุด",
+    "thaiP3": "วิดีโอนี้บันทึกสดโดย Saved Souls Foundation ระหว่างการแสดงสดของ NENEROYAL ที่ตลาดนาคา ภูเก็ต ไม่ใช่การแสดงในสตูดิโอ — เป็นการแสดงสดจริงๆ",
+    "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
+    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 98 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
+    "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
   }
 }

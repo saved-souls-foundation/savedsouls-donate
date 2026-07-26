@@ -18,6 +18,7 @@ import dynamic from "next/dynamic";
 import { showSponsor } from "@/lib/features";
 import { gtagReportConversion, resolveDonationNavigationUrl } from "@/lib/gtag";
 import TrackedDonateLink from "@/app/components/TrackedDonateLink";
+import { heroAnimal } from "@/config/heroAnimal";
 
 const SpotlightSection = dynamic(() => import("../components/SpotlightSection"), {
   ssr: false,
@@ -115,7 +116,6 @@ export default function DonatePage() {
     if (!useAutoTheme) localStorage.setItem(THEME_KEY, theme);
   }, [theme, useAutoTheme]);
 
-  const t = useTranslations("common");
   const tHome = useTranslations("home");
   const locale = useLocale();
 
@@ -202,7 +202,7 @@ export default function DonatePage() {
                 >
                   <Heart className="w-5 h-5 shrink-0 fill-white stroke-white" aria-hidden />
                 </span>
-                {t("donate")}
+                {tHome("heroCtaAnimal", { name: heroAnimal.name })}
               </a>
             </div>
           </div>

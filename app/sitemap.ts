@@ -74,6 +74,7 @@ const STATIC_PATHS = [
   "/vaccinations",
   "/vet-costs-comparison",
   "/william-heinecke-elephants",
+  "/neneroyal-thailand",
   "/minor-hotels",
   "/dog-meat-survivors",
   "/disabled-dog-guide",
@@ -208,6 +209,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/story",
     "/trust-impact",
     "/gallery",
+    "/neneroyal-thailand",
   ]);
 
   const entries: MetadataRoute.Sitemap = [];
@@ -219,10 +221,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const path = p || "";
       const fullPath = p || "";
       const priority = fullPath === "" ? 1 : MAIN_PATHS.has(fullPath) ? 0.8 : 0.6;
+      const changeFrequency =
+        fullPath === "/neneroyal-thailand" ? "monthly" : "weekly";
       entries.push({
         url: `${BASE_URL}${localePrefix}${path}`,
         lastModified: now,
-        changeFrequency: "weekly",
+        changeFrequency,
         priority,
       });
     }
