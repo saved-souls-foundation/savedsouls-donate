@@ -157,24 +157,36 @@ export const DOG_NOT_EATING_GUIDE: GuideContent = {
   ],
   faq: [
     {
-      q: "Is it normal for dogs to skip meals occasionally?",
-      a: "Yes, for many adult dogs. A single skipped meal after excitement, travel, or heat is often harmless if energy and hydration are normal. Patterns matter: skipping regularly, losing weight, or showing other symptoms is not normal. Track how many meals are refused and whether your dog is still enthusiastic about treats — dogs that refuse dinner but beg for cheese may be holding out for better offers rather than truly ill.",
+      q: "How long can a dog go without eating?",
+      a: "Most healthy adult dogs can go 3 to 5 days without food before serious health consequences develop, but this does not mean you should wait that long. A dog not eating for more than 48 hours needs a veterinary examination. Puppies should be seen within 12 hours of refusing food due to hypoglycemia risk.",
     },
     {
-      q: "Should I add something to the food to make it more appealing?",
-      a: "Short-term temptations like a spoon of wet food, plain chicken, or vet-approved appetite enhancers can help during recovery or mild stomach upset. Long-term, adding rich toppings to dry kibble often creates a picky eater who refuses plain food. If you need toppings permanently, discuss a balanced strategy with your vet — some prescription diets and wet formulations are designed for palatability without unbalancing nutrition.",
+      q: "Why is my dog not eating but acting normal?",
+      a: "A dog that refuses food but remains playful, bright, and active is usually experiencing a behavioural or mild cause — stress, food boredom, too many treats, or a recent vaccination. Monitor closely for 24 hours. If refusal continues or any other symptoms develop, contact your vet.",
     },
     {
-      q: "Can stress cause a dog to stop eating?",
-      a: "Absolutely. Moving house, new pets, visitors, loud storms, or owner absence commonly reduce appetite for 24–48 hours. Stress-related anorexia improves when routine returns and the dog feels safe. If appetite does not rebound within two days, or if your dog hides, trembles, or vomits, schedule a vet visit to rule out concurrent illness — stress and disease often overlap.",
+      q: "What can I feed a dog that won't eat?",
+      a: "Try plain boiled chicken breast with white rice (no seasoning), slightly warmed wet dog food, or low-sodium chicken broth added to kibble. Small portions offered by hand in a quiet room often help. Never add onion, garlic, or spices. If the dog still refuses after 24 hours, see your vet rather than continuing to try different foods.",
     },
     {
-      q: "My dog only eats when I hand feed — why?",
-      a: "Hand feeding builds attention and bonding; some dogs learn it is more rewarding than eating alone. It can also signal anxiety, neck or back pain (standing at a bowl is uncomfortable), or competition with other pets. Try raising the bowl, feeding in a quiet space, and stopping hand feeding gradually while offering normal meals at fixed times. If your dog still refuses the bowl entirely, a vet should check for pain or nausea.",
+      q: "Should I be worried if my dog skipped one meal?",
+      a: "Skipping one meal in an otherwise healthy adult dog is usually not an emergency. Dogs are not always hungry at the same time every day — a large meal the night before, hot weather, or mild stress can all cause a skipped meal. Watch for other symptoms. If the dog skips a second consecutive meal or shows any sign of illness, contact your veterinarian.",
     },
     {
-      q: "When does not eating become an emergency?",
-      a: "Immediately for puppies without food for 12 hours, any dog with repeated vomiting and an empty stomach, distended abdomen, collapse, suspected toxin ingestion, or known serious disease. For healthy adults, 48 hours without food or 24 hours with other symptoms warrants urgent care. When unsure, call your vet — describing behaviour and duration takes minutes and can prevent serious complications.",
+      q: "My dog is not eating and vomiting — what should I do?",
+      a: "Not eating combined with vomiting is a reason to contact your vet the same day, not to wait. This combination can indicate gastritis, pancreatitis, intestinal obstruction, parvovirus, or toxin ingestion. If the vomiting is repeated, the dog is weak or lethargic, the abdomen looks swollen, or there is blood in the vomit, treat it as an emergency and go to a clinic immediately.",
+    },
+    {
+      q: "Why won't my puppy eat?",
+      a: "Puppies commonly stop eating due to stress from leaving their litter, intestinal parasites, infections, or parvovirus. Unlike adult dogs, puppies have very small energy reserves and can develop dangerous low blood sugar (hypoglycemia) within hours. A puppy refusing food for more than 12 hours, or one that is lethargic, vomiting, or has diarrhoea, needs veterinary attention urgently.",
+    },
+    {
+      q: "Can a dog not eat due to stress?",
+      a: "Yes — stress is one of the most common reasons dogs refuse food. Moving to a new home, a new pet or person in the household, loud noises, fireworks, or a change in routine can all suppress appetite. Restore predictable feeding times, offer food in a quiet location, and remove competition from other pets. Appetite usually returns within 24 to 48 hours once stress reduces.",
+    },
+    {
+      q: "My dog is not eating but drinking water — is that serious?",
+      a: "Drinking normally while refusing food often points to nausea, mouth pain, or an underlying condition like kidney disease, diabetes, or liver disease rather than simple pickiness. Monitor urine output and energy level. If food refusal continues beyond 24 hours or you notice increased drinking, weight loss, or lethargy, book a vet appointment for blood work.",
     },
   ],
   faqTitle: "Frequently asked questions",
