@@ -124,12 +124,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: ["https://img.youtube.com/vi/HOZ0_q0QsQI/maxresdefault.jpg"],
     },
     alternates: {
-      canonical: `${BASE_URL}/${locale}/neneroyal-thailand`,
+      canonical: `https://www.savedsouls-foundation.org/${locale}/neneroyal-thailand`,
       languages: {
-        nl: "/nl/neneroyal-thailand",
-        en: "/en/neneroyal-thailand",
-        th: "/th/neneroyal-thailand",
-        de: "/de/neneroyal-thailand",
+        nl: "https://www.savedsouls-foundation.org/nl/neneroyal-thailand",
+        en: "https://www.savedsouls-foundation.org/en/neneroyal-thailand",
+        th: "https://www.savedsouls-foundation.org/th/neneroyal-thailand",
+        fr: "https://www.savedsouls-foundation.org/fr/neneroyal-thailand",
+        es: "https://www.savedsouls-foundation.org/es/neneroyal-thailand",
+        de: "https://www.savedsouls-foundation.org/de/neneroyal-thailand",
       },
     },
   };
