@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, "..");
 const API_BASE = "https://api.printify.com/v1";
 
 const DESCRIPTION =
-  "Support 430 dogs and 91 cats in Khon Kaen, Thailand. Every purchase goes directly to animal care.";
+  "Support 430 dogs and 26 cats in Khon Kaen, Thailand. Every purchase goes directly to animal care.";
 
 /** Logo max 40% of print-area width, gecentreerd op voorkant. */
 export const LOGO_IMAGE_ID =

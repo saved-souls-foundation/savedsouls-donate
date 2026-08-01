@@ -127,7 +127,7 @@ const jsonLd = {
     {
       "@type": "PropertyValue",
       name: "Cats in care",
-      value: 91,
+      value: 26,
     },
   ],
 };

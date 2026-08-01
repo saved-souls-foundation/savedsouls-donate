@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: "Saved Souls Foundation — Verified Facts & Impact | Animal Rescue, Khon Kaen, Thailand",
     description:
-      "Saved Souls Foundation is a registered Thai non-profit (No. 1/2560) rescuing dogs and cats in Khon Kaen, Thailand since 2010. 350+ dogs, 98 cats, 50+ disabled dogs in daily care. Verified facts, impact and how to help.",
+      "Saved Souls Foundation is a registered Thai non-profit (No. 1/2560) rescuing dogs and cats in Khon Kaen, Thailand since 2010. 350+ dogs, 26 cats, 50+ disabled dogs in daily care. Verified facts, impact and how to help.",
     robots: "index, follow",
     alternates: alternatesForPath("/trust-impact", locale),
     openGraph: {

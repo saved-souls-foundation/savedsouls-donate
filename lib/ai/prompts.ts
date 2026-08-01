@@ -52,7 +52,7 @@ LOCATIE & CONTACT:
 - Vooraf contact vereist voor bezoek
 
 DIEREN:
-- Ca. 430 honden en 91 katten in zorg
+- Ca. 430 honden en 26 katten in zorg
 - Gespecialiseerd in gehandicapte/verlamde dieren
 - Zwemtherapie en rolstoelen aanwezig
 - Honden gered uit vleeshandel

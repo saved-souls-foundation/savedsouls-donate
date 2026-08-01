@@ -545,7 +545,7 @@ export default function SiteHeader({ scrollToSection, scrollY = 999 }: SiteHeade
                 </div>
                 <span className="font-semibold text-sm text-gray-800">{t("menuAdoptCat")}</span>
                 <span className="text-xs text-gray-400 mt-1">{t("menuAdoptCatSubtext")}</span>
-                <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>98 katten</span>
+                <span className="text-[10px] font-medium rounded-[5px] py-0.5 px-1.5 inline-block mt-1.5 mr-1" style={{ backgroundColor: "#e8f5ec", color: "#1a5c2e" }}>26 katten</span>
               </Link>
               {showSponsor && (
                 <Link
