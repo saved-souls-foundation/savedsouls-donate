@@ -32,7 +32,7 @@ export default function NewsletterHero() {
         }}>
           {[
             { num: "350", label: t("stat1") },
-            { num: "98",  label: t("stat2") },
+            { num: "26",  label: t("stat2") },
             { num: "50",  label: t("stat3") },
           ].map((s) => (
             <div key={s.label} style={{ background: "rgba(255,255,255,0.04)", padding: "1.25rem 1rem", textAlign: "center" }}>

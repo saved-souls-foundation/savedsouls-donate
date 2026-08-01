@@ -87,7 +87,7 @@ export const PROGRAMS = [
 
 export const COUNTERS = [
   { target: 350, label: "Dogs currently in care" },
-  { target: 98, label: "Cats currently in care" },
+  { target: 26, label: "Cats currently in care" },
   { target: 50, label: "Disabled dogs supported" },
   { target: 16, label: "Years operating (since 2010)" },
 ] as const;
