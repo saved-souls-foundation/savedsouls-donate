@@ -7,7 +7,6 @@ import BankTransferSection from "../../components/BankTransferSection";
 import DonateForm from "../../components/DonateForm";
 import MollieBlock from "../../components/MollieBlock";
 import DonateHelpPoints from "../../components/DonateHelpPoints";
-import DonateFinancialStory from "../../components/DonateFinancialStory";
 import { Link } from "@/i18n/navigation";
 
 const GREEN_MID = "#2aa348";
@@ -35,38 +34,11 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
   const europeanLocales = ["nl", "de", "fr", "es", "be"];
   const isMollieFirst = europeanLocales.includes(locale);
 
-  const impactAmountsEur = ["5", "25", "55", "100"];
-  const impactAmountsTHB = ["100", "500", "1000", "2500"];
-
-  const costItems = [
-    {
-      emoji: "🍖",
-      title: tFin("cost1Title"),
-      detail: tFin("cost1Detail"),
-      percent: 45,
-      color: "#f59e0b",
-    },
-    {
-      emoji: "🏥",
-      title: tFin("cost2Title"),
-      detail: tFin("cost2Detail"),
-      percent: 25,
-      color: "#fb7185",
-    },
-    {
-      emoji: "👷",
-      title: tFin("cost3Title"),
-      detail: tFin("cost3Detail"),
-      percent: 20,
-      color: "#38bdf8",
-    },
-    {
-      emoji: "🔧",
-      title: tFin("cost4Title"),
-      detail: tFin("cost4Detail"),
-      percent: 10,
-      color: "#a78bfa",
-    },
+  const costRows = [
+    { emoji: "🍖", title: tFin("cost1Title"), detail: tFin("cost1Detail") },
+    { emoji: "🏥", title: tFin("cost2Title"), detail: tFin("cost2Detail") },
+    { emoji: "👷", title: tFin("cost3Title"), detail: tFin("cost3Detail") },
+    { emoji: "🔧", title: tFin("cost4Title"), detail: tFin("cost4Detail") },
   ];
 
   return (
@@ -105,7 +77,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
           </h1>
           <DonateHelpPoints
             intro={tP("helpIntro")}
-            points={[t("hero.points.feed"), t("hero.points.rescue"), t("hero.points.vet")]}
+            bullets={[t("hero.points.feed"), t("hero.points.rescue"), t("hero.points.vet")]}
           />
         </div>
       </div>
@@ -154,33 +126,40 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
             ))}
           </div>
 
-          {/* ── FINANCIAL STORY (interactief) ── */}
-          <DonateFinancialStory
-            badge={tFin("badge")}
-            title={tFin("title")}
-            subtitle={tFin("subtitle")}
-            monthlyNeedTitle={tFin("monthlyNeedTitle")}
-            perMonth={tFin("perMonth")}
-            approxEuro={tFin("approxEuro")}
-            gapText={tP("friendlyGapText")}
-            breakdownTitle={tFin("breakdownTitle")}
-            costs={costItems}
-            sponsorStatsTitle={tFin("sponsorStatsTitle")}
-            sponsorStatsText={tFin("sponsorStatsText")}
-            sponsorStatsConclusion={tFin("sponsorStatsConclusion")}
-            goalTitle={tFin("goalTitle")}
-            goalText={tFin("goalText")}
-            moreLinkLabel={t("linkToFinancialOverview")}
-            labels={{
-              togetherWeCover: tP("togetherWeCover"),
-              yourHelpCloses: tP("yourHelpCloses"),
-              watchAddUp: tP("watchAddUp"),
-              tapHint: tP("tapHint"),
-              runningTotal: tP("runningTotal"),
-              ofBudget: tP("ofBudget"),
-              replay: tP("replay"),
-            }}
-          />
+          {/* ── WHERE DOES YOUR MONEY GO (same plain list as /financial-overview) ── */}
+          <section className="mb-8 rounded-xl bg-white px-5 py-5">
+            <h2 className="text-lg font-bold text-stone-800 mb-1">{tFin("title")}</h2>
+            <p className="text-sm text-stone-500 mb-5">{tFin("subtitle")}</p>
+
+            <div className="mb-5 rounded-xl p-4 bg-emerald-50 border border-emerald-100">
+              <h3 className="text-sm font-bold mb-1" style={{ color: GREEN_MID }}>
+                {tFin("monthlyNeedTitle")}
+              </h3>
+              <p className="text-2xl font-black" style={{ color: GREEN_MID }}>
+                ฿500.000
+              </p>
+              <p className="text-sm text-stone-600">{tFin("perMonth")}</p>
+              <p className="text-sm text-stone-500 mb-3">{tFin("approxEuro")}</p>
+              <p className="text-sm text-stone-600 leading-relaxed">{tFin("gapText")}</p>
+            </div>
+
+            <h3 className="text-sm font-bold mb-3" style={{ color: GREEN_MID }}>
+              {tFin("breakdownTitle")}
+            </h3>
+            <div className="space-y-3">
+              {costRows.map((row) => (
+                <div
+                  key={row.title}
+                  className="p-3.5 rounded-xl border border-stone-200 bg-stone-50/50"
+                >
+                  <p className="font-semibold text-stone-800 text-sm">
+                    {row.emoji} {row.title}
+                  </p>
+                  <p className="text-stone-600 text-sm mt-1 leading-relaxed">{row.detail}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <p className="text-xs text-stone-400 text-center pb-8">
             <Link

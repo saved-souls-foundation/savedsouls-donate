@@ -1789,7 +1789,7 @@
     "feedCat": "Nuôi một chú mèo trong một năm",
     "nutritiousFood": "Thức ăn giàu dinh dưỡng",
     "viewGift": "Quyên góp ngay",
-    "disclaimer": "Khoản quyên góp của bạn sẽ đi trực tiếp để mua thức ăn cho 430 chú chó và 26 chú mèo của chúng tôi. Mỗi euro đều quan trọng.",
+    "disclaimer": "Khoản quyên góp của bạn sẽ đi trực tiếp để mua thức ăn cho 430 chú chó và 32 chú mèo của chúng tôi. Mỗi euro đều quan trọng.",
     "thankYou": "Cảm ơn bạn!",
     "backToGetInvolved": "← Quay lại Tham gia cùng chúng tôi"
   },
@@ -1843,19 +1843,19 @@
     "ctaMoreWays": "Những cách khác để quyên góp"
   },
   "financialOverview": {
-    "metaTitle": "Tổng quan tài chính – Chi phí hàng tháng",
+    "metaTitle": "Where does your money go? – Monthly costs",
     "metaDescription": "Tiền quyên góp của bạn được dùng để làm gì? Saved Souls Foundation cần 500.000 baht mỗi tháng. Thường chúng tôi còn không đạt được một nửa. Giúp chúng tôi lấp đầy khoảng trống.",
-    "badge": "Minh bạch",
-    "title": "Tổng quan tài chính",
-    "subtitle": "Tiền quyên góp của bạn được dùng để làm gì? Minh bạch về chi phí của chúng tôi.",
+    "badge": "Where your money goes",
+    "title": "Where does your money go?",
+    "subtitle": "A clear look at our monthly costs — and how your gift helps.",
     "backToDonate": "Quay lại để quyên góp",
     "monthlyNeedTitle": "Chi phí cần thiết hàng tháng",
     "perMonth": "mỗi tháng",
     "approxEuro": "≈ €12.500 – €13.000",
     "gapText": "Thật không may, quyên góp và tài trợ thường không thể bao quát được một nửa. Mỗi euro đều quan trọng. Giúp chúng tôi lấp đầy khoảng trống để mỗi chú chó và mèo đều nhận được sự chăm sóc xứng đáng.",
-    "breakdownTitle": "Tiền đó đi đâu?",
+    "breakdownTitle": "Where does it go?",
     "cost1Title": "Thức ăn",
-    "cost1Detail": "Gạo, thức ăn khô và thức ăn cho mèo. 1 bao gạo (49 kg) = 690 baht. Cho 430+ chú chó và 26 chú mèo.",
+    "cost1Detail": "Mỗi ngày chúng tôi cho 350 chó và 26 mèo ăn bằng gạo, thức ăn khô và thức ăn cho mèo. Một bao gạo 49 kg khoảng 690 baht.",
     "cost2Title": "Chăm sóc thú y và thuốc",
     "cost2Detail": "Tiêm chủng, chăm sóc khẩn cấp, phẫu thuật, thuốc men. Những động vật bị bệnh và khuyết tật cần chăm sóc đặc biệt.",
     "cost3Title": "12 nhân viên",
@@ -1873,7 +1873,7 @@
   "shop": {
     "title": "Cửa hàng",
     "subtitle": "Hỗ trợ các động vật của chúng tôi bằng hàng hóa. Áo hoodie, túi vải, lịch để bàn và nhiều hơn nữa. Mỗi lần mua sắm đều giúp đỡ.",
-    "metaDescription": "Cửa hàng hàng hóa Saved Souls Foundation. Áo hoodie, túi vải, lịch để bàn, poster. Mỗi lần mua sắm hỗ trợ 430 chú chó và 26 chú mèo của chúng tôi ở Thailand.",
+    "metaDescription": "Cửa hàng hàng hóa Saved Souls Foundation. Áo hoodie, túi vải, lịch để bàn, poster. Mỗi lần mua sắm hỗ trợ 430 chú chó và 32 chú mèo của chúng tôi ở Thailand.",
     "badge": "Hàng hóa",
     "heroAlt": "Đội Saved Souls tại nơi bảo tồn",
     "heroText": "Mỗi lần mua sắm đều đi trực tiếp đến các động vật của chúng tôi ở Khon Kaen.",
@@ -1887,7 +1887,7 @@
       "cap": "Mũ lưỡi trai"
     },
     "ctaTitle": "Truy cập cửa hàng của chúng tôi",
-    "ctaText": "Tất cả doanh thu đi đến 430 chú chó và 26 chú mèo của chúng tôi. Mua áo hoodie, lịch để bàn, túi vải và nhiều hơn nữa.",
+    "ctaText": "Tất cả doanh thu đi đến 430 chú chó và 32 chú mèo của chúng tôi. Mua áo hoodie, lịch để bàn, túi vải và nhiều hơn nữa.",
     "ctaButton": "Vào cửa hàng",
     "addToCart": "Thêm vào giỏ hàng",
     "cart": "Giỏ hàng",
@@ -2086,7 +2086,7 @@
     "sponsorTagline": "Cho một con chó hoặc mèo một người bạn hàng tháng",
     "volunteerTagline": "Tham gia cùng chúng tôi tại Khon Kaen, Thailand",
     "adoptTagline": "Cho một linh hồn được cứu một ngôi nhà mãi mãi",
-    "visitTagline": "Gặp gỡ 430 chú chó và 26 chú mèo của chúng tôi",
+    "visitTagline": "Gặp gỡ 430 chú chó và 32 chú mèo của chúng tôi",
     "kids": "Trẻ em – Giúp đỡ động vật",
     "moreWaysTitle": "Những cách khác để giúp đỡ",
     "orgLinksTitle": "Tổ chức & phương tiện truyền thông",
@@ -2450,9 +2450,9 @@
     },
     "hero": {
       "points": {
-        "feed": "// TODO: review — 350+ dogs fed daily",
-        "rescue": "// TODO: review — Street & injured dogs rescued",
-        "vet": "// TODO: review — Vet care & sterilisation"
+        "feed": "Provide food, shelter, and daily care for over 350 rescue dogs in Thailand.",
+        "rescue": "Rescue injured, disabled, and stray dogs from the streets.",
+        "vet": "Fund veterinary care, vaccinations, and sterilization campaigns."
       }
     },
     "trust": {
@@ -2497,7 +2497,7 @@
     "footerCardSupportSub": "Hỗ trợ chúng tôi",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "helpIntro": "Quà tặng của bạn đến với chó được cứu hộ tại Thái Lan — thức ăn, chăm sóc và cơ hội thứ hai.",
+    "helpIntro": "Make a donation to support our dog rescue and care nonprofit in Thailand. Your donation to Saved Souls Foundation helps:",
     "typicallyCovered": "Together we cover",
     "stillNeeded": "Your help closes the rest",
     "watchAddUp": "See where the monthly budget goes",
@@ -5450,14 +5450,14 @@
     "bridgeP3": "Saved Souls Foundation was present at Naka Market and filmed NENEROYAL live. Not as a sponsor, not as a partner — but as a witness to what Thailand truly is. A country where beauty and struggle exist side by side.",
     "ssfH2": "About Saved Souls Foundation",
     "ssfP1": "Saved Souls Foundation is an official non-profit organisation based in Khon Kaen, Thailand (registration number 1/2560). Since 2010 we have rescued street dogs, disabled dogs and cats that other shelters refuse — including paralysed dogs receiving swim therapy and learning to move in wheelchairs.",
-    "ssfP2": "350 dogs and 26 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
+    "ssfP2": "350 dogs and 32 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
     "ssfCta": "Save Leo and his friends →",
     "thaiH2": "เกี่ยวกับ NENEROYAL และตลาดนาคา ภูเก็ต",
     "thaiP1": "NENEROYAL (นีนี่รอยัล) เป็นนักร้องร็อคชาวไทยที่มีชื่อเสียงในภูเก็ต ประเทศไทย เธอแสดงสดเป็นประจำที่ตลาดนาคา ภูเก็ต (ตลาดไทรอด / Talad Tai Rot) ซึ่งเป็นตลาดกลางคืนที่ใหญ่ที่สุดบนเกาะ เปิดทุกวันเสาร์และอาทิตย์ เวลา 16:00 ถึง 22:30 น. ตั้งอยู่บนถนนวิรัตน์หงษ์ยนต์ ใกล้กับเซ็นทรัล เฟสติวัล ภูเก็ต",
     "thaiP2": "ตลาดนาคามีร้านค้าหลายร้อยร้าน อาหารข้างถนน เสื้อผ้า ของที่ระลึก และความบันเทิงสด NENEROYAL แสดงบนเวทีใหม่ของตลาดนาคาและเป็นหนึ่งในศิลปินที่ได้รับความนิยมมากที่สุด",
     "thaiP3": "วิดีโอนี้บันทึกสดโดย Saved Souls Foundation ระหว่างการแสดงสดของ NENEROYAL ที่ตลาดนาคา ภูเก็ต ไม่ใช่การแสดงในสตูดิโอ — เป็นการแสดงสดจริงๆ",
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
-    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
+    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 32 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
   },
   "thailandSoul": {

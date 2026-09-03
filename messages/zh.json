@@ -981,7 +981,7 @@
         "title": "月末：结构性短缺 – 我们如何解决？",
         "excerpt": "在月末，我们的开支总是非常高。请帮助我们覆盖饲料成本。",
         "heroAlt": "工作人员为数百只狗和猫准备食物",
-        "intro": "在月末，我们的开支总是非常高。每个月我们都面临同样的挑战：我们如何为 430 多只狗和 26 只猫覆盖饲料成本？",
+        "intro": "在月末，我们的开支总是非常高。每个月我们都面临同样的挑战：我们如何为 430 多只狗和 32 只猫覆盖饲料成本？",
         "body1": "从结构上讲，我们需要的比我们收到的要多。捐赠和赞助是我们的生命线。没有您的支持，我们无法喂养我们的动物、带它们去看兽医或支付我们的员工工资。",
         "costsTitle": "具体成本（单价）：",
         "cost1": "1 袋米（49 公斤）= 690 泰铢",
@@ -990,7 +990,7 @@
         "cost4": "1 盒罐装食品 = 800 泰铢",
         "cost5": "狗粮总成本：约 72,000 泰铢/月",
         "cost6": "猫粮总成本：约 15,000 泰铢/月（+ 猫砂）",
-        "costNote": "这仅是食物成本 – 用于 430 多只狗和 26 只猫。除此之外：兽医、药物、12 名员工、维护费用。",
+        "costNote": "这仅是食物成本 – 用于 430 多只狗和 32 只猫。除此之外：兽医、药物、12 名员工、维护费用。",
         "body2": "每一份贡献，无论多么微小，都有帮助。无论您捐赠 €5 还是 €50 – 都很重要。它直接用于动物。",
         "thanks": "代表我们的动物感谢您。🙏",
         "ctaText": "请帮助我们覆盖饲料成本？"
@@ -1116,7 +1116,7 @@
   },
   "faq": {
     "metaTitle": "常见问题 | Saved Souls Foundation Thailand",
-    "metaDescription": "关于 Saved Souls Foundation 的最常见问题解答：捐款、领养、志愿服务，以及我们在泰国 Khon Kaen 照顾的 300+ 只狗和 26 只猫的护理。",
+    "metaDescription": "关于 Saved Souls Foundation 的最常见问题解答：捐款、领养、志愿服务，以及我们在泰国 Khon Kaen 照顾的 300+ 只狗和 32 只猫的护理。",
     "metaKeywords": "宠物护理技巧、如何领养狗、狗护理、狗训练、狗如厕训练、最好的狗粮、狗生食饮食、狗不能吃的食物、狗疫苗接种、狗驱虫、狗跳蚤治疗、狗腹泻、狗呕吐、领养猫、最好的猫粮、猫绝育费用、猫疫苗接种",
     "title": "常见问题",
     "subtitle": "关于 Saved Souls Foundation 您需要了解的一切",
@@ -1789,7 +1789,7 @@
     "feedCat": "为一只猫提供一年的食物",
     "nutritiousFood": "营养食物",
     "viewGift": "立即捐赠",
-    "disclaimer": "您的捐赠直接用于我们的 430 只狗和 26 只猫的食物。每一欧元都很重要。",
+    "disclaimer": "您的捐赠直接用于我们的 430 只狗和 32 只猫的食物。每一欧元都很重要。",
     "thankYou": "谢谢您！",
     "backToGetInvolved": "← 返回参与方式"
   },
@@ -1843,19 +1843,19 @@
     "ctaMoreWays": "更多捐赠方式"
   },
   "financialOverview": {
-    "metaTitle": "财务概览 – 月度成本",
+    "metaTitle": "Where does your money go? – Monthly costs",
     "metaDescription": "您的捐款用在哪里？Saved Souls Foundation 每月需要 500,000 泰铢。通常我们连一半都达不到。帮助我们填补空缺。",
-    "badge": "透明度",
-    "title": "财务概览",
-    "subtitle": "您的捐款用在哪里？我们的成本公开透明。",
+    "badge": "Where your money goes",
+    "title": "Where does your money go?",
+    "subtitle": "A clear look at our monthly costs — and how your gift helps.",
     "backToDonate": "返回捐款",
     "monthlyNeedTitle": "每月所需成本",
     "perMonth": "每月",
     "approxEuro": "≈ €12,500 – €13,000",
     "gapText": "不幸的是，捐款和赞助往往连一半都无法覆盖。每一欧元都很重要。帮助我们填补空缺，让每只狗和猫都能获得它们应得的护理。",
-    "breakdownTitle": "资金流向？",
+    "breakdownTitle": "Where does it go?",
     "cost1Title": "食物",
-    "cost1Detail": "大米、干粮和猫粮。1 袋大米（49 公斤）= 690 泰铢。用于饲养 430+ 只狗和 26 只猫。",
+    "cost1Detail": "我们每天用米饭、干粮和猫粮喂养 350 只狗和 32 只猫。一袋 49 公斤大米约需 690 泰铢。",
     "cost2Title": "兽医和医疗",
     "cost2Detail": "疫苗接种、紧急护理、手术、药物。患病和残疾动物需要额外护理。",
     "cost3Title": "12 名员工",
@@ -1873,7 +1873,7 @@
   "shop": {
     "title": "商店",
     "subtitle": "用商品支持我们的动物。卫衣、手提袋、日历等。每次购买都有帮助。",
-    "metaDescription": "购买 Saved Souls Foundation 商品。卫衣、手提袋、日历、海报。每次购买都支持我们在泰国的 430 只狗和 26 只猫。",
+    "metaDescription": "购买 Saved Souls Foundation 商品。卫衣、手提袋、日历、海报。每次购买都支持我们在泰国的 430 只狗和 32 只猫。",
     "badge": "商品",
     "heroAlt": "Saved Souls 团队在保护区",
     "heroText": "每次购买都直接帮助我们在 Khon Kaen 的动物。",
@@ -1887,7 +1887,7 @@
       "cap": "帽子"
     },
     "ctaTitle": "访问我们的商店",
-    "ctaText": "所有收益都用于我们的 430 只狗和 26 只猫。购买卫衣、日历、手提袋等。",
+    "ctaText": "所有收益都用于我们的 430 只狗和 32 只猫。购买卫衣、日历、手提袋等。",
     "ctaButton": "进入商店",
     "addToCart": "加入购物车",
     "cart": "购物车",
@@ -2294,7 +2294,7 @@
   },
   "support": {
     "metaTitle": "支持我们",
-    "metaDescription": "支持 Saved Souls Foundation，进行一次性或每月捐款。每欧元都帮助我们位于泰国 Khon Kaen 的 430+ 条狗和 26 只猫。",
+    "metaDescription": "支持 Saved Souls Foundation，进行一次性或每月捐款。每欧元都帮助我们位于泰国 Khon Kaen 的 430+ 条狗和 32 只猫。",
     "supportTitle": "支持 Saved Souls Foundation",
     "supportersCount": "{count} 位支持者",
     "payDirectlyWith": "直接向 Saved Souls Foundation 支付",
@@ -2316,7 +2316,7 @@
     "monthlyCta": "通过 PayPal 每月支持",
     "viewCauses": "查看具体事项 →",
     "aboutText": "您的支持帮助我们继续讲述我们的狗和猫的故事并拯救生命。感谢您成为其中的一部分。",
-    "aboutText2": "Saved Souls Foundation 在泰国 Khon Kaen 照顾 430 多条狗和 26 只猫。我们从街道、肉类贸易和恶劣环境中救出动物。每笔捐款都直接用于我们避难所的食物、医疗护理和维护。",
+    "aboutText2": "Saved Souls Foundation 在泰国 Khon Kaen 照顾 430 多条狗和 32 只猫。我们从街道、肉类贸易和恶劣环境中救出动物。每笔捐款都直接用于我们避难所的食物、医疗护理和维护。",
     "postsIntro": "在博客上查看我们最新的更新和故事。",
     "viewBlog": "查看我们的博客",
     "viewBlogSubtitle": "来自我们避难所的新闻、故事和更新",
@@ -2325,7 +2325,7 @@
   },
   "donate": {
     "metaTitle": "向泰国拯救灵魂基金会捐款",
-    "metaDescription": "支持位于泰国孔敬的拯救灵魂基金会。您的捐款为 300+ 只获救狗狗和 26 只猫咪提供食物和医疗护理——包括瘫痪和残疾动物。",
+    "metaDescription": "支持位于泰国孔敬的拯救灵魂基金会。您的捐款为 300+ 只获救狗狗和 32 只猫咪提供食物和医疗护理——包括瘫痪和残疾动物。",
     "title": "捐款",
     "subtitle": "每一泰铢都能拯救生命",
     "navBack": "← 返回主页",
@@ -2450,9 +2450,9 @@
     },
     "hero": {
       "points": {
-        "feed": "// TODO: review — 350+ dogs fed daily",
-        "rescue": "// TODO: review — Street & injured dogs rescued",
-        "vet": "// TODO: review — Vet care & sterilisation"
+        "feed": "Provide food, shelter, and daily care for over 350 rescue dogs in Thailand.",
+        "rescue": "Rescue injured, disabled, and stray dogs from the streets.",
+        "vet": "Fund veterinary care, vaccinations, and sterilization campaigns."
       }
     },
     "trust": {
@@ -2497,7 +2497,7 @@
     "footerCardSupportSub": "支持我们",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "helpIntro": "您的捐赠直达泰国获救狗狗——食物、护理与第二次机会。",
+    "helpIntro": "Make a donation to support our dog rescue and care nonprofit in Thailand. Your donation to Saved Souls Foundation helps:",
     "typicallyCovered": "Together we cover",
     "stillNeeded": "Your help closes the rest",
     "watchAddUp": "See where the monthly budget goes",
@@ -5450,14 +5450,14 @@
     "bridgeP3": "Saved Souls Foundation was present at Naka Market and filmed NENEROYAL live. Not as a sponsor, not as a partner — but as a witness to what Thailand truly is. A country where beauty and struggle exist side by side.",
     "ssfH2": "About Saved Souls Foundation",
     "ssfP1": "Saved Souls Foundation is an official non-profit organisation based in Khon Kaen, Thailand (registration number 1/2560). Since 2010 we have rescued street dogs, disabled dogs and cats that other shelters refuse — including paralysed dogs receiving swim therapy and learning to move in wheelchairs.",
-    "ssfP2": "350 dogs and 26 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
+    "ssfP2": "350 dogs and 32 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
     "ssfCta": "Save Leo and his friends →",
     "thaiH2": "เกี่ยวกับ NENEROYAL และตลาดนาคา ภูเก็ต",
     "thaiP1": "NENEROYAL (นีนี่รอยัล) เป็นนักร้องร็อคชาวไทยที่มีชื่อเสียงในภูเก็ต ประเทศไทย เธอแสดงสดเป็นประจำที่ตลาดนาคา ภูเก็ต (ตลาดไทรอด / Talad Tai Rot) ซึ่งเป็นตลาดกลางคืนที่ใหญ่ที่สุดบนเกาะ เปิดทุกวันเสาร์และอาทิตย์ เวลา 16:00 ถึง 22:30 น. ตั้งอยู่บนถนนวิรัตน์หงษ์ยนต์ ใกล้กับเซ็นทรัล เฟสติวัล ภูเก็ต",
     "thaiP2": "ตลาดนาคามีร้านค้าหลายร้อยร้าน อาหารข้างถนน เสื้อผ้า ของที่ระลึก และความบันเทิงสด NENEROYAL แสดงบนเวทีใหม่ของตลาดนาคาและเป็นหนึ่งในศิลปินที่ได้รับความนิยมมากที่สุด",
     "thaiP3": "วิดีโอนี้บันทึกสดโดย Saved Souls Foundation ระหว่างการแสดงสดของ NENEROYAL ที่ตลาดนาคา ภูเก็ต ไม่ใช่การแสดงในสตูดิโอ — เป็นการแสดงสดจริงๆ",
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
-    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
+    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 32 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
   },
   "thailandSoul": {

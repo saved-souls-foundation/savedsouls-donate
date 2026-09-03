@@ -6,7 +6,7 @@ export const STAMPS = [
     rotation: -9,
   },
   {
-    value: "26",
+    value: "32",
     label: "Cats in care",
     color: "amethyst" as const,
     rotation: 6,
@@ -87,7 +87,7 @@ export const PROGRAMS = [
 
 export const COUNTERS = [
   { target: 350, label: "Dogs currently in care" },
-  { target: 26, label: "Cats currently in care" },
+  { target: 32, label: "Cats currently in care" },
   { target: 50, label: "Disabled dogs supported" },
   { target: 16, label: "Years operating (since 2010)" },
 ] as const;
@@ -101,7 +101,7 @@ export const FAQ_ITEMS = [
   {
     question: "How many animals have been helped in total?",
     answer:
-      "The sanctuary currently houses roughly 350 dogs and 26 cats, with more than 50 living with disabilities. Totals since 2010 include hundreds of successful rehabilitations and adoptions.",
+      "The sanctuary currently houses roughly 350 dogs and 32 cats, with more than 50 living with disabilities. Totals since 2010 include hundreds of successful rehabilitations and adoptions.",
   },
   {
     question: "What is swim therapy and why does it matter?",
@@ -180,7 +180,7 @@ export const FAQ_SCHEMA = {
       name: "How many animals does Saved Souls Foundation care for?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "As of the most recent count, the foundation cares for around 350 dogs and 26 cats, including more than 50 disabled or wheelchair-bound dogs.",
+        text: "As of the most recent count, the foundation cares for around 350 dogs and 32 cats, including more than 50 disabled or wheelchair-bound dogs.",
       },
     },
     {

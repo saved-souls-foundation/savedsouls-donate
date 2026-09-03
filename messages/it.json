@@ -981,7 +981,7 @@
         "title": "End of the month: structurally short – how do we fix it?",
         "excerpt": "At the end of the month our expenses are always very high. Please help to cover the feeding costs.",
         "heroAlt": "Staff preparing food for hundreds of dogs and cats",
-        "intro": "At the end of the month our expenses are always very high. Every month we face the same challenge: how do we cover the feeding costs for 430+ dogs and 26 cats?",
+        "intro": "At the end of the month our expenses are always very high. Every month we face the same challenge: how do we cover the feeding costs for 430+ dogs and 32 cats?",
         "body1": "We structurally need more than we receive. Donations and sponsorship are our lifeline. Without your support we cannot feed our animals, take them to the vet, or pay our staff.",
         "costsTitle": "Concrete costs (unit prices):",
         "cost1": "1 sack of rice (49 kg) = 690 baht",
@@ -990,7 +990,7 @@
         "cost4": "1 box of canned food = 800 baht",
         "cost5": "Total dog food costs: ~72,000 baht per month",
         "cost6": "Total cat food costs: ~15,000 baht per month (+ litter)",
-        "costNote": "This is food only – for 430+ dogs and 26 cats. On top of that: vet, medication, 12 staff, maintenance.",
+        "costNote": "This is food only – for 430+ dogs and 32 cats. On top of that: vet, medication, 12 staff, maintenance.",
         "body2": "Every contribution, no matter how small, helps. Whether you give €5 or €50 – it counts. It goes directly to the animals.",
         "thanks": "Thank you on behalf of our animals. 🙏",
         "ctaText": "Please help us cover the feeding costs?"
@@ -1789,7 +1789,7 @@
     "feedCat": "Feed a cat for a year",
     "nutritiousFood": "Nutritious food",
     "viewGift": "Donate now",
-    "disclaimer": "Your donation goes directly to food for our 430 dogs and 26 cats. Every euro counts.",
+    "disclaimer": "Your donation goes directly to food for our 430 dogs and 32 cats. Every euro counts.",
     "thankYou": "Thank you!",
     "backToGetInvolved": "← Back to Get Involved"
   },
@@ -1803,7 +1803,7 @@
     "euros": "Euros",
     "baht": "Thai baht",
     "whyTitle": "Why is this so important?",
-    "why1": "Our clinic in Khon Kaen is the heart of medical care for our 430 dogs and 26 cats. But the building is ageing, the walls are cracking, the facilities are limited. We do what we can—but we could do so much more.",
+    "why1": "Our clinic in Khon Kaen is the heart of medical care for our 430 dogs and 32 cats. But the building is ageing, the walls are cracking, the facilities are limited. We do what we can—but we could do so much more.",
     "why2": "With a thorough renovation and expansion, we can not only care for our own animals better, but also help animals in the surrounding villages. Sterilisations, vaccinations, emergency care—all possible when our clinic is safe, modern and spacious enough.",
     "why3": "Every euro you give brings us closer to that dream. Help us make it happen.",
     "dreamTitle": "A dream come true",
@@ -1828,7 +1828,7 @@
     "euros": "Euros",
     "baht": "Thai baht",
     "whyTitle": "Why do we need a car?",
-    "why1": "Our shelter in Khon Kaen cares for 430 dogs and 26 cats. We regularly need to pick up injured or abandoned animals, bring dogs and cats to the vet, fetch food and supplies, and transport volunteers. Right now we have no reliable vehicle—and no funding for one.",
+    "why1": "Our shelter in Khon Kaen cares for 430 dogs and 32 cats. We regularly need to pick up injured or abandoned animals, bring dogs and cats to the vet, fetch food and supplies, and transport volunteers. Right now we have no reliable vehicle—and no funding for one.",
     "why2": "A secondhand car that runs well would change everything. More rescues. Faster vet care. Less stress. We're not asking for a new car—just one that works and that we can afford.",
     "why3": "Every euro you give brings us closer. We have nothing set aside for this. Your donation could literally save lives.",
     "dreamTitle": "What a car would mean",
@@ -1843,11 +1843,11 @@
     "ctaMoreWays": "More ways to donate"
   },
   "financialOverview": {
-    "metaTitle": "Financial overview – Monthly costs",
+    "metaTitle": "Where does your money go? – Monthly costs",
     "metaDescription": "Where does your donation go? Saved Souls needs 500,000 baht per month. Often we don't even reach half. Help us close the gap.",
-    "badge": "Transparency",
-    "title": "Financial overview",
-    "subtitle": "Where does your donation go? Transparent about our costs.",
+    "badge": "Where your money goes",
+    "title": "Where does your money go?",
+    "subtitle": "A clear look at our monthly costs — and how your gift helps.",
     "backToDonate": "Back to donate",
     "monthlyNeedTitle": "Monthly costs needed",
     "perMonth": "per month",
@@ -1855,7 +1855,7 @@
     "gapText": "Unfortunately, donations and sponsorship often don't even cover half. Every euro counts. Help us close the gap so every dog and cat gets the care they deserve.",
     "breakdownTitle": "Where does it go?",
     "cost1Title": "Food",
-    "cost1Detail": "Rice, dry food and cat food. 1 sack of rice (49 kg) = 690 baht. For 430+ dogs and 26 cats.",
+    "cost1Detail": "Ogni giorno nutriamo 350 cani e 26 gatti con riso, cibo secco e cibo per gatti. Un sacco di riso da 49 kg costa circa 690 baht.",
     "cost2Title": "Veterinary and medication",
     "cost2Detail": "Vaccinations, emergency care, surgeries, medication. Sick and disabled animals need extra care.",
     "cost3Title": "12 staff members",
@@ -1873,7 +1873,7 @@
   "shop": {
     "title": "Shop",
     "subtitle": "Support our animals with merchandise. Hoodies, tote bags, calendars and more. Every purchase helps.",
-    "metaDescription": "Shop Saved Souls Foundation merchandise. Hoodies, tote bags, calendars, posters. Every purchase supports our 430 dogs and 26 cats in Thailand.",
+    "metaDescription": "Shop Saved Souls Foundation merchandise. Hoodies, tote bags, calendars, posters. Every purchase supports our 430 dogs and 32 cats in Thailand.",
     "badge": "Merchandise",
     "heroAlt": "Saved Souls team at the sanctuary",
     "heroText": "Every purchase goes directly to our animals in Khon Kaen.",
@@ -1887,7 +1887,7 @@
       "cap": "Caps"
     },
     "ctaTitle": "Visit our shop",
-    "ctaText": "All proceeds go to our 430 dogs and 26 cats. Shop hoodies, calendars, tote bags and more.",
+    "ctaText": "All proceeds go to our 430 dogs and 32 cats. Shop hoodies, calendars, tote bags and more.",
     "ctaButton": "Go to shop",
     "addToCart": "Add to cart",
     "cart": "Cart",
@@ -2294,7 +2294,7 @@
   },
   "support": {
     "metaTitle": "Support us",
-    "metaDescription": "Support Saved Souls Foundation with a one-time or monthly donation. Every euro helps our 430+ dogs and 26 cats in Khon Kaen, Thailand.",
+    "metaDescription": "Support Saved Souls Foundation with a one-time or monthly donation. Every euro helps our 430+ dogs and 32 cats in Khon Kaen, Thailand.",
     "supportTitle": "Support Saved Souls Foundation",
     "supportersCount": "{count} supporters",
     "payDirectlyWith": "Pay Saved Souls Foundation directly with",
@@ -2316,7 +2316,7 @@
     "monthlyCta": "Support monthly via PayPal",
     "viewCauses": "View specific causes →",
     "aboutText": "Your support helps us keep telling these stories of our dogs and cats and saving lives. Thank you for being part of this.",
-    "aboutText2": "Saved Souls Foundation cares for over 430 dogs and 26 cats in Khon Kaen, Thailand. We rescue animals from the streets, the meat trade and bad situations. Every donation goes directly to food, medical care and maintenance of our sanctuary.",
+    "aboutText2": "Saved Souls Foundation cares for over 430 dogs and 32 cats in Khon Kaen, Thailand. We rescue animals from the streets, the meat trade and bad situations. Every donation goes directly to food, medical care and maintenance of our sanctuary.",
     "postsIntro": "View our latest updates and stories on the blog.",
     "viewBlog": "View our blog",
     "viewBlogSubtitle": "News, stories and updates from our sanctuary",
@@ -2450,9 +2450,9 @@
     },
     "hero": {
       "points": {
-        "feed": "// TODO: review — 350+ dogs fed daily",
-        "rescue": "// TODO: review — Street & injured dogs rescued",
-        "vet": "// TODO: review — Vet care & sterilisation"
+        "feed": "Provide food, shelter, and daily care for over 350 rescue dogs in Thailand.",
+        "rescue": "Rescue injured, disabled, and stray dogs from the streets.",
+        "vet": "Fund veterinary care, vaccinations, and sterilization campaigns."
       }
     },
     "trust": {
@@ -2497,7 +2497,7 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "helpIntro": "Il tuo dono raggiunge cani salvati in Thailandia — cibo, cure e una seconda possibilità.",
+    "helpIntro": "Make a donation to support our dog rescue and care nonprofit in Thailand. Your donation to Saved Souls Foundation helps:",
     "typicallyCovered": "Together we cover",
     "stillNeeded": "Your help closes the rest",
     "watchAddUp": "See where the monthly budget goes",
@@ -5450,14 +5450,14 @@
     "bridgeP3": "Saved Souls Foundation was present at Naka Market and filmed NENEROYAL live. Not as a sponsor, not as a partner — but as a witness to what Thailand truly is. A country where beauty and struggle exist side by side.",
     "ssfH2": "About Saved Souls Foundation",
     "ssfP1": "Saved Souls Foundation is an official non-profit organisation based in Khon Kaen, Thailand (registration number 1/2560). Since 2010 we have rescued street dogs, disabled dogs and cats that other shelters refuse — including paralysed dogs receiving swim therapy and learning to move in wheelchairs.",
-    "ssfP2": "350 dogs and 26 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
+    "ssfP2": "350 dogs and 32 cats currently live at our sanctuary in Ban Khok Ngam, Ban Fang, Khon Kaen. Every animal has a name, a story and a chance at a new life — thanks to donors and volunteers from more than 18 countries.",
     "ssfCta": "Save Leo and his friends →",
     "thaiH2": "เกี่ยวกับ NENEROYAL และตลาดนาคา ภูเก็ต",
     "thaiP1": "NENEROYAL (นีนี่รอยัล) เป็นนักร้องร็อคชาวไทยที่มีชื่อเสียงในภูเก็ต ประเทศไทย เธอแสดงสดเป็นประจำที่ตลาดนาคา ภูเก็ต (ตลาดไทรอด / Talad Tai Rot) ซึ่งเป็นตลาดกลางคืนที่ใหญ่ที่สุดบนเกาะ เปิดทุกวันเสาร์และอาทิตย์ เวลา 16:00 ถึง 22:30 น. ตั้งอยู่บนถนนวิรัตน์หงษ์ยนต์ ใกล้กับเซ็นทรัล เฟสติวัล ภูเก็ต",
     "thaiP2": "ตลาดนาคามีร้านค้าหลายร้อยร้าน อาหารข้างถนน เสื้อผ้า ของที่ระลึก และความบันเทิงสด NENEROYAL แสดงบนเวทีใหม่ของตลาดนาคาและเป็นหนึ่งในศิลปินที่ได้รับความนิยมมากที่สุด",
     "thaiP3": "วิดีโอนี้บันทึกสดโดย Saved Souls Foundation ระหว่างการแสดงสดของ NENEROYAL ที่ตลาดนาคา ภูเก็ต ไม่ใช่การแสดงในสตูดิโอ — เป็นการแสดงสดจริงๆ",
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
-    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
+    "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 32 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
   },
   "thailandSoul": {

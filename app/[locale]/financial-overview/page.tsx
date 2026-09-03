@@ -19,9 +19,6 @@ export default function FinancialOverviewPage() {
       <main className="max-w-4xl mx-auto px-4 py-12 md:py-20">
         {/* Hero */}
         <header className="text-center mb-14 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 border-2 border-emerald-300 dark:border-emerald-600 mb-6 text-sm font-semibold text-emerald-800 dark:text-emerald-200">
-            📊 {t("badge")}
-          </div>
           <h1 className="text-4xl md:text-5xl font-black text-stone-800 dark:text-stone-100 mb-4 leading-tight">
             {t("title")}
           </h1>

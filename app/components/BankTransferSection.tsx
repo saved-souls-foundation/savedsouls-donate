@@ -54,44 +54,46 @@ export default function BankTransferSection() {
   const th = BANK_ACCOUNTS.thailand;
 
   return (
-    <section id="bank-transfer" className="scroll-mt-24 border-t border-stone-200/80 pt-5 pb-2">
-      <h2 className="text-base font-semibold text-stone-700 mb-1">{t("title")}</h2>
-      <p className="text-sm text-stone-600 mb-5 leading-relaxed">{t("intro")}</p>
+    <section id="bank-transfer" className="scroll-mt-24">
+      <div className="rounded-xl bg-white px-5 py-5 md:px-6 md:py-6">
+        <h2 className="text-base font-semibold text-stone-700 mb-1">{t("title")}</h2>
+        <p className="text-sm text-stone-600 mb-5 leading-relaxed">{t("intro")}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 md:divide-x md:divide-stone-400/60">
-        {/* Europe */}
-        <div className="flex flex-col pb-6 md:pb-0">
-          <p className="text-sm font-medium text-stone-700 mb-4">{t("eu.title")}</p>
-          <dl className="flex-1">
-            <DetailField label={t("holder")} value={eu.holder} />
-            <DetailField label={t("bank")} value={eu.bank} />
-            <DetailField label={t("iban")} value={eu.ibanDisplay} monoBold />
-            <DetailField label={t("bic")} value={eu.bic} />
-          </dl>
-          <div className="mt-auto pt-4">
-            <CopyButton text={eu.ibanCopy} label={t("copyIban")} copiedLabel={t("copied")} />
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 md:divide-x md:divide-stone-400/60">
+          {/* Europe */}
+          <div className="flex flex-col pb-6 md:pb-0">
+            <p className="text-sm font-medium text-stone-700 mb-4">{t("eu.title")}</p>
+            <dl className="flex-1">
+              <DetailField label={t("holder")} value={eu.holder} />
+              <DetailField label={t("bank")} value={eu.bank} />
+              <DetailField label={t("iban")} value={eu.ibanDisplay} monoBold />
+              <DetailField label={t("bic")} value={eu.bic} />
+            </dl>
+            <div className="mt-auto pt-4">
+              <CopyButton text={eu.ibanCopy} label={t("copyIban")} copiedLabel={t("copied")} />
+            </div>
+          </div>
+
+          {/* Thailand — mobile: line + py-6; desktop: vertical divide + pl-12 */}
+          <div className="flex flex-col border-t border-stone-400/60 py-6 md:border-t-0 md:py-0 md:pl-12">
+            <p className="text-sm font-medium text-stone-700 mb-4">{t("th.title")}</p>
+            <dl className="flex-1">
+              <DetailField label={t("holder")} value={th.holder} />
+              <DetailField label={t("bank")} value={th.bank} />
+              <DetailField label={t("account")} value={th.account} monoBold />
+              <DetailField label={t("bic")} value={th.bic} />
+            </dl>
+            <div className="mt-auto pt-4">
+              <CopyButton text={th.account} label={t("copyAccount")} copiedLabel={t("copied")} />
+            </div>
           </div>
         </div>
 
-        {/* Thailand — mobile: line + py-6; desktop: vertical divide + pl-12 */}
-        <div className="flex flex-col border-t border-stone-400/60 py-6 md:border-t-0 md:py-0 md:pl-12">
-          <p className="text-sm font-medium text-stone-700 mb-4">{t("th.title")}</p>
-          <dl className="flex-1">
-            <DetailField label={t("holder")} value={th.holder} />
-            <DetailField label={t("bank")} value={th.bank} />
-            <DetailField label={t("account")} value={th.account} monoBold />
-            <DetailField label={t("bic")} value={th.bic} />
-          </dl>
-          <div className="mt-auto pt-4">
-            <CopyButton text={th.account} label={t("copyAccount")} copiedLabel={t("copied")} />
-          </div>
+        <div className="mt-8 border-t border-stone-400/60 pt-6 space-y-1.5 text-xs leading-relaxed text-stone-500">
+          <p>{t("reference")}</p>
+          <p>{t("fraud")}</p>
+          <p>{t("registration")}</p>
         </div>
-      </div>
-
-      <div className="mt-8 border-t border-stone-400/60 pt-6 space-y-1.5 text-xs leading-relaxed text-stone-500">
-        <p>{t("reference")}</p>
-        <p>{t("fraud")}</p>
-        <p>{t("registration")}</p>
       </div>
     </section>
   );
