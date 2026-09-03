@@ -2426,6 +2426,40 @@
       "ewalletsComingSoon": "近日公開予定です。",
       "btnBack": "寄付に戻る",
       "btnDonateHomepage": "ホームページで寄付"
+    },
+    "bank": {
+      "toggle": "銀行振込をご希望ですか？口座情報を見る",
+      "title": "口座情報",
+      "intro": "お振込はSaved Souls Foundationに直接届きます。ご利用の銀行に合った口座をお選びください。",
+      "eu": {
+        "title": "ヨーロッパ・スイスからのご寄付（EUR / CHF）"
+      },
+      "th": {
+        "title": "タイ国内からのご寄付（THB）"
+      },
+      "holder": "口座名義",
+      "bank": "銀行",
+      "iban": "IBAN",
+      "account": "口座番号",
+      "bic": "BIC/SWIFT",
+      "copyIban": "IBANをコピー",
+      "copyAccount": "口座番号をコピー",
+      "copied": "コピーしました",
+      "reference": "お礼をお送りできるよう、振込の摘要欄にメールアドレスをご記入ください。",
+      "fraud": "当団体の銀行口座は上記のみです。メール、WhatsApp、電話で別の口座への振込をお願いすることは決してありません。",
+      "registration": "Saved Souls Foundation · タイ財団登録番号 1/2560"
+    },
+    "hero": {
+      "points": {
+        "feed": "毎日350頭以上の犬に食事を提供",
+        "rescue": "野良犬・負傷犬の保護",
+        "vet": "獣医療と不妊去勢"
+      }
+    },
+    "trust": {
+      "secure": "安全なお支払い",
+      "hundred": "寄付の100%が動物のために",
+      "registration": "タイ登録財団、登録番号 1/2560"
     }
   },
   "donatePage": {
@@ -2452,9 +2486,6 @@
     "ctaCustom": "Donate now — custom amount",
     "ctaSecMonthly": "Prefer a one-time donation",
     "ctaSecOnce": "Become a monthly soul saver ♥",
-    "trust1": "Secure payment",
-    "trust2": "100% to animals",
-    "trust3": "Thailand reg. 1/2560",
     "amountSectionLabel": "Impact of your donation",
     "statAnimals": "Animals in care",
     "statDisabled": "Disabled animals",
@@ -2467,11 +2498,20 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
     "helpIntro": "あなたの支援はタイの保護犬へ届きます — 食事、ケア、そして第二のチャンス。",
-    "helpBullet1": "毎日350頭以上の保護犬に食事と居場所を",
-    "helpBullet2": "ケガをした犬・障がい犬・野良犬を路上から救う",
-    "helpBullet3": "獣医療・ワクチン・不妊手術を支える"
+    "typicallyCovered": "Together we cover",
+    "stillNeeded": "Your help closes the rest",
+    "watchAddUp": "See where the monthly budget goes",
+    "tapHint": "tap a category",
+    "runningTotal": "Share of the budget",
+    "ofNeed": "of monthly need",
+    "replay": "Replay",
+    "togetherWeCover": "Together we already cover about",
+    "yourHelpCloses": "Your gift helps close the rest ♥",
+    "ofBudget": "of the monthly care budget",
+    "friendlyGapText": "Donations and sponsors already make a huge difference — and every extra gift helps more dogs eat, heal, and feel safe.",
+    "secondaryPaypal": "One-time via PayPal",
+    "secondaryDonorbox": "Monthly via Donorbox ♥"
   },
   "thankYou": {
     "title": "Thank You!",
@@ -2574,7 +2614,27 @@
     "flyerHaarlemSectionVisit": "Visit DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "Call 023 870 0303",
     "flyerHaarlemTeamAlt": "Team at DierenDokters Haarlem",
-    "flyerHaarlemFlyerAlt": "Saved Souls flyer in the waiting room at DierenDokters Haarlem"
+    "flyerHaarlemFlyerAlt": "Saved Souls flyer in the waiting room at DierenDokters Haarlem",
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "A very special thank you to Groenprint — a sustainable printing company using 100% CO2-neutral FSC® certified paper, without cutting down trees. Groenprint generously printed and shipped 250 posters for us, completely free of charge. This allows us to reach more people and save more animals. We are incredibly grateful for their amazing support! 🌱 Sustainable for the planet, hopeful for the animals."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem has displayed our Saved Souls flyer in their waiting room. This helps us reach pet owners in Haarlem who want to support our rescue work for dogs and cats in Khon Kaen."
+    },
+    "donationBoxShamuSectionTitle": "Third donation box in Phuket",
+    "donationBoxShamuSectionSubtitle": "Together with Shamu Shamu Pet Center",
+    "donationBoxShamuThankYouHeader": "Thank you so much! 🙏",
+    "donationBoxShamuThankYouText": "We are incredibly grateful to Shamu Shamu Pet Center for giving our donation box a warm home in their store. Every baht donated goes directly to our dogs and cats in Khon Kaen.",
+    "donationBoxShamuHeroAlt": "Shamu Shamu Pet Center in Thalang, Phuket",
+    "donationBoxShamuCategory": "Pet Store",
+    "donationBoxShamuLocation": "Thalang, Phuket, Thailand",
+    "donationBoxShamuAddress": "285R+CG6, Thep Krasattri Rd, Si Sunthon, Thalang District, Phuket 83110, Thailand",
+    "donationBoxShamuHours": "Open daily until 19:00",
+    "donationBoxShamuRating": "4.8 ⭐ (138 reviews)",
+    "donationBoxShamuSectionVisit": "View on Google Maps",
+    "donationBoxShamuSectionPhone": "Call +66 62 324 9295"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",
@@ -5400,5 +5460,12 @@
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
     "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
+  },
+  "thailandSoul": {
+    "eyebrow": "NENEROYAL · Phuket, Thailand",
+    "headline": "Thailand has two faces",
+    "body": "In Phuket, live rock music fills the air. In Khon Kaen, dogs wait for a second chance. We are here for those dogs.",
+    "ctaPrimary": "Read the story →",
+    "ctaSecondary": "Save Leo and his friends →"
   }
 }

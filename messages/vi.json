@@ -126,7 +126,7 @@
     "catIndoorOutdoor": "Mèo trong nhà hoặc ngoài trời",
     "dogVomitingDiarrhea": "Chó nôn hoặc tiêu chảy",
     "dogAteChocolate": "Chó ăn chocolate",
-    "dogNotEating": "Chó không ăn",
+    "dogNotEating": "Chó không chịu ăn",
     "catNotDrinking": "Mèo không uống nước",
     "dogVomiting": "Chó nôn",
     "puppySchedule": "Lịch trình chó con",
@@ -2425,6 +2425,40 @@
       "ewalletsComingSoon": "Sẽ có sớm.",
       "btnBack": "Quay lại quyên góp",
       "btnDonateHomepage": "Quyên góp trên trang chủ"
+    },
+    "bank": {
+      "toggle": "// TODO: review — Prefer a bank transfer? See our account details",
+      "title": "// TODO: review — Bank details",
+      "intro": "// TODO: review — Transfers go directly to Saved Souls Foundation. Choose the account that matches your bank.",
+      "holder": "// TODO: review — Account holder",
+      "bank": "// TODO: review — Bank",
+      "iban": "// TODO: review — IBAN",
+      "account": "// TODO: review — Account number",
+      "bic": "// TODO: review — BIC/SWIFT",
+      "copyIban": "// TODO: review — Copy IBAN",
+      "copyAccount": "// TODO: review — Copy account number",
+      "copied": "// TODO: review — Copied",
+      "reference": "// TODO: review — Please add your e-mail address in the payment reference so we can send you a thank-you.",
+      "fraud": "// TODO: review — These are our only bank accounts. We will never ask you by e-mail, WhatsApp or phone to transfer to a different account.",
+      "registration": "// TODO: review — Saved Souls Foundation · Thailand foundation registration no. 1/2560",
+      "eu": {
+        "title": "// TODO: review — For donors in Europe & Switzerland (EUR / CHF)"
+      },
+      "th": {
+        "title": "// TODO: review — For donors in Thailand (THB)"
+      }
+    },
+    "hero": {
+      "points": {
+        "feed": "// TODO: review — 350+ dogs fed daily",
+        "rescue": "// TODO: review — Street & injured dogs rescued",
+        "vet": "// TODO: review — Vet care & sterilisation"
+      }
+    },
+    "trust": {
+      "secure": "// TODO: review — Secure payment",
+      "hundred": "// TODO: review — 100% goes to the animals",
+      "registration": "// TODO: review — Registered foundation in Thailand, no. 1/2560"
     }
   },
   "donatePage": {
@@ -2451,9 +2485,6 @@
     "ctaCustom": "Quyên góp ngay — số tiền tùy chọn",
     "ctaSecMonthly": "Thích quyên góp một lần",
     "ctaSecOnce": "Trở thành người cứu rỗi linh hồn hàng tháng ♥",
-    "trust1": "Thanh toán an toàn",
-    "trust2": "100% cho động vật",
-    "trust3": "Đăng ký Thailand 1/2560",
     "amountSectionLabel": "TÁC ĐỘNG QUYÊN GÓP CỦA BẠN",
     "statAnimals": "Động vật đang chăm sóc",
     "statDisabled": "Động vật khuyết tật",
@@ -2466,11 +2497,20 @@
     "footerCardSupportSub": "Hỗ trợ chúng tôi",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Tổ chức phi lợi nhuận chính thức Thailand · Số đăng ký 1/2560",
     "helpIntro": "Quà tặng của bạn đến với chó được cứu hộ tại Thái Lan — thức ăn, chăm sóc và cơ hội thứ hai.",
-    "helpBullet1": "Cho ăn và che chở hơn 350 chú chó được cứu mỗi ngày",
-    "helpBullet2": "Cứu chó bị thương, khuyết tật và chó đường phố",
-    "helpBullet3": "Tài trợ thú y, tiêm phòng và triệt sản"
+    "typicallyCovered": "Together we cover",
+    "stillNeeded": "Your help closes the rest",
+    "watchAddUp": "See where the monthly budget goes",
+    "tapHint": "tap a category",
+    "runningTotal": "Share of the budget",
+    "ofNeed": "of monthly need",
+    "replay": "Replay",
+    "togetherWeCover": "Together we already cover about",
+    "yourHelpCloses": "Your gift helps close the rest ♥",
+    "ofBudget": "of the monthly care budget",
+    "friendlyGapText": "Donations and sponsors already make a huge difference — and every extra gift helps more dogs eat, heal, and feel safe.",
+    "secondaryPaypal": "One-time via PayPal",
+    "secondaryDonorbox": "Monthly via Donorbox ♥"
   },
   "thankYou": {
     "title": "Cảm ơn bạn!",
@@ -5419,5 +5459,12 @@
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
     "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
+  },
+  "thailandSoul": {
+    "eyebrow": "NENEROYAL · Phuket, Thailand",
+    "headline": "Thailand has two faces",
+    "body": "In Phuket, live rock music fills the air. In Khon Kaen, dogs wait for a second chance. We are here for those dogs.",
+    "ctaPrimary": "Read the story →",
+    "ctaSecondary": "Save Leo and his friends →"
   }
 }

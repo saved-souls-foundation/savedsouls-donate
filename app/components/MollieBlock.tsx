@@ -1,15 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import DonateTrustLine from "./DonateTrustLine";
 
 const GREEN_DARK = "#1a5c2e";
 const PRESET_AMOUNTS = [5, 10, 25, 50];
 
 type Props = {
   locale: string;
+  showTrust?: boolean;
 };
 
-export default function MollieBlock({ locale }: Props) {
+export default function MollieBlock({ locale, showTrust = false }: Props) {
   const t: Record<string, Record<string, string>> = {
     nl: {
       title: "Doneer veilig via Mollie",
@@ -375,6 +377,7 @@ export default function MollieBlock({ locale }: Props) {
       >
         {isLoading ? lang.loading : lang.donateButton}
       </button>
+      {showTrust ? <DonateTrustLine /> : null}
     </section>
   );
 }

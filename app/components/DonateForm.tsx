@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import DonateTrustLine from "./DonateTrustLine";
 
 const ORANGE = "#e8622a";
 const BEIGE = "#f5f0e8";
@@ -20,7 +21,11 @@ function getDonorboxUrl(amount: string, monthly: boolean, isThai: boolean): stri
   return `${base}?amount=${numeric}&recurring=${recurring}&currency=eur`;
 }
 
-export default function DonateForm() {
+type Props = {
+  showTrust?: boolean;
+};
+
+export default function DonateForm({ showTrust = false }: Props) {
   const tP = useTranslations("donatePage");
   const locale = useLocale();
   const isThai = locale === "th";
@@ -175,43 +180,44 @@ export default function DonateForm() {
       {!mounted ? (
         /* Static placeholder shown during SSR — no hydration mismatch */
         <div
-          className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base mb-3"
+          className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base"
           style={{ background: "#e8622a" }}
           aria-hidden="true"
         >
           ♥ {tP("tabMonthly")}
         </div>
       ) : (
-        <>
-          {/* Primary CTA */}
-          <a
-            href={isMonthly
-              ? getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", true, isThai)
-              : (selectedIndex >= 0 ? paypalUrl : PAYPAL_URL)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base mb-3 hover:opacity-90 active:scale-95 transition-all"
-            style={{ background: "#e8622a" }}
-          >
-            ♥ {isMonthly
-              ? tP("ctaMonthly", { amount: selectedIndex >= 0 ? selectedAmount : "..." })
-              : tP("ctaOnce", { amount: selectedIndex >= 0 ? selectedAmount : "..." })}
-          </a>
-
-          {/* Secondary */}
-          <a
-            href={isMonthly
-              ? PAYPAL_URL
-              : getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", true, isThai)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border-2 text-sm font-medium hover:bg-green-50 active:scale-95 transition-all mb-3"
-            style={{ borderColor: "#1a5c2e", color: "#1a5c2e" }}
-          >
-            {isMonthly ? "Eenmalig via PayPal" : "Maandelijks via Donorbox ♥"}
-          </a>
-        </>
+        <a
+          href={isMonthly
+            ? getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", true, isThai)
+            : (selectedIndex >= 0 ? paypalUrl : PAYPAL_URL)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center w-full py-4 rounded-xl text-white font-semibold text-base hover:opacity-90 active:scale-95 transition-all"
+          style={{ background: "#e8622a" }}
+        >
+          ♥ {isMonthly
+            ? tP("ctaMonthly", { amount: selectedIndex >= 0 ? selectedAmount : "..." })
+            : tP("ctaOnce", { amount: selectedIndex >= 0 ? selectedAmount : "..." })}
+        </a>
       )}
+
+      {/* Always under primary CTA — not gated by mount state */}
+      {showTrust ? <DonateTrustLine /> : null}
+
+      {mounted ? (
+        <a
+          href={isMonthly
+            ? PAYPAL_URL
+            : getDonorboxUrl(selectedIndex >= 0 ? amountOptions[selectedIndex].value : "10", true, isThai)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border-2 text-sm font-medium hover:bg-green-50 active:scale-95 transition-all mt-3"
+          style={{ borderColor: "#1a5c2e", color: "#1a5c2e" }}
+        >
+          {isMonthly ? tP("secondaryPaypal") : tP("secondaryDonorbox")}
+        </a>
+      ) : null}
     </div>
   );
 }

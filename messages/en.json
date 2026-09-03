@@ -2425,6 +2425,40 @@
       "ewalletsComingSoon": "Coming soon.",
       "btnBack": "Back to donate",
       "btnDonateHomepage": "Donate on homepage"
+    },
+    "bank": {
+      "toggle": "Prefer a bank transfer? See our account details",
+      "title": "Bank details",
+      "intro": "Transfers go directly to Saved Souls Foundation. Choose the account that matches your bank.",
+      "eu": {
+        "title": "For donors in Europe & Switzerland (EUR / CHF)"
+      },
+      "th": {
+        "title": "For donors in Thailand (THB)"
+      },
+      "holder": "Account holder",
+      "bank": "Bank",
+      "iban": "IBAN",
+      "account": "Account number",
+      "bic": "BIC/SWIFT",
+      "copyIban": "Copy IBAN",
+      "copyAccount": "Copy account number",
+      "copied": "Copied",
+      "reference": "Please add your e-mail address in the payment reference so we can send you a thank-you.",
+      "fraud": "These are our only bank accounts. We will never ask you by e-mail, WhatsApp or phone to transfer to a different account.",
+      "registration": "Saved Souls Foundation · Thailand foundation registration no. 1/2560"
+    },
+    "hero": {
+      "points": {
+        "feed": "350+ dogs fed daily",
+        "rescue": "Street & injured dogs rescued",
+        "vet": "Vet care & sterilisation"
+      }
+    },
+    "trust": {
+      "secure": "Secure payment",
+      "hundred": "100% goes to the animals",
+      "registration": "Registered foundation in Thailand, no. 1/2560"
     }
   },
   "donatePage": {
@@ -2451,9 +2485,6 @@
     "ctaCustom": "Donate now — custom amount",
     "ctaSecMonthly": "Prefer a one-time donation",
     "ctaSecOnce": "Become a monthly soul saver ♥",
-    "trust1": "Secure payment",
-    "trust2": "100% to animals",
-    "trust3": "Thailand reg. 1/2560",
     "amountSectionLabel": "Impact of your donation",
     "statAnimals": "Animals in care",
     "statDisabled": "Disabled animals",
@@ -2466,11 +2497,20 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
     "helpIntro": "Your gift reaches rescued dogs in Thailand — food, care, and second chances.",
-    "helpBullet1": "Feed and shelter 350+ rescue dogs every day",
-    "helpBullet2": "Save injured, disabled, and stray dogs from the streets",
-    "helpBullet3": "Fund vet care, vaccinations, and sterilizations"
+    "typicallyCovered": "Together we cover",
+    "stillNeeded": "Your help closes the rest",
+    "watchAddUp": "See where the monthly budget goes",
+    "tapHint": "tap a category",
+    "runningTotal": "Share of the budget",
+    "ofNeed": "of monthly need",
+    "replay": "Replay",
+    "togetherWeCover": "Together we already cover about",
+    "yourHelpCloses": "Your gift helps close the rest ♥",
+    "ofBudget": "of the monthly care budget",
+    "friendlyGapText": "Donations and sponsors already make a huge difference — and every extra gift helps more dogs eat, heal, and feel safe.",
+    "secondaryPaypal": "One-time via PayPal",
+    "secondaryDonorbox": "Monthly via Donorbox ♥"
   },
   "thankYou": {
     "title": "Thank You!",

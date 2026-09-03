@@ -126,7 +126,7 @@
     "catIndoorOutdoor": "실내·실외 고양이",
     "dogVomitingDiarrhea": "강아지 구토·설사",
     "dogAteChocolate": "강아지가 초콜릿을 먹었을 때",
-    "dogNotEating": "강아지가 밥을 먹지 않을 때",
+    "dogNotEating": "개가 먹지 않음",
     "catNotDrinking": "고양이가 물을 마시지 않을 때",
     "dogVomiting": "강아지 구토",
     "puppySchedule": "강아지 일과",
@@ -2425,6 +2425,40 @@
       "ewalletsComingSoon": "곧 이용 가능합니다.",
       "btnBack": "기부 페이지로",
       "btnDonateHomepage": "홈페이지에서 기부하기"
+    },
+    "bank": {
+      "toggle": "계좌이체를 원하시나요? 계좌 정보 보기",
+      "title": "계좌 정보",
+      "intro": "이체하신 금액은 Saved Souls Foundation에 직접 전달됩니다. 이용하시는 은행에 맞는 계좌를 선택하세요.",
+      "eu": {
+        "title": "유럽 및 스위스 후원자용 (EUR / CHF)"
+      },
+      "th": {
+        "title": "태국 후원자용 (THB)"
+      },
+      "holder": "예금주",
+      "bank": "은행",
+      "iban": "IBAN",
+      "account": "계좌번호",
+      "bic": "BIC/SWIFT",
+      "copyIban": "IBAN 복사",
+      "copyAccount": "계좌번호 복사",
+      "copied": "복사됨",
+      "reference": "감사 인사를 드릴 수 있도록 송금 메모에 이메일 주소를 적어 주세요.",
+      "fraud": "위 계좌는 저희의 유일한 계좌입니다. 이메일, WhatsApp, 전화로 다른 계좌로 송금을 요청하는 일은 절대 없습니다.",
+      "registration": "Saved Souls Foundation · 태국 재단 등록번호 1/2560"
+    },
+    "hero": {
+      "points": {
+        "feed": "매일 350마리 이상 반려견에게 식사 제공",
+        "rescue": "길거리·부상당한 개 구조",
+        "vet": "수의 진료 및 중성화"
+      }
+    },
+    "trust": {
+      "secure": "안전한 결제",
+      "hundred": "100%가 동물에게 전달됩니다",
+      "registration": "태국 등록 재단, 번호 1/2560"
     }
   },
   "donatePage": {
@@ -2451,9 +2485,6 @@
     "ctaCustom": "Donate now — custom amount",
     "ctaSecMonthly": "Prefer a one-time donation",
     "ctaSecOnce": "Become a monthly soul saver ♥",
-    "trust1": "Secure payment",
-    "trust2": "100% to animals",
-    "trust3": "Thailand reg. 1/2560",
     "amountSectionLabel": "Impact of your donation",
     "statAnimals": "Animals in care",
     "statDisabled": "Disabled animals",
@@ -2466,11 +2497,20 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
     "helpIntro": "당신의 기부는 태국의 구조견에게 닿습니다 — 먹이, 돌봄, 그리고 두 번째 기회.",
-    "helpBullet1": "매일 350마리 이상의 구조견에게 먹이와 쉼터 제공",
-    "helpBullet2": "다치거나 장애가 있거나 길 위의 개를 구조",
-    "helpBullet3": "수의 진료, 예방접종, 중성화 지원"
+    "typicallyCovered": "Together we cover",
+    "stillNeeded": "Your help closes the rest",
+    "watchAddUp": "See where the monthly budget goes",
+    "tapHint": "tap a category",
+    "runningTotal": "Share of the budget",
+    "ofNeed": "of monthly need",
+    "replay": "Replay",
+    "togetherWeCover": "Together we already cover about",
+    "yourHelpCloses": "Your gift helps close the rest ♥",
+    "ofBudget": "of the monthly care budget",
+    "friendlyGapText": "Donations and sponsors already make a huge difference — and every extra gift helps more dogs eat, heal, and feel safe.",
+    "secondaryPaypal": "One-time via PayPal",
+    "secondaryDonorbox": "Monthly via Donorbox ♥"
   },
   "thankYou": {
     "title": "Thank You!",
@@ -2573,7 +2613,27 @@
     "flyerHaarlemSectionVisit": "Visit DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "Call 023 870 0303",
     "flyerHaarlemTeamAlt": "Team at DierenDokters Haarlem",
-    "flyerHaarlemFlyerAlt": "Saved Souls flyer in the waiting room at DierenDokters Haarlem"
+    "flyerHaarlemFlyerAlt": "Saved Souls flyer in the waiting room at DierenDokters Haarlem",
+    "groenprint": {
+      "fullName": "Groenprint",
+      "description": "A very special thank you to Groenprint — a sustainable printing company using 100% CO2-neutral FSC® certified paper, without cutting down trees. Groenprint generously printed and shipped 250 posters for us, completely free of charge. This allows us to reach more people and save more animals. We are incredibly grateful for their amazing support! 🌱 Sustainable for the planet, hopeful for the animals."
+    },
+    "dierendoktershaarlem": {
+      "fullName": "DierenDokters Haarlem",
+      "description": "DierenDokters Haarlem has displayed our Saved Souls flyer in their waiting room. This helps us reach pet owners in Haarlem who want to support our rescue work for dogs and cats in Khon Kaen."
+    },
+    "donationBoxShamuSectionTitle": "Third donation box in Phuket",
+    "donationBoxShamuSectionSubtitle": "Together with Shamu Shamu Pet Center",
+    "donationBoxShamuThankYouHeader": "Thank you so much! 🙏",
+    "donationBoxShamuThankYouText": "We are incredibly grateful to Shamu Shamu Pet Center for giving our donation box a warm home in their store. Every baht donated goes directly to our dogs and cats in Khon Kaen.",
+    "donationBoxShamuHeroAlt": "Shamu Shamu Pet Center in Thalang, Phuket",
+    "donationBoxShamuCategory": "Pet Store",
+    "donationBoxShamuLocation": "Thalang, Phuket, Thailand",
+    "donationBoxShamuAddress": "285R+CG6, Thep Krasattri Rd, Si Sunthon, Thalang District, Phuket 83110, Thailand",
+    "donationBoxShamuHours": "Open daily until 19:00",
+    "donationBoxShamuRating": "4.8 ⭐ (138 reviews)",
+    "donationBoxShamuSectionVisit": "View on Google Maps",
+    "donationBoxShamuSectionPhone": "Call +66 62 324 9295"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",
@@ -5399,5 +5459,12 @@
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
     "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
+  },
+  "thailandSoul": {
+    "eyebrow": "NENEROYAL · Phuket, Thailand",
+    "headline": "Thailand has two faces",
+    "body": "In Phuket, live rock music fills the air. In Khon Kaen, dogs wait for a second chance. We are here for those dogs.",
+    "ctaPrimary": "Read the story →",
+    "ctaSecondary": "Save Leo and his friends →"
   }
 }

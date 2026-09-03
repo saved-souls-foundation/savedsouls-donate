@@ -2426,6 +2426,40 @@
       "ewalletsComingSoon": "Akan datang.",
       "btnBack": "Kembali ke derma",
       "btnDonateHomepage": "Derma di halaman utama"
+    },
+    "bank": {
+      "toggle": "// TODO: review — Prefer a bank transfer? See our account details",
+      "title": "// TODO: review — Bank details",
+      "intro": "// TODO: review — Transfers go directly to Saved Souls Foundation. Choose the account that matches your bank.",
+      "holder": "// TODO: review — Account holder",
+      "bank": "// TODO: review — Bank",
+      "iban": "// TODO: review — IBAN",
+      "account": "// TODO: review — Account number",
+      "bic": "// TODO: review — BIC/SWIFT",
+      "copyIban": "// TODO: review — Copy IBAN",
+      "copyAccount": "// TODO: review — Copy account number",
+      "copied": "// TODO: review — Copied",
+      "reference": "// TODO: review — Please add your e-mail address in the payment reference so we can send you a thank-you.",
+      "fraud": "// TODO: review — These are our only bank accounts. We will never ask you by e-mail, WhatsApp or phone to transfer to a different account.",
+      "registration": "// TODO: review — Saved Souls Foundation · Thailand foundation registration no. 1/2560",
+      "eu": {
+        "title": "// TODO: review — For donors in Europe & Switzerland (EUR / CHF)"
+      },
+      "th": {
+        "title": "// TODO: review — For donors in Thailand (THB)"
+      }
+    },
+    "hero": {
+      "points": {
+        "feed": "// TODO: review — 350+ dogs fed daily",
+        "rescue": "// TODO: review — Street & injured dogs rescued",
+        "vet": "// TODO: review — Vet care & sterilisation"
+      }
+    },
+    "trust": {
+      "secure": "// TODO: review — Secure payment",
+      "hundred": "// TODO: review — 100% goes to the animals",
+      "registration": "// TODO: review — Registered foundation in Thailand, no. 1/2560"
     }
   },
   "donatePage": {
@@ -2452,9 +2486,6 @@
     "ctaCustom": "Derma sekarang — jumlah pilihan",
     "ctaSecMonthly": "Lebih suka derma sekali sahaja",
     "ctaSecOnce": "Jadilah penyelamat jiwa bulanan ♥",
-    "trust1": "Pembayaran selamat",
-    "trust2": "100% untuk haiwan",
-    "trust3": "Thailand daftar. 1/2560",
     "amountSectionLabel": "IMPAK DERMA ANDA",
     "statAnimals": "Haiwan dalam penjagaan",
     "statDisabled": "Haiwan kurang upaya",
@@ -2467,11 +2498,20 @@
     "footerCardSupportSub": "Sokong kami",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Organisasi bukan untung rasmi Thailand · Nombor pendaftaran 1/2560",
     "helpIntro": "Derma anda sampai kepada anjing yang diselamatkan di Thailand — makanan, jagaan dan peluang kedua.",
-    "helpBullet1": "Beri makan dan tempat tinggal kepada 350+ anjing setiap hari",
-    "helpBullet2": "Selamatkan anjing cedera, kurang upaya dan terbiar",
-    "helpBullet3": "Biayai doktor haiwan, vaksin dan pensterilan"
+    "typicallyCovered": "Together we cover",
+    "stillNeeded": "Your help closes the rest",
+    "watchAddUp": "See where the monthly budget goes",
+    "tapHint": "tap a category",
+    "runningTotal": "Share of the budget",
+    "ofNeed": "of monthly need",
+    "replay": "Replay",
+    "togetherWeCover": "Together we already cover about",
+    "yourHelpCloses": "Your gift helps close the rest ♥",
+    "ofBudget": "of the monthly care budget",
+    "friendlyGapText": "Donations and sponsors already make a huge difference — and every extra gift helps more dogs eat, heal, and feel safe.",
+    "secondaryPaypal": "One-time via PayPal",
+    "secondaryDonorbox": "Monthly via Donorbox ♥"
   },
   "thankYou": {
     "title": "Terima Kasih!",
@@ -5420,5 +5460,12 @@
     "thaiH3": "เกี่ยวกับ Saved Souls Foundation",
     "thaiP4": "Saved Souls Foundation (มูลนิธิ Saved Souls) เป็นองค์กรไม่แสวงหากำไรที่ตั้งอยู่ในจังหวัดขอนแก่น ประเทศไทย (ทะเบียนเลขที่ 1/2560) ตั้งแต่ปี 2553 เราช่วยเหลือสุนัขจรจัด สุนัขพิการ และแมวที่ศูนย์พักพิงอื่นปฏิเสธ รวมถึงสุนัขอัมพาตที่ได้รับการบำบัดด้วยการว่ายน้ำและใช้รถเข็น ปัจจุบันมีสุนัข 350 ตัวและแมว 26 ตัวอาศัยอยู่ในศูนย์พักพิงของเรา",
     "thaiP5": "ร่วมรับเลี้ยง บริจาค หรือมาเป็นอาสาสมัครที่ขอนแก่น ประเทศไทย — savedsouls-foundation.org"
+  },
+  "thailandSoul": {
+    "eyebrow": "NENEROYAL · Phuket, Thailand",
+    "headline": "Thailand has two faces",
+    "body": "In Phuket, live rock music fills the air. In Khon Kaen, dogs wait for a second chance. We are here for those dogs.",
+    "ctaPrimary": "Read the story →",
+    "ctaSecondary": "Save Leo and his friends →"
   }
 }

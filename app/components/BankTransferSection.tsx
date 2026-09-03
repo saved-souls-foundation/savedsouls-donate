@@ -2,121 +2,97 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-
-const ACCENT_GREEN = "#2aa348";
+import { BANK_ACCOUNTS } from "@/lib/bankAccounts";
 
 function CopyButton({
   text,
   label,
-  copiedLabel = "Copied!",
+  copiedLabel,
 }: {
   text: string;
   label: string;
-  copiedLabel?: string;
+  copiedLabel: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const copy = () => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
   return (
     <button
       type="button"
-      onClick={copy}
-      className="min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium border border-stone-300 dark:border-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
-      style={{ color: ACCENT_GREEN }}>
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 2000);
+        } catch {
+          /* clipboard may be blocked */
+        }
+      }}
+      className="inline-flex min-h-[36px] items-center rounded-md border border-stone-300 bg-transparent px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:bg-stone-100/80 hover:text-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-400"
+    >
       {copied ? copiedLabel : label}
     </button>
   );
 }
 
-type BankTransferSectionProps = {
-  defaultOpen?: boolean;
-};
+function DetailField({ label, value, monoBold }: { label: string; value: string; monoBold?: boolean }) {
+  return (
+    <div className="py-1.5">
+      <dt className="text-xs text-stone-500 mb-0.5">{label}</dt>
+      <dd
+        className={`text-sm text-stone-800 break-words ${
+          monoBold ? "font-mono font-bold tracking-tight" : "font-normal"
+        }`}
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
 
-export default function BankTransferSection({ defaultOpen = false }: BankTransferSectionProps) {
-  const t = useTranslations("home");
-  const tCommon = useTranslations("common");
-  const [open, setOpen] = useState(defaultOpen);
+export default function BankTransferSection() {
+  const t = useTranslations("donate.bank");
+  const eu = BANK_ACCOUNTS.europe;
+  const th = BANK_ACCOUNTS.thailand;
 
   return (
-    <details
-      open={open}
-      onToggle={(e) => setOpen(e.currentTarget.open)}
-      className="group rounded-xl border border-stone-200 dark:border-stone-600 overflow-hidden"
-    >
-      <summary className="px-6 py-4 cursor-pointer list-none flex items-center justify-between bg-stone-50 dark:bg-stone-800/50 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
-        <span className="font-semibold text-stone-800 dark:text-stone-200">
-          {t("bankTransfer")}
-        </span>
-        <span className="text-stone-400 group-open:rotate-180 transition-transform">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-          </svg>
-        </span>
-      </summary>
-      <div className="p-6 pt-0 space-y-4">
-        <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Thai Bank Account</p>
-          <dl className="space-y-1.5 text-sm md:text-base">
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
-              <dd className="font-medium text-stone-800 dark:text-stone-200">Saved-Souls Foundation</dd>
-              <dd className="text-stone-600 dark:text-stone-300">Ban Fang, Khon Kaen</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
-              <dd className="font-medium text-stone-800 dark:text-stone-200">Kasikorn Bank</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Account</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">033-8-13623-4</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300">KASITHBK</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Bank Code</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300">004</dd>
-            </div>
+    <section id="bank-transfer" className="scroll-mt-24 border-t border-stone-200/80 pt-5 pb-2">
+      <h2 className="text-base font-semibold text-stone-700 mb-1">{t("title")}</h2>
+      <p className="text-sm text-stone-600 mb-5 leading-relaxed">{t("intro")}</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 md:divide-x md:divide-stone-400/60">
+        {/* Europe */}
+        <div className="flex flex-col pb-6 md:pb-0">
+          <p className="text-sm font-medium text-stone-700 mb-4">{t("eu.title")}</p>
+          <dl className="flex-1">
+            <DetailField label={t("holder")} value={eu.holder} />
+            <DetailField label={t("bank")} value={eu.bank} />
+            <DetailField label={t("iban")} value={eu.ibanDisplay} monoBold />
+            <DetailField label={t("bic")} value={eu.bic} />
           </dl>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <CopyButton text="033-8-13623-4" label={t("copyAccount")} copiedLabel={tCommon("copied")} />
-            <CopyButton text="KASITHBK" label={t("copySwift")} copiedLabel={tCommon("copied")} />
+          <div className="mt-auto pt-4">
+            <CopyButton text={eu.ibanCopy} label={t("copyIban")} copiedLabel={t("copied")} />
           </div>
         </div>
-        <div className="p-4 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-600">
-          <p className="font-semibold text-stone-800 dark:text-stone-200 mb-3">Swiss Bank Account</p>
-          <dl className="space-y-1.5 text-sm md:text-base">
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Account holder</dt>
-              <dd className="font-medium text-stone-800 dark:text-stone-200">Saved Souls Animal Sanctuary / Tierheim Ban Fang</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Bank</dt>
-              <dd className="font-medium text-stone-800 dark:text-stone-200">PostFinance AG</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">Account</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300">80-271722-9</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">IBAN</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300 break-all">CH17 0900 0000 8027 1722 9</dd>
-            </div>
-            <div>
-              <dt className="text-stone-500 dark:text-stone-400">BIC/SWIFT</dt>
-              <dd className="font-mono text-stone-700 dark:text-stone-300">POFICHBEXXX</dd>
-            </div>
+
+        {/* Thailand — mobile: line + py-6; desktop: vertical divide + pl-12 */}
+        <div className="flex flex-col border-t border-stone-400/60 py-6 md:border-t-0 md:py-0 md:pl-12">
+          <p className="text-sm font-medium text-stone-700 mb-4">{t("th.title")}</p>
+          <dl className="flex-1">
+            <DetailField label={t("holder")} value={th.holder} />
+            <DetailField label={t("bank")} value={th.bank} />
+            <DetailField label={t("account")} value={th.account} monoBold />
+            <DetailField label={t("bic")} value={th.bic} />
           </dl>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <CopyButton text="CH17 0900 0000 8027 1722 9" label={t("copyIban")} copiedLabel={tCommon("copied")} />
-            <CopyButton text="POFICHBEXXX" label={t("copySwift")} copiedLabel={tCommon("copied")} />
+          <div className="mt-auto pt-4">
+            <CopyButton text={th.account} label={t("copyAccount")} copiedLabel={t("copied")} />
           </div>
         </div>
       </div>
-    </details>
+
+      <div className="mt-8 border-t border-stone-400/60 pt-6 space-y-1.5 text-xs leading-relaxed text-stone-500">
+        <p>{t("reference")}</p>
+        <p>{t("fraud")}</p>
+        <p>{t("registration")}</p>
+      </div>
+    </section>
   );
 }
