@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Hỗ trợ chúng tôi",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Tổ chức phi lợi nhuận chính thức Thailand · Số đăng ký 1/2560"
+    "footerReg": "Tổ chức phi lợi nhuận chính thức Thailand · Số đăng ký 1/2560",
+    "helpIntro": "Quà tặng của bạn đến với chó được cứu hộ tại Thái Lan — thức ăn, chăm sóc và cơ hội thứ hai.",
+    "helpBullet1": "Cho ăn và che chở hơn 350 chú chó được cứu mỗi ngày",
+    "helpBullet2": "Cứu chó bị thương, khuyết tật và chó đường phố",
+    "helpBullet3": "Tài trợ thú y, tiêm phòng và triệt sản"
   },
   "thankYou": {
     "title": "Cảm ơn bạn!",

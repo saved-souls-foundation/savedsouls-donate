@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "Your gift reaches rescued dogs in Thailand — food, care, and second chances.",
+    "helpBullet1": "Feed and shelter 350+ rescue dogs every day",
+    "helpBullet2": "Save injured, disabled, and stray dogs from the streets",
+    "helpBullet3": "Fund vet care, vaccinations, and sterilizations"
   },
   "thankYou": {
     "title": "Thank You!",

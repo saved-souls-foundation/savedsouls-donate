@@ -1,14 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import BankTransferSection from "./BankTransferSection";
 
+/** Op donate-pagina's altijd volledig uitgeklapt (Thai + Swiss). */
 export default function BankTransferAutoOpen() {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash === "#bank-transfer") {
-      setOpen(true);
-    }
-  }, []);
-  return <BankTransferSection defaultOpen={open} />;
+  return <BankTransferSection defaultOpen />;
 }

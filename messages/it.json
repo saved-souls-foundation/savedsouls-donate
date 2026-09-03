@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "Il tuo dono raggiunge cani salvati in Thailandia — cibo, cure e una seconda possibilità.",
+    "helpBullet1": "Nutrire e ospitare 350+ cani salvati ogni giorno",
+    "helpBullet2": "Salvare cani feriti, disabili e randagi dalla strada",
+    "helpBullet3": "Finanziare veterinario, vaccini e sterilizzazioni"
   },
   "thankYou": {
     "title": "Thank You!",

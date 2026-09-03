@@ -2467,7 +2467,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "あなたの支援はタイの保護犬へ届きます — 食事、ケア、そして第二のチャンス。",
+    "helpBullet1": "毎日350頭以上の保護犬に食事と居場所を",
+    "helpBullet2": "ケガをした犬・障がい犬・野良犬を路上から救う",
+    "helpBullet3": "獣医療・ワクチン・不妊手術を支える"
   },
   "thankYou": {
     "title": "Thank You!",

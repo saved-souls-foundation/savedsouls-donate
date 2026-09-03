@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "您的捐款直達泰國獲救狗狗——食物、照護與第二次機會。",
+    "helpBullet1": "每天為 350+ 隻獲救狗狗提供食物和住所",
+    "helpBullet2": "從街頭救助受傷、身心障礙和流浪狗",
+    "helpBullet3": "資助獸醫、疫苗和絕育"
   },
   "thankYou": {
     "title": "Thank You!",

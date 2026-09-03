@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "支持我们",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "泰国官方非营利组织 · 注册号 1/2560"
+    "footerReg": "泰国官方非营利组织 · 注册号 1/2560",
+    "helpIntro": "您的捐赠直达泰国获救狗狗——食物、护理与第二次机会。",
+    "helpBullet1": "每天为 350+ 只获救狗狗提供食物和住所",
+    "helpBullet2": "从街头救助受伤、残疾和流浪狗",
+    "helpBullet3": "资助兽医、疫苗和绝育"
   },
   "thankYou": {
     "title": "谢谢你！",

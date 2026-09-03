@@ -1747,7 +1747,11 @@
     "footerCardSupportSub": "Apóyanos",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Organización sin fines de lucro oficial Tailandia · Número de registro 1/2560"
+    "footerReg": "Organización sin fines de lucro oficial Tailandia · Número de registro 1/2560",
+    "helpIntro": "Sua doação chega a cães resgatados na Tailândia — comida, cuidado e uma segunda chance.",
+    "helpBullet1": "Alimentar e abrigar 350+ cães resgatados todos os dias",
+    "helpBullet2": "Resgatar cães feridos, com deficiência e de rua",
+    "helpBullet3": "Financiar veterinário, vacinas e esterilizações"
   },
   "thankYou": {
     "title": "Thank You!",

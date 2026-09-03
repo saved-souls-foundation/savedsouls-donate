@@ -2015,7 +2015,11 @@
     "footerCardSupportSub": "Soutenez-nous",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Organisation à but non lucratif officielle Thaïlande · Numéro d'enregistrement 1/2560"
+    "footerReg": "Organisation à but non lucratif officielle Thaïlande · Numéro d'enregistrement 1/2560",
+    "helpIntro": "Votre don atteint des chiens secourus en Thaïlande — nourriture, soins et une seconde chance.",
+    "helpBullet1": "Nourrir et abriter 350+ chiens secourus chaque jour",
+    "helpBullet2": "Sauver des chiens blessés, handicapés et errants",
+    "helpBullet3": "Financer soins vétérinaires, vaccins et stérilisations"
   },
   "thankYou": {
     "title": "Merci !",

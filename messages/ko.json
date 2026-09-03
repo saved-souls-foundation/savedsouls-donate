@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "당신의 기부는 태국의 구조견에게 닿습니다 — 먹이, 돌봄, 그리고 두 번째 기회.",
+    "helpBullet1": "매일 350마리 이상의 구조견에게 먹이와 쉼터 제공",
+    "helpBullet2": "다치거나 장애가 있거나 길 위의 개를 구조",
+    "helpBullet3": "수의 진료, 예방접종, 중성화 지원"
   },
   "thankYou": {
     "title": "Thank You!",

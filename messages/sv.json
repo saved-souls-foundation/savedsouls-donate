@@ -2467,7 +2467,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "Din gåva når räddade hundar i Thailand — mat, omsorg och en andra chans.",
+    "helpBullet1": "Ge mat och skydd till 350+ räddade hundar varje dag",
+    "helpBullet2": "Rädda skadade, funktionshindrade och herrelösa hundar",
+    "helpBullet3": "Finansiera veterinär, vaccinationer och sterilisering"
   },
   "thankYou": {
     "title": "Thank You!",

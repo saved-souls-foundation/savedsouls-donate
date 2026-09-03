@@ -2466,7 +2466,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "Din gave når reddede hunde i Thailand — mad, omsorg og en anden chance.",
+    "helpBullet1": "Giv mad og husly til 350+ reddede hunde hver dag",
+    "helpBullet2": "Red sårede, handicappede og herreløse hunde fra gaden",
+    "helpBullet3": "Finansier dyrlæge, vaccinationer og sterilisering"
   },
   "thankYou": {
     "title": "Thank You!",

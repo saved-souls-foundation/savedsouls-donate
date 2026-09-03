@@ -2467,7 +2467,11 @@
     "footerCardSupportSub": "Support us",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560"
+    "footerReg": "Official non-profit organisation Thailand · Registration number 1/2560",
+    "helpIntro": "Twój dar trafia do uratowanych psów w Tajlandii — jedzenie, opieka i druga szansa.",
+    "helpBullet1": "Karmić i dawać schronienie 350+ psom każdego dnia",
+    "helpBullet2": "Ratować ranne, niepełnosprawne i bezdomne psy z ulic",
+    "helpBullet3": "Finansować weterynarza, szczepienia i sterylizacje"
   },
   "thankYou": {
     "title": "Thank You!",

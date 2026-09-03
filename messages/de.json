@@ -1754,7 +1754,11 @@
     "footerCardSupportSub": "Unterstütze uns",
     "footerCardFinancialSub": "",
     "footerCardCausesSub": "",
-    "footerReg": "Offizielle Non-Profit-Organisation Thailand · Registrierungsnummer 1/2560"
+    "footerReg": "Offizielle Non-Profit-Organisation Thailand · Registrierungsnummer 1/2560",
+    "helpIntro": "Deine Spende erreicht gerettete Hunde in Thailand — Futter, Pflege und eine zweite Chance.",
+    "helpBullet1": "Füttere und beherberge täglich 350+ gerettete Hunde",
+    "helpBullet2": "Rette verletzte, behinderte und streunende Hunde von der Straße",
+    "helpBullet3": "Finanziere Tierarzt, Impfungen und Kastrationen"
   },
   "thankYou": {
     "title": "Danke!",
