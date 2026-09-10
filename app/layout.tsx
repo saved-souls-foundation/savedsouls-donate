@@ -14,7 +14,6 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 import { DeferredStyles } from "./DeferredStyles";
-import { GoogleAnalytics } from "./GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: "Saved Souls Foundation | Donate, Adopt & Sponsor Disabled Dogs in Thailand",
@@ -183,7 +182,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
-        {/* Consent Mode v2: default denied vóór gtag.js — AVG/GDPR; daarna Google Ads (AW) */}
+        {/* Consent Mode v2: default denied vóór GTM — AVG/GDPR */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -201,16 +200,6 @@ gtag('set', 'ads_data_redaction', true);
             `.trim(),
           }}
         />
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
-gtag('config', 'GT-KVFRQZK3');
-            `.trim(),
-          }}
-        />
         {/* Favicons & PWA icons (bestanden in public/) */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
@@ -224,7 +213,6 @@ gtag('config', 'GT-KVFRQZK3');
       <GoogleTagManager gtmId="GTM-KPHCG78M" />
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
         <DeferredStyles />
-        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

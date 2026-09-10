@@ -1,5 +1,5 @@
 /**
- * Google Ads conversion (AW) — zie layout gtag.js load.
+ * Google Ads conversion event via dataLayer/gtag (tags draaien in GTM).
  * {@link https://support.google.com/google-ads/answer/6331314}
  */
 
