@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -220,6 +221,7 @@ gtag('config', 'GT-KVFRQZK3');
         <link rel="preload" href="/woman-dog-wheelchair-mobile.webp" as="image" media="(max-width: 768px)" />
         <link rel="preload" href="/woman-dog-wheelchair.webp" as="image" media="(min-width: 769px)" />
       </head>
+      <GoogleTagManager gtmId="GTM-KPHCG78M" />
       <body className={`${GeistSans.variable} ${GeistSans.className} ${GeistMono.variable} ${cormorant.variable} antialiased`}>
         <DeferredStyles />
         <GoogleAnalytics />
