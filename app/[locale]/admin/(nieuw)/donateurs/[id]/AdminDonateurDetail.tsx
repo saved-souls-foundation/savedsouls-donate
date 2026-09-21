@@ -15,9 +15,9 @@ const ADM_ACCENT = "#0d9488";
 const ADM_ERROR = "#7B1010";
 
 const VALUTA_OPTIONS = ["EUR", "USD", "GBP", "THB"];
-const METHODE_OPTIONS = ["ideal", "paypal", "creditcard", "bank", "mollie", "stripe", "contant", "overig"];
+const METHODE_OPTIONS = ["ideal", "paypal", "creditcard", "bank", "stripe", "contant", "overig"];
 const DONATION_STATUS_OPTIONS = ["voltooid", "in_behandeling", "mislukt", "terugbetaald"];
-const RECURRING_METHODE_OPTIONS = ["stripe", "mollie", "bank", "paypal"];
+const RECURRING_METHODE_OPTIONS = ["stripe", "bank", "paypal"];
 const FREQ_OPTIONS = ["maandelijks", "kwartaal", "jaarlijks"];
 const RECURRING_STATUS_OPTIONS = ["actief", "gepauzeerd", "gestopt"];
 

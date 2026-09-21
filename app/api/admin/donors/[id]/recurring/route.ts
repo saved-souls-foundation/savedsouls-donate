@@ -14,7 +14,7 @@ async function requireAdmin() {
 
 const VALID_FREQ = ["maandelijks", "kwartaal", "jaarlijks"] as const;
 const VALID_STATUS = ["actief", "gepauzeerd", "gestopt"] as const;
-const VALID_METHODE = ["stripe", "mollie", "bank", "paypal"] as const;
+const VALID_METHODE = ["stripe", "bank", "paypal"] as const;
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { error, supabase } = await requireAdmin();

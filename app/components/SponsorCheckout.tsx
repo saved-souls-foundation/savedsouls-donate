@@ -97,50 +97,13 @@ export default function SponsorCheckout({ animalType, animalId }: Props) {
     fetchAnimal();
   }, [animalId, animalType, router]);
 
-  const handlePay = async () => {
+  const handlePay = () => {
     if (!data) return;
     setError("");
     setPaying(true);
-    const amountEur = Math.round(amountThb * (1 / 38) * 100) / 100;
-    try {
-      const res = await fetch("/api/payments/sponsor-create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: amountEur,
-          locale,
-          method: "paypal",
-          name: data.name.trim(),
-          email: data.email.trim().toLowerCase(),
-          message: data.message?.trim().slice(0, 500) || undefined,
-          animalId: data.animalId,
-          animalName: data.animalName,
-          animalType: data.animalType,
-          amountThb,
-        }),
-      });
-      const result = (await res.json().catch(() => ({}))) as { checkoutUrl?: string; error?: string };
-      if (!res.ok) {
-        if (res.status === 503) {
-          const payAmount = Math.max(100, amountThb);
-          window.location.href = `https://paypal.me/savedsoulsfoundation/${payAmount}?currencyCode=THB`;
-          return;
-        }
-        setError(result.error || t("paymentError"));
-        setPaying(false);
-        return;
-      }
-      if (result.checkoutUrl) {
-        clearStoredCheckoutData();
-        window.location.href = result.checkoutUrl;
-        return;
-      }
-      setError(t("paymentError"));
-    } catch {
-      setError(t("paymentError"));
-    } finally {
-      setPaying(false);
-    }
+    const payAmount = Math.max(100, amountThb);
+    clearStoredCheckoutData();
+    window.location.href = `https://paypal.me/savedsoulsfoundation/${payAmount}?currencyCode=THB`;
   };
 
   const handleBack = () => {

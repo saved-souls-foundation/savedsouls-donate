@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import TrackedDonateLink from "@/app/components/TrackedDonateLink";
 import { gtagReportConversion } from "@/lib/gtag";
 
@@ -27,49 +26,14 @@ export default function KofiStyleDonate() {
   const [customAmount, setCustomAmount] = useState("");
   const [message, setMessage] = useState("");
   const [isMonthly, setIsMonthly] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const effectiveAmount = customAmount ? parseFloat(customAmount) : amount;
   const isValid = effectiveAmount >= minAmt && effectiveAmount <= maxAmt;
-  const amountInEur = isThai ? effectiveAmount / 38 : effectiveAmount;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     if (!isValid) return;
-
-    if (isMonthly) {
-      window.open("https://paypal.me/savedsoulsfoundation", "_blank");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await fetch("/api/payments/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: amountInEur,
-          locale,
-          message: message.slice(0, MAX_MESSAGE_LENGTH) || undefined,
-        }),
-      });
-      const data = (await res.json().catch(() => ({}))) as { checkoutUrl?: string; error?: string };
-      if (!res.ok) {
-        setError(data.error || t("errorGeneric"));
-        return;
-      }
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-        return;
-      }
-      setError(t("errorGeneric"));
-    } catch {
-      setError(t("errorGeneric"));
-    } finally {
-      setLoading(false);
-    }
+    window.open("https://paypal.me/savedsoulsfoundation", "_blank");
   };
 
   return (
@@ -206,25 +170,17 @@ export default function KofiStyleDonate() {
               </p>
             </div>
 
-            {error && (
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-            )}
-
             <button
               type="submit"
-              disabled={loading || !isValid}
+              disabled={!isValid}
               className="w-full py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: "#2aa348" }}
             >
-              {loading ? t("loading") : (isThai ? t("tipButtonThb", { amount: effectiveAmount.toLocaleString("th-TH") }) : t("tipButton", { amount: effectiveAmount }))}
+              {isThai ? t("tipButtonThb", { amount: effectiveAmount.toLocaleString("th-TH") }) : t("tipButton", { amount: effectiveAmount })}
             </button>
           </>
         )}
       </form>
-
-      <p className="px-6 pb-4 text-[10px] text-stone-400 dark:text-stone-500 text-center">
-        {t("poweredBy")}
-      </p>
     </div>
   );
 }

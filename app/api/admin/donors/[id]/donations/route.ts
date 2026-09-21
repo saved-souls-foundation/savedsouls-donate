@@ -13,7 +13,7 @@ async function requireAdmin() {
 }
 
 const VALID_VALUTA = ["EUR", "USD", "GBP", "THB"] as const;
-const VALID_METHODE = ["ideal", "paypal", "creditcard", "bank", "mollie", "stripe", "contant", "overig"] as const;
+const VALID_METHODE = ["ideal", "paypal", "creditcard", "bank", "stripe", "contant", "overig"] as const;
 const VALID_STATUS = ["voltooid", "in_behandeling", "mislukt", "terugbetaald"] as const;
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

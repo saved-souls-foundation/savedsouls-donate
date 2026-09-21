@@ -5,7 +5,6 @@ import ParallaxPage from "../../components/ParallaxPage";
 import Footer from "../../components/Footer";
 import BankTransferSection from "../../components/BankTransferSection";
 import DonateForm from "../../components/DonateForm";
-import MollieBlock from "../../components/MollieBlock";
 import DonateHelpPoints from "../../components/DonateHelpPoints";
 import { Link } from "@/i18n/navigation";
 
@@ -31,8 +30,6 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
   const tFin = await getTranslations("financialOverview");
 
   const isThai = locale === "th";
-  const europeanLocales = ["nl", "de", "fr", "es", "be"];
-  const isMollieFirst = europeanLocales.includes(locale);
 
   const costRows = [
     { emoji: "🍖", title: tFin("cost1Title"), detail: tFin("cost1Detail") },
@@ -85,27 +82,9 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
       {/* ── MAIN CONTENT ── centered, max-w-lg */}
       <div style={{ background: BEIGE }} className="min-h-screen">
         <div className="max-w-lg mx-auto px-5 py-8">
-          {isMollieFirst ? (
-            <>
-              <div className="-mt-10 relative z-10 px-4 md:px-8">
-                <MollieBlock locale={locale} showTrust />
-              </div>
-              {/* TODO: merge with primary donation form */}
-              <div className="mb-8 px-4 md:px-8" style={{ marginTop: "1rem" }}>
-                <DonateForm />
-              </div>
-            </>
-          ) : (
-            <>
-              {/* TODO: merge with primary donation form */}
-              <div className="-mt-10 relative z-10 px-4 md:px-8">
-                <DonateForm showTrust />
-              </div>
-              <div className="mb-8 px-4 md:px-8">
-                <MollieBlock locale={locale} />
-              </div>
-            </>
-          )}
+          <div className="-mt-10 relative z-10 px-4 md:px-8">
+            <DonateForm showTrust />
+          </div>
 
           {/* ── BANK DETAILS ── */}
           <div className="mb-8">

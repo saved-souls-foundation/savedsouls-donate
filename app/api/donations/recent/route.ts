@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import createMollieClient from "@mollie/api-client";
 
 const LOCALE_MAP: Record<string, string> = {
   nl: "nl-NL",
@@ -51,71 +50,13 @@ function formatDonation(amount: number, currency: string, locale: string): strin
 
 export async function GET(req: NextRequest) {
   const locale = req.nextUrl.searchParams.get("locale") || "en";
-  try {
-    const apiKey = process.env.MOLLIE_API_KEY;
-    if (!apiKey) {
-      const placeholderData = getPlaceholderDonations();
-      const donations: RecentDonation[] = placeholderData.map((d) => ({
-        amount: d.amount,
-        currency: d.currency,
-        timeAgo: formatTimeAgo(d.createdAt, locale),
-      }));
-      return NextResponse.json({
-        donations: donations.map((d) => ({
-          display: `${formatDonation(d.amount, d.currency, locale)} – ${d.timeAgo}`,
-          amount: d.amount,
-          currency: d.currency,
-        })),
-      }, {
-        headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
-      });
-    }
-
-    const mollieClient = createMollieClient({ apiKey });
-    const page = await mollieClient.payments.page({ limit: 20 });
-    type PaymentItem = { status?: string; amount?: { value?: string; currency?: string }; createdAt?: string };
-    const items: PaymentItem[] = Array.isArray(page) ? (page as PaymentItem[]) : Array.from(page as Iterable<PaymentItem>);
-
-    const paid = items
-      .filter((p) => p?.status === "paid")
-      .slice(0, 8);
-
-    const donations = paid.map((p) => {
-      const amount = parseFloat(String(p?.amount?.value ?? "0"));
-      const currency = p?.amount?.currency ?? "EUR";
-      const createdAt = p.createdAt ?? new Date().toISOString();
-      return {
-        display: `${formatDonation(amount, currency, locale)} – ${formatTimeAgo(createdAt, locale)}`,
-        amount,
-        currency,
-      };
-    });
-
-    if (donations.length === 0) {
-      const fallbackData = getPlaceholderDonations();
-      const fallback = fallbackData.map((d) => ({
-        display: `${formatDonation(d.amount, d.currency, locale)} – ${formatTimeAgo(d.createdAt, locale)}`,
-        amount: d.amount,
-        currency: d.currency,
-      }));
-      return NextResponse.json({ donations: fallback }, {
-        headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
-      });
-    }
-
-    return NextResponse.json({ donations }, {
-      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
-    });
-  } catch (err) {
-    console.error("Recent donations API error:", err);
-    const fallbackData = getPlaceholderDonations();
-    const donations = fallbackData.map((d) => ({
-      display: `${formatDonation(d.amount, d.currency, locale)} – ${formatTimeAgo(d.createdAt, locale)}`,
-      amount: d.amount,
-      currency: d.currency,
-    }));
-    return NextResponse.json({ donations }, {
-      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
-    });
-  }
+  const placeholderData = getPlaceholderDonations();
+  const donations = placeholderData.map((d) => ({
+    display: `${formatDonation(d.amount, d.currency, locale)} – ${formatTimeAgo(d.createdAt, locale)}`,
+    amount: d.amount,
+    currency: d.currency,
+  }));
+  return NextResponse.json({ donations }, {
+    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" },
+  });
 }
