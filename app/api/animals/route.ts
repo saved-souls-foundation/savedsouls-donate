@@ -7,7 +7,7 @@ import {
   toSlimAnimalRecord,
 } from "@/lib/animals-api";
 
-export const revalidate = ANIMALS_REVALIDATE_SECONDS;
+export const revalidate = 3600;
 
 const CACHE_CONTROL = "public, s-maxage=3600, stale-while-revalidate=7200";
 
