@@ -4,19 +4,39 @@ Overzicht van wat de organisatie moet regelen om de website volledig te laten we
 
 ---
 
-## 1. API sponsor honden & katten
+## 1. Adoptie-dieren (`/adopt`) en sponsor-API
 
-**Status:** Sponsor-pagina staat op "under construction". De adoptie-API werkt al.
+**Status:** `/adopt` haalt honden en katten **uitsluitend** op uit `db.savedsouls-foundation.org` (`/api/dogs.php` en `/api/cats.php`), via `lib/animals-api.ts` en `GET /api/animals`. Geen vast array, geen Supabase.
 
-| Wat | Toegang nodig |
-|-----|---------------|
-| **Adoptie-API** (werkt al) | `db.savedsouls-foundation.org/api/dogs.php` en `cats.php` – wie beheert deze server? |
-| **Sponsor-API** | Nog te bouwen. Moet tonen welke honden/katten beschikbaar zijn voor maandelijkse sponsoring. Vereist: database of API met sponsor-dieren. |
+**Belangrijk — twee losse systemen:**
 
-**Actie:** Vraag aan IT/beheerder van `db.savedsouls-foundation.org`:
-- Toegang tot de database of API-documentatie
-- Of er een sponsor-endpoint is (bijv. `/api/sponsor-dogs.php`)
-- Zo niet: specificaties voor een nieuw sponsor-API
+| Bron | Waar | Wat het voedt |
+|------|------|----------------|
+| PHP-database `db.savedsouls-foundation.org` | Extern, niet in deze repo | Publieke adoptiepagina `/adopt` + detailpagina’s |
+| Supabase-tabel `dieren` + admin `/admin/dieren` | Deze Next.js-app | Intern beheer (gezondheid, status in_opvang/foster/…). **Niet gekoppeld aan `/adopt`.** Een dier toevoegen in admin verschijnt **niet** op de adoptiepagina. |
+
+De beheerder van de PHP-database is **nog niet vastgesteld**. CRUD (toevoegen/wijzigen/verwijderen van adoptiedieren) gebeurt in dat PHP-systeem, niet in deze repo.
+
+**Cache:** Next.js cache’t de PHP-fetch 1 uur (tag `animals`). Direct legen: `POST /api/revalidate` met `REVALIDATE_SECRET` (Vercel env). Zet die secret in Vercel.
+
+**Sponsor-API:** aparte PHP-endpoints (`website_sponsor_dogs.php` / `website_sponsor_cats.php`).
+
+**Actie:** achterhaal wie `db.savedsouls-foundation.org` beheert, en kies daarna één lijn:
+
+### Optie A — PHP blijft de bron van `/adopt`
+
+- Vraag API-documentatie en toegang.
+- Laat de PHP-API een statusveld toevoegen (`status` / `available` / `adopted` / `deceased` / `is_active`). De site filtert die velden al defensief; zonder veld blijft het huidige gedrag.
+- Voordeel: bestaande opvang-workflow blijft; website volgt de database die al in gebruik is.
+- Nadeel: twee systemen blijven naast elkaar; admin `/admin/dieren` is geen echte adoptie-CMS; afhankelijk van een externe server waarvan de beheerder nog onbekend is.
+
+### Optie B — overstappen op Supabase `dieren`
+
+- `/adopt` lezen uit de tabel die admin al beheert; PHP-API afbouwen.
+- Voordeel: één bron, CRUD in het bestaande admin-scherm, cache/revalidate in eigen hand.
+- Nadeel: migratie van ~200+ dieren, foto’s (`/Uploads/…`), verhalen en IDs; tot die tijd twee waarheden.
+
+**Sponsor:** vraag of er een sponsor-endpoint is; zo niet: specificaties voor een nieuw endpoint of dezelfde keuze (PHP vs Supabase).
 
 ---
 
@@ -99,7 +119,7 @@ Met het testdomein `onboarding@resend.dev` accepteert Resend de mail (je ziet he
 | Wat | Toegang nodig |
 |-----|---------------|
 | **Vercel-account** | [vercel.com](https://vercel.com) – project savedsouls-donate |
-| **Environment Variables** | Alle keys (RESEND, MOLLIE, FB, ADMIN) |
+| **Environment Variables** | Alle keys (RESEND, MOLLIE, FB, ADMIN, `REVALIDATE_SECRET` voor adoptie-cache) |
 
 **Actie:** Zorg dat de juiste persoon(s) toegang hebben tot het Vercel-project.
 

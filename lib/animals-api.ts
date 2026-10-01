@@ -8,6 +8,10 @@ const DOGS_API = "https://db.savedsouls-foundation.org/api/dogs.php";
 const CATS_API = "https://db.savedsouls-foundation.org/api/cats.php";
 const PER_PAGE = 100;
 
+/** Cache-tag voor on-demand revalidate via POST /api/revalidate. */
+export const ANIMALS_CACHE_TAG = "animals";
+export const ANIMALS_REVALIDATE_SECONDS = 3600;
+
 export interface AnimalRecord {
   id: string;
   name: string;
@@ -42,16 +46,97 @@ export function toSlimAnimalRecord(a: AnimalRecord): AnimalRecordSlim {
   };
 }
 
-async function fetchAllPages(
-  baseUrl: string
-): Promise<Array<{ id: number; name: string; gender: string; image: string; images?: string[]; adoption_story?: string; weight?: number; date_of_birth?: string }>> {
-  const all: Array<{ id: number; name: string; gender: string; image: string; images?: string[]; adoption_story?: string; weight?: number; date_of_birth?: string }> = [];
+type RawAnimalRecord = {
+  id: number;
+  name?: string;
+  gender?: string;
+  image?: string;
+  images?: string[];
+  adoption_story?: string;
+  weight?: number;
+  date_of_birth?: string;
+  status?: unknown;
+  available?: unknown;
+  adopted?: unknown;
+  deceased?: unknown;
+  is_active?: unknown;
+};
+
+/**
+ * Defensief filter voor latere PHP-velden. Zonder status/available/adopted/deceased/is_active
+ * blijft het record staan (huidig gedrag). Herkende uitsluitingen:
+ * - status: adopted, adopted_out, geadopteerd, deceased, overleden, dead, died,
+ *   inactive, inactief, unavailable, not_available, "not available"
+ * - available / is_active: false, 0, "false", "no", "0"
+ * - adopted / deceased: true, 1, "true", "yes", "1"
+ */
+const EXCLUDED_STATUS = new Set([
+  "adopted",
+  "adopted_out",
+  "geadopteerd",
+  "deceased",
+  "overleden",
+  "dead",
+  "died",
+  "inactive",
+  "inactief",
+  "unavailable",
+  "not_available",
+  "not available",
+]);
+
+function isTruthyFlag(value: unknown): boolean {
+  if (value === true || value === 1) return true;
+  if (typeof value === "string") {
+    const s = value.trim().toLowerCase();
+    return s === "true" || s === "yes" || s === "1";
+  }
+  return false;
+}
+
+function isFalsyFlag(value: unknown): boolean {
+  if (value === false || value === 0) return true;
+  if (typeof value === "string") {
+    const s = value.trim().toLowerCase();
+    return s === "false" || s === "no" || s === "0";
+  }
+  return false;
+}
+
+function isListedForAdoption(record: RawAnimalRecord): boolean {
+  const hasStatusField =
+    "status" in record ||
+    "available" in record ||
+    "adopted" in record ||
+    "deceased" in record ||
+    "is_active" in record;
+  if (!hasStatusField) return true;
+
+  if (record.status != null) {
+    const s = String(record.status).trim().toLowerCase();
+    if (EXCLUDED_STATUS.has(s)) return false;
+  }
+  if ("available" in record && record.available != null && isFalsyFlag(record.available)) {
+    return false;
+  }
+  if ("adopted" in record && isTruthyFlag(record.adopted)) return false;
+  if ("deceased" in record && isTruthyFlag(record.deceased)) return false;
+  if ("is_active" in record && record.is_active != null && isFalsyFlag(record.is_active)) {
+    return false;
+  }
+  return true;
+}
+
+async function fetchAllPages(baseUrl: string): Promise<RawAnimalRecord[]> {
+  const all: RawAnimalRecord[] = [];
   let page = 1;
   let hasMore = true;
 
   while (hasMore) {
     const url = `${baseUrl}?page=${page}&per_page=${PER_PAGE}`;
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const res = await fetch(url, {
+      next: { revalidate: ANIMALS_REVALIDATE_SECONDS, tags: [ANIMALS_CACHE_TAG] },
+    });
     if (!res.ok) throw new Error(`API error: ${res.status}`);
     const json = await res.json();
     const data = json.data || [];
@@ -60,7 +145,7 @@ async function fetchAllPages(
     hasMore = pagination.current_page < pagination.total_pages;
     page++;
   }
-  return all;
+  return all.filter(isListedForAdoption);
 }
 
 function parseName(fullName: string): { name: string; thaiName: string } {
@@ -116,7 +201,7 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
       name,
       thaiName,
       type: "dog" as const,
-      gender: toGender(d.gender),
+      gender: toGender(d.gender || ""),
       age: formatAge(d.date_of_birth),
       size: weightToSize(d.weight),
       image: d.image || images[0] || "",
@@ -133,7 +218,7 @@ export async function fetchAnimalsFromApi(): Promise<{ dogs: AnimalRecord[]; cat
       name,
       thaiName,
       type: "cat" as const,
-      gender: toGender(c.gender),
+      gender: toGender(c.gender || ""),
       age: formatAge(c.date_of_birth),
       size: weightToSize(c.weight),
       image: c.image || images[0] || "",
