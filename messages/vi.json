@@ -327,7 +327,13 @@
       "newsletterTemplates": "Mẫu bản tin",
       "sponsorAlert": "{count} hợp đồng nhà tài trợ sắp hết hạn trong vòng 30 ngày",
       "subscribersByLanguage": "Người đăng ký theo Ngôn ngữ",
-      "viewSponsors": "Đi đến nhà tài trợ →"
+      "viewSponsors": "Đi đến nhà tài trợ →",
+      "refreshAnimalsTitle": "Adoption list",
+      "refreshAnimalsHelp": "Have you removed or updated an animal in the PHP system? Click here to update the adoption page immediately. Otherwise it can take up to an hour.",
+      "refreshAnimalsButton": "Refresh list now",
+      "refreshAnimalsLoading": "Refreshing…",
+      "refreshAnimalsSuccess": "Refreshed at {time}. Open the adoption page with a hard refresh (Cmd+Shift+R) to see it.",
+      "refreshAnimalsError": "Refresh failed. Please try again."
     },
     "adoptanten": "Người nhận nuôi",
     "vrijwilligers": "Tình nguyện viên",

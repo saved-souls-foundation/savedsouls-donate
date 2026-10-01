@@ -327,7 +327,13 @@
       "newsletterTemplates": "Templat surat berita",
       "sponsorAlert": "{count} kontrak penaja akan tamat dalam 30 hari",
       "subscribersByLanguage": "Pelanggan mengikut Bahasa",
-      "viewSponsors": "Pergi ke penaja →"
+      "viewSponsors": "Pergi ke penaja →",
+      "refreshAnimalsTitle": "Adoption list",
+      "refreshAnimalsHelp": "Have you removed or updated an animal in the PHP system? Click here to update the adoption page immediately. Otherwise it can take up to an hour.",
+      "refreshAnimalsButton": "Refresh list now",
+      "refreshAnimalsLoading": "Refreshing…",
+      "refreshAnimalsSuccess": "Refreshed at {time}. Open the adoption page with a hard refresh (Cmd+Shift+R) to see it.",
+      "refreshAnimalsError": "Refresh failed. Please try again."
     },
     "adoptanten": "Penerima anak angkat",
     "vrijwilligers": "Sukarelawan",

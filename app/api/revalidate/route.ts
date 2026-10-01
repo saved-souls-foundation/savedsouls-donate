@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { ANIMALS_CACHE_TAG } from "@/lib/animals-api";
+import { refreshAnimalsCache } from "@/lib/revalidate-animals";
 
 export const dynamic = "force-dynamic";
 
@@ -38,9 +38,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  revalidateTag(ANIMALS_CACHE_TAG, "max");
-  revalidatePath("/api/animals");
-  revalidatePath("/api/animals/full");
+  refreshAnimalsCache();
 
   return NextResponse.json({ revalidated: true, tag: ANIMALS_CACHE_TAG });
 }

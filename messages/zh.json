@@ -327,7 +327,13 @@
       "newsletterTemplates": "新闻通讯模板",
       "sponsorAlert": "{count}个赞助合同将在30天内到期",
       "subscribersByLanguage": "按语言划分的订阅者",
-      "viewSponsors": "查看赞助者 →"
+      "viewSponsors": "查看赞助者 →",
+      "refreshAnimalsTitle": "Adoption list",
+      "refreshAnimalsHelp": "Have you removed or updated an animal in the PHP system? Click here to update the adoption page immediately. Otherwise it can take up to an hour.",
+      "refreshAnimalsButton": "Refresh list now",
+      "refreshAnimalsLoading": "Refreshing…",
+      "refreshAnimalsSuccess": "Refreshed at {time}. Open the adoption page with a hard refresh (Cmd+Shift+R) to see it.",
+      "refreshAnimalsError": "Refresh failed. Please try again."
     },
     "adoptanten": "领养者",
     "vrijwilligers": "志愿者",

@@ -327,7 +327,13 @@
       "newsletterTemplates": "Newsletter templates",
       "sponsorAlert": "{count} sponsor contract(s) expiring within 30 days",
       "subscribersByLanguage": "Subscribers by Language",
-      "viewSponsors": "Go to sponsors →"
+      "viewSponsors": "Go to sponsors →",
+      "refreshAnimalsTitle": "Adoption list",
+      "refreshAnimalsHelp": "Have you removed or updated an animal in the PHP system? Click here to update the adoption page immediately. Otherwise it can take up to an hour.",
+      "refreshAnimalsButton": "Refresh list now",
+      "refreshAnimalsLoading": "Refreshing…",
+      "refreshAnimalsSuccess": "Refreshed at {time}. Open the adoption page with a hard refresh (Cmd+Shift+R) to see it.",
+      "refreshAnimalsError": "Refresh failed. Please try again."
     },
     "adoptanten": "Adoptants",
     "vrijwilligers": "Volunteers",

@@ -327,7 +327,13 @@
       "newsletterTemplates": "Nieuwsbriefsjablonen",
       "sponsorAlert": "{count} sponsorcontract(en) verlopen binnen 30 dagen",
       "subscribersByLanguage": "Abonnees per taal",
-      "viewSponsors": "Naar sponsoren →"
+      "viewSponsors": "Naar sponsoren →",
+      "refreshAnimalsTitle": "Adoptielijst",
+      "refreshAnimalsHelp": "Heb je een dier verwijderd of aangepast in het PHP-systeem? Klik hier om de adoptiepagina direct bij te werken. Anders duurt het tot een uur.",
+      "refreshAnimalsButton": "Lijst nu verversen",
+      "refreshAnimalsLoading": "Bezig met verversen…",
+      "refreshAnimalsSuccess": "Ververst om {time}. Open de adoptiepagina met een harde refresh (Cmd+Shift+R) om het te zien.",
+      "refreshAnimalsError": "Verversen mislukt. Probeer het opnieuw."
     },
     "adoptanten": "Adoptanten",
     "vrijwilligers": "Vrijwilligers",

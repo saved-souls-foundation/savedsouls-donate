@@ -5,6 +5,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { StatCard, Avatar } from "../components/ui/design-system";
+import { RefreshAnimalsCard } from "./RefreshAnimalsCard";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -402,6 +403,8 @@ export function DashboardClient({
           accentColor="red"
         />
       </div>
+
+      <RefreshAnimalsCard dateLocale={dateLocale} />
 
       {/* RUN 3 — Snelkoppelingen */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 min-w-0">
