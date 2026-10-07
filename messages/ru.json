@@ -1926,6 +1926,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Приют в Алмере для животных, которых нельзя пристроить: одичавшие кошки, кошки и собаки-инвалиды, FIV-кошки, пожилые и хронически больные животные. Постоянный дом для тех, кто больше не вписывается в общество."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express повесили наш плакат Saved Souls. Так мы находим людей в Haarlem, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie повесили наш плакат Saved Souls. Так мы находим людей в Haarlem, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop повесили наш плакат Saved Souls. Так мы находим людей в Haarlem, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke повесили наш плакат Saved Souls. Так мы находим людей в Zwanenburg, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg повесили наш плакат Saved Souls. Так мы находим людей в Zwanenburg, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
+    "posterSectionTitle": "Здесь висит наш плакат",
+    "posterSectionSubtitle": "Компании, которые повесили плакат Saved Souls",
+    "posterViewOnMaps": "Открыть в Google Картах",
+    "posterCall": "Позвонить:",
     "donationBoxSectionTitle": "Первая коробка для пожертвований в Пхукете",
     "donationBoxSectionSubtitle": "Вместе с Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation установила свою первую физическую коробку для пожертвований в Пхукете — в Layan Vet Clinic. Важная веха нашей миссии, далеко за пределами Khon Kaen.",

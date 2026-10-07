@@ -2585,6 +2585,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Almere-based sanctuary for non-replaceable shelter animals: feral cats, disabled cats and dogs, FIV cats, elderly and chronically ill animals. A permanent home for those who no longer fit in society."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Haarlem의 사람들에게 다가갈 수 있습니다."
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Haarlem의 사람들에게 다가갈 수 있습니다."
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Haarlem의 사람들에게 다가갈 수 있습니다."
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Zwanenburg의 사람들에게 다가갈 수 있습니다."
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Zwanenburg의 사람들에게 다가갈 수 있습니다."
+    },
+    "posterSectionTitle": "포스터가 걸린 곳",
+    "posterSectionSubtitle": "Saved Souls 포스터를 걸어 주신 업체",
+    "posterViewOnMaps": "Google 지도에서 보기",
+    "posterCall": "전화",
     "donationBoxSectionTitle": "First donation box in Phuket",
     "donationBoxSectionSubtitle": "Together with Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation has placed its very first physical donation box in Phuket — at Layan Vet Clinic. A milestone for our mission, far beyond Khon Kaen.",

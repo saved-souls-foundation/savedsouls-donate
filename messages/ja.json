@@ -2586,6 +2586,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Almere-based sanctuary for non-replaceable shelter animals: feral cats, disabled cats and dogs, FIV cats, elderly and chronically ill animals. A permanent home for those who no longer fit in society."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express が Saved Souls のポスターを掲示してくださいました。Haarlem で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie が Saved Souls のポスターを掲示してくださいました。Haarlem で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop が Saved Souls のポスターを掲示してくださいました。Haarlem で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke が Saved Souls のポスターを掲示してくださいました。Zwanenburg で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg が Saved Souls のポスターを掲示してくださいました。Zwanenburg で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
+    "posterSectionTitle": "ポスター掲示店",
+    "posterSectionSubtitle": "Saved Souls のポスターを掲示してくださっているお店",
+    "posterViewOnMaps": "Google マップで見る",
+    "posterCall": "電話",
     "donationBoxSectionTitle": "First donation box in Phuket",
     "donationBoxSectionSubtitle": "Together with Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation has placed its very first physical donation box in Phuket — at Layan Vet Clinic. A milestone for our mission, far beyond Khon Kaen.",

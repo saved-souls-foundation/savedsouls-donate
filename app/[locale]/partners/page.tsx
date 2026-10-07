@@ -19,11 +19,14 @@ const SHAMU_PHONE = "+66623249295";
 type PartnerEntry = {
   name: string;
   key: string;
-  url: string;
+  url?: string;
   logo?: string;
   shimmer?: boolean;
   logoClassName?: string;
   logoLayout?: "default" | "banner";
+  address?: string;
+  phone?: string;
+  phoneDisplay?: string;
 };
 
 const PARTNERS: PartnerEntry[] = [
@@ -35,29 +38,44 @@ const PARTNERS: PartnerEntry[] = [
   { name: "DierenDokters Haarlem", key: "dierendoktershaarlem", url: DIERENDOKTERS_URL, logo: "/partners/dierendokters-haarlem/team.png", logoLayout: "banner" },
 ];
 
+// Bedrijven waar onze Saved Souls-poster hangt. Nieuwe partner: één regel hier
+// + partners.<key>.fullName/description in alle messages/*.json.
+// Met url → klikbare kaart; zonder url → Google Maps-knop (+ belknop als phone bestaat).
+const POSTER_PARTNERS: PartnerEntry[] = [
+  { name: "Plieger Haarlem Express", key: "pliegerhaarlem", logo: "/partners/plieger-haarlem/storefront.jpg", logoLayout: "banner", url: "https://plieger.nl/vestigingen/expressen/haarlem", address: "Heringaweg 6E, 2031 BW Haarlem" },
+  { name: "Perfect Kledingreparatie", key: "perfectkledingreparatie", logo: "/partners/perfect-kledingreparatie/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 535, 2025 DE Haarlem", phone: "+31235386886", phoneDisplay: "023 538 6886" },
+  { name: "Sannie's Dierenshop", key: "sanniesdierenshop", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
+  { name: "Groentenhandel Hans Lücke", key: "hansluecke", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
+  { name: "Dorpshuis Zwanenburg", key: "dorpshuiszwanenburg", address: "Dennenlaan 133, Zwanenburg" },
+];
+
+function mapsSearchUrl(partner: PartnerEntry) {
+  const query = [partner.name, partner.address].filter(Boolean).join(", ");
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 function PartnerCard({
   partner,
   index,
   fullName,
   description,
   visitWebsite,
+  viewOnMaps,
+  callLabel,
 }: {
   partner: PartnerEntry;
   index: number;
   fullName: string;
   description: string;
   visitWebsite: string;
+  viewOnMaps?: string;
+  callLabel?: string;
 }) {
   const isBanner = partner.logoLayout === "banner" && Boolean(partner.logo);
 
-  return (
-    <a
-      href={partner.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block partner-card"
-      style={{ ["--card-i" as string]: index }}
-    >
+  const cardStyle = { ["--card-i" as string]: index };
+
+  const card = (
       <article
         className={`relative overflow-hidden rounded-3xl bg-white/95 dark:bg-stone-900/95 border-2 shadow-xl hover:shadow-2xl transition-all duration-500 p-8 md:p-10 ${
           partner.shimmer
@@ -123,13 +141,48 @@ function PartnerCard({
           <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed max-w-md">
             {description}
           </p>
-          <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400 group-hover:gap-3 transition-all">
-            {visitWebsite}
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </span>
+          {partner.address ? (
+            <p className="mt-3 text-sm text-stone-500 dark:text-stone-400">📍 {partner.address}</p>
+          ) : null}
+          {partner.url ? (
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400 group-hover:gap-3 transition-all">
+              {visitWebsite}
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </span>
+          ) : (
+            <div className="mt-5 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+              <a
+                href={mapsSearchUrl(partner)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: PINK }}
+              >
+                {viewOnMaps} →
+              </a>
+              {partner.phone ? (
+                <a
+                  href={`tel:${partner.phone}`}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-stone-700 dark:text-stone-200 border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                >
+                  {callLabel} {partner.phoneDisplay}
+                </a>
+              ) : null}
+            </div>
+          )}
         </div>
       </article>
+  );
+
+  // Kaart met website is zelf de link; zonder website bevat hij losse Maps-/belknoppen.
+  return partner.url ? (
+    <a href={partner.url} target="_blank" rel="noopener noreferrer" className="group block partner-card" style={cardStyle}>
+      {card}
     </a>
+  ) : (
+    <div className="group block partner-card" style={cardStyle}>
+      {card}
+    </div>
   );
 }
 
@@ -195,6 +248,33 @@ export default function PartnersPage() {
                   fullName={text.fullName}
                   description={text.description}
                   visitWebsite={t("visitWebsite")}
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Hier hangt onze poster */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: PINK }}>
+            {t("posterSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("posterSectionSubtitle")}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+            {POSTER_PARTNERS.map((partner, index) => {
+              const text = partnerText(partner.key);
+              return (
+                <PartnerCard
+                  key={partner.key}
+                  partner={partner}
+                  index={index}
+                  fullName={text.fullName}
+                  description={text.description}
+                  visitWebsite={t("visitWebsite")}
+                  viewOnMaps={t("posterViewOnMaps")}
+                  callLabel={t("posterCall")}
                 />
               );
             })}

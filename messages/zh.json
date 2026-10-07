@@ -2585,6 +2585,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "位于阿尔梅勒的庇护所，收容无法被替代的流浪动物：野生猫、残疾猫狗、FIV猫、老年和慢性病动物。为那些不再适应社会的动物提供永久家园。"
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Haarlem 愿意支持我们在孔敬救助猫狗的人们。"
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Haarlem 愿意支持我们在孔敬救助猫狗的人们。"
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Haarlem 愿意支持我们在孔敬救助猫狗的人们。"
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Zwanenburg 愿意支持我们在孔敬救助猫狗的人们。"
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Zwanenburg 愿意支持我们在孔敬救助猫狗的人们。"
+    },
+    "posterSectionTitle": "我们的海报张贴处",
+    "posterSectionSubtitle": "张贴了 Saved Souls 海报的商家",
+    "posterViewOnMaps": "在 Google 地图中查看",
+    "posterCall": "致电",
     "donationBoxSectionTitle": "普吉岛首个捐赠箱",
     "donationBoxSectionSubtitle": "与Layan Vet Clinic合作",
     "donationBoxSectionIntro": "Saved Souls Foundation在普吉岛放置了首个实体捐赠箱——位于Layan Vet Clinic。这是我们使命的一个里程碑，远超出了孔敬的范围。",

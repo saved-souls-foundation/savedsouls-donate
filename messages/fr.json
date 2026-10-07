@@ -2587,6 +2587,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Refuge à Almere pour animaux de refuge irremplaçables : chats sauvages, chats et chiens handicapés, chats FIV, animaux âgés et chroniquement malades. Foyer permanent pour ceux qui ne trouvent plus leur place en société."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Haarlem qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Haarlem qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Haarlem qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Zwanenburg qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Zwanenburg qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
+    "posterSectionTitle": "Là où notre affiche est exposée",
+    "posterSectionSubtitle": "Les commerces qui ont affiché notre poster Saved Souls",
+    "posterViewOnMaps": "Voir sur Google Maps",
+    "posterCall": "Appeler le",
     "donationBoxSectionTitle": "Première boîte à dons à Phuket",
     "donationBoxSectionSubtitle": "En partenariat avec Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation a installé sa toute première boîte à dons physique à Phuket — chez Layan Vet Clinic. Une étape importante pour notre mission, bien au-delà de Khon Kaen.",

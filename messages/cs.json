@@ -2585,6 +2585,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Almere-based sanctuary for non-replaceable shelter animals: feral cats, disabled cats and dogs, FIV cats, elderly and chronically ill animals. A permanent home for those who no longer fit in society."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Haarlem, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Haarlem, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Haarlem, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Zwanenburg, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Zwanenburg, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
+    "posterSectionTitle": "Tady visí náš plakát",
+    "posterSectionSubtitle": "Podniky, které vyvěsily náš plakát Saved Souls",
+    "posterViewOnMaps": "Zobrazit v Mapách Google",
+    "posterCall": "Volat",
     "donationBoxSectionTitle": "First donation box in Phuket",
     "donationBoxSectionSubtitle": "Together with Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation has placed its very first physical donation box in Phuket — at Layan Vet Clinic. A milestone for our mission, far beyond Khon Kaen.",

@@ -2585,6 +2585,30 @@
       "fullName": "Stichting Dierenthuis",
       "description": "Almere-based sanctuary for non-replaceable shelter animals: feral cats, disabled cats and dogs, FIV cats, elderly and chronically ill animals. A permanent home for those who no longer fit in society."
     },
+    "pliegerhaarlem": {
+      "fullName": "Plieger Haarlem Express",
+      "description": "Plieger Haarlem Express har hængt vores Saved Souls-plakat op. Sådan når vi ud til folk i Haarlem, som gerne vil støtte vores redningsarbejde for hunde og katte i Khon Kaen."
+    },
+    "perfectkledingreparatie": {
+      "fullName": "Perfect Kledingreparatie",
+      "description": "Perfect Kledingreparatie har hængt vores Saved Souls-plakat op. Sådan når vi ud til folk i Haarlem, som gerne vil støtte vores redningsarbejde for hunde og katte i Khon Kaen."
+    },
+    "sanniesdierenshop": {
+      "fullName": "Sannie's Dierenshop",
+      "description": "Sannie's Dierenshop har hængt vores Saved Souls-plakat op. Sådan når vi ud til folk i Haarlem, som gerne vil støtte vores redningsarbejde for hunde og katte i Khon Kaen."
+    },
+    "hansluecke": {
+      "fullName": "Groentenhandel Hans Lücke",
+      "description": "Groentenhandel Hans Lücke har hængt vores Saved Souls-plakat op. Sådan når vi ud til folk i Zwanenburg, som gerne vil støtte vores redningsarbejde for hunde og katte i Khon Kaen."
+    },
+    "dorpshuiszwanenburg": {
+      "fullName": "Dorpshuis Zwanenburg",
+      "description": "Dorpshuis Zwanenburg har hængt vores Saved Souls-plakat op. Sådan når vi ud til folk i Zwanenburg, som gerne vil støtte vores redningsarbejde for hunde og katte i Khon Kaen."
+    },
+    "posterSectionTitle": "Her hænger vores plakat",
+    "posterSectionSubtitle": "Virksomheder, der har hængt vores Saved Souls-plakat op",
+    "posterViewOnMaps": "Se på Google Maps",
+    "posterCall": "Ring",
     "donationBoxSectionTitle": "First donation box in Phuket",
     "donationBoxSectionSubtitle": "Together with Layan Vet Clinic",
     "donationBoxSectionIntro": "Saved Souls Foundation has placed its very first physical donation box in Phuket — at Layan Vet Clinic. A milestone for our mission, far beyond Khon Kaen.",
