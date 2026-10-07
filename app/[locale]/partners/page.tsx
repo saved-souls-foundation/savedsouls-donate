@@ -46,7 +46,7 @@ const POSTER_PARTNERS: PartnerEntry[] = [
   { name: "Perfect Kledingreparatie", key: "perfectkledingreparatie", logo: "/partners/perfect-kledingreparatie/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 535, 2025 DE Haarlem", phone: "+31235386886", phoneDisplay: "023 538 6886" },
   { name: "Sannie's Dierenshop", key: "sanniesdierenshop", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
   { name: "Groentenhandel Hans Lücke", key: "hansluecke", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
-  { name: "Dorpshuis Zwanenburg", key: "dorpshuiszwanenburg", address: "Dennenlaan 133, Zwanenburg" },
+  { name: "Dorpshuis Zwanenburg-Halfweg", key: "dorpshuiszwanenburg", logo: "/partners/dorpshuis-zwanenburg/building.jpg", logoLayout: "banner", address: "Dennenlaan 133, 1161 CN Zwanenburg", phone: "+31204974097", phoneDisplay: "020 497 4097" },
 ];
 
 function mapsSearchUrl(partner: PartnerEntry) {
