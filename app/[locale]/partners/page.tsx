@@ -6,48 +6,15 @@ import Footer from "../../components/Footer";
 import ParallaxPage from "../../components/ParallaxPage";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { useTranslations } from "next-intl";
+import { PARTNERS, POSTER_PARTNERS, type PartnerEntry } from "@/lib/partners";
 
 const ACCENT_GREEN = "#2aa348";
 const PINK = "#ec4899";
 const ROSE = "#f472b6";
 const SOFT_PINK = "#fce7f3";
-const DIERENDOKTERS_URL = "https://www.dierendokters.com/dierenarts-dierenkliniek/haarlem";
 const SHAMU_ORANGE = "#f97316";
 const SHAMU_MAPS_URL = "https://www.google.com/maps/search/Shamu+Shamu+Pet+Center+Thalang+Phuket";
 const SHAMU_PHONE = "+66623249295";
-
-type PartnerEntry = {
-  name: string;
-  key: string;
-  url?: string;
-  logo?: string;
-  shimmer?: boolean;
-  logoClassName?: string;
-  logoLayout?: "default" | "banner";
-  address?: string;
-  phone?: string;
-  phoneDisplay?: string;
-};
-
-const PARTNERS: PartnerEntry[] = [
-  { name: "TVAV", key: "tvav", url: "https://tvav.ch", logo: "/partners/tvav.png" },
-  { name: "K9Aid", key: "k9aid", url: "https://k9aid.org", logo: "/partners/k9aid.png" },
-  { name: "Project Street Dogs Thailand", key: "streetdogsthailand", url: "https://streetdogsthailand.com", logo: "/partners/streetdogsthailand.png" },
-  { name: "GiftHoney", key: "gifthoney", url: "https://gifthoney.co", logo: "/partners/gifthoney.png" },
-  { name: "Groenprint", key: "groenprint", url: "https://www.groenprint.nl/", logo: "/groenprint-logo.webp", shimmer: true },
-  { name: "DierenDokters Haarlem", key: "dierendoktershaarlem", url: DIERENDOKTERS_URL, logo: "/partners/dierendokters-haarlem/team.png", logoLayout: "banner" },
-];
-
-// Bedrijven waar onze Saved Souls-poster hangt. Nieuwe partner: één regel hier
-// + partners.<key>.fullName/description in alle messages/*.json.
-// Met url → klikbare kaart; zonder url → Google Maps-knop (+ belknop als phone bestaat).
-const POSTER_PARTNERS: PartnerEntry[] = [
-  { name: "Plieger Haarlem Express", key: "pliegerhaarlem", logo: "/partners/plieger-haarlem/storefront.jpg", logoLayout: "banner", url: "https://plieger.nl/vestigingen/expressen/haarlem", address: "Heringaweg 6E, 2031 BW Haarlem" },
-  { name: "Perfect Kledingreparatie", key: "perfectkledingreparatie", logo: "/partners/perfect-kledingreparatie/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 535, 2025 DE Haarlem", phone: "+31235386886", phoneDisplay: "023 538 6886" },
-  { name: "Sannie's Dierenshop", key: "sanniesdierenshop", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
-  { name: "Groentenhandel Hans Lücke", key: "hansluecke", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
-  { name: "Dorpshuis Zwanenburg-Halfweg", key: "dorpshuiszwanenburg", logo: "/partners/dorpshuis-zwanenburg/building.jpg", logoLayout: "banner", address: "Dennenlaan 133, 1161 CN Zwanenburg", phone: "+31204974097", phoneDisplay: "020 497 4097" },
-];
 
 function mapsSearchUrl(partner: PartnerEntry) {
   const query = [partner.name, partner.address].filter(Boolean).join(", ");

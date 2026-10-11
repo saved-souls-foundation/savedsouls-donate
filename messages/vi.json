@@ -2605,6 +2605,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg đã treo áp phích Saved Souls của chúng tôi. Nhờ vậy chúng tôi tiếp cận được những người ở Zwanenburg muốn ủng hộ công việc cứu hộ chó mèo của chúng tôi tại Khon Kaen."
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg đã treo áp phích Saved Souls của chúng tôi. Nhờ vậy chúng tôi tiếp cận được những người ở Halfweg muốn ủng hộ công việc cứu hộ chó mèo của chúng tôi tại Khon Kaen."
+    },
     "posterSectionTitle": "Nơi treo áp phích của chúng tôi",
     "posterSectionSubtitle": "Các cửa hàng đã treo áp phích Saved Souls của chúng tôi",
     "posterViewOnMaps": "Xem trên Google Maps",
@@ -2659,7 +2663,9 @@
     "dierendoktershaarlem": {
       "fullName": "DierenDokters Haarlem",
       "description": "DierenDokters Haarlem đã trưng bày tờ rơi Saved Souls của chúng tôi trong phòng chờ. Điều này giúp chúng tôi tiếp cận những chủ vật nuôi ở Haarlem muốn hỗ trợ công tác cứu hộ chó và mèo của chúng tôi ở Khon Kaen."
-    }
+    },
+    "metaTitle": "Đối tác và nơi treo áp phích | Saved Souls Foundation",
+    "metaDescription": "Các doanh nghiệp và tổ chức ủng hộ Saved Souls Foundation. Áp phích của chúng tôi được treo tại {names} và nhiều nơi khác."
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Cảm ơn Thalang Animal Hospital | Saved Souls Foundation",

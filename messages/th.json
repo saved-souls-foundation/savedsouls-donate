@@ -1946,6 +1946,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg ได้ติดโปสเตอร์ Saved Souls ของเรา ช่วยให้เราเข้าถึงผู้คนใน Zwanenburg ที่อยากสนับสนุนการช่วยเหลือสุนัขและแมวของเราในขอนแก่น"
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg ได้ติดโปสเตอร์ Saved Souls ของเรา ช่วยให้เราเข้าถึงผู้คนใน Halfweg ที่อยากสนับสนุนการช่วยเหลือสุนัขและแมวของเราในขอนแก่น"
+    },
     "posterSectionTitle": "โปสเตอร์ของเราติดอยู่ที่นี่",
     "posterSectionSubtitle": "ร้านค้าที่ติดโปสเตอร์ Saved Souls ของเรา",
     "posterViewOnMaps": "ดูบน Google Maps",
@@ -2000,7 +2004,9 @@
     "dierendoktershaarlem": {
       "fullName": "DierenDokters Haarlem",
       "description": "DierenDokters Haarlem has displayed our Saved Souls flyer in their waiting room. This helps us reach pet owners in Haarlem who want to support our rescue work for dogs and cats in Khon Kaen."
-    }
+    },
+    "metaTitle": "พันธมิตรและจุดติดโปสเตอร์ | Saved Souls Foundation",
+    "metaDescription": "ธุรกิจและองค์กรที่สนับสนุน Saved Souls Foundation โปสเตอร์ของเราติดอยู่ที่ {names} และที่อื่น ๆ"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "ขอบคุณ Thalang Animal Hospital | Saved Souls Foundation",

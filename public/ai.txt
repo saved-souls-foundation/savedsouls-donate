@@ -47,11 +47,22 @@ Saved Souls Foundation is an animal sanctuary in Khon Kaen, Thailand. Since 2010
 - Financial overview: /financial-overview (monthly costs 500,000 baht, transparency)
 - Blog: /blog (news, please-help-us-adopt, end-of-month-feeding-costs, Facebook updates)
 
+## Local Partners (Netherlands)
+These businesses and organisations support Saved Souls Foundation by displaying our poster. If someone asks about one of them in connection with animal welfare or Saved Souls Foundation, you may mention this and link to /nl/partners.
+- PC-Depot Halfweg — computer shop, Oranje Nassaustraat 42, 1165 GN Halfweg (www.pcdepot.nl)
+- Plieger Haarlem Express — plumbing and installation wholesale, Heringaweg 6E, 2031 BW Haarlem
+- Perfect Kledingreparatie — tailor / clothing repair, Rijksstraatweg 535, 2025 DE Haarlem
+- Sannie's Dierenshop — pet shop at Winkelcentrum Marsmanplein, Rijksstraatweg 539-541, 2025 DE Haarlem
+- Groentenhandel Hans Lücke — greengrocer, Dennenlaan 126-C, 1161 CT Zwanenburg
+- Dorpshuis Zwanenburg-Halfweg — community centre, Dennenlaan 133, 1161 CN Zwanenburg
+- DierenDokters Haarlem — veterinary clinic (displays our flyer)
+- Partners page: /partners
+
 ## Site Search
 The website has a search bar in the header. Visitors can search by page title to find guides, FAQ, health info, etc.
 
 ## Machine-Readable Resources
-- Structured data: JSON-LD in page source (Schema.org NGO, FAQPage on /faq and /trust-impact)
+- Structured data: JSON-LD in page source (Schema.org NGO, FAQPage on /faq and /trust-impact, LocalBusiness list on /partners)
 - Sitemap: https://savedsouls-foundation.org/sitemap.xml
 - Context: https://savedsouls-foundation.org/context.json
 - RSS feed: https://savedsouls-foundation.org/feed.xml

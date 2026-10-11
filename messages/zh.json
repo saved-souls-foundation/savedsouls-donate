@@ -2605,6 +2605,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Zwanenburg 愿意支持我们在孔敬救助猫狗的人们。"
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Halfweg 愿意支持我们在孔敬救助猫狗的人们。"
+    },
     "posterSectionTitle": "我们的海报张贴处",
     "posterSectionSubtitle": "张贴了 Saved Souls 海报的商家",
     "posterViewOnMaps": "在 Google 地图中查看",
@@ -2659,7 +2663,9 @@
     "dierendoktershaarlem": {
       "fullName": "DierenDokters Haarlem",
       "description": "DierenDokters Haarlem在他们的等候室展示了我们的Saved Souls传单。这帮助我们接触到Haarlem中想要支持我们在Khon Kaen救援犬和猫工作的宠物主人。"
-    }
+    },
+    "metaTitle": "合作伙伴与海报张贴地点 | Saved Souls Foundation",
+    "metaDescription": "支持 Saved Souls Foundation 的企业和组织。我们的海报张贴于 {names} 等地。"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "感谢Thalang Animal Hospital | Saved Souls Foundation",

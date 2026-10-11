@@ -2606,6 +2606,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg telah menggantung poster Saved Souls kami. Ini membantu kami menjangkau orang di Zwanenburg yang ingin menyokong usaha menyelamat anjing dan kucing kami di Khon Kaen."
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg telah menggantung poster Saved Souls kami. Ini membantu kami menjangkau orang di Halfweg yang ingin menyokong usaha menyelamat anjing dan kucing kami di Khon Kaen."
+    },
     "posterSectionTitle": "Di sini poster kami dipamerkan",
     "posterSectionSubtitle": "Perniagaan yang telah menggantung poster Saved Souls kami",
     "posterViewOnMaps": "Lihat di Google Maps",
@@ -2660,7 +2664,9 @@
     "dierendoktershaarlem": {
       "fullName": "DierenDokters Haarlem",
       "description": "DierenDokters Haarlem telah memaparkan selebaran Saved Souls kami di ruang tunggu mereka. Ini membantu kami menjangkau pemilik haiwan peliharaan di Haarlem yang ingin menyokong kerja penyelamatan kami untuk anjing dan kucing di Khon Kaen."
-    }
+    },
+    "metaTitle": "Rakan kongsi dan lokasi poster | Saved Souls Foundation",
+    "metaDescription": "Perniagaan dan organisasi yang menyokong Saved Souls Foundation. Poster kami dipamerkan antaranya di {names}."
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Terima kasih Thalang Animal Hospital | Saved Souls Foundation",

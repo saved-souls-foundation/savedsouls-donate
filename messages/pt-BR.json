@@ -1946,6 +1946,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg pendurou nosso pôster da Saved Souls. Assim alcançamos pessoas em Zwanenburg que querem apoiar nosso trabalho de resgate de cães e gatos em Khon Kaen."
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg pendurou nosso pôster da Saved Souls. Assim alcançamos pessoas em Halfweg que querem apoiar nosso trabalho de resgate de cães e gatos em Khon Kaen."
+    },
     "posterSectionTitle": "Onde nosso pôster está",
     "posterSectionSubtitle": "Empresas que penduraram nosso pôster da Saved Souls",
     "posterViewOnMaps": "Ver no Google Maps",
@@ -2000,7 +2004,9 @@
     "donationBoxShamuHours": "Open daily until 19:00",
     "donationBoxShamuRating": "4.8 ⭐ (138 reviews)",
     "donationBoxShamuSectionVisit": "View on Google Maps",
-    "donationBoxShamuSectionPhone": "Call +66 62 324 9295"
+    "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
+    "metaTitle": "Parceiros e locais do pôster | Saved Souls Foundation",
+    "metaDescription": "Empresas e organizações que apoiam a Saved Souls Foundation. Nosso pôster está, entre outros, em {names}."
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Gracias Thalang Animal Hospital | Saved Souls Foundation",

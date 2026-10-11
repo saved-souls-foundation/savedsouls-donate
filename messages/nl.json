@@ -2615,6 +2615,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg heeft onze Saved Souls-poster opgehangen. Zo bereiken we mensen in Zwanenburg die onze reddingsactie voor honden en katten in Khon Kaen willen steunen."
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg heeft onze Saved Souls-poster opgehangen. Zo bereiken we mensen in Halfweg die onze reddingsactie voor honden en katten in Khon Kaen willen steunen."
+    },
     "posterSectionTitle": "Hier hangt onze poster",
     "posterSectionSubtitle": "Bedrijven die onze Saved Souls-poster hebben opgehangen",
     "posterViewOnMaps": "Bekijk op Google Maps",
@@ -2661,7 +2665,9 @@
     "flyerHaarlemSectionVisit": "Bezoek DierenDokters Haarlem",
     "flyerHaarlemSectionPhone": "Bel 023 870 0303",
     "flyerHaarlemTeamAlt": "Team van DierenDokters Haarlem",
-    "flyerHaarlemFlyerAlt": "Saved Souls-flyer in de wachtruimte van DierenDokters Haarlem"
+    "flyerHaarlemFlyerAlt": "Saved Souls-flyer in de wachtruimte van DierenDokters Haarlem",
+    "metaTitle": "Partners en posterlocaties | Saved Souls Foundation",
+    "metaDescription": "Bedrijven en organisaties die Saved Souls Foundation steunen. Onze poster hangt onder meer bij {names}."
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Bedankt Thalang Animal Hospital | Saved Souls Foundation",

@@ -2606,6 +2606,10 @@
       "fullName": "Dorpshuis Zwanenburg-Halfweg",
       "description": "Dorpshuis Zwanenburg-Halfweg が Saved Souls のポスターを掲示してくださいました。Zwanenburg で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
     },
+    "pcdepothalfweg": {
+      "fullName": "PC-Depot Halfweg",
+      "description": "PC-Depot Halfweg が Saved Souls のポスターを掲示してくださいました。Halfweg で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
     "posterSectionTitle": "ポスター掲示店",
     "posterSectionSubtitle": "Saved Souls のポスターを掲示してくださっているお店",
     "posterViewOnMaps": "Google マップで見る",
@@ -2660,7 +2664,9 @@
     "donationBoxShamuHours": "Open daily until 19:00",
     "donationBoxShamuRating": "4.8 ⭐ (138 reviews)",
     "donationBoxShamuSectionVisit": "View on Google Maps",
-    "donationBoxShamuSectionPhone": "Call +66 62 324 9295"
+    "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
+    "metaTitle": "パートナーとポスター掲示場所 | Saved Souls Foundation",
+    "metaDescription": "Saved Souls Foundation を支援してくださる企業・団体。ポスターは {names} などに掲示されています。"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",
