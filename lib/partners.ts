@@ -12,6 +12,8 @@ export type PartnerEntry = {
   address?: string;
   phone?: string;
   phoneDisplay?: string;
+  /** Extra foto's onder de tekst (staand, 3:4) */
+  gallery?: string[];
 };
 
 export const DIERENDOKTERS_URL = "https://www.dierendokters.com/dierenarts-dierenkliniek/haarlem";
@@ -35,7 +37,7 @@ export const POSTER_PARTNERS: PartnerEntry[] = [
   { name: "Sannie's Dierenshop", key: "sanniesdierenshop", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
   { name: "Groentenhandel Hans Lücke", key: "hansluecke", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
   { name: "Dorpshuis Zwanenburg-Halfweg", key: "dorpshuiszwanenburg", logo: "/partners/dorpshuis-zwanenburg/building.jpg", logoLayout: "banner", address: "Dennenlaan 133, 1161 CN Zwanenburg", phone: "+31204974097", phoneDisplay: "020 497 4097" },
-  { name: "PC-Depot Halfweg", key: "pcdepothalfweg", logo: "/partners/pc-depot-halfweg/storefront.jpg", logoLayout: "banner", url: "https://www.pcdepot.nl", address: "Oranje Nassaustraat 42, 1165 GN Halfweg", phone: "+31204970069", phoneDisplay: "020 497 0069" },
+  { name: "PC-Depot Halfweg", key: "pcdepothalfweg", logo: "/partners/pc-depot-halfweg/storefront.jpg", logoLayout: "banner", url: "https://www.pcdepot.nl", address: "Oranje Nassaustraat 42, 1165 GN Halfweg", phone: "+31204970069", phoneDisplay: "020 497 0069", gallery: ["/partners/pc-depot-halfweg/poster-in-shop.jpg", "/partners/pc-depot-halfweg/window.jpg"] },
 ];
 
 /** Splitst "Straat 1, 1234 AB Plaats" in schema.org PostalAddress-velden. */

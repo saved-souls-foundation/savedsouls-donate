@@ -2665,7 +2665,8 @@
       "description": "DierenDokters Haarlem đã trưng bày tờ rơi Saved Souls của chúng tôi trong phòng chờ. Điều này giúp chúng tôi tiếp cận những chủ vật nuôi ở Haarlem muốn hỗ trợ công tác cứu hộ chó và mèo của chúng tôi ở Khon Kaen."
     },
     "metaTitle": "Đối tác và nơi treo áp phích | Saved Souls Foundation",
-    "metaDescription": "Các doanh nghiệp và tổ chức ủng hộ Saved Souls Foundation. Áp phích của chúng tôi được treo tại {names} và nhiều nơi khác."
+    "metaDescription": "Các doanh nghiệp và tổ chức ủng hộ Saved Souls Foundation. Áp phích của chúng tôi được treo tại {names} và nhiều nơi khác.",
+    "posterPhotoAlt": "Áp phích Saved Souls tại {name}, ảnh"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Cảm ơn Thalang Animal Hospital | Saved Souls Foundation",

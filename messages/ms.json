@@ -2666,7 +2666,8 @@
       "description": "DierenDokters Haarlem telah memaparkan selebaran Saved Souls kami di ruang tunggu mereka. Ini membantu kami menjangkau pemilik haiwan peliharaan di Haarlem yang ingin menyokong kerja penyelamatan kami untuk anjing dan kucing di Khon Kaen."
     },
     "metaTitle": "Rakan kongsi dan lokasi poster | Saved Souls Foundation",
-    "metaDescription": "Perniagaan dan organisasi yang menyokong Saved Souls Foundation. Poster kami dipamerkan antaranya di {names}."
+    "metaDescription": "Perniagaan dan organisasi yang menyokong Saved Souls Foundation. Poster kami dipamerkan antaranya di {names}.",
+    "posterPhotoAlt": "Poster Saved Souls di {name}, foto"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Terima kasih Thalang Animal Hospital | Saved Souls Foundation",

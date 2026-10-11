@@ -2667,7 +2667,8 @@
     "donationBoxShamuSectionVisit": "View on Google Maps",
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Partner och affischplatser | Saved Souls Foundation",
-    "metaDescription": "Företag och organisationer som stödjer Saved Souls Foundation. Vår affisch sitter bland annat hos {names}."
+    "metaDescription": "Företag och organisationer som stödjer Saved Souls Foundation. Vår affisch sitter bland annat hos {names}.",
+    "posterPhotoAlt": "Saved Souls-affisch hos {name}, foto"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

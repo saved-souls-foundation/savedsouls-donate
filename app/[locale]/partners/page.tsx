@@ -29,6 +29,7 @@ function PartnerCard({
   visitWebsite,
   viewOnMaps,
   callLabel,
+  galleryAlt,
 }: {
   partner: PartnerEntry;
   index: number;
@@ -37,6 +38,7 @@ function PartnerCard({
   visitWebsite: string;
   viewOnMaps?: string;
   callLabel?: string;
+  galleryAlt?: string;
 }) {
   const isBanner = partner.logoLayout === "banner" && Boolean(partner.logo);
 
@@ -108,6 +110,19 @@ function PartnerCard({
           <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed max-w-md">
             {description}
           </p>
+          {partner.gallery?.length ? (
+            <div className="mt-5 grid grid-cols-2 gap-3 w-full max-w-md">
+              {partner.gallery.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`${galleryAlt ?? partner.name} ${i + 1}`}
+                  loading="lazy"
+                  className="w-full aspect-[3/4] object-cover rounded-xl shadow-md border border-stone-200/80 dark:border-stone-700"
+                />
+              ))}
+            </div>
+          ) : null}
           {partner.address ? (
             <p className="mt-3 text-sm text-stone-500 dark:text-stone-400">📍 {partner.address}</p>
           ) : null}
@@ -242,6 +257,7 @@ export default function PartnersPage() {
                   visitWebsite={t("visitWebsite")}
                   viewOnMaps={t("posterViewOnMaps")}
                   callLabel={t("posterCall")}
+                  galleryAlt={t("posterPhotoAlt", { name: partner.name })}
                 />
               );
             })}

@@ -2666,7 +2666,8 @@
     "donationBoxShamuSectionVisit": "View on Google Maps",
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "パートナーとポスター掲示場所 | Saved Souls Foundation",
-    "metaDescription": "Saved Souls Foundation を支援してくださる企業・団体。ポスターは {names} などに掲示されています。"
+    "metaDescription": "Saved Souls Foundation を支援してくださる企業・団体。ポスターは {names} などに掲示されています。",
+    "posterPhotoAlt": "{name} の Saved Souls ポスター 写真"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

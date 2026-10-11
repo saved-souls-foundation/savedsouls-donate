@@ -2665,7 +2665,8 @@
     "flyerHaarlemTeamAlt": "Team at DierenDokters Haarlem",
     "flyerHaarlemFlyerAlt": "Saved Souls flyer in the waiting room at DierenDokters Haarlem",
     "metaTitle": "Partners and poster locations | Saved Souls Foundation",
-    "metaDescription": "Businesses and organisations that support Saved Souls Foundation. Our poster can be found at {names}, among others."
+    "metaDescription": "Businesses and organisations that support Saved Souls Foundation. Our poster can be found at {names}, among others.",
+    "posterPhotoAlt": "Saved Souls poster at {name}, photo"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

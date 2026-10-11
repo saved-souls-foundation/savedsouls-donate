@@ -48,7 +48,7 @@ export default async function PartnersLayout({ children, params }: Props) {
     description: t(`${p.key}.description`),
     ...(p.url ? { url: p.url } : {}),
     ...(p.phone ? { telephone: p.phone } : {}),
-    ...(p.logo ? { image: `${BASE_URL}${p.logo}` } : {}),
+    ...(p.logo || p.gallery ? { image: [p.logo, ...(p.gallery ?? [])].filter(Boolean).map((src) => `${BASE_URL}${src}`) } : {}),
     ...(p.address ? { address: { "@type": "PostalAddress", ...postalAddress(p.address), addressCountry: "NL" } } : {}),
   }));
 

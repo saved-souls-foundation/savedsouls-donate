@@ -2667,7 +2667,8 @@
     "donationBoxShamuSectionVisit": "View on Google Maps",
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Partnerzy i miejsca z plakatem | Saved Souls Foundation",
-    "metaDescription": "Firmy i organizacje wspierające Saved Souls Foundation. Nasz plakat wisi m.in. w: {names}."
+    "metaDescription": "Firmy i organizacje wspierające Saved Souls Foundation. Nasz plakat wisi m.in. w: {names}.",
+    "posterPhotoAlt": "Plakat Saved Souls w {name}, zdjęcie"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

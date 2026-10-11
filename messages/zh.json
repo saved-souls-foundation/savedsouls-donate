@@ -2665,7 +2665,8 @@
       "description": "DierenDokters Haarlem在他们的等候室展示了我们的Saved Souls传单。这帮助我们接触到Haarlem中想要支持我们在Khon Kaen救援犬和猫工作的宠物主人。"
     },
     "metaTitle": "合作伙伴与海报张贴地点 | Saved Souls Foundation",
-    "metaDescription": "支持 Saved Souls Foundation 的企业和组织。我们的海报张贴于 {names} 等地。"
+    "metaDescription": "支持 Saved Souls Foundation 的企业和组织。我们的海报张贴于 {names} 等地。",
+    "posterPhotoAlt": "{name} 的 Saved Souls 海报 照片"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "感谢Thalang Animal Hospital | Saved Souls Foundation",

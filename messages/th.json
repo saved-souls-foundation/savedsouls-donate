@@ -2006,7 +2006,8 @@
       "description": "DierenDokters Haarlem has displayed our Saved Souls flyer in their waiting room. This helps us reach pet owners in Haarlem who want to support our rescue work for dogs and cats in Khon Kaen."
     },
     "metaTitle": "พันธมิตรและจุดติดโปสเตอร์ | Saved Souls Foundation",
-    "metaDescription": "ธุรกิจและองค์กรที่สนับสนุน Saved Souls Foundation โปสเตอร์ของเราติดอยู่ที่ {names} และที่อื่น ๆ"
+    "metaDescription": "ธุรกิจและองค์กรที่สนับสนุน Saved Souls Foundation โปสเตอร์ของเราติดอยู่ที่ {names} และที่อื่น ๆ",
+    "posterPhotoAlt": "โปสเตอร์ Saved Souls ที่ {name} ภาพ"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "ขอบคุณ Thalang Animal Hospital | Saved Souls Foundation",
