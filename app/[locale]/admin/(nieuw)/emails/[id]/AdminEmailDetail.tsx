@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { veiligeHtml } from "@/lib/veiligeHtml";
 
 const ADM_CARD = "#ffffff";
 const ADM_BORDER = "#e2e8f0";
@@ -374,7 +375,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
                 <p className="mt-2 text-sm font-medium" style={{ color: ADM_GREEN }}>{t("autoSentMessage")}</p>
               )}
               {email.ai_gegenereerd_antwoord && (autoSentBanner || email.status === "verstuurd") && (
-                <div className="mt-3 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: email.ai_gegenereerd_antwoord.replace(/\n/g, "<br>") }} />
+                <div className="mt-3 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: veiligeHtml(email.ai_gegenereerd_antwoord) }} />
               )}
             </div>
           ) : (
@@ -399,7 +400,7 @@ export default function AdminEmailDetail({ id }: { id: string }) {
                   {email.ai_gegenereerd_antwoord && (
                     <>
                       <p className="text-sm font-medium mt-2" style={{ color: ADM_TEXT }}>{t("generatedReply")}</p>
-                      <div className="mt-1 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: (showEdit ? editReply : email.ai_gegenereerd_antwoord).replace(/\n/g, "<br>") }} />
+                      <div className="mt-1 p-3 rounded-lg border text-sm max-h-40 overflow-auto" style={{ borderColor: ADM_BORDER, color: ADM_TEXT }} dangerouslySetInnerHTML={{ __html: veiligeHtml(showEdit ? editReply : email.ai_gegenereerd_antwoord) }} />
                       <div className="mt-3">
                         <p className="text-xs font-medium mb-2" style={{ color: ADM_MUTED }}>{t("templateOverride")}</p>
                         <div className="max-h-48 overflow-y-auto space-y-2 pr-1" style={{ borderColor: ADM_BORDER }}>

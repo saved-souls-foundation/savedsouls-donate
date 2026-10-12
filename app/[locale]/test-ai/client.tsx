@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 
-const BEARER = "Bearer Golden54321%";
 const API_BASE = "";
 
 export default function TestAIClient() {
+  // Geen sleutel in de code (die zou in de openbare JavaScript belanden): plak CRON_SECRET hieronder.
+  const [cronSecret, setCronSecret] = useState("");
+  const BEARER = `Bearer ${cronSecret}`;
   const [usageResult, setUsageResult] = useState<string | null>(null);
   const [usageLoading, setUsageLoading] = useState(false);
   const [usageError, setUsageError] = useState<string | null>(null);
@@ -257,6 +259,17 @@ export default function TestAIClient() {
     <div className="min-h-screen bg-stone-100 p-6">
       <div className="text-2xl font-bold text-stone-800 mb-2">Test AI (lokaal)</div>
       <div className="text-sm text-stone-500 mb-8">Alleen voor lokaal testen. Niet voor productie.</div>
+
+      <div className="mb-4">
+        <input
+          type="password"
+          value={cronSecret}
+          onChange={(e) => setCronSecret(e.target.value)}
+          placeholder="CRON_SECRET (wordt nergens opgeslagen)"
+          autoComplete="off"
+          className="w-full max-w-2xl px-3 py-2 rounded-lg border border-stone-300 text-sm"
+        />
+      </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <button

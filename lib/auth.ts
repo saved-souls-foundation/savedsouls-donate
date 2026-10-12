@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createHmac } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE_NAME = "admin_session";
 
@@ -8,9 +8,11 @@ export function verifySessionToken(token: string): boolean {
     const decoded = Buffer.from(token, "base64url").toString();
     const [payload, sig] = decoded.split(".");
     if (!payload || !sig) return false;
-    const secret = process.env.ADMIN_PASSWORD || "change-me";
+    // Geen reserve-sleutel: zonder ADMIN_PASSWORD is geen enkele sessie geldig.
+    const secret = process.env.ADMIN_PASSWORD;
+    if (!secret) return false;
     const expected = createHmac("sha256", secret).update(payload).digest("hex");
-    if (sig !== expected) return false;
+    if (sig.length !== expected.length || !timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return false;
     const data = JSON.parse(payload);
     return data.exp > Date.now();
   } catch {

@@ -107,7 +107,17 @@ export async function POST(request: NextRequest) {
       bron: "inkomend",
       status: "in_behandeling",
     };
-    const { data: inserted, error: insertErr } = await admin.from("incoming_emails").insert(row).select("id").single();
+    // Resend kan dezelfde webhook opnieuw sturen: met resend_email_id (uniek) wordt elke mail één keer opgeslagen.
+    let { data: inserted, error: insertErr } = await admin
+      .from("incoming_emails").insert({ ...row, resend_email_id: emailId }).select("id").single();
+    if (insertErr?.code === "23505") {
+      console.log("[webhooks/resend] Al opgeslagen (dubbele webhook) email_id=", emailId);
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+    if (insertErr && (insertErr.code === "PGRST204" || insertErr.code === "42703")) {
+      // Kolom bestaat nog niet (migratie 20261012_incoming_emails_resend_id nog niet gedraaid): zoals vroeger opslaan.
+      ({ data: inserted, error: insertErr } = await admin.from("incoming_emails").insert(row).select("id").single());
+    }
     if (insertErr) {
       console.error("[webhooks/resend] incoming_emails insert failed – full supabaseError:", JSON.stringify(insertErr, null, 2));
       return NextResponse.json({ error: "Failed to store email" }, { status: 500 });

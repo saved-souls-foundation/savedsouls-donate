@@ -1,4 +1,7 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isAdminUser } from "@/lib/adminAccess";
 import { setRequestLocale } from "next-intl/server";
 import AdminLayoutClient from "./AdminLayoutClient";
 
@@ -15,6 +18,24 @@ export default async function AdminNieuwLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  // Toegangscontrole: alleen admins zien beheerpagina's en de gegevens hieronder.
+  // De loginpagina valt ook onder deze layout en blijft bereikbaar.
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const isLoginPage = /\/admin\/login(\/|$)/.test(pathname);
+  const isAdmin = await isAdminUser();
+  if (!isAdmin && !isLoginPage) {
+    redirect(`/${locale}/admin/login`);
+  }
+  if (!isAdmin) {
+    // Loginpagina voor niet-ingelogden: geen persoonsgegevens ophalen.
+    return (
+      <AdminLayoutClient pendingEmailsCount={0} recentUnreadEmails={[]} aantalDieren={0}>
+        {children}
+      </AdminLayoutClient>
+    );
+  }
+
   let pendingEmailsCount = 0;
   let aantalDieren = 0;
   let recentUnreadEmails: { id: string; onderwerp: string | null; van_email: string | null; van_naam: string | null; ontvangen_op: string }[] = [];

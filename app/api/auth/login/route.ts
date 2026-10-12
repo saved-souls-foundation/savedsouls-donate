@@ -10,24 +10,10 @@ function createSessionToken(): string {
     exp: Date.now() + SESSION_MAX_AGE * 1000,
     r: randomBytes(16).toString("hex"),
   });
-  const secret = process.env.ADMIN_PASSWORD || "change-me";
+  const secret = process.env.ADMIN_PASSWORD;
+  if (!secret) throw new Error("ADMIN_PASSWORD ontbreekt");
   const sig = createHmac("sha256", secret).update(payload).digest("hex");
   return Buffer.from(`${payload}.${sig}`).toString("base64url");
-}
-
-function verifySessionToken(token: string): boolean {
-  try {
-    const decoded = Buffer.from(token, "base64url").toString();
-    const [payload, sig] = decoded.split(".");
-    if (!payload || !sig) return false;
-    const secret = process.env.ADMIN_PASSWORD || "change-me";
-    const expected = createHmac("sha256", secret).update(payload).digest("hex");
-    if (sig !== expected) return false;
-    const data = JSON.parse(payload);
-    return data.exp > Date.now();
-  } catch {
-    return false;
-  }
 }
 
 export async function POST(request: Request) {

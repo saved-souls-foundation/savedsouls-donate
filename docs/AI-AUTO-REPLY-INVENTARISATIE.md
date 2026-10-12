@@ -15,7 +15,7 @@ Het automatische AI-antwoord draait **niet** als Supabase Edge Function maar vol
    `supabase/migrations/20250323_cron_jobs.sql`  
    - Job `daily-email-processing`: schedule **`0 2 * * *`** (elke dag 02:00 UTC).  
    - Roept aan: `POST https://savedsouls-foundation.com/api/ai/process-pending-emails`  
-   - Header: `Authorization: Bearer Golden54321%`  
+   - Header: `Authorization: Bearer <CRON_SECRET>` (sinds 2026-10: uit Supabase Vault, naam `cron_secret`)  
    - **Mogelijke fout:** `CRON_SECRET` in de app moet exact overeenkomen met dit token.
 
 3. **Process pending emails**  
@@ -57,7 +57,7 @@ Het automatische AI-antwoord draait **niet** als Supabase Edge Function maar vol
 
 | Stap | Mogelijke oorzaak |
 |------|--------------------|
-| Cron roept process-pending-emails aan | 401 als `CRON_SECRET !== "Golden54321%"` (of token in cron anders). |
+| Cron roept process-pending-emails aan | 401 als `CRON_SECRET` niet gelijk is aan het Vault-geheim `cron_secret` (of token in cron anders). |
 | process-pending-emails haalt e-mails op | 500 bij Supabase-fout; 0 rijen als alles al `ai_processed_at` heeft. |
 | process-pending-emails → email-processor | 401 verkeerde token; 404 e-mail niet gevonden; origin verkeerd (lokaal). |
 | email-processor: Claude | 500 als `ANTHROPIC_API_KEY` ontbreekt of call faalt. |

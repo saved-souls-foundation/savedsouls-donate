@@ -11,7 +11,7 @@ SELECT cron.schedule(
     url := 'https://savedsouls-foundation.com/api/ai/process-pending-emails',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer Golden54321%'
+      'Authorization', 'Bearer <CRON_SECRET>'
     ),
     body := '{}'::jsonb
   );
@@ -27,7 +27,7 @@ SELECT cron.schedule(
     url := 'https://savedsouls-foundation.com/api/ai/blog-generator',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer Golden54321%'
+      'Authorization', 'Bearer <CRON_SECRET>'
     ),
     body := '{}'::jsonb
   );
@@ -43,7 +43,7 @@ SELECT cron.schedule(
     url := 'https://savedsouls-foundation.com/api/ai/agenda-reminder',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer Golden54321%'
+      'Authorization', 'Bearer <CRON_SECRET>'
     ),
     body := '{}'::jsonb
   );

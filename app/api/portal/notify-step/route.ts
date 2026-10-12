@@ -3,8 +3,17 @@ import { sendMail } from "@/lib/sendMail";
 import { wrapEmailWithHeaderFooter } from "@/lib/emailLayout";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { logSentEmail } from "@/lib/sentEmailsLog";
+import { isAdminUser } from "@/lib/adminAccess";
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
 
 export async function POST(request: Request) {
+  // Alleen admins (wordt aangeroepen vanuit de admin-schermen Vrijwilligers en Adoptanten).
+  if (!(await isAdminUser())) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   try {
     const body = await request.json();
     const { email, naam, stepLabel, role, dierNaam, dierInfo } = body as {
@@ -22,17 +31,19 @@ export async function POST(request: Request) {
       );
     }
     const name = naam || "daar";
+    // Waarden komen van de client: ontsnappen voordat ze in de HTML-mail komen.
+    const h = { name: escapeHtml(name), stepLabel: escapeHtml(stepLabel), dierNaam: dierNaam ? escapeHtml(dierNaam) : "", dierInfo: dierInfo ? escapeHtml(dierInfo) : "" };
     const subject = "Update over jouw aanmelding bij Saved Souls Foundation";
 
     const dierRegel =
       dierNaam || dierInfo
-        ? `<p><strong>${dierNaam ? `Dier: ${dierNaam}` : ""}${dierNaam && dierInfo ? " — " : ""}${dierInfo ? dierInfo : ""}</strong></p>`
+        ? `<p><strong>${h.dierNaam ? `Dier: ${h.dierNaam}` : ""}${h.dierNaam && h.dierInfo ? " — " : ""}${h.dierInfo}</strong></p>`
         : "";
 
     const bodyHtml = `
-      <p>Hoi ${name},</p>
+      <p>Hoi ${h.name},</p>
       <p>Er is een update in jouw proces!</p>
-      <p><strong>Je bent nu op stap: ${stepLabel}.</strong></p>
+      <p><strong>Je bent nu op stap: ${h.stepLabel}.</strong></p>
       ${dierRegel}
       <p>Met vriendelijke groet,<br>Saved Souls Foundation</p>
     `;

@@ -39,8 +39,8 @@ export default async function proxy(request: NextRequest) {
   const adminDashboardMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/admin\\/dashboard`));
   const isProtected = portalMatch || adminDashboardMatch;
 
-  // Nieuwe admin-routes (dashboard, vrijwilligers, adoptanten, documenten): eigen login
-  const adminSubRouteMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/admin\\/(dashboard|vrijwilligers|adoptanten|documenten)(\\/|$)`));
+  // Alle admin-routes behalve de loginpagina: eigen login. (De admin-layout controleert daarnaast de admin-rol.)
+  const adminSubRouteMatch = pathname.match(new RegExp(`^\\/${LOCALE_SEGMENT}\\/admin\\/(?!login(\\/|$))[^/]`));
   const isAdminSubRoute = Boolean(adminSubRouteMatch);
 
   if (isAdminSubRoute && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
