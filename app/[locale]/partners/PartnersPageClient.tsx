@@ -1,0 +1,634 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { Link } from "@/i18n/navigation";
+import Footer from "../../components/Footer";
+import ParallaxPage from "../../components/ParallaxPage";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { useTranslations } from "next-intl";
+import { PARTNERS, POSTER_PARTNERS, type PartnerEntry } from "@/lib/partners";
+import PartnerActions from "./PartnerActions";
+
+const ACCENT_GREEN = "#2aa348";
+const PINK = "#ec4899";
+const ROSE = "#f472b6";
+const SOFT_PINK = "#fce7f3";
+const SHAMU_ORANGE = "#f97316";
+const SHAMU_MAPS_URL = "https://www.google.com/maps/search/Shamu+Shamu+Pet+Center+Thalang+Phuket";
+const SHAMU_PHONE = "+66623249295";
+
+function PartnerCard({
+  partner,
+  index,
+  fullName,
+  description,
+  visitWebsite,
+  viewOnMaps,
+  callLabel,
+  galleryAlt,
+  readMore,
+}: {
+  partner: PartnerEntry;
+  index: number;
+  fullName: string;
+  description: string;
+  visitWebsite: string;
+  viewOnMaps?: string;
+  callLabel?: string;
+  galleryAlt?: string;
+  readMore?: string;
+}) {
+  // Gewone partner met website: hele kaart is de link. Poster-partner (met slug): losse knoppen.
+  const wholeCardLink = Boolean(partner.url) && !partner.slug;
+  const isBanner = partner.logoLayout === "banner" && Boolean(partner.logo);
+
+  const cardStyle = { ["--card-i" as string]: index };
+
+  const card = (
+      <article
+        className={`relative overflow-hidden rounded-3xl bg-white/95 dark:bg-stone-900/95 border-2 shadow-xl hover:shadow-2xl transition-all duration-500 p-8 md:p-10 ${
+          partner.shimmer
+            ? "golden-shimmer border-amber-300/60 dark:border-amber-700/40 hover:border-amber-400 dark:hover:border-amber-600/50"
+            : "border-rose-200/50 dark:border-rose-900/30 hover:border-rose-300 dark:hover:border-rose-800/50"
+        }`}
+      >
+        <div className="relative flex flex-col items-center text-center">
+          <div
+            className={`relative mb-6 ${
+              isBanner
+                ? "w-[calc(100%+4rem)] md:w-[calc(100%+5rem)] -mx-8 md:-mx-10 aspect-[1024/443] overflow-hidden rounded-2xl"
+                : "w-48 h-48"
+            }`}
+          >
+            <div className="partner-logo-hearts absolute inset-0 flex items-center justify-center">
+              {partner.logo ? (
+                <img
+                  src={partner.logo}
+                  alt={`${partner.name} logo`}
+                  className={
+                    isBanner
+                      ? "w-full h-full object-cover object-center z-10 transition-transform duration-700 group-hover:scale-105"
+                      : `w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110${partner.logoClassName ? ` ${partner.logoClassName}` : ""}`
+                  }
+                  onError={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    el.style.display = "none";
+                    el.nextElementSibling?.classList.remove("hidden");
+                  }}
+                />
+              ) : null}
+              <span
+                className={`w-40 h-40 flex items-center justify-center text-center text-2xl md:text-3xl font-bold text-stone-600 dark:text-stone-400 leading-tight px-2${partner.logo ? " hidden" : ""}`}
+              >
+                {partner.name}
+              </span>
+            </div>
+            <div className="hearts-burst absolute inset-0 pointer-events-none flex items-center justify-center" aria-hidden>
+              {[
+                { x: 0, y: -1 }, { x: 0.5, y: -0.87 }, { x: 0.87, y: -0.5 }, { x: 1, y: 0 },
+                { x: 0.87, y: 0.5 }, { x: 0.5, y: 0.87 }, { x: 0, y: 1 }, { x: -0.5, y: 0.87 },
+                { x: -0.87, y: 0.5 }, { x: -1, y: 0 }, { x: -0.87, y: -0.5 }, { x: -0.5, y: -0.87 },
+              ].map((pos, i) => (
+                <span
+                  key={i}
+                  className="heart-dot absolute text-xl md:text-2xl"
+                  style={{
+                    ["--hx" as string]: pos.x,
+                    ["--hy" as string]: pos.y,
+                    ["--hi" as string]: i,
+                  }}
+                >
+                  ❤️
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: PINK }}>
+            {fullName}
+          </h2>
+          <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed max-w-md">
+            {description}
+          </p>
+          {partner.gallery?.length ? (
+            <div className="mt-5 grid grid-cols-2 gap-3 w-full max-w-md">
+              {partner.gallery.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`${galleryAlt ?? partner.name} ${i + 1}`}
+                  loading="lazy"
+                  className="w-full aspect-[3/4] object-cover rounded-xl shadow-md border border-stone-200/80 dark:border-stone-700"
+                />
+              ))}
+            </div>
+          ) : null}
+          {partner.address ? (
+            <p className="mt-3 text-sm text-stone-500 dark:text-stone-400">📍 {partner.address}</p>
+          ) : null}
+          {wholeCardLink ? (
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400 group-hover:gap-3 transition-all">
+              {visitWebsite}
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </span>
+          ) : (
+            <div className="mt-5">
+              <PartnerActions
+                partner={partner}
+                visitWebsite={visitWebsite}
+                viewOnMaps={viewOnMaps ?? ""}
+                callLabel={callLabel ?? ""}
+                readMore={readMore}
+              />
+            </div>
+          )}
+        </div>
+      </article>
+  );
+
+  // Kaart met website is zelf de link; zonder website bevat hij losse Maps-/belknoppen.
+  return wholeCardLink ? (
+    <a href={partner.url} target="_blank" rel="noopener noreferrer" className="group block partner-card" style={cardStyle}>
+      {card}
+    </a>
+  ) : (
+    <div className="group block partner-card" style={cardStyle}>
+      {card}
+    </div>
+  );
+}
+
+export default function PartnersPageClient() {
+  const t = useTranslations("partners");
+  const tCommon = useTranslations("common");
+
+  function partnerText(key: string) {
+    return {
+      fullName: t(`${key}.fullName`),
+      description: t(`${key}.description`),
+    };
+  }
+  const ctaRef = useRef<HTMLElement>(null);
+  const [ctaVisible, setCtaVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ctaRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setCtaVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <ParallaxPage backgroundImage="/savedsoul-logo-bg.webp" speed={0.2}>
+      <main className="max-w-5xl mx-auto px-4 py-16 md:py-24">
+        <header className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="text-4xl animate-pulse">❤️</span>
+            <span className="text-4xl animate-pulse" style={{ animationDelay: "0.2s" }}>🤝</span>
+            <span className="text-4xl animate-pulse" style={{ animationDelay: "0.4s" }}>❤️</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-2">
+            {t("title")}
+          </h1>
+          <p className="text-xl md:text-2xl font-semibold mb-2" style={{ color: PINK }}>
+            {t("joinUs")}
+          </p>
+          <p className="text-lg text-stone-500 dark:text-stone-400 font-medium">
+            {t("tagline")}
+          </p>
+        </header>
+
+        {/* Partners */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-8 text-center" style={{ color: PINK }}>
+            {t("ourPartnersTitle")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+            {PARTNERS.map((partner, index) => {
+              const text = partnerText(partner.key);
+              return (
+                <PartnerCard
+                  key={partner.name}
+                  partner={partner}
+                  index={index}
+                  fullName={text.fullName}
+                  description={text.description}
+                  visitWebsite={t("visitWebsite")}
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Hier hangt onze poster */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: PINK }}>
+            {t("posterSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("posterSectionSubtitle")}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+            {POSTER_PARTNERS.map((partner, index) => {
+              const text = partnerText(partner.key);
+              return (
+                <PartnerCard
+                  key={partner.key}
+                  partner={partner}
+                  index={index}
+                  fullName={text.fullName}
+                  description={text.description}
+                  visitWebsite={t("visitWebsite")}
+                  viewOnMaps={t("posterViewOnMaps")}
+                  callLabel={t("posterCall")}
+                  galleryAlt={t("posterPhotoAlt", { name: partner.name })}
+                  readMore={t("posterPartnerReadMore")}
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Eerste donatiebox Phuket — Layan Vet Clinic */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: PINK }}>
+            {t("donationBoxSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("donationBoxSectionSubtitle")}
+          </p>
+
+          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-rose-200/50 dark:border-rose-900/30 mb-4">
+            <img
+              src="/partners/layan-vet/hero.png"
+              alt={t("donationBoxHeroAlt")}
+              className="w-full h-auto max-h-[480px] object-cover object-center"
+            />
+          </div>
+
+          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700 mb-8">
+            <img
+              src="/partners/layan-vet/reception.png"
+              alt={t("donationBoxPhotoAlt1")}
+              className="w-full aspect-[16/10] object-cover object-center"
+            />
+          </div>
+
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-rose-200/50 dark:border-rose-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p>{t("donationBoxSectionIntro")}</p>
+            <p>{t("donationBoxSectionStory")}</p>
+            <p className="font-semibold text-stone-800 dark:text-stone-100">{t("donationBoxSectionFirstInPhuket")}</p>
+            <p className="text-sm text-stone-600 dark:text-stone-400">{t("donationBoxSectionFreeNote")}</p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href="https://www.layanvetclinic.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: PINK }}
+              >
+                {t("donationBoxSectionLayanLink")} →
+              </a>
+              <Link
+                href="/partners/bedankt-donatiebox-medespelers"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionReadMore")}
+              </Link>
+              <Link
+                href="/partners/flyer-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionFlyerLink")}
+              </Link>
+              <Link
+                href="/partners/donatiebox-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-rose-300 dark:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+              >
+                {t("donationBoxSectionBoxLink")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Tweede donatiebox Phuket — Thalang Animal Hospital */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: PINK }}>
+            {t("donationBoxThalangSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("donationBoxThalangSectionSubtitle")}
+          </p>
+
+          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-amber-200/50 dark:border-amber-900/30 mb-4">
+            <img
+              src="/partners/thalang-animal/exterior.png"
+              alt={t("donationBoxThalangHeroAlt")}
+              className="w-full h-auto max-h-[480px] object-cover object-center"
+            />
+          </div>
+
+          <div className="max-w-xs mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700 bg-black">
+            <video
+              src="/partners/thalang-animal/donation-box.mp4"
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full max-h-52 object-contain"
+              aria-label={t("donationBoxThalangVideoAlt")}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700">
+              <img
+                src="/partners/thalang-animal/counter.png"
+                alt={t("donationBoxThalangPhotoAlt1")}
+                className="w-full aspect-[4/5] object-cover"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-stone-200/80 dark:border-stone-700">
+              <img
+                src="/partners/thalang-animal/reception.png"
+                alt={t("donationBoxThalangPhotoAlt2")}
+                className="w-full aspect-[4/5] object-cover"
+              />
+            </div>
+          </div>
+
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-amber-200/50 dark:border-amber-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p>{t("donationBoxThalangSectionIntro")}</p>
+            <p className="font-semibold text-stone-800 dark:text-stone-100">{t("donationBoxThalangSectionSecond")}</p>
+            <p className="text-sm text-stone-600 dark:text-stone-400">{t("donationBoxSectionFreeNote")}</p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href="https://www.google.com/maps/search/Thalang+Animal+Hospital+Phuket"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: PINK }}
+              >
+                {t("donationBoxThalangSectionVisit")} →
+              </a>
+              <a
+                href="tel:+66866822557"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
+              >
+                {t("donationBoxThalangSectionPhone")}
+              </a>
+              <Link
+                href="/partners/bedankt-thalang-animal-hospital"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
+              >
+                {t("donationBoxSectionReadMore")}
+              </Link>
+              <Link
+                href="/partners/flyer-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
+              >
+                {t("donationBoxSectionFlyerLink")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Derde donatiebox Phuket — Shamu Shamu Pet Center */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2 text-center" style={{ color: SHAMU_ORANGE }}>
+            {t("donationBoxShamuSectionTitle")}
+          </h2>
+          <p className="text-center text-lg font-semibold text-stone-600 dark:text-stone-400 mb-8">
+            {t("donationBoxShamuSectionSubtitle")}
+          </p>
+
+          <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-orange-200/50 dark:border-orange-900/30 mb-8">
+            <img
+              src="/partners/shamu-pet-center/exterior.png"
+              alt={t("donationBoxShamuHeroAlt")}
+              className="w-full h-auto max-h-[480px] object-cover object-center"
+            />
+          </div>
+
+          <div className="rounded-2xl bg-white/95 dark:bg-stone-900/95 border-2 border-orange-200/50 dark:border-orange-900/30 p-6 md:p-8 shadow-lg space-y-4 text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p className="text-xl md:text-2xl font-bold text-stone-800 dark:text-stone-100 text-center">
+              {t("donationBoxShamuThankYouHeader")}
+            </p>
+            <p className="whitespace-pre-line text-center max-w-2xl mx-auto">{t("donationBoxShamuThankYouText")}</p>
+
+            <ul className="text-sm text-stone-600 dark:text-stone-400 space-y-1 max-w-xl mx-auto pt-2">
+              <li><span className="font-semibold text-stone-700 dark:text-stone-300">{t("donationBoxShamuCategory")}</span> · {t("donationBoxShamuLocation")}</li>
+              <li>{t("donationBoxShamuAddress")}</li>
+              <li>{t("donationBoxShamuHours")}</li>
+              <li>{t("donationBoxShamuRating")}</li>
+            </ul>
+
+            <p className="text-sm text-stone-600 dark:text-stone-400 text-center">{t("donationBoxSectionFreeNote")}</p>
+
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href={SHAMU_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-md hover:scale-105 transition-transform"
+                style={{ backgroundColor: SHAMU_ORANGE }}
+              >
+                {t("donationBoxShamuSectionVisit")} →
+              </a>
+              <a
+                href={`tel:${SHAMU_PHONE}`}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-orange-300 dark:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors"
+              >
+                {t("donationBoxShamuSectionPhone")}
+              </a>
+              <Link
+                href="/partners/flyer-aanvragen"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold border-2 border-orange-300 dark:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors"
+              >
+                {t("donationBoxSectionFlyerLink")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Tekst in placeholders met symbolen */}
+        <section className="mb-16 md:mb-20">
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-8 text-center" style={{ color: PINK }}>
+            {t("whatWeOffer")}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {[
+              { emoji: "📢", emoji2: "✨", key: "subtitle", gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30", isIntro: true, span: "sm:col-span-2 lg:col-span-3" },
+              { emoji: "🏆", emoji2: "📍", key: "benefit1", teaserKey: "benefit1Teaser", gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30", span: "" },
+              { emoji: "🌳", emoji2: "🛣️", key: "benefit2", teaserKey: "benefit2Teaser", gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30", span: "" },
+              { emoji: "📱", emoji2: "🚀", key: "benefit3", teaserKey: "benefit3Teaser", gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30", span: "" },
+              { emoji: "🎬", emoji2: "📹", key: "benefit4", teaserKey: "benefit4Teaser", gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30", span: "" },
+              { emoji: "🚪", emoji2: "✨", key: "benefit5", teaserKey: "benefit5Teaser", gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30", span: "" },
+            ].map((item, i) => (
+              <div
+                key={item.key}
+                className={`rounded-2xl overflow-hidden bg-gradient-to-br ${item.gradient} border-2 border-stone-200/80 dark:border-stone-600/80 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group benefit-card ${item.span || ""}`}
+                style={{ ["--card-i" as string]: i }}
+              >
+                <div className="p-4 pb-2 flex items-center justify-center gap-2 bg-white/40 dark:bg-black/10">
+                  <span className="text-3xl md:text-4xl transition-transform group-hover:scale-110">{item.emoji}</span>
+                  <span className="text-xl md:text-2xl opacity-80">{item.emoji2}</span>
+                </div>
+                <div className="p-4 pt-2">
+                  <h3 className="text-base font-bold text-stone-800 dark:text-stone-100 mb-1">
+                    {item.isIntro ? t("tagline") : t(item.key)}
+                  </h3>
+                  <p className="text-base text-stone-600 dark:text-stone-400 leading-relaxed">
+                    {item.isIntro ? t("subtitle") : t(item.teaserKey!)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-center text-stone-600 dark:text-stone-400 font-semibold">
+            {t("contactPrompt")}{" "}
+            <Link href="/contact" className="underline hover:no-underline" style={{ color: PINK }}>
+              {t("contactLink")}
+            </Link>
+          </p>
+        </section>
+
+        <section
+          ref={ctaRef}
+          className={`mt-20 text-center p-8 md:p-12 rounded-3xl bg-gradient-to-br from-rose-100/80 to-pink-100/60 dark:from-rose-950/40 dark:to-pink-950/30 border-2 border-rose-300/60 dark:border-rose-800/50 shadow-xl partner-cta ${ctaVisible ? "partner-cta-visible" : ""}`}
+        >
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="text-3xl">🐾</span>
+            <span className="text-3xl">❤️</span>
+            <span className="text-3xl">🤝</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4" style={{ color: PINK }}>
+            {t("becomePartnerTitle")}
+          </h2>
+          <p className="text-stone-600 dark:text-stone-400 max-w-xl mx-auto mb-8 text-lg font-medium">
+            {t("becomePartnerText")}
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-lg"
+            style={{ backgroundColor: PINK }}
+          >
+            {t("becomePartnerButton")}
+          </Link>
+        </section>
+      </main>
+
+      <style jsx>{`
+        @keyframes card-enter {
+          from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .partner-card {
+          animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          opacity: 0;
+          animation-delay: calc(var(--card-i) * 0.2s);
+        }
+
+        .benefit-card {
+          animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          opacity: 0;
+          animation-delay: calc(0.4s + var(--card-i) * 0.1s);
+        }
+
+        @keyframes cta-enter {
+          from {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .partner-cta {
+          opacity: 0;
+          transform: translateY(50px) scale(0.95);
+          transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .partner-cta.partner-cta-visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+
+        @keyframes hearts-explode {
+          0% {
+            opacity: 0;
+            transform: translate(0, 0) scale(0.2);
+          }
+          20% {
+            opacity: 1;
+            transform: translate(calc(var(--hx) * 50px), calc(var(--hy) * 50px)) scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(calc(var(--hx) * 70px), calc(var(--hy) * 70px)) scale(1.1);
+          }
+          80% {
+            opacity: 0.8;
+            transform: translate(calc(var(--hx) * 20px), calc(var(--hy) * 20px)) scale(0.6);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(0, 0) scale(0.2);
+          }
+        }
+
+        .hearts-burst .heart-dot {
+          animation: hearts-explode 5s ease-in-out infinite;
+          animation-delay: calc(var(--hi) * 0.12s);
+          left: 50%;
+          top: 50%;
+          margin-left: -12px;
+          margin-top: -12px;
+        }
+
+        .partner-logo-hearts {
+          animation: logo-breathe 5s ease-in-out infinite;
+        }
+
+        @keyframes logo-breathe {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          25% {
+            opacity: 0.6;
+            transform: scale(0.88);
+          }
+          50% {
+            opacity: 0.4;
+            transform: scale(0.82);
+          }
+          75% {
+            opacity: 0.7;
+            transform: scale(0.92);
+          }
+        }
+      `}</style>
+
+      <Footer />
+    </ParallaxPage>
+  );
+}

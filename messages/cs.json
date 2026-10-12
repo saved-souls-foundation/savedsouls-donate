@@ -2609,6 +2609,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Halfweg, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem vyvěsil(a) náš plakát Saved Souls. Díky tomu oslovujeme lidi v Haarlem, kteří chtějí podpořit naši záchranu psů a koček v Khon Kaen."
+    },
     "posterSectionTitle": "Tady visí náš plakát",
     "posterSectionSubtitle": "Podniky, které vyvěsily náš plakát Saved Souls",
     "posterViewOnMaps": "Zobrazit v Mapách Google",
@@ -2666,7 +2670,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Partneři a místa s plakátem | Saved Souls Foundation",
     "metaDescription": "Firmy a organizace, které podporují Saved Souls Foundation. Náš plakát visí mimo jiné v: {names}.",
-    "posterPhotoAlt": "Plakát Saved Souls v {name}, foto"
+    "posterPhotoAlt": "Plakát Saved Souls v {name}, foto",
+    "posterPartnerReadMore": "Více o tomto partnerovi",
+    "posterPartnerTitle": "{name} podporuje Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} podporuje Saved Souls Foundation | Partner",
+    "posterPartnerAboutTitle": "O Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation je neziskový útulek pro zvířata v Khon Kaen v Thajsku. Od roku 2010 zachraňujeme psy a kočky z ulice a před týráním, včetně ochrnutých a handicapovaných zvířat, která jinde nemají šanci.",
+    "posterPartnerAllPartners": "Všichni partneři",
+    "posterPartnerDonate": "Podpořte naše zvířata"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

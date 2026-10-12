@@ -1950,6 +1950,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg ได้ติดโปสเตอร์ Saved Souls ของเรา ช่วยให้เราเข้าถึงผู้คนใน Halfweg ที่อยากสนับสนุนการช่วยเหลือสุนัขและแมวของเราในขอนแก่น"
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem ได้ติดโปสเตอร์ Saved Souls ของเรา ช่วยให้เราเข้าถึงผู้คนใน Haarlem ที่อยากสนับสนุนการช่วยเหลือสุนัขและแมวของเราในขอนแก่น"
+    },
     "posterSectionTitle": "โปสเตอร์ของเราติดอยู่ที่นี่",
     "posterSectionSubtitle": "ร้านค้าที่ติดโปสเตอร์ Saved Souls ของเรา",
     "posterViewOnMaps": "ดูบน Google Maps",
@@ -2007,7 +2011,14 @@
     },
     "metaTitle": "พันธมิตรและจุดติดโปสเตอร์ | Saved Souls Foundation",
     "metaDescription": "ธุรกิจและองค์กรที่สนับสนุน Saved Souls Foundation โปสเตอร์ของเราติดอยู่ที่ {names} และที่อื่น ๆ",
-    "posterPhotoAlt": "โปสเตอร์ Saved Souls ที่ {name} ภาพ"
+    "posterPhotoAlt": "โปสเตอร์ Saved Souls ที่ {name} ภาพ",
+    "posterPartnerReadMore": "ข้อมูลเพิ่มเติมเกี่ยวกับพันธมิตรนี้",
+    "posterPartnerTitle": "{name} สนับสนุน Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} สนับสนุน Saved Souls Foundation | พันธมิตร",
+    "posterPartnerAboutTitle": "เกี่ยวกับ Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation เป็นศูนย์พักพิงสัตว์ไม่แสวงหากำไรในจังหวัดขอนแก่น ประเทศไทย ตั้งแต่ปี 2010 เราช่วยเหลือสุนัขและแมวจากท้องถนนและการถูกทารุณ รวมถึงสัตว์ที่เป็นอัมพาตและพิการซึ่งไม่ได้รับโอกาสจากที่อื่น",
+    "posterPartnerAllPartners": "พันธมิตรทั้งหมด",
+    "posterPartnerDonate": "สนับสนุนสัตว์ของเรา"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "ขอบคุณ Thalang Animal Hospital | Saved Souls Foundation",

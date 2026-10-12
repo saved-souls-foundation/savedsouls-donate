@@ -2619,6 +2619,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg heeft onze Saved Souls-poster opgehangen. Zo bereiken we mensen in Halfweg die onze reddingsactie voor honden en katten in Khon Kaen willen steunen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem heeft onze Saved Souls-poster opgehangen. Zo bereiken we mensen in Haarlem die onze reddingsactie voor honden en katten in Khon Kaen willen steunen."
+    },
     "posterSectionTitle": "Hier hangt onze poster",
     "posterSectionSubtitle": "Bedrijven die onze Saved Souls-poster hebben opgehangen",
     "posterViewOnMaps": "Bekijk op Google Maps",
@@ -2668,7 +2672,14 @@
     "flyerHaarlemFlyerAlt": "Saved Souls-flyer in de wachtruimte van DierenDokters Haarlem",
     "metaTitle": "Partners en posterlocaties | Saved Souls Foundation",
     "metaDescription": "Bedrijven en organisaties die Saved Souls Foundation steunen. Onze poster hangt onder meer bij {names}.",
-    "posterPhotoAlt": "Saved Souls-poster bij {name}, foto"
+    "posterPhotoAlt": "Saved Souls-poster bij {name}, foto",
+    "posterPartnerReadMore": "Meer over deze partner",
+    "posterPartnerTitle": "{name} steunt Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} steunt Saved Souls Foundation | Partner",
+    "posterPartnerAboutTitle": "Over Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation is een non-profit dierenopvang in Khon Kaen, Thailand. Sinds 2010 redden we honden en katten van de straat en uit mishandeling, ook verlamde en gehandicapte dieren die elders geen kans krijgen.",
+    "posterPartnerAllPartners": "Alle partners",
+    "posterPartnerDonate": "Steun onze dieren"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Bedankt Thalang Animal Hospital | Saved Souls Foundation",

@@ -2609,6 +2609,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg đã treo áp phích Saved Souls của chúng tôi. Nhờ vậy chúng tôi tiếp cận được những người ở Halfweg muốn ủng hộ công việc cứu hộ chó mèo của chúng tôi tại Khon Kaen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem đã treo áp phích Saved Souls của chúng tôi. Nhờ vậy chúng tôi tiếp cận được những người ở Haarlem muốn ủng hộ công việc cứu hộ chó mèo của chúng tôi tại Khon Kaen."
+    },
     "posterSectionTitle": "Nơi treo áp phích của chúng tôi",
     "posterSectionSubtitle": "Các cửa hàng đã treo áp phích Saved Souls của chúng tôi",
     "posterViewOnMaps": "Xem trên Google Maps",
@@ -2666,7 +2670,14 @@
     },
     "metaTitle": "Đối tác và nơi treo áp phích | Saved Souls Foundation",
     "metaDescription": "Các doanh nghiệp và tổ chức ủng hộ Saved Souls Foundation. Áp phích của chúng tôi được treo tại {names} và nhiều nơi khác.",
-    "posterPhotoAlt": "Áp phích Saved Souls tại {name}, ảnh"
+    "posterPhotoAlt": "Áp phích Saved Souls tại {name}, ảnh",
+    "posterPartnerReadMore": "Thêm về đối tác này",
+    "posterPartnerTitle": "{name} ủng hộ Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} ủng hộ Saved Souls Foundation | Đối tác",
+    "posterPartnerAboutTitle": "Về Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation là trại cứu hộ động vật phi lợi nhuận tại Khon Kaen, Thái Lan. Từ năm 2010, chúng tôi cứu chó mèo khỏi đường phố và khỏi bị ngược đãi, kể cả những con bị liệt và khuyết tật không có cơ hội ở nơi khác.",
+    "posterPartnerAllPartners": "Tất cả đối tác",
+    "posterPartnerDonate": "Ủng hộ các bé của chúng tôi"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Cảm ơn Thalang Animal Hospital | Saved Souls Foundation",

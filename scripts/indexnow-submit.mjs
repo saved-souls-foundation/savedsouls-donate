@@ -6,18 +6,29 @@
  * De sleutel staat als bestand in /public/<KEY>.txt (moet live bereikbaar zijn).
  *
  * Gebruik:
- *   node scripts/indexnow-submit.mjs                 # partnerpagina in alle talen + llms.txt/ai.txt
+ *   node scripts/indexnow-submit.mjs                 # partneroverzicht + alle partnerpagina's, alle talen, + llms/ai.txt
  *   node scripts/indexnow-submit.mjs /nl/blog /en/faq   # eigen paden
  */
+
+import { readFileSync } from "node:fs";
 
 const HOST = "www.savedsouls-foundation.org";
 const KEY = "4379cbab2a674cf9a0cb6b0dc68b768c";
 const LOCALES = ["nl", "en", "es", "ru", "th", "de", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR", "vi", "ms", "zh"];
 
+// Slugs van de poster-partners uit lib/partners.ts (eigen pagina per partner)
+const partnersSource = readFileSync(new URL("../lib/partners.ts", import.meta.url), "utf8");
+const SLUGS = [...partnersSource.matchAll(/slug: "([^"]+)"/g)].map((m) => m[1]);
+
 const args = process.argv.slice(2);
 const paths = args.length
   ? args
-  : [...LOCALES.map((l) => `/${l}/partners`), "/llms.txt", "/ai.txt"];
+  : [
+      ...LOCALES.flatMap((l) => [`/${l}/partners`, ...SLUGS.map((s) => `/${l}/partners/${s}`)]),
+      "/llms.txt",
+      "/ai.txt",
+      "/sitemap.xml",
+    ];
 
 const body = {
   host: HOST,

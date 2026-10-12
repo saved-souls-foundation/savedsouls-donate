@@ -2609,6 +2609,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Halfweg 愿意支持我们在孔敬救助猫狗的人们。"
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem 张贴了我们的 Saved Souls 海报。这样我们就能接触到 Haarlem 愿意支持我们在孔敬救助猫狗的人们。"
+    },
     "posterSectionTitle": "我们的海报张贴处",
     "posterSectionSubtitle": "张贴了 Saved Souls 海报的商家",
     "posterViewOnMaps": "在 Google 地图中查看",
@@ -2666,7 +2670,14 @@
     },
     "metaTitle": "合作伙伴与海报张贴地点 | Saved Souls Foundation",
     "metaDescription": "支持 Saved Souls Foundation 的企业和组织。我们的海报张贴于 {names} 等地。",
-    "posterPhotoAlt": "{name} 的 Saved Souls 海报 照片"
+    "posterPhotoAlt": "{name} 的 Saved Souls 海报 照片",
+    "posterPartnerReadMore": "了解这位合作伙伴",
+    "posterPartnerTitle": "{name} 支持 Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} 支持 Saved Souls Foundation | 合作伙伴",
+    "posterPartnerAboutTitle": "关于 Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation 是泰国孔敬的一家非营利动物救助中心。自 2010 年起，我们从街头和虐待中救助猫狗，包括在别处得不到机会的瘫痪和残疾动物。",
+    "posterPartnerAllPartners": "所有合作伙伴",
+    "posterPartnerDonate": "支持我们的动物"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "感谢Thalang Animal Hospital | Saved Souls Foundation",

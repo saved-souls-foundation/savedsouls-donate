@@ -2611,6 +2611,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Halfweg qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem a affiché notre poster Saved Souls. Cela nous permet de toucher des habitants de Haarlem qui souhaitent soutenir notre action de sauvetage pour les chiens et les chats à Khon Kaen."
+    },
     "posterSectionTitle": "Là où notre affiche est exposée",
     "posterSectionSubtitle": "Les commerces qui ont affiché notre poster Saved Souls",
     "posterViewOnMaps": "Voir sur Google Maps",
@@ -2668,7 +2672,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Partenaires et lieux d'affichage | Saved Souls Foundation",
     "metaDescription": "Entreprises et organisations qui soutiennent Saved Souls Foundation. Notre affiche est exposée notamment chez {names}.",
-    "posterPhotoAlt": "Poster Saved Souls chez {name}, photo"
+    "posterPhotoAlt": "Poster Saved Souls chez {name}, photo",
+    "posterPartnerReadMore": "En savoir plus sur ce partenaire",
+    "posterPartnerTitle": "{name} soutient Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} soutient Saved Souls Foundation | Partenaire",
+    "posterPartnerAboutTitle": "À propos de Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation est un refuge animalier à but non lucratif à Khon Kaen, en Thaïlande. Depuis 2010, nous sauvons des chiens et des chats de la rue et de la maltraitance, y compris des animaux paralysés et handicapés qui n'ont aucune chance ailleurs.",
+    "posterPartnerAllPartners": "Tous les partenaires",
+    "posterPartnerDonate": "Soutenez nos animaux"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Merci Thalang Animal Hospital | Saved Souls Foundation",

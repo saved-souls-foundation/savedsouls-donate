@@ -1950,6 +1950,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg повесили наш плакат Saved Souls. Так мы находим людей в Halfweg, которые хотят поддержать спасение собак и кошек в Кхонкэне."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem повесили наш плакат Saved Souls. Так мы находим людей в Haarlem, которые хотят поддержать спасение собак и кошек в Кхонкэне."
+    },
     "posterSectionTitle": "Здесь висит наш плакат",
     "posterSectionSubtitle": "Компании, которые повесили плакат Saved Souls",
     "posterViewOnMaps": "Открыть в Google Картах",
@@ -2007,7 +2011,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Партнёры и места с плакатом | Saved Souls Foundation",
     "metaDescription": "Компании и организации, которые поддерживают Saved Souls Foundation. Наш плакат висит, в том числе, здесь: {names}.",
-    "posterPhotoAlt": "Плакат Saved Souls в {name}, фото"
+    "posterPhotoAlt": "Плакат Saved Souls в {name}, фото",
+    "posterPartnerReadMore": "Подробнее об этом партнёре",
+    "posterPartnerTitle": "{name} поддерживает Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} поддерживает Saved Souls Foundation | Партнёр",
+    "posterPartnerAboutTitle": "О Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation — некоммерческий приют для животных в Кхонкэне, Таиланд. С 2010 года мы спасаем собак и кошек с улицы и от жестокого обращения, в том числе парализованных и животных с инвалидностью, у которых больше нигде нет шанса.",
+    "posterPartnerAllPartners": "Все партнёры",
+    "posterPartnerDonate": "Поддержите наших животных"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Спасибо Thalang Animal Hospital | Saved Souls Foundation",

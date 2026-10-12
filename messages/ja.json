@@ -2610,6 +2610,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg が Saved Souls のポスターを掲示してくださいました。Halfweg で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem が Saved Souls のポスターを掲示してくださいました。Haarlem で、コンケンの犬や猫の保護活動を応援したい方々に私たちの活動が届きます。"
+    },
     "posterSectionTitle": "ポスター掲示店",
     "posterSectionSubtitle": "Saved Souls のポスターを掲示してくださっているお店",
     "posterViewOnMaps": "Google マップで見る",
@@ -2667,7 +2671,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "パートナーとポスター掲示場所 | Saved Souls Foundation",
     "metaDescription": "Saved Souls Foundation を支援してくださる企業・団体。ポスターは {names} などに掲示されています。",
-    "posterPhotoAlt": "{name} の Saved Souls ポスター 写真"
+    "posterPhotoAlt": "{name} の Saved Souls ポスター 写真",
+    "posterPartnerReadMore": "このパートナーについて",
+    "posterPartnerTitle": "{name} は Saved Souls Foundation を応援しています",
+    "posterPartnerMetaTitle": "{name} は Saved Souls Foundation を応援しています | パートナー",
+    "posterPartnerAboutTitle": "Saved Souls Foundation について",
+    "posterPartnerAbout": "Saved Souls Foundation はタイ・コンケンにある非営利の動物保護施設です。2010年から、路上や虐待から犬や猫を救い、他では受け入れられない麻痺や障がいのある動物も保護しています。",
+    "posterPartnerAllPartners": "すべてのパートナー",
+    "posterPartnerDonate": "動物たちを支援する"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

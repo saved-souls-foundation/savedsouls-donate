@@ -2611,6 +2611,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg har satt upp vår Saved Souls-affisch. Så når vi människor i Halfweg som vill stödja vårt räddningsarbete för hundar och katter i Khon Kaen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem har satt upp vår Saved Souls-affisch. Så når vi människor i Haarlem som vill stödja vårt räddningsarbete för hundar och katter i Khon Kaen."
+    },
     "posterSectionTitle": "Här hänger vår affisch",
     "posterSectionSubtitle": "Företag som har satt upp vår Saved Souls-affisch",
     "posterViewOnMaps": "Visa på Google Maps",
@@ -2668,7 +2672,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "Partner och affischplatser | Saved Souls Foundation",
     "metaDescription": "Företag och organisationer som stödjer Saved Souls Foundation. Vår affisch sitter bland annat hos {names}.",
-    "posterPhotoAlt": "Saved Souls-affisch hos {name}, foto"
+    "posterPhotoAlt": "Saved Souls-affisch hos {name}, foto",
+    "posterPartnerReadMore": "Mer om den här partnern",
+    "posterPartnerTitle": "{name} stödjer Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} stödjer Saved Souls Foundation | Partner",
+    "posterPartnerAboutTitle": "Om Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation är ett ideellt djurhem i Khon Kaen, Thailand. Sedan 2010 räddar vi hundar och katter från gatan och från misshandel, även förlamade och funktionsnedsatta djur som inte får en chans någon annanstans.",
+    "posterPartnerAllPartners": "Alla partner",
+    "posterPartnerDonate": "Stöd våra djur"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

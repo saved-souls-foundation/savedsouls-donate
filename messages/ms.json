@@ -2610,6 +2610,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg telah menggantung poster Saved Souls kami. Ini membantu kami menjangkau orang di Halfweg yang ingin menyokong usaha menyelamat anjing dan kucing kami di Khon Kaen."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem telah menggantung poster Saved Souls kami. Ini membantu kami menjangkau orang di Haarlem yang ingin menyokong usaha menyelamat anjing dan kucing kami di Khon Kaen."
+    },
     "posterSectionTitle": "Di sini poster kami dipamerkan",
     "posterSectionSubtitle": "Perniagaan yang telah menggantung poster Saved Souls kami",
     "posterViewOnMaps": "Lihat di Google Maps",
@@ -2667,7 +2671,14 @@
     },
     "metaTitle": "Rakan kongsi dan lokasi poster | Saved Souls Foundation",
     "metaDescription": "Perniagaan dan organisasi yang menyokong Saved Souls Foundation. Poster kami dipamerkan antaranya di {names}.",
-    "posterPhotoAlt": "Poster Saved Souls di {name}, foto"
+    "posterPhotoAlt": "Poster Saved Souls di {name}, foto",
+    "posterPartnerReadMore": "Lagi tentang rakan kongsi ini",
+    "posterPartnerTitle": "{name} menyokong Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} menyokong Saved Souls Foundation | Rakan kongsi",
+    "posterPartnerAboutTitle": "Tentang Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation ialah tempat perlindungan haiwan bukan untung di Khon Kaen, Thailand. Sejak 2010 kami menyelamatkan anjing dan kucing dari jalanan dan penderaan, termasuk haiwan lumpuh dan kurang upaya yang tidak mendapat peluang di tempat lain.",
+    "posterPartnerAllPartners": "Semua rakan kongsi",
+    "posterPartnerDonate": "Sokong haiwan kami"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Terima kasih Thalang Animal Hospital | Saved Souls Foundation",

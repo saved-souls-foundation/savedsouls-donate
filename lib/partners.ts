@@ -12,6 +12,8 @@ export type PartnerEntry = {
   address?: string;
   phone?: string;
   phoneDisplay?: string;
+  /** Eigen pagina /partners/<slug> (poster-partners) */
+  slug?: string;
   /** Extra foto's onder de tekst (staand, 3:4) */
   gallery?: string[];
 };
@@ -30,14 +32,16 @@ export const PARTNERS: PartnerEntry[] = [
 // Bedrijven waar onze Saved Souls-poster hangt. Nieuwe partner: één regel hier
 // + partners.<key>.fullName/description in alle messages/*.json.
 // Met url → klikbare kaart; zonder url → Google Maps-knop (+ belknop als phone bestaat).
+// Met slug → eigen pagina /partners/<slug> (SEO/AI: "<bedrijf> steunt Saved Souls Foundation").
 // Ook llms.txt en ai.txt bijwerken, zodat AI-zoekmachines de partner kennen.
 export const POSTER_PARTNERS: PartnerEntry[] = [
-  { name: "Plieger Haarlem Express", key: "pliegerhaarlem", logo: "/partners/plieger-haarlem/storefront.jpg", logoLayout: "banner", url: "https://plieger.nl/vestigingen/expressen/haarlem", address: "Heringaweg 6E, 2031 BW Haarlem" },
-  { name: "Perfect Kledingreparatie", key: "perfectkledingreparatie", logo: "/partners/perfect-kledingreparatie/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 535, 2025 DE Haarlem", phone: "+31235386886", phoneDisplay: "023 538 6886" },
-  { name: "Sannie's Dierenshop", key: "sanniesdierenshop", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
-  { name: "Groentenhandel Hans Lücke", key: "hansluecke", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
-  { name: "Dorpshuis Zwanenburg-Halfweg", key: "dorpshuiszwanenburg", logo: "/partners/dorpshuis-zwanenburg/building.jpg", logoLayout: "banner", address: "Dennenlaan 133, 1161 CN Zwanenburg", phone: "+31204974097", phoneDisplay: "020 497 4097" },
-  { name: "PC-Depot Halfweg", key: "pcdepothalfweg", logo: "/partners/pc-depot-halfweg/storefront.jpg", logoLayout: "banner", url: "https://www.pcdepot.nl", address: "Oranje Nassaustraat 42, 1165 GN Halfweg", phone: "+31204970069", phoneDisplay: "020 497 0069", gallery: ["/partners/pc-depot-halfweg/poster-in-shop.jpg", "/partners/pc-depot-halfweg/window.jpg"] },
+  { name: "Plieger Haarlem Express", key: "pliegerhaarlem", slug: "plieger-haarlem-express", logo: "/partners/plieger-haarlem/storefront.jpg", logoLayout: "banner", url: "https://plieger.nl/vestigingen/expressen/haarlem", address: "Heringaweg 6E, 2031 BW Haarlem" },
+  { name: "Perfect Kledingreparatie", key: "perfectkledingreparatie", slug: "perfect-kledingreparatie-haarlem", logo: "/partners/perfect-kledingreparatie/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 535, 2025 DE Haarlem", phone: "+31235386886", phoneDisplay: "023 538 6886" },
+  { name: "Sannie's Dierenshop", key: "sanniesdierenshop", slug: "sannies-dierenshop-haarlem", logo: "/partners/sannies-dierenshop/storefront.jpg", logoLayout: "banner", address: "Rijksstraatweg 539-541, 2025 DE Haarlem", phone: "+31235376028", phoneDisplay: "023 537 60 28" },
+  { name: "Groentenhandel Hans Lücke", key: "hansluecke", slug: "groentenhandel-hans-lucke-zwanenburg", logo: "/partners/hans-luecke/storefront.jpg", logoLayout: "banner", address: "Dennenlaan 126-C, 1161 CT Zwanenburg", phone: "+31204975238", phoneDisplay: "020-497 5238" },
+  { name: "Dorpshuis Zwanenburg-Halfweg", key: "dorpshuiszwanenburg", slug: "dorpshuis-zwanenburg-halfweg", logo: "/partners/dorpshuis-zwanenburg/building.jpg", logoLayout: "banner", address: "Dennenlaan 133, 1161 CN Zwanenburg", phone: "+31204974097", phoneDisplay: "020 497 4097" },
+  { name: "PC-Depot Halfweg", key: "pcdepothalfweg", slug: "pc-depot-halfweg", logo: "/partners/pc-depot-halfweg/storefront.jpg", logoLayout: "banner", url: "https://www.pcdepot.nl", address: "Oranje Nassaustraat 42, 1165 GN Halfweg", phone: "+31204970069", phoneDisplay: "020 497 0069", gallery: ["/partners/pc-depot-halfweg/poster-in-shop.jpg", "/partners/pc-depot-halfweg/window.jpg"] },
+  { name: "Maxi Zoo Haarlem", key: "maxizoohaarlem", slug: "maxi-zoo-haarlem", logo: "/partners/maxi-zoo-haarlem/storefront.jpg", logoLayout: "banner", address: "Menno Simonszplein 1a, 2014 SC Haarlem", phone: "+31232044930", phoneDisplay: "023 204 4930", gallery: ["/partners/maxi-zoo-haarlem/poster-counter.jpg", "/partners/maxi-zoo-haarlem/entrance.jpg"] },
 ];
 
 /** Splitst "Straat 1, 1234 AB Plaats" in schema.org PostalAddress-velden. */
@@ -46,4 +50,41 @@ export function postalAddress(address: string) {
   if (m) return { streetAddress: m[1], postalCode: m[2], addressLocality: m[3] };
   const [streetAddress, addressLocality] = address.split(/,\s*/);
   return { streetAddress, addressLocality };
+}
+
+export function posterPartnerBySlug(slug: string) {
+  return POSTER_PARTNERS.find((p) => p.slug === slug);
+}
+
+export const SITE_URL = "https://www.savedsouls-foundation.org";
+
+export const SSF_ORGANIZATION = {
+  "@type": "NGO",
+  name: "Saved Souls Foundation",
+  url: SITE_URL,
+};
+
+/** schema.org LocalBusiness voor een poster-partner. */
+export function localBusinessSchema(p: PartnerEntry, description: string, locale: string) {
+  return {
+    "@type": "LocalBusiness",
+    name: p.name,
+    description,
+    ...(p.slug ? { "@id": `${SITE_URL}/${locale}/partners/${p.slug}#business` } : {}),
+    ...(p.url ? { url: p.url } : {}),
+    ...(p.phone ? { telephone: p.phone } : {}),
+    ...(p.logo || p.gallery ? { image: [p.logo, ...(p.gallery ?? [])].filter(Boolean).map((src) => `${SITE_URL}${src}`) } : {}),
+    ...(p.address ? { address: { "@type": "PostalAddress", ...postalAddress(p.address), addressCountry: "NL" } } : {}),
+  };
+}
+
+/** JSON-LD veilig in een <script> zetten. */
+export function jsonLdHtml(data: unknown) {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/** Google Maps-zoeklink op naam + adres. */
+export function mapsSearchUrl(partner: PartnerEntry) {
+  const query = [partner.name, partner.address].filter(Boolean).join(", ");
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }

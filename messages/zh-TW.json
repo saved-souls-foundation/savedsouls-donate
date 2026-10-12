@@ -2609,6 +2609,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg 張貼了我們的 Saved Souls 海報。這樣我們就能接觸到 Halfweg 願意支持我們在孔敬救援貓狗的人們。"
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem 張貼了我們的 Saved Souls 海報。這樣我們就能接觸到 Haarlem 願意支持我們在孔敬救援貓狗的人們。"
+    },
     "posterSectionTitle": "我們的海報張貼處",
     "posterSectionSubtitle": "張貼了 Saved Souls 海報的店家",
     "posterViewOnMaps": "在 Google 地圖中查看",
@@ -2666,7 +2670,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "合作夥伴與海報張貼地點 | Saved Souls Foundation",
     "metaDescription": "支持 Saved Souls Foundation 的企業與組織。我們的海報張貼於 {names} 等地。",
-    "posterPhotoAlt": "{name} 的 Saved Souls 海報 照片"
+    "posterPhotoAlt": "{name} 的 Saved Souls 海報 照片",
+    "posterPartnerReadMore": "了解這位合作夥伴",
+    "posterPartnerTitle": "{name} 支持 Saved Souls Foundation",
+    "posterPartnerMetaTitle": "{name} 支持 Saved Souls Foundation | 合作夥伴",
+    "posterPartnerAboutTitle": "關於 Saved Souls Foundation",
+    "posterPartnerAbout": "Saved Souls Foundation 是泰國孔敬的一家非營利動物救援中心。自 2010 年起，我們從街頭和虐待中救援貓狗，包括在別處得不到機會的癱瘓和殘疾動物。",
+    "posterPartnerAllPartners": "所有合作夥伴",
+    "posterPartnerDonate": "支持我們的動物"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",

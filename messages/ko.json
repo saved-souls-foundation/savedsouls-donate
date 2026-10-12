@@ -2609,6 +2609,10 @@
       "fullName": "PC-Depot Halfweg",
       "description": "PC-Depot Halfweg에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Halfweg의 사람들에게 다가갈 수 있습니다."
     },
+    "maxizoohaarlem": {
+      "fullName": "Maxi Zoo Haarlem",
+      "description": "Maxi Zoo Haarlem에서 Saved Souls 포스터를 걸어 주었습니다. 덕분에 콘깬의 개와 고양이 구조 활동을 응원하고 싶은 Haarlem의 사람들에게 다가갈 수 있습니다."
+    },
     "posterSectionTitle": "포스터가 걸린 곳",
     "posterSectionSubtitle": "Saved Souls 포스터를 걸어 주신 업체",
     "posterViewOnMaps": "Google 지도에서 보기",
@@ -2666,7 +2670,14 @@
     "donationBoxShamuSectionPhone": "Call +66 62 324 9295",
     "metaTitle": "파트너 및 포스터 게시 장소 | Saved Souls Foundation",
     "metaDescription": "Saved Souls Foundation을 후원하는 기업과 단체. 포스터는 {names} 등에 걸려 있습니다.",
-    "posterPhotoAlt": "{name}의 Saved Souls 포스터 사진"
+    "posterPhotoAlt": "{name}의 Saved Souls 포스터 사진",
+    "posterPartnerReadMore": "이 파트너에 대해 더 보기",
+    "posterPartnerTitle": "{name}은(는) Saved Souls Foundation을 응원합니다",
+    "posterPartnerMetaTitle": "{name}은(는) Saved Souls Foundation을 응원합니다 | 파트너",
+    "posterPartnerAboutTitle": "Saved Souls Foundation 소개",
+    "posterPartnerAbout": "Saved Souls Foundation은 태국 콘깬에 있는 비영리 동물 보호소입니다. 2010년부터 거리와 학대에서 개와 고양이를 구조해 왔으며, 다른 곳에서 기회를 얻지 못하는 마비 및 장애 동물도 돌보고 있습니다.",
+    "posterPartnerAllPartners": "모든 파트너",
+    "posterPartnerDonate": "우리 동물들을 후원하세요"
   },
   "bedanktThalangAnimalHospital": {
     "metaTitle": "Thank you Thalang Animal Hospital | Saved Souls Foundation",
