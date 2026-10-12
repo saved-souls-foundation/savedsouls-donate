@@ -96,20 +96,23 @@ export default async function PosterPartnerPage({ params }: Props) {
 
         {photos[0] ? (
           <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-rose-200/50 dark:border-rose-900/30 mb-6">
-            <img src={photos[0]} alt={t("posterPhotoAlt", { name: partner.name })} className="w-full h-auto object-cover object-center" />
+            <a href={photos[0]} target="_blank" rel="noopener noreferrer" className="block">
+              <img src={photos[0]} alt={t("posterPhotoAlt", { name: partner.name })} className="w-full h-auto object-cover object-center" />
+            </a>
           </div>
         ) : null}
 
         {photos.length > 1 ? (
           <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto mb-10">
             {photos.slice(1).map((src, i) => (
-              <img
-                key={src}
-                src={src}
-                alt={`${t("posterPhotoAlt", { name: partner.name })} ${i + 2}`}
-                loading="lazy"
-                className="w-full aspect-[3/4] object-cover rounded-2xl shadow-lg border border-stone-200/80 dark:border-stone-700"
-              />
+              <a key={src} href={src} target="_blank" rel="noopener noreferrer" className="block">
+                <img
+                  src={src}
+                  alt={`${t("posterPhotoAlt", { name: partner.name })} ${i + 2}`}
+                  loading="lazy"
+                  className="w-full aspect-[3/4] object-cover rounded-2xl shadow-lg border border-stone-200/80 dark:border-stone-700 transition-transform duration-300 hover:scale-[1.02]"
+                />
+              </a>
             ))}
           </div>
         ) : null}

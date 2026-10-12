@@ -40,9 +40,64 @@ function PartnerCard({
 }) {
   // Gewone partner met website: hele kaart is de link. Poster-partner (met slug): losse knoppen.
   const wholeCardLink = Boolean(partner.url) && !partner.slug;
+  // Poster-partner: foto's linken naar de eigen partnerpagina (daar staan ze groot).
+  const photoHref = !wholeCardLink && partner.slug ? `/partners/${partner.slug}` : undefined;
   const isBanner = partner.logoLayout === "banner" && Boolean(partner.logo);
 
   const cardStyle = { ["--card-i" as string]: index };
+
+  const banner = (
+    <div
+      className={`relative mb-6 ${
+        isBanner
+          ? "w-[calc(100%+4rem)] md:w-[calc(100%+5rem)] -mx-8 md:-mx-10 aspect-[1024/443] overflow-hidden rounded-2xl"
+          : "w-48 h-48"
+      }`}
+    >
+      <div className="partner-logo-hearts absolute inset-0 flex items-center justify-center">
+        {partner.logo ? (
+          <img
+            src={partner.logo}
+            alt={`${partner.name} logo`}
+            className={
+              isBanner
+                ? "w-full h-full object-cover object-center z-10 transition-transform duration-700 group-hover:scale-105"
+                : `w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110${partner.logoClassName ? ` ${partner.logoClassName}` : ""}`
+            }
+            onError={(e) => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = "none";
+              el.nextElementSibling?.classList.remove("hidden");
+            }}
+          />
+        ) : null}
+        <span
+          className={`w-40 h-40 flex items-center justify-center text-center text-2xl md:text-3xl font-bold text-stone-600 dark:text-stone-400 leading-tight px-2${partner.logo ? " hidden" : ""}`}
+        >
+          {partner.name}
+        </span>
+      </div>
+      <div className="hearts-burst absolute inset-0 pointer-events-none flex items-center justify-center" aria-hidden>
+        {[
+          { x: 0, y: -1 }, { x: 0.5, y: -0.87 }, { x: 0.87, y: -0.5 }, { x: 1, y: 0 },
+          { x: 0.87, y: 0.5 }, { x: 0.5, y: 0.87 }, { x: 0, y: 1 }, { x: -0.5, y: 0.87 },
+          { x: -0.87, y: 0.5 }, { x: -1, y: 0 }, { x: -0.87, y: -0.5 }, { x: -0.5, y: -0.87 },
+        ].map((pos, i) => (
+          <span
+            key={i}
+            className="heart-dot absolute text-xl md:text-2xl"
+            style={{
+              ["--hx" as string]: pos.x,
+              ["--hy" as string]: pos.y,
+              ["--hi" as string]: i,
+            }}
+          >
+            ❤️
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
   const card = (
       <article
@@ -53,56 +108,13 @@ function PartnerCard({
         }`}
       >
         <div className="relative flex flex-col items-center text-center">
-          <div
-            className={`relative mb-6 ${
-              isBanner
-                ? "w-[calc(100%+4rem)] md:w-[calc(100%+5rem)] -mx-8 md:-mx-10 aspect-[1024/443] overflow-hidden rounded-2xl"
-                : "w-48 h-48"
-            }`}
-          >
-            <div className="partner-logo-hearts absolute inset-0 flex items-center justify-center">
-              {partner.logo ? (
-                <img
-                  src={partner.logo}
-                  alt={`${partner.name} logo`}
-                  className={
-                    isBanner
-                      ? "w-full h-full object-cover object-center z-10 transition-transform duration-700 group-hover:scale-105"
-                      : `w-40 h-40 object-contain z-10 transition-transform duration-700 group-hover:scale-110${partner.logoClassName ? ` ${partner.logoClassName}` : ""}`
-                  }
-                  onError={(e) => {
-                    const el = e.target as HTMLImageElement;
-                    el.style.display = "none";
-                    el.nextElementSibling?.classList.remove("hidden");
-                  }}
-                />
-              ) : null}
-              <span
-                className={`w-40 h-40 flex items-center justify-center text-center text-2xl md:text-3xl font-bold text-stone-600 dark:text-stone-400 leading-tight px-2${partner.logo ? " hidden" : ""}`}
-              >
-                {partner.name}
-              </span>
-            </div>
-            <div className="hearts-burst absolute inset-0 pointer-events-none flex items-center justify-center" aria-hidden>
-              {[
-                { x: 0, y: -1 }, { x: 0.5, y: -0.87 }, { x: 0.87, y: -0.5 }, { x: 1, y: 0 },
-                { x: 0.87, y: 0.5 }, { x: 0.5, y: 0.87 }, { x: 0, y: 1 }, { x: -0.5, y: 0.87 },
-                { x: -0.87, y: 0.5 }, { x: -1, y: 0 }, { x: -0.87, y: -0.5 }, { x: -0.5, y: -0.87 },
-              ].map((pos, i) => (
-                <span
-                  key={i}
-                  className="heart-dot absolute text-xl md:text-2xl"
-                  style={{
-                    ["--hx" as string]: pos.x,
-                    ["--hy" as string]: pos.y,
-                    ["--hi" as string]: i,
-                  }}
-                >
-                  ❤️
-                </span>
-              ))}
-            </div>
-          </div>
+          {photoHref ? (
+            <Link href={photoHref} aria-label={fullName} className="self-stretch flex justify-center">
+              {banner}
+            </Link>
+          ) : (
+            banner
+          )}
 
           <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100 mb-1" style={{ color: PINK }}>
             {fullName}
@@ -112,15 +124,25 @@ function PartnerCard({
           </p>
           {partner.gallery?.length ? (
             <div className="mt-5 grid grid-cols-2 gap-3 w-full max-w-md">
-              {partner.gallery.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt={`${galleryAlt ?? partner.name} ${i + 1}`}
-                  loading="lazy"
-                  className="w-full aspect-[3/4] object-cover rounded-xl shadow-md border border-stone-200/80 dark:border-stone-700"
-                />
-              ))}
+              {partner.gallery.map((src, i) => {
+                const img = (
+                  <img
+                    src={src}
+                    alt={`${galleryAlt ?? partner.name} ${i + 1}`}
+                    loading="lazy"
+                    className="w-full aspect-[3/4] object-cover rounded-xl shadow-md border border-stone-200/80 dark:border-stone-700 transition-transform duration-300 hover:scale-[1.02]"
+                  />
+                );
+                return photoHref ? (
+                  <Link key={src} href={photoHref} className="block">
+                    {img}
+                  </Link>
+                ) : (
+                  <span key={src} className="block">
+                    {img}
+                  </span>
+                );
+              })}
             </div>
           ) : null}
           {partner.address ? (
