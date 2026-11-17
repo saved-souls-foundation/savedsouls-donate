@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
+import { routing } from "@/i18n/routing";
 
 const BASE_URL = "https://www.savedsouls-foundation.org";
-const LOCALES = ["nl", "en", "de", "es", "th", "ru", "fr", "pl", "sv", "cs", "de-CH", "ko", "ja", "da", "no", "zh-TW", "it", "pt-BR"];
+const LOCALES = routing.locales;
 
 const disallow = [
   "/admin",
   "/api/",
-  ...LOCALES.flatMap((l) => [`/${l}/adopt/dog/`, `/${l}/adopt/cat/`]),
+  // /go = doorstuurpagina naar Wikipedia; elke ?url= is uniek en ongecachet, dus crawlers kosten hier function-aanroepen
+  "/go",
+  ...LOCALES.flatMap((l) => [`/${l}/adopt/dog/`, `/${l}/adopt/cat/`, `/${l}/go`]),
 ].map((path) => `Disallow: ${path}`).join("\n");
 
 const body = `# AI Content Signals
